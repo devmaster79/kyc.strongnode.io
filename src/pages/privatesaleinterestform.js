@@ -106,7 +106,7 @@ function PrivateSaleInterestForm() {
 
             <InputCol>
               <InputGroup>
-                <h5>Telegram Handle(@username) *</h5>
+                <h5>Telegram Handle(@username)</h5>
                 <Input type="text" placeholder="@username" id="telegram" />
               </InputGroup>
             </InputCol>
