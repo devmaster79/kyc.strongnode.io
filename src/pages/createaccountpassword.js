@@ -33,7 +33,7 @@ function CreateAccountPassword() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    history.push("/login");
+    history.push("/profile");
   };
 
   const handlePasswordInputChange = (event) => {

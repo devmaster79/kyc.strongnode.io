@@ -1,13 +1,22 @@
-import React from 'react';
-import { StyledNavbar, NavItemLink } from './style';
+import React from "react";
+import { StyledNavbar, NavItemLink, NavItem, UserInfoWrapper } from "./style";
+import { ReactComponent as AvatarIcon } from "../../icons/avatar.svg";
+import { ReactComponent as DropdownIcon } from "../../icons/dropdown.svg";
 
 function Navbar({ children }) {
   return (
     <StyledNavbar>
-      <NavItemLink to="/login">Login</NavItemLink>
-      <NavItemLink to="/signup" fill>Sign up</NavItemLink>
+      <NavItemLink to="/">kyc.strongnode.io</NavItemLink>
+      <NavItem>
+        <AvatarIcon />
+        <UserInfoWrapper>
+          <p>John</p>
+          <span>admin@email.com</span>
+        </UserInfoWrapper>
+        <DropdownIcon />
+      </NavItem>
     </StyledNavbar>
-  )
+  );
 }
 
 export default Navbar;

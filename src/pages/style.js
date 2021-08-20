@@ -5,7 +5,7 @@ export const EntryPage = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-directions: column;
+  flex-direction: column;
   min-height: 100vh;
   background: #F3F3F5;
 `;

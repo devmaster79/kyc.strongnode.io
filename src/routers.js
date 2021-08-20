@@ -1,7 +1,7 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import Home from './pages/home';
-import Login from './pages/login';
+import Profile from './pages/profile';
 import Signup from './pages/signup';
 import SentEmail from './pages/sentemail'
 import CreateAccountPassword from './pages/createaccountpassword'
@@ -12,8 +12,8 @@ function Routes() {
       <Route exact path="/">
         <Signup />
       </Route>
-      <Route path="/login">
-        <Login />
+      <Route path="/profile">
+        <Profile />
       </Route>
       <Route path="/signup">
         <Signup />
