@@ -20,6 +20,7 @@ export const Wrapper = styled.div`
   max-width: 909px;
   background-color: #ffffff;
   padding: 50px 40px 40px 40px;
+  margin-bottom: 120px;
   display: flex;
   flex-direction: column;
   justify-contents: space-between;
