@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import InputGroup from "../components/InputGroup";
@@ -99,7 +99,7 @@ function PrivateSaleInterestForm() {
             <InputCol>
               <InputGroup>
                 <h5>Name *</h5>
-                <Input type="text" placeholder="@name" id="name" />
+                <Input type="text" placeholder="Name" id="name" />
               </InputGroup>
             </InputCol>
 
@@ -115,7 +115,7 @@ function PrivateSaleInterestForm() {
             <InputCol>
               <InputGroup>
                 <h5>Country of Residence*</h5>
-                <Input type="text" placeholder="@username" id="country" />
+                <Input type="text" placeholder="USA" id="country" />
               </InputGroup>
             </InputCol>
 
