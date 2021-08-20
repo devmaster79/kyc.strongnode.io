@@ -85,7 +85,7 @@ function PrivateSaleInterestForm() {
 
         <p>
           This form is for investors interested in participating in the private
-          sale round for the StrongNood token. Your responses will be kept
+          sale round for the StrongNode token. Your responses will be kept
           private and will not be distributed without prior consent.
         </p>
         <p>
