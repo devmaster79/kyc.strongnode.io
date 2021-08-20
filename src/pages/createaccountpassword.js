@@ -9,19 +9,18 @@ import Button from "../components/Button";
 import { ReactComponent as UserIcon } from "../icons/user.svg";
 import { ReactComponent as LockIcon } from "../icons/lock.svg";
 
-
 const UserInfoWrapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  color: #4D79F6;
+  color: #4d79f6;
   margin-top: 30px;
   p {
     font-style: normal;
     font-size: 16px;
     line-height: 22px;
-    color: #4D79F6;
+    color: #4d79f6;
     margin: 0 0 0 10px;
   }
 `;
@@ -70,7 +69,7 @@ function CreateAccountPassword() {
               style={{ padding: "16px 20px 16px 40px" }}
             />
           </InputGroup>
-          
+
           <Button type="submit" full>
             Confirm / Sign In
           </Button>

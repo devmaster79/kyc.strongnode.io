@@ -8,15 +8,19 @@ export const StyledNavbar = styled.nav`
   width: 100%;
   height: 100px;
   padding: 0 64px;
-  margin-bottom: 102px;
+  margin-bottom: ${props => props.privatesale ? '80px' : '102px'};
   color: #000000;
   background-color: #ffffff;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 `
 
 export const NavItemLink = styled(Link)`
-  color: inherit;
-  margin-left: 16px;
+  color: #000000;
+  font-size: 16px;
+  font-style: normal;
+  line-height: 19.36px;
+  font-weight: 600;
+
   ${props => props.fill && css`
     padding: 8px 16px;
     border-radius: 4px;
@@ -44,11 +48,13 @@ export const UserInfoWrapper = styled.div`
     font-size: 18px;
     line-height: 27px;
     font-style: medium;
+    font-weight: 500;
   }
   span {
     color: #9086A1;
     font-style: regular;
     font-size: 12px;
     line-height: 18px;
+    font-weight: 400;
   }
 `

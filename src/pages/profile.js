@@ -15,7 +15,7 @@ export const Container = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  background: #F3F3F5;
+  background: #f3f3f5;
 `;
 
 const ProgressBarWrapper = styled.div`
@@ -58,7 +58,7 @@ function Profile() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    history.push("/signup");
+    history.push("/private-sale-interest-form");
   };
 
   return (

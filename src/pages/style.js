@@ -7,7 +7,7 @@ export const EntryPage = styled.div`
   justify-content: center;
   flex-direction: column;
   min-height: 100vh;
-  background: #F3F3F5;
+  background: #f3f3f5;
 `;
 
 export const PageHeader = styled(Link)`

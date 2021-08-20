@@ -3,9 +3,9 @@ import { StyledNavbar, NavItemLink, NavItem, UserInfoWrapper } from "./style";
 import { ReactComponent as AvatarIcon } from "../../icons/avatar.svg";
 import { ReactComponent as DropdownIcon } from "../../icons/dropdown.svg";
 
-function Navbar({ children }) {
+function Navbar({ children, ...props }) {
   return (
-    <StyledNavbar>
+    <StyledNavbar {...props}>
       <NavItemLink to="/">kyc.strongnode.io</NavItemLink>
       <NavItem>
         <AvatarIcon />

@@ -78,7 +78,7 @@ function Signup() {
     <EntryPage>
       <EntryCard>
         <h2>Create an Account</h2>
-        <form onSubmit={handleSubmit} style={{marginTop: 30}}>
+        <form onSubmit={handleSubmit} style={{ marginTop: 30 }}>
           <InputGroup>
             <Input type="text" placeholder="First Name" id="first-name" />
           </InputGroup>
