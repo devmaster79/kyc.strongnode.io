@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useLayoutEffect, useRef, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { EntryPage } from "./style";
@@ -49,6 +49,15 @@ function Signup() {
 
   const [email, setEmail] = useState("");
   const [emailValidated, setEmailValidated] = useState(true);
+  
+  const firstRender = useRef(true);
+  useLayoutEffect(() => {
+    if (firstRender.current) {
+      firstRender.current = false;
+      return;
+    }
+    return setEmailValidated(validateEmail(email));
+  }, [email]);
 
   const validateEmail = (email) => {
     const re =
@@ -65,14 +74,7 @@ function Signup() {
     }
   };
 
-  const handleEmailInputChange = (event) => {
-    setEmail(event.target.value);
-    if (validateEmail(event.target.value)) {
-      setEmailValidated(true);
-    } else {
-      setEmailValidated(false);
-    }
-  };
+  const handleEmailInputChange = (event) => setEmail(event.target.value);
 
   return (
     <EntryPage>
