@@ -1,3 +1,4 @@
+import { Field, Form, Formik } from 'formik';
 import React, { useLayoutEffect, useRef, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import styled from "styled-components";
@@ -65,69 +66,100 @@ function Signup() {
     return re.test(String(email).toLowerCase());
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    if (email) {
-      history.push("/sent-email");
-    } else {
-      setEmailValidated(false);
-    }
-  };
-
-  const handleEmailInputChange = (event) => setEmail(event.target.value);
+  const initFormState = {
+    firstName: "",
+    middleName: "",
+    lastName: "",
+    email: "",
+    username: "",
+    termsAgreement: false
+  }
+  
+  const handleFormSubmit = (data, {setSubmitting}) => {
+    setSubmitting(true);
+    // make async call to submit registration data here
+    console.log("submit: ", data);
+    setSubmitting(false);
+  }
 
   return (
     <EntryPage>
       <EntryCard>
         <h2>Create an Account</h2>
-        <form onSubmit={handleSubmit} style={{ marginTop: 30 }}>
-          <InputGroup>
-            <Input type="text" placeholder="First Name" id="first-name" />
-          </InputGroup>
-          <InputGroup>
-            <Input type="text" placeholder="Middle Name" id="middle-name" />
-          </InputGroup>
-          <InputGroup>
-            <Input type="text" placeholder="Last Name" id="last-name" />
-          </InputGroup>
-          <InputGroup>
-            <MailIcon />
-            <Input
-              type="text"
-              placeholder="Email"
-              id="email"
-              value={email}
-              style={{ padding: "16px 20px 16px 40px" }}
-              onChange={handleEmailInputChange}
-            />
-          </InputGroup>
-          {!emailValidated && (
-            <ValidateWrapper show={{ emailValidated }}>
-              <ErrorIcon />
-              <p>Please enter a valid email address</p>
-            </ValidateWrapper>
+        <Formik initialValues={initFormState} onSubmit={handleFormSubmit}>
+          {({ isSubmitting }) => (
+            <Form style={{ marginTop: 30 }}>
+              <InputGroup>
+                <Field
+                  as={Input}
+                  name="firstName"
+                  placeholder="First Name"
+                  type="input"
+                />
+              </InputGroup>
+              <InputGroup>
+                <Field
+                  as={Input}
+                  name="middleName"
+                  placeholder="Middle Name"
+                  type="input"
+                />
+              </InputGroup>
+              <InputGroup>
+                <Field
+                  as={Input}
+                  name="lastName"
+                  placeholder="Last Name"
+                  type="input"
+                />
+              </InputGroup>
+              <InputGroup>
+                <MailIcon />
+                <Field
+                  as={Input}
+                  name="email"
+                  placeholder="Email"
+                  style={{ padding: "16px 20px 16px 40px" }}
+                  type="email"
+                />
+              </InputGroup>
+              {!emailValidated && (
+                <ValidateWrapper show={{ emailValidated }}>
+                  <ErrorIcon />
+                  <p>Please enter a valid email address</p>
+                </ValidateWrapper>
+              )}
+              <InputGroup>
+                <ProfileIcon />
+                <Field
+                  as={Input}
+                  name="username"
+                  placeholder="User Name"
+                  style={{ padding: "16px 20px 16px 40px" }}
+                  type="text"
+                />
+              </InputGroup>
+              <TermsWrapper style={{ display: "table", marginBottom: "20px" }}>
+                <Field
+                  as={Input} 
+                  name="termsAgreement"
+                  style={{ width: "auto" }}
+                  type="checkbox"
+                />
+                <div style={{ display: "table-cell", verticalAlign: "middle" }}>
+                  <p>
+                    By continuing, you agree to
+                    <Link to="/#">Terms of Use Privacy policy</Link>
+                  </p>
+                </div>
+              </TermsWrapper>
+              <Button disabled={isSubmitting} type="submit" full>
+                Sign Up
+              </Button>
+            </Form>
           )}
-          <InputGroup>
-            <ProfileIcon />
-            <Input
-              type="text"
-              placeholder="User Name"
-              id="user-name"
-              style={{ padding: "16px 20px 16px 40px" }}
-            />
-          </InputGroup>
-          <TermsWrapper>
-            <input type="checkbox" />
-            <p>
-              By continuing, you agree to
-              <Link to="/#">Terms of Use Privacy policy</Link>
-            </p>
-          </TermsWrapper>
-          <Button type="submit" full>
-            Sign Up
-          </Button>
-        </form>
-        <Line full></Line>
+        </Formik>
+        <Line full />
         <Line full />
         <AlreadyWrapper>Already have an account</AlreadyWrapper>
         <Button onClick={() => history.push("/profile")} full white>
