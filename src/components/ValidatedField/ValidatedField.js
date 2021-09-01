@@ -1,0 +1,66 @@
+import { Field, useField } from "formik";
+import React from "react";
+import { Link } from "react-router-dom";
+import styled from "styled-components";
+
+import { ReactComponent as ErrorIcon } from "../../icons/error.svg";
+import { ReactComponent as MailIcon } from "../../icons/message.svg";
+import { ReactComponent as ProfileIcon } from "../../icons/profile.svg";
+import InputGroup from "../InputGroup";
+
+const ErrorWrapper = styled.div`
+  display: ${(props) => (props.show ? "flex" : "none")};
+  margin-top: -10px;
+  margin-bottom: 25px;
+  flex-direction: row;
+  justify-content: flex-start;
+  p {
+    margin-left: 8px;
+  }
+`;
+
+const TermsText = () => (
+  <p style={{
+    display: "table-cell",
+    fontSize: "13px",
+    paddingLeft: "12px",
+    verticalAlign: "middle"
+    }}
+  >
+    By continuing, you agree to
+    <Link to="/#">Terms of Use Privacy policy.</Link>
+  </p>
+);
+
+const ValidatedField = (props) => {
+  const {as, placeholder, style, type, wrapperStyle} = props;
+
+  const [field, meta] = useField(props);
+  const {error, touched} = meta;
+  const errorText = error && touched ? error : '';
+
+  return (
+    <>
+      <InputGroup>
+        {field.name === "email" && <MailIcon />}
+        {field.name === "username" && <ProfileIcon />}
+        <div style={wrapperStyle}>
+          <Field
+            as={as}
+            placeholder={placeholder}
+            style={style}
+            type={type}
+            {...field}
+          />
+          {field.name === "termsAgreement" && <TermsText />}
+        </div>
+      </InputGroup>
+      <ErrorWrapper show={error}>
+        <ErrorIcon />
+        <p>{errorText}</p>
+      </ErrorWrapper>
+    </>
+  );
+}
+
+export default ValidatedField;
