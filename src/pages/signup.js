@@ -85,8 +85,8 @@ function Signup() {
               <ValidatedField
                 as={Input} 
                 name="termsAgreement"
-                style={{ display: "table-cell", width: "auto" }}
-                wrapperStyle={{display: "table"}}
+                style={{ width: "auto" }}
+                wrapperStyle={{ alignItems: "center", display: "flex",  height: "20px"}}
                 type="checkbox"
               />
               <Button disabled={isSubmitting} type="submit" full>

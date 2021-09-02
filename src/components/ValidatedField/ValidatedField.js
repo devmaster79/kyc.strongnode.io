@@ -21,10 +21,8 @@ const ErrorWrapper = styled.div`
 
 const TermsText = () => (
   <p style={{
-    display: "table-cell",
-    fontSize: "13px",
+    fontSize: "14px",
     paddingLeft: "12px",
-    verticalAlign: "middle"
     }}
   >
     By continuing, you agree to
