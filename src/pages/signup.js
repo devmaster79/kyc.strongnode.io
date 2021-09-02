@@ -45,7 +45,7 @@ function Signup() {
         <Formik
           initialValues={initFormState}
           onSubmit={handleFormSubmit}
-          validateOnChange
+          validateOnChange={false}
           validationSchema={signupSchema}
         >
           {({ isSubmitting }) => (
