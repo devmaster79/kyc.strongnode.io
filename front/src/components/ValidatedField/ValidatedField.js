@@ -31,7 +31,7 @@ const TermsText = () => (
 );
 
 const ValidatedField = (props) => {
-  const {as, placeholder, style, type, wrapperStyle} = props;
+  const {as, validateField, placeholder, style, type, wrapperStyle} = props;
 
   const [field, meta] = useField(props);
   const {error, touched} = meta;
@@ -48,15 +48,18 @@ const ValidatedField = (props) => {
             placeholder={placeholder}
             style={style}
             type={type}
+            validate={validateField}
             {...field}
           />
           {field.name === "termsAgreement" && <TermsText />}
         </div>
       </InputGroup>
-      <ErrorWrapper show={error}>
-        <ErrorIcon />
-        <p>{errorText}</p>
-      </ErrorWrapper>
+      {touched && (
+        <ErrorWrapper show={error}>
+          <ErrorIcon />
+          <p>{errorText}</p>
+        </ErrorWrapper>
+      )}
     </>
   );
 }

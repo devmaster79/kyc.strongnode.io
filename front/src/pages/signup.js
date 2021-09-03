@@ -45,51 +45,65 @@ function Signup() {
         <Formik
           initialValues={initFormState}
           onSubmit={handleFormSubmit}
-          validateOnChange={false}
           validationSchema={signupSchema}
         >
-          {({ isSubmitting }) => (
+          {({ handleBlur, isSubmitting, validateField }) => (
             <Form style={{ marginTop: 30 }}>
               <ValidatedField
                 as={Input}
                 name="firstName"
+                onBlur={handleBlur}
                 placeholder="First Name"
                 type="input"
+                validateField={validateField}
               />
               <ValidatedField
                 as={Input}
                 name="middleName"
+                onBlur={handleBlur}
                 placeholder="Middle Name"
                 type="input"
+                validateField={validateField}
               />
               <ValidatedField
                 as={Input}
                 name="lastName"
+                onBlur={handleBlur}
                 placeholder="Last Name"
                 type="input"
+                validateField={validateField}
               />
               <ValidatedField
                 as={Input}
                 name="email"
+                onBlur={handleBlur}
                 placeholder="Email"
                 style={{ padding: "16px 20px 16px 40px" }}
                 type="email"
+                validateField={validateField}
               />
               <ValidatedField
                 as={Input}
                 name="username"
+                onBlur={handleBlur}
                 placeholder="User Name"
                 style={{ padding: "16px 20px 16px 40px" }}
                 type="text"
+                validateField={validateField}
               />
               <ValidatedField
                 as={Input} 
                 name="termsAgreement"
+                onBlur={handleBlur}
                 style={{ width: "auto" }}
-                wrapperStyle={{ alignItems: "center", display: "flex",  height: "20px"}}
                 type="checkbox"
+                wrapperStyle={{ alignItems: "center", display: "flex",  height: "20px"}}
               />
-              <Button disabled={isSubmitting} type="submit" full>
+              <Button
+                disabled={isSubmitting}
+                type="submit"
+                full
+              >
                 Sign Up
               </Button>
             </Form>
