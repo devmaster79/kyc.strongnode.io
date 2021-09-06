@@ -21,17 +21,16 @@ const AlreadyWrapper = styled.p`
 
 function Signup() {
   const history = useHistory();
-  
+
   const initFormState = {
     firstName: "",
-    middleName: "",
     lastName: "",
     email: "",
     username: "",
     termsAgreement: false
   }
-  
-  const handleFormSubmit = (data, {setSubmitting}) => {
+
+  const handleFormSubmit = (data, { setSubmitting }) => {
     setSubmitting(true);
     // make async call to submit registration data here
     console.log("submit: ", data);
@@ -54,14 +53,6 @@ function Signup() {
                 name="firstName"
                 onBlur={handleBlur}
                 placeholder="First Name"
-                type="input"
-                validateField={validateField}
-              />
-              <ValidatedField
-                as={Input}
-                name="middleName"
-                onBlur={handleBlur}
-                placeholder="Middle Name"
                 type="input"
                 validateField={validateField}
               />
@@ -92,12 +83,12 @@ function Signup() {
                 validateField={validateField}
               />
               <ValidatedField
-                as={Input} 
+                as={Input}
                 name="termsAgreement"
                 onBlur={handleBlur}
                 style={{ width: "auto" }}
                 type="checkbox"
-                wrapperStyle={{ alignItems: "center", display: "flex",  height: "20px"}}
+                wrapperStyle={{ alignItems: "center", display: "flex", height: "20px" }}
               />
               <Button
                 disabled={isSubmitting}
