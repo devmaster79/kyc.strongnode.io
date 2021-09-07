@@ -38,7 +38,7 @@ exports.create = async (req, res) => {
   });
   if (user) {
     res.status(409).send({
-      message: "Same user_name already exists!"
+      message: "Same email or user_name already exists!"
     });
     return;
   }
