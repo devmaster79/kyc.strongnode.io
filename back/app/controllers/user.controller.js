@@ -73,7 +73,8 @@ exports.createPassword = async (req, res) => {
     .then(num => {
       if (num == 1) {
         res.send({
-          message: "User password was created successfully."
+          message: "User password was created successfully.",
+          token: token
         });
       } else {
         res.send({
@@ -172,6 +173,14 @@ exports.createInvestor = (req, res) => {
 
 // Retrieve all Users from the database.
 exports.findAll = (req, res) => {
+  // Validate request
+  if (!req.user) {
+    res.status(400).send({
+      message: "Content can not be empty!"
+    });
+    return;
+  }
+
   const first_name = req.query.first_name;
   const condition = first_name ? { first_name: { [Op.like]: `%${first_name}%` } } : null;
 
@@ -190,6 +199,14 @@ exports.findAll = (req, res) => {
 
 // Find a single User with an id
 exports.findOne = (req, res) => {
+  // Validate request
+  if (!req.user) {
+    res.status(400).send({
+      message: "Content can not be empty!"
+    });
+    return;
+  }
+
   const id = req.params.id;
 
   User.findByPk(id)
@@ -205,6 +222,14 @@ exports.findOne = (req, res) => {
 
 // Update a User by the id in the request
 exports.update = (req, res) => {
+  // Validate request
+  if (!req.user) {
+    res.status(400).send({
+      message: "Content can not be empty!"
+    });
+    return;
+  }
+
   const id = req.params.id;
 
   User.update(req.body, {
@@ -230,6 +255,14 @@ exports.update = (req, res) => {
 
 // Delete a User with the specified id in the request
 exports.delete = (req, res) => {
+  // Validate request
+  if (!req.user) {
+    res.status(400).send({
+      message: "Content can not be empty!"
+    });
+    return;
+  }
+
   const id = req.params.id;
 
   User.destroy({
@@ -255,6 +288,14 @@ exports.delete = (req, res) => {
 
 // Delete all Users from the database.
 exports.deleteAll = (req, res) => {
+  // Validate request
+  if (!req.user) {
+    res.status(400).send({
+      message: "Content can not be empty!"
+    });
+    return;
+  }
+
   User.destroy({
     where: {},
     truncate: false
