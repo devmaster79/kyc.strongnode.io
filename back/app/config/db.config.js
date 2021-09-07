@@ -1,13 +1,16 @@
+const dotenv = require('dotenv');
+dotenv.config();
+
 module.exports = {
-  HOST: "localhost",
-  USER: "root",
-  PASSWORD: "11111111",
-  DB: "kyc_db",
-  dialect: "mysql",
+  HOST: process.env.HOST,
+  USER: process.env.DB_USER,
+  PASSWORD: process.env.DB_PASSWORD,
+  DB: process.env.DB_NAME,
+  dialect: process.env.DB_DIALECT,
   pool: {
-    max: 5,
-    min: 0,
-    acquire: 30000,
-    idle: 10000
+    max: parseInt(process.env.DB_POOL_MAX),
+    min: parseInt(process.env.DB_POOL_MIN),
+    acquire: process.env.DB_POOL_ACQUIRE,
+    idle: process.env.DB_POOL_IDLE
   }
 };
