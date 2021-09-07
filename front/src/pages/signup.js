@@ -103,7 +103,7 @@ function Signup() {
         <Line full />
         <Line full />
         <AlreadyWrapper>Already have an account</AlreadyWrapper>
-        <Button onClick={() => history.push("/profile")} full white>
+        <Button onClick={() => history.push("/signin")} full white>
           Sign In
         </Button>
       </EntryCard>
