@@ -2,6 +2,7 @@ import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import Profile from './pages/profile';
 import Signup from './pages/signup';
+import Signin from './pages/signin';
 import SentEmail from './pages/sentemail'
 import CreateAccountPassword from './pages/createaccountpassword'
 import PrivateSaleInterestForm from './pages/privatesaleinterestform'
@@ -17,6 +18,9 @@ function Routes() {
       </Route>
       <Route path="/signup">
         <Signup />
+      </Route>
+      <Route path="/signin">
+        <Signin />
       </Route>
       <Route path="/sent-email">
         <SentEmail />
