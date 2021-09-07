@@ -37,7 +37,7 @@ jobs:
            CI: false
       - name: Add .env file
         shell: bash
-        run: echo ${{ secrets.ENV_STAGE_FILE }} | base64 -d > .env
+        run: echo ${{ secrets.ENV_STAGE_FILE }} | base64 -d > back/.env
       - name: Deploy to Server
         uses: easingthemes/ssh-deploy@main
         env:
