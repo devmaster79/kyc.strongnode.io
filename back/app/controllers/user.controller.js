@@ -99,8 +99,6 @@ exports.createProfile = (req, res) => {
     return;
   }
 
-  console.log("req.user.user_name", req.user.user_name)
-
   // Create a User profile
   const data = {
     telegram_id: req.body.telegram_id,
@@ -175,7 +173,7 @@ exports.createInvestor = (req, res) => {
 // Retrieve all Users from the database.
 exports.findAll = (req, res) => {
   const first_name = req.query.first_name;
-  var condition = first_name ? { first_name: { [Op.like]: `%${first_name}%` } } : null;
+  const condition = first_name ? { first_name: { [Op.like]: `%${first_name}%` } } : null;
 
   User.findAll({ where: condition })
     .then(data => {
