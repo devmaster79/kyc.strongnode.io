@@ -7,7 +7,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 // Create and Save a new User
-exports.create = async(req, res) => {
+exports.create = async (req, res) => {
   // Validate request
   if (!req.body.first_name) {
     res.status(400).send({
@@ -28,8 +28,15 @@ exports.create = async(req, res) => {
     password_token: password_token,
   };
 
-  const user = await User.findOne({ where: { user_name: req.body.user_name } });
-  if(user) {
+  const user = await User.findOne({
+    where: {
+      [Op.or]: [
+        { user_name: req.body.user_name },
+        { email: req.body.email }
+      ]
+    }
+  });
+  if (user) {
     res.status(409).send({
       message: "Same user_name already exists!"
     });
