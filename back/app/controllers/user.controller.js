@@ -2,9 +2,12 @@ const db = require("../models");
 const crypto = require("crypto");
 const User = db.users;
 const Op = db.Sequelize.Op;
+const jwt = require('jsonwebtoken');
+const dotenv = require('dotenv');
+dotenv.config();
 
 // Create and Save a new User
-exports.create = (req, res) => {
+exports.create = async (req, res) => {
   // Validate request
   if (!req.body.first_name) {
     res.status(400).send({
@@ -16,7 +19,7 @@ exports.create = (req, res) => {
   const password_token = crypto.randomBytes(20).toString('hex');
 
   // Create a User
-  const user = {
+  const data = {
     first_name: req.body.first_name,
     last_name: req.body.last_name,
     email: req.body.email,
@@ -25,8 +28,23 @@ exports.create = (req, res) => {
     password_token: password_token,
   };
 
+  const user = await User.findOne({
+    where: {
+      [Op.or]: [
+        { user_name: req.body.user_name },
+        { email: req.body.email }
+      ]
+    }
+  });
+  if (user) {
+    res.status(409).send({
+      message: "Same email or user_name already exists!"
+    });
+    return;
+  }
+
   // Save User in the database
-  User.create(user)
+  User.create(data)
     .then(data => {
       res.send(data);
     })
@@ -39,7 +57,7 @@ exports.create = (req, res) => {
 };
 
 // Create and Save a new User password
-exports.createPassword = (req, res) => {
+exports.createPassword = async (req, res) => {
   // Validate request
   if (!req.body.password_token) {
     res.status(400).send({
@@ -48,19 +66,30 @@ exports.createPassword = (req, res) => {
     return;
   }
 
+  const user = await User.findOne({ where: { password_token: req.body.password_token } });
+  const token = jwt.sign(
+    { user_name: user.dataValues.user_name, email: user.dataValues.email },
+    process.env.TOKEN_SECRET,
+    {
+      expiresIn: "2h",
+    }
+  );
+
   // Create a User password
   const data = {
     password: req.body.password,
     email_verified: true,
-  };
-  
+    token: token,
+  }
+
   User.update(data, {
     where: { password_token: req.body.password_token }
   })
     .then(num => {
       if (num == 1) {
         res.send({
-          message: "User password was created successfully."
+          message: "User password was created successfully.",
+          token: token
         });
       } else {
         res.send({
@@ -73,12 +102,13 @@ exports.createPassword = (req, res) => {
         message: "Error creating User password with password_token=" + req.body.password_token
       });
     });
-};
+}
+
 
 // Create and Save a User profile
 exports.createProfile = (req, res) => {
   // Validate request
-  if (!req.body.password_token) {
+  if (!req.user) {
     res.status(400).send({
       message: "Content can not be empty!"
     });
@@ -91,9 +121,9 @@ exports.createProfile = (req, res) => {
     twitter_id: req.body.twitter_id,
     wallet_address: req.body.wallet_address
   };
-  
+
   User.update(data, {
-    where: { password_token: req.body.password_token }
+    where: { user_name: req.user.user_name }
   })
     .then(num => {
       if (num == 1) {
@@ -102,13 +132,13 @@ exports.createProfile = (req, res) => {
         });
       } else {
         res.send({
-          message: `Cannot create User profile with password_token=${req.body.password_token}. Maybe User profile info was not found or req.body is empty!`
+          message: `Cannot create User profile with username=${req.user.user_name}. Maybe User profile info was not found or req.body is empty!`
         });
       }
     })
     .catch(err => {
       res.status(500).send({
-        message: "Error creating User profile with password_token=" + req.body.password_token
+        message: "Error creating User profile with username=" + req.user.user_name
       });
     });
 };
@@ -116,7 +146,7 @@ exports.createProfile = (req, res) => {
 // Create and Save a User profile
 exports.createInvestor = (req, res) => {
   // Validate request
-  if (!req.body.password_token) {
+  if (!req.user) {
     res.status(400).send({
       message: "Content can not be empty!"
     });
@@ -134,9 +164,9 @@ exports.createInvestor = (req, res) => {
     investor_fund_name: req.body.investor_fund_name,
     investor_fund_website: req.body.investor_fund_website
   };
-  
+
   User.update(data, {
-    where: { password_token: req.body.password_token }
+    where: { user_name: req.user.user_name }
   })
     .then(num => {
       if (num == 1) {
@@ -145,21 +175,29 @@ exports.createInvestor = (req, res) => {
         });
       } else {
         res.send({
-          message: `Cannot create Investor with password_token=${req.body.password_token}. Maybe Investor info was not found or req.body is empty!`
+          message: `Cannot create Investor with username=${req.user.user_name}. Maybe Investor info was not found or req.body is empty!`
         });
       }
     })
     .catch(err => {
       res.status(500).send({
-        message: "Error creating Investor with password_token=" + req.body.password_token
+        message: "Error creating Investor with username=" + req.user.user_name
       });
     });
 };
 
 // Retrieve all Users from the database.
 exports.findAll = (req, res) => {
+  // Validate request
+  if (!req.user) {
+    res.status(400).send({
+      message: "Content can not be empty!"
+    });
+    return;
+  }
+
   const first_name = req.query.first_name;
-  var condition = first_name ? { first_name: { [Op.like]: `%${first_name}%` } } : null;
+  const condition = first_name ? { first_name: { [Op.like]: `%${first_name}%` } } : null;
 
   User.findAll({ where: condition })
     .then(data => {
@@ -173,8 +211,17 @@ exports.findAll = (req, res) => {
     });
 };
 
+
 // Find a single User with an id
 exports.findOne = (req, res) => {
+  // Validate request
+  if (!req.user) {
+    res.status(400).send({
+      message: "Content can not be empty!"
+    });
+    return;
+  }
+
   const id = req.params.id;
 
   User.findByPk(id)
@@ -190,6 +237,14 @@ exports.findOne = (req, res) => {
 
 // Update a User by the id in the request
 exports.update = (req, res) => {
+  // Validate request
+  if (!req.user) {
+    res.status(400).send({
+      message: "Content can not be empty!"
+    });
+    return;
+  }
+
   const id = req.params.id;
 
   User.update(req.body, {
@@ -215,6 +270,14 @@ exports.update = (req, res) => {
 
 // Delete a User with the specified id in the request
 exports.delete = (req, res) => {
+  // Validate request
+  if (!req.user) {
+    res.status(400).send({
+      message: "Content can not be empty!"
+    });
+    return;
+  }
+
   const id = req.params.id;
 
   User.destroy({
@@ -240,6 +303,14 @@ exports.delete = (req, res) => {
 
 // Delete all Users from the database.
 exports.deleteAll = (req, res) => {
+  // Validate request
+  if (!req.user) {
+    res.status(400).send({
+      message: "Content can not be empty!"
+    });
+    return;
+  }
+
   User.destroy({
     where: {},
     truncate: false
@@ -254,4 +325,3 @@ exports.deleteAll = (req, res) => {
       });
     });
 };
-
