@@ -35,6 +35,9 @@ jobs:
         run: cd front && npm run build --if-present
         env:
            CI: false
+      - name: Add .env file
+        shell: bash
+        run: echo ${{ secrets.ENV_STAGE_FILE }} | base64 -d > .env
       - name: Deploy to Server
         uses: easingthemes/ssh-deploy@main
         env:
