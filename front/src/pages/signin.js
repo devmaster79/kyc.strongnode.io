@@ -1,58 +1,84 @@
-import React, { useState } from "react";
+import React, { useState, useCallback, useEffect } from "react";
+import { Form, Formik } from "formik";
 import { useHistory } from "react-router-dom";
 import { EntryPage } from "./style";
-import EntryCard from "../components/EntryCard";
-import InputGroup from "../components/InputGroup";
-import Input from "../components/Input";
 import Button from "../components/Button";
+import EntryCard from "../components/EntryCard";
+import Input from "../components/Input";
+import InputGroup from "../components/InputGroup";
+import ValidatedField from "../components/ValidatedField";
 import { ReactComponent as MailIcon } from "../icons/message.svg";
 import { ReactComponent as LockIcon } from "../icons/lock.svg";
+import { magic } from '../utils/index';
+import { singinSchema } from "../static/formSchemas";
 
 function Signin() {
   const history = useHistory();
 
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    history.push("/profile");
-  };
+  const initFormState = {
+    email: ""
+  }
 
-  const handlePasswordInputChange = (event) => {
-    setPassword(event.target.value);
-  };
+  const handleFormSubmit = (data, { setSubmitting }) => {
+    setSubmitting(true);
+    // make async call to submit registration data here
+    console.log("submit: ", data);
+    magicLogin(data);
+    setSubmitting(false);
+  }
+
+  const handleEmailInputChange = (event) => {
+    setEmail(event.target.value);
+  }
+
+  const magicLogin = useCallback( async (data) => {
+      const email = data.email;
+      history.push("/magiclink");
+      await magic.auth.loginWithMagicLink({
+        email,
+        redirectURI: new URL("/signinpass", window.location.origin).href,
+        showUI: false
+      });
+      const magitLoggedIn = await magic.user.isLoggedIn();
+      if(magitLoggedIn) {
+        localStorage.setItem('isLoggedIn', 'true');
+      }
+    }, [email]
+  );
 
   return (
     <EntryPage>
       <EntryCard>
-        <h2>Log in with Account</h2>
-        <form onSubmit={handleSubmit} style={{ marginTop: 30 }}>
-          <InputGroup>
-            <MailIcon />
-            <Input
-              type="email"
+        <h2>Sign in</h2>
+        <h5>We will send a magic link to your email</h5>
+        <Formik
+          initialValues={initFormState}
+          onSubmit={handleFormSubmit}
+          validationSchema={singinSchema}
+        >
+          {({ handleBlur, isSubmitting, validateField }) => (
+            <Form style={{ marginTop: 30 }}>
+              <ValidatedField
+                as={Input}
+                name="email"
+                onBlur={handleBlur}
               placeholder="Email"
-              id="email"
-              value={password}
               style={{ padding: "16px 20px 16px 40px" }}
-              onChange={handlePasswordInputChange}
+                type="email"
+                validateField={validateField}
             />
-          </InputGroup>
-
-          <InputGroup>
-            <LockIcon />
-            <Input
-              type="password"
-              placeholder="Password"
-              id="password"
-              style={{ padding: "16px 20px 16px 40px" }}
-            />
-          </InputGroup>
-
-          <Button type="submit" full>
-            Sign In
+              <Button
+                disabled={isSubmitting}
+                type="submit"
+                full
+              >
+                Confirm
           </Button>
-        </form>
+            </Form>
+          )}
+        </Formik>
       </EntryCard>
     </EntryPage>
   );

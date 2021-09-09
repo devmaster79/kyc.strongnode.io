@@ -6,6 +6,7 @@ import styled from "styled-components";
 import { ReactComponent as ErrorIcon } from "../../icons/error.svg";
 import { ReactComponent as MailIcon } from "../../icons/message.svg";
 import { ReactComponent as ProfileIcon } from "../../icons/profile.svg";
+import { ReactComponent as LockIcon } from "../../icons/lock.svg";
 import InputGroup from "../InputGroup";
 
 const ErrorWrapper = styled.div`
@@ -42,6 +43,7 @@ const ValidatedField = (props) => {
       <InputGroup>
         {field.name === "email" && <MailIcon />}
         {field.name === "username" && <ProfileIcon />}
+        {field.name === "password" && <LockIcon />}
         <div style={wrapperStyle}>
           <Field
             as={as}

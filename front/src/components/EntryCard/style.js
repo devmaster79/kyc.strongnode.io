@@ -26,6 +26,13 @@ export const StyledEntryCard = styled.div`
     margin-left: 4px;
     color: #2f8bfd;
   }
-  
-  
+  h5 {
+    font-family: Inter;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 26px;
+    color: #627083;
+    margin-top: 20px;
+  }
 `
