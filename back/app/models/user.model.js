@@ -24,6 +24,9 @@ module.exports = (sequelize, Sequelize) => {
     password: {
       type: Sequelize.STRING
     },
+    smscode: {
+      type: Sequelize.STRING
+    },
     telegram_id: {
       type: Sequelize.STRING
     },

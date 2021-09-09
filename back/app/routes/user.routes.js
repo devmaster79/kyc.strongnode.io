@@ -25,5 +25,11 @@ module.exports = app => {
   // Delete all Users
   router.delete("/", auth, users.deleteAll);
 
+  //Send SMS and save on user db
+  router.post("/sms/send", users.sendSMS);
+
+  //Get SMS code by email
+  router.get("/sms/check", users.getSMS);
+
   app.use('/api/users', router);
 };

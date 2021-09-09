@@ -6,6 +6,8 @@ const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
 dotenv.config();
 
+var AWS = require("aws-sdk");
+
 // Create and Save a new User
 exports.create = async (req, res) => {
   // Validate request
@@ -325,3 +327,72 @@ exports.deleteAll = (req, res) => {
       });
     });
 };
+
+function generateRandomNumber(min, max) {
+  return Math.floor(Math.random()*(max-min) + min);
+}
+
+//Send SMS and save password
+exports.sendSMS = (req, res) => {
+  //parse parameter
+  console.log("Number=" + req.body.number);
+
+  var OTP = generateRandomNumber(1000,9999);
+
+  var params = {
+    Message: "Here is SMS code for StrongNode : " + OTP,
+    PhoneNumber: '+' + req.body.number,
+  };
+
+  var publishTextPromise = new AWS.SNS({ apiVersion: '2021-09-05' }).publish(params).promise();
+
+  publishTextPromise.then(
+    function (data) {
+      const user_sms = {
+        smscode: OTP
+      }
+      User.update(user_sms, {
+        where: { email: req.body.email }
+      })
+        .then(num => {
+          if (num == 1) {
+            res.send({
+              result: 1,
+              message: "Sent SMS Code successfully."
+            });
+          } else {
+            res.send({
+              result: 2,
+              message: `Cannot send SMS code with email=${req.body.email}. Maybe User email was not found or req.body is empty!`
+            });
+          }
+        })
+        .catch(err => {
+          res.status(500).send({
+            result: 3,
+            message: "Error updating SMS code with email=" + req.body.email
+          });
+        });
+    }
+  ).catch(
+    function(err) {
+      res.end(JSON.stringify({ Error: err}));
+    }
+  );
+};
+
+//Get SMS code from DB by email
+exports.getSMS = (req, res) => {
+  const para_email = req.query.email;
+
+  User.findAll({ where: {email: para_email} })
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving users."
+      });
+    });
+}

@@ -1,0 +1,40 @@
+import React from "react";
+import { Link, useHistory } from "react-router-dom";
+import styled from "styled-components";
+import { EntryPage } from "./style";
+import EntryCard from "../components/EntryCard";
+import Button from "../components/Button";
+import { ReactComponent as MagicImg } from "../assets/images/magic.svg";
+
+const P = styled.p`
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 26px;
+  color: #210e43;
+  margin-bottom: 20px;
+  text-align: center;
+  padding-left: 32px;
+  padding-right: 32px;
+`;
+
+function MagicLink() {
+  const history = useHistory();
+
+  return (
+    <EntryPage>
+      <EntryCard emailsent>
+        <MagicImg />
+        <h2 style={{ marginTop: 25, marginBottom: 20 }}>Check your email</h2>
+        <P>
+            We've sent a magic link. Open your email to get your one time password (OTP)
+        </P>
+        <Button style={{ width: '30%' }} full onClick={() => history.push("/signin")}>
+          OK
+        </Button>
+      </EntryCard>
+    </EntryPage>
+  );
+}
+
+export default MagicLink;

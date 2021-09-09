@@ -17,4 +17,12 @@ export const GlobalStyle = createGlobalStyle`
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
+  .PhoneInputInput, .PhoneInputCountrySelect {
+    font-size: 20px;
+  }
+  .PhoneInputInput {
+    padding: 10px;
+    border: 1px solid #e0e6e8;
+    border-radius: 6px;
+  }
 `

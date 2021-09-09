@@ -7,3 +7,7 @@ export const signupSchema = yup.object({
   username: yup.string().required(),
   termsAgreement: yup.bool().oneOf([true])
 });
+
+export const singinSchema = yup.object({
+  email: yup.string().email().required(),
+});
