@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { Form, Formik } from "formik";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { EntryPage } from "./style";
 import Button from "../components/Button";
 import EntryCard from "../components/EntryCard";
@@ -13,7 +13,7 @@ import { magic } from '../utils/index';
 import { singinSchema } from "../static/formSchemas";
 
 function Signin() {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
 
@@ -35,7 +35,7 @@ function Signin() {
 
   const magicLogin = useCallback( async (data) => {
       const email = data.email;
-      history.push("/magiclink");
+      navigate("/magiclink");
       await magic.auth.loginWithMagicLink({
         email,
         redirectURI: new URL("/signinpass", window.location.origin).href,

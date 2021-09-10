@@ -1,5 +1,5 @@
 import { Form, Formik } from "formik";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 import { EntryPage } from "./style";
@@ -20,7 +20,7 @@ const AlreadyWrapper = styled.p`
 `;
 
 function Signup() {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const initFormState = {
     firstName: "",
@@ -103,7 +103,7 @@ function Signup() {
         <Line full />
         <Line full />
         <AlreadyWrapper>Already have an account</AlreadyWrapper>
-        <Button onClick={() => history.push("/signin")} full white>
+        <Button onClick={() => navigate("/signin")} full white>
           Sign In
         </Button>
       </EntryCard>

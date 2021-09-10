@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { EntryPage } from "./style";
 import EntryCard from "../components/EntryCard";
@@ -54,11 +54,11 @@ const InputWrapper = styled.div`
 `;
 
 function Profile() {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    history.push("/private-sale-interest-form");
+    navigate("/private-sale-interest-form");
   };
 
   return (

@@ -1,13 +1,24 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
-import { BrowserRouter as Router } from 'react-router-dom';
-import { GlobalStyle } from './reset.css';
+// scroll bar
+import 'simplebar/src/simplebar.css';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import App from './App'
+// contexts
+import { SettingsProvider } from './contexts/SettingsContext'
+import { CollapseDrawerProvider } from './contexts/CollapseDrawerContext'
+import { BrowserRouter } from 'react-router-dom'
+import { GlobalStyle } from './reset.css'
 
 ReactDOM.render(
-  <Router>
-    <GlobalStyle />
-    <App />
-  </Router>,
-  document.getElementById('root')
-);
+  <SettingsProvider>
+    <CollapseDrawerProvider>
+      <BrowserRouter>
+        <GlobalStyle />
+        <App />
+      </BrowserRouter>
+    </CollapseDrawerProvider>
+  </SettingsProvider>,
+  document.getElementById('root'),
+)

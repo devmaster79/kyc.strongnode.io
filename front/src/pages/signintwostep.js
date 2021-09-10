@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Form, Formik } from "formik";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 import { EntryPage } from "./style";
@@ -13,7 +13,7 @@ import ValidatedField from "../components/ValidatedField";
 import { signupSchema } from "../static/formSchemas";
 
 function SigninTwoStep() {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const initFormState = {
     email: ""
@@ -24,7 +24,7 @@ function SigninTwoStep() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    history.push("/profile");
+    navigate("/profile");
   };
 
   const handlePasswordInputChange = (event) => {

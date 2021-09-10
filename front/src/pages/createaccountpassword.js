@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { EntryPage } from "./style";
 import EntryCard from "../components/EntryCard";
@@ -26,13 +26,13 @@ const UserInfoWrapper = styled.div`
 `;
 
 function CreateAccountPassword() {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const [password, setPassword] = useState("");
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    history.push("/profile");
+    navigate("/profile");
   };
 
   const handlePasswordInputChange = (event) => {

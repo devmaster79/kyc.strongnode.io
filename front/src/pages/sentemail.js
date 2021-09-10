@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { EntryPage } from "./style";
 import EntryCard from "../components/EntryCard";
@@ -17,7 +17,7 @@ const P = styled.p`
 `;
 
 function SentEmail() {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   return (
     <EntryPage>
@@ -29,7 +29,7 @@ function SentEmail() {
           Click the magin link and enter your user password to activate your
           create account
         </P>
-        <Button full onClick={() => history.push("/create-account-password")}>
+        <Button full onClick={() => navigate("/create-account-password")}>
           OK
         </Button>
       </EntryCard>

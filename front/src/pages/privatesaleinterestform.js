@@ -1,5 +1,5 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import InputGroup from "../components/InputGroup";
 import Line from "../components/Line";
@@ -70,11 +70,11 @@ const SubmitButtonWrapper = styled.div`
 `;
 
 function PrivateSaleInterestForm() {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    history.push("/signup");
+    navigate("/signup");
   };
 
   return (

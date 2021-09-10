@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { EntryPage } from "./style";
 import EntryCard from "../components/EntryCard";
@@ -19,7 +19,7 @@ const P = styled.p`
 `;
 
 function MagicLink() {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   return (
     <EntryPage>
@@ -29,7 +29,7 @@ function MagicLink() {
         <P>
             We've sent a magic link. Open your email to get your one time password (OTP)
         </P>
-        <Button style={{ width: '30%' }} full onClick={() => history.push("/signin")}>
+        <Button style={{ width: '30%' }} full onClick={() => navigate("/signin")}>
           OK
         </Button>
       </EntryCard>
