@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { EntryPage } from "./style";
 import Button from "../components/Button";
@@ -26,7 +26,7 @@ const UserInfoWrapper = styled.div`
 `;
 
 function SigninPass() {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const [password, setPassword] = useState("");
 
@@ -36,7 +36,7 @@ function SigninPass() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    history.push("/signinsms");
+    navigate("/signinsms");
   };
 
   return (

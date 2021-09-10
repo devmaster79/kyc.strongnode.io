@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Form, Formik } from "formik";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 import { EntryPage } from "./style";
@@ -16,7 +16,7 @@ import { sendSMS, checkSMS } from "../utils/api";
 import 'react-phone-number-input/style.css'
 
 function SigninSMS() {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const initFormState = {
     email: ""
@@ -39,7 +39,7 @@ function SigninSMS() {
 
 		checkSMS(email).then(r => {
 			if(smscode === r.data[0].smscode) {
-				history.push("/signintwostep");
+				navigate("/signintwostep");
 			} else {
 				setShowError(true);
 			}
