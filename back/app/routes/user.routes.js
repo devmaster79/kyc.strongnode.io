@@ -28,8 +28,14 @@ module.exports = app => {
   //Send SMS and save on user db
   router.post("/sms/send", users.sendSMS);
 
-  //Get SMS code by email
-  router.get("/sms/check", users.getSMS);
+  //Get User code by email
+  router.get("/sms/check", users.getUser);
+
+  //Generate QR code
+  router.put("/totp/qrcode", users.qrcode);
+
+  //Verify TOTP
+  router.post("/totp/verify", users.verifyTOTP);
 
   app.use('/api/users', router);
 };

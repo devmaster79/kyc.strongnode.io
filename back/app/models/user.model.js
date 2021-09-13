@@ -27,6 +27,15 @@ module.exports = (sequelize, Sequelize) => {
     smscode: {
       type: Sequelize.STRING
     },
+    qr_secret: {
+      type: Sequelize.STRING
+    },
+    qrcode: {
+      type: Sequelize.TEXT
+    },
+    enable_totp: {
+      type: Sequelize.BOOLEAN
+    },
     telegram_id: {
       type: Sequelize.STRING
     },
