@@ -3,6 +3,8 @@ const crypto = require("crypto");
 const User = db.users;
 const Op = db.Sequelize.Op;
 const jwt = require('jsonwebtoken');
+const speakeasy = require('speakeasy');
+const QRCode = require('qrcode');
 const dotenv = require('dotenv');
 dotenv.config();
 
@@ -105,7 +107,6 @@ exports.createPassword = async (req, res) => {
       });
     });
 }
-
 
 // Create and Save a User profile
 exports.createProfile = (req, res) => {
@@ -334,9 +335,6 @@ function generateRandomNumber(min, max) {
 
 //Send SMS and save password
 exports.sendSMS = (req, res) => {
-  //parse parameter
-  console.log("Number=" + req.body.number);
-
   var OTP = generateRandomNumber(1000,9999);
 
   var params = {
@@ -370,7 +368,7 @@ exports.sendSMS = (req, res) => {
         .catch(err => {
           res.status(500).send({
             result: 3,
-            message: "Error updating SMS code with email=" + req.body.email
+            message: err
           });
         });
     }
@@ -381,13 +379,100 @@ exports.sendSMS = (req, res) => {
   );
 };
 
-//Get SMS code from DB by email
-exports.getSMS = (req, res) => {
+//Get Userinfo from DB by email
+exports.getUser = (req, res) => {
   const para_email = req.query.email;
 
   User.findAll({ where: {email: para_email} })
     .then(data => {
       res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving users."
+      });
+    });
+}
+
+//Generate QR code for TOTP
+exports.qrcode = async (req, res) => {
+  const email = req.body.email;
+
+  var temp_secret = speakeasy.generateSecret({ name: process.env.APP_NAME });
+  const totp_qrcode = await QRCode.toDataURL(temp_secret.otpauth_url);
+
+  const db_qr = {
+    qrcode: totp_qrcode,
+    qr_secret: temp_secret.base32
+  };
+
+  User.update(db_qr, {
+    where: { email: email }
+  })
+    .then(num => {
+      if (num == 1) {
+        res.send({
+          secret: temp_secret.base32,
+          url: totp_qrcode
+        });
+      } else {
+        res.send({
+          result: num,
+          message: `Cannot generate QR code with email=${email}. Maybe User email was not found!`
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        result: 3,
+        message: err
+      });
+    });
+}
+
+// Verify TOTP
+exports.verifyTOTP = async (req, res) => {
+  const { email, token } = req.body;
+
+  User.findAll({ where: {email: email} })
+    .then(data => {
+      const secret = data[0].qr_secret;
+      const verified = speakeasy.totp.verify({
+        secret,
+        encoding: 'base32',
+        token
+      });
+
+      if(verified) {
+        const db_secret = {
+          qr_secret: secret,
+          enable_totp: true
+        };
+        User.update(db_secret, {
+          where: { email: email }
+        })
+          .then(num => {
+            if (num == 1) {
+              res.json({ verified: true })
+            } else {
+              res.send({
+                result: num,
+                message: `Cannot update QR sercret code with email=${email}. Maybe User email was not found!`
+              });
+            }
+          })
+          .catch(err => {
+            res.status(500).send({
+              result: 3,
+              message: err
+            });
+          });
+      } else {
+        res.send({
+          verified: false
+        })
+      }
     })
     .catch(err => {
       res.status(500).send({

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { signup_url, password_url, sms_url, check_sms_url } from './config';
+import { signup_url, password_url, sms_url, check_sms_url, qr_url, verify_qr_url } from './config';
 
 const signup = async (data) => {
     const config = {
@@ -43,5 +43,28 @@ const checkSMS = async (email) => {
     return axios(config);
 }
 
+const createQR = async (email) => {
+    const config = {
+        url: qr_url,
+        method: "PUT",
+        data: {
+            email: email
+        }
+    };
+    return axios(config);
+}
+
+const verifyTOTP = async (email, token) => {
+    const config = {
+        url: verify_qr_url,
+        method: "POST",
+        data: {
+            email: email,
+            token: token
+        }
+    };
+    return axios(config);
+}
+
 export default signup;
-export {createPassword, sendSMS, checkSMS};
+export { createPassword, sendSMS, checkSMS, createQR, verifyTOTP };

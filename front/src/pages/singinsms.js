@@ -1,16 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Form, Formik } from "formik";
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-
 import { EntryPage } from "./style";
 import Button from "../components/Button";
 import EntryCard from "../components/EntryCard";
 import Input from "../components/Input";
 import InputGroup from "../components/InputGroup";
 import { ReactComponent as LockIcon } from "../icons/lock.svg";
-import ValidatedField from "../components/ValidatedField";
-import { signupSchema } from "../static/formSchemas";
 import PhoneInput from 'react-phone-number-input';
 import { sendSMS, checkSMS } from "../utils/api";
 import 'react-phone-number-input/style.css'
@@ -18,25 +13,16 @@ import 'react-phone-number-input/style.css'
 function SigninSMS() {
   const navigate = useNavigate();
 
-  const initFormState = {
-    email: ""
-  }
-
   const [smscode, setSmscode] = useState("");
 	const [disabled, setDisabled] = useState(true);
 	const [cdisable, setCdisable] = useState(true);
-	const [originCode, setOriginCode] = useState("");
-	const [factorCode, setFactorCode] = useState("");
+  const [email, setEmail] = useState("");
 	const [showError, setShowError] = useState(false);
   const [value, setValue] = useState("");
 	const [btnLabel, setBtnLabel] = useState("Send");
 
   const handleSubmit = (event) => {
     event.preventDefault();
-		var confirm_code = 0;
-		// for test
-		const email = "test@gmail.com";
-
 		checkSMS(email).then(r => {
 			if(smscode === r.data[0].smscode) {
 				navigate("/signintwostep");
@@ -48,9 +34,6 @@ function SigninSMS() {
 
 	const sendMessage = () => {
     let count = 30;
-    const userID = window.localStorage.getItem("userID");
-		// for test
-		const email = "test@gmail.com";
     setDisabled(true);
     setShowError(false);
     sendSMS(value.substring(1), email).then(r => console.log(r));
@@ -66,16 +49,23 @@ function SigninSMS() {
   }
 
 	const handle2FA = (val) => {
-		setSmscode(val);
+    if (val.length > 4) {
+      val = val.slice(0, 4);
+      setSmscode(val);
+    } else {
+      setSmscode(val);
+    }
+
     if (val) setCdisable(false);
     else setCdisable(true);
-    setFactorCode(val);
     setShowError(false);
   }
 
 	useEffect(() => {
     if (value !== "") setDisabled(false);
     if (!value) setDisabled(true);
+    const user_email = localStorage.getItem("email")
+    setEmail(user_email);
   }, [value])
 
   return (
@@ -97,7 +87,7 @@ function SigninSMS() {
           <InputGroup>
             <LockIcon />
             <Input
-              type="input"
+              type="number"
               placeholder="Enter your SMS code"
               id="smsConfirm"
               value={smscode}

@@ -3,4 +3,6 @@ export const signup_url = `${url}/`;
 export const password_url = `${url}/createPassword`;
 export const sms_url = `${url}/sms/send`;
 export const check_sms_url = `${url}/sms/check`;
+export const qr_url = `${url}/totp/qrcode`;
+export const verify_qr_url = `${url}/totp/verify`;
 export default url;

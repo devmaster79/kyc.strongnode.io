@@ -1,60 +1,91 @@
-import React, { useState } from "react";
-import { Form, Formik } from "formik";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-
 import { EntryPage } from "./style";
 import Button from "../components/Button";
 import EntryCard from "../components/EntryCard";
 import Input from "../components/Input";
 import InputGroup from "../components/InputGroup";
 import { ReactComponent as LockIcon } from "../icons/lock.svg";
-import ValidatedField from "../components/ValidatedField";
-import { signupSchema } from "../static/formSchemas";
+import { checkSMS, createQR, verifyTOTP } from "../utils/api";
 
 function SigninTwoStep() {
   const navigate = useNavigate();
 
-  const initFormState = {
-    email: ""
-  }
-
-  const [password, setPassword] = useState("");
-  const [sms, setSMS] = useState("");
+  const [email, setEmail] = useState("");
+  const [totp, setTOTP] = useState("");
+  const [showError, setShowError] = useState(false);
+  const [showQR, setShowQR] = useState(false);
+  const [qrURL, setQRURL] = useState("");
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    navigate("/profile");
+    verifyTOTP(email, totp).then(r => {
+      if(r.data.verified) {
+        navigate("/profile");
+      } else {
+        setShowError(true);
+      }
+		});
   };
 
-  const handlePasswordInputChange = (event) => {
-    setPassword(event.target.value);
+  const handleTOTPInputChange = (event) => {
+    if (event.target.value.length > 6) {
+      event.target.value = event.target.value.slice(0, 6);
+      setTOTP(event.target.value);
+    } else {
+      setTOTP(event.target.value);
+    }
   };
 
-  const handleFormSubmit = (data, { setSubmitting }) => {
-    setSubmitting(true);
-    // make async call to submit registration data here
-    console.log("submit: ", data);
-    setSubmitting(false);
-  }
+  useEffect(() => {
+    const email = localStorage.getItem("email");
+    if(email !== "") {
+      setEmail(email);
+    }
+
+    async function fetchUser() {
+      try {
+        checkSMS(email).then(r => {
+          if(r.data[0].enable_totp) {
+            setShowQR(false);
+          } else {
+            setShowQR(true);
+            createQR(email).then(rq => {
+              setQRURL(rq.data.url);
+            });
+          }
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    }
+    fetchUser();
+
+  }, [])
 
   return (
     <EntryPage>
       <EntryCard>
         <h2>2-Step Verification</h2>
-        <h5>Re-enter your OTP for Verification</h5>
+        {!showQR && <h5>Re-enter your OTP for Verification</h5>}
+        {showQR &&
+          <div style={{marginTop: '20px'}}>
+            <img style={{margin: 'auto'}} src={qrURL} />
+            <p>Please setup MFA on authenticator app</p>
+          </div>}
         <form onSubmit={handleSubmit} style={{ marginTop: 30 }}>
           <InputGroup>
             <LockIcon />
             <Input
               type="input"
-              placeholder="Enter your 2FA code"
-              id="2fa"
-              value={password}
+              placeholder="Enter your TOTP"
+              id="totp"
+              value={totp}
               style={{ padding: "16px 20px 16px 40px" }}
-              onChange={handlePasswordInputChange}
+              onChange={handleTOTPInputChange}
             />
           </InputGroup>
+          {showError && <p style={{marginBottom: "10px", color: "red"}}>Invalid code please try again</p>}
           <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
             <input name="twoStep" type="checkbox" value="false" style={{ width: 'auto' }} />
             <p style={{ paddingLeft: '12px' }}>Do you want sms login for 2 step verification?</p>

@@ -8,6 +8,7 @@ import Input from "../components/Input";
 import InputGroup from "../components/InputGroup";
 import { ReactComponent as LockIcon } from "../icons/lock.svg";
 import { ReactComponent as MailIcon } from "../icons/message.svg";
+import { checkSMS } from "../utils/api";
 
 const UserInfoWrapper = styled.div`
   display: flex;
@@ -29,15 +30,26 @@ function SigninPass() {
   const navigate = useNavigate();
 
   const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
 
   const handlePasswordInputChange = (event) => {
     setPassword(event.target.value);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    //Need to implement auth for login
     navigate("/signinsms");
   };
+
+  useEffect(() => {
+    const email = localStorage.getItem("email");
+    // const { email } = await magic.user.getMetadata();
+    if(email !== "") {
+      setEmail(email);
+    }
+  }, [])
+
 
   return (
     <EntryPage>
@@ -45,7 +57,7 @@ function SigninPass() {
         <h2>Welcome</h2>
         <UserInfoWrapper>
           <MailIcon />
-          <p>teamp@mail.com</p>
+          <p>{ email }</p>
         </UserInfoWrapper>
         <form onSubmit={handleSubmit} style={{ marginTop: 30 }}>
           <InputGroup>
