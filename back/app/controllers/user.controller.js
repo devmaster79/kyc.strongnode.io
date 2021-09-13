@@ -2,10 +2,10 @@ const db = require("../models");
 const crypto = require("crypto");
 const User = db.users;
 const Op = db.Sequelize.Op;
-const jwt = require('jsonwebtoken');
-const speakeasy = require('speakeasy');
-const QRCode = require('qrcode');
-const dotenv = require('dotenv');
+const jwt = require("jsonwebtoken");
+const speakeasy = require("speakeasy");
+const QRCode = require("qrcode");
+const dotenv = require("dotenv");
 dotenv.config();
 
 var AWS = require("aws-sdk");
@@ -15,12 +15,12 @@ exports.create = async (req, res) => {
   // Validate request
   if (!req.body.first_name) {
     res.status(400).send({
-      message: "Content can not be empty!"
+      message: "Content can not be empty!",
     });
     return;
   }
 
-  const password_token = crypto.randomBytes(20).toString('hex');
+  const password_token = crypto.randomBytes(20).toString("hex");
 
   // Create a User
   const data = {
@@ -34,28 +34,24 @@ exports.create = async (req, res) => {
 
   const user = await User.findOne({
     where: {
-      [Op.or]: [
-        { user_name: req.body.user_name },
-        { email: req.body.email }
-      ]
-    }
+      [Op.or]: [{ user_name: req.body.user_name }, { email: req.body.email }],
+    },
   });
   if (user) {
     res.status(409).send({
-      message: "Same email or user_name already exists!"
+      message: "Same email or user_name already exists!",
     });
     return;
   }
 
   // Save User in the database
   User.create(data)
-    .then(data => {
+    .then((data) => {
       res.send(data);
     })
-    .catch(err => {
+    .catch((err) => {
       res.status(500).send({
-        message:
-          err.message || "Some error occurred while creating the User."
+        message: err.message || "Some error occurred while creating the User.",
       });
     });
 };
@@ -65,12 +61,14 @@ exports.createPassword = async (req, res) => {
   // Validate request
   if (!req.body.password_token) {
     res.status(400).send({
-      message: "Content can not be empty!"
+      message: "Content can not be empty!",
     });
     return;
   }
 
-  const user = await User.findOne({ where: { password_token: req.body.password_token } });
+  const user = await User.findOne({
+    where: { password_token: req.body.password_token },
+  });
   const token = jwt.sign(
     { user_name: user.dataValues.user_name, email: user.dataValues.email },
     process.env.TOKEN_SECRET,
@@ -84,36 +82,91 @@ exports.createPassword = async (req, res) => {
     password: req.body.password,
     email_verified: true,
     token: token,
-  }
+  };
 
   User.update(data, {
-    where: { password_token: req.body.password_token }
+    where: { password_token: req.body.password_token },
   })
-    .then(num => {
+    .then((num) => {
       if (num == 1) {
         res.send({
           message: "User password was created successfully.",
-          token: token
+          token: token,
         });
       } else {
         res.send({
-          message: `Cannot create User password with password_token=${req.body.password_token}. Maybe User password was not found or req.body is empty!`
+          message: `Cannot create User password with password_token=${req.body.password_token}. Maybe User password was not found or req.body is empty!`,
         });
       }
     })
-    .catch(err => {
+    .catch((err) => {
       res.status(500).send({
-        message: "Error creating User password with password_token=" + req.body.password_token
+        message:
+          "Error creating User password with password_token=" +
+          req.body.password_token,
       });
     });
-}
+};
+
+// Signin and Save a new token
+exports.signin = async (req, res) => {
+  // Validate request
+  if (!req.body.email && !req.body.password) {
+    res.status(400).send({
+      message: "Content can not be empty!",
+    });
+    return;
+  }
+
+  const user = await User.findOne({ where: { email: req.body.email } });
+
+  if (req.body.password !== user.dataValues.password) {
+    res.send({
+      message: `Cannot login User email = ${req.body.password} and password = ${req.body.password}.`,
+    });
+  }
+
+  const token = jwt.sign(
+    { user_name: user.dataValues.user_name, email: user.dataValues.email },
+    process.env.TOKEN_SECRET,
+    {
+      expiresIn: "2h",
+    }
+  );
+
+  // Create a User password
+  const data = {
+    token: token,
+  };
+
+  User.update(data, {
+    where: { email: req.body.email },
+  })
+    .then((num) => {
+      if (num == 1) {
+        res.send({
+          message: "Logged in successfully",
+          token: token,
+        });
+      } else {
+        res.send({
+          message: `Cannot update token with user email=${req.body.email}.`,
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "Error updating token with email=" + req.body.email,
+      });
+    });
+};
 
 // Create and Save a User profile
 exports.createProfile = (req, res) => {
   // Validate request
   if (!req.user) {
     res.status(400).send({
-      message: "Content can not be empty!"
+      message: "Content can not be empty!",
     });
     return;
   }
@@ -122,26 +175,27 @@ exports.createProfile = (req, res) => {
   const data = {
     telegram_id: req.body.telegram_id,
     twitter_id: req.body.twitter_id,
-    wallet_address: req.body.wallet_address
+    wallet_address: req.body.wallet_address,
   };
 
   User.update(data, {
-    where: { user_name: req.user.user_name }
+    where: { user_name: req.user.user_name },
   })
-    .then(num => {
+    .then((num) => {
       if (num == 1) {
         res.send({
-          message: "User profile was created successfully."
+          message: "User profile was created successfully.",
         });
       } else {
         res.send({
-          message: `Cannot create User profile with username=${req.user.user_name}. Maybe User profile info was not found or req.body is empty!`
+          message: `Cannot create User profile with username=${req.user.user_name}. Maybe User profile info was not found or req.body is empty!`,
         });
       }
     })
-    .catch(err => {
+    .catch((err) => {
       res.status(500).send({
-        message: "Error creating User profile with username=" + req.user.user_name
+        message:
+          "Error creating User profile with username=" + req.user.user_name,
       });
     });
 };
@@ -151,7 +205,7 @@ exports.createInvestor = (req, res) => {
   // Validate request
   if (!req.user) {
     res.status(400).send({
-      message: "Content can not be empty!"
+      message: "Content can not be empty!",
     });
     return;
   }
@@ -165,26 +219,26 @@ exports.createInvestor = (req, res) => {
     investor_wallet_address: req.body.investor_wallet_address,
     investor_email: req.body.investor_email,
     investor_fund_name: req.body.investor_fund_name,
-    investor_fund_website: req.body.investor_fund_website
+    investor_fund_website: req.body.investor_fund_website,
   };
 
   User.update(data, {
-    where: { user_name: req.user.user_name }
+    where: { user_name: req.user.user_name },
   })
-    .then(num => {
+    .then((num) => {
       if (num == 1) {
         res.send({
-          message: "Investor was created successfully."
+          message: "Investor was created successfully.",
         });
       } else {
         res.send({
-          message: `Cannot create Investor with username=${req.user.user_name}. Maybe Investor info was not found or req.body is empty!`
+          message: `Cannot create Investor with username=${req.user.user_name}. Maybe Investor info was not found or req.body is empty!`,
         });
       }
     })
-    .catch(err => {
+    .catch((err) => {
       res.status(500).send({
-        message: "Error creating Investor with username=" + req.user.user_name
+        message: "Error creating Investor with username=" + req.user.user_name,
       });
     });
 };
@@ -194,33 +248,33 @@ exports.findAll = (req, res) => {
   // Validate request
   if (!req.user) {
     res.status(400).send({
-      message: "Content can not be empty!"
+      message: "Content can not be empty!",
     });
     return;
   }
 
   const first_name = req.query.first_name;
-  const condition = first_name ? { first_name: { [Op.like]: `%${first_name}%` } } : null;
+  const condition = first_name
+    ? { first_name: { [Op.like]: `%${first_name}%` } }
+    : null;
 
   User.findAll({ where: condition })
-    .then(data => {
+    .then((data) => {
       res.send(data);
     })
-    .catch(err => {
+    .catch((err) => {
       res.status(500).send({
-        message:
-          err.message || "Some error occurred while retrieving users."
+        message: err.message || "Some error occurred while retrieving users.",
       });
     });
 };
-
 
 // Find a single User with an id
 exports.findOne = (req, res) => {
   // Validate request
   if (!req.user) {
     res.status(400).send({
-      message: "Content can not be empty!"
+      message: "Content can not be empty!",
     });
     return;
   }
@@ -228,12 +282,12 @@ exports.findOne = (req, res) => {
   const id = req.params.id;
 
   User.findByPk(id)
-    .then(data => {
+    .then((data) => {
       res.send(data);
     })
-    .catch(err => {
+    .catch((err) => {
       res.status(500).send({
-        message: "Error retrieving User with id=" + id
+        message: "Error retrieving User with id=" + id,
       });
     });
 };
@@ -243,7 +297,7 @@ exports.update = (req, res) => {
   // Validate request
   if (!req.user) {
     res.status(400).send({
-      message: "Content can not be empty!"
+      message: "Content can not be empty!",
     });
     return;
   }
@@ -251,22 +305,22 @@ exports.update = (req, res) => {
   const id = req.params.id;
 
   User.update(req.body, {
-    where: { id: id }
+    where: { id: id },
   })
-    .then(num => {
+    .then((num) => {
       if (num == 1) {
         res.send({
-          message: "User was updated successfully."
+          message: "User was updated successfully.",
         });
       } else {
         res.send({
-          message: `Cannot update User with id=${id}. Maybe User was not found or req.body is empty!`
+          message: `Cannot update User with id=${id}. Maybe User was not found or req.body is empty!`,
         });
       }
     })
-    .catch(err => {
+    .catch((err) => {
       res.status(500).send({
-        message: "Error updating User with id=" + id
+        message: "Error updating User with id=" + id,
       });
     });
 };
@@ -276,7 +330,7 @@ exports.delete = (req, res) => {
   // Validate request
   if (!req.user) {
     res.status(400).send({
-      message: "Content can not be empty!"
+      message: "Content can not be empty!",
     });
     return;
   }
@@ -284,22 +338,22 @@ exports.delete = (req, res) => {
   const id = req.params.id;
 
   User.destroy({
-    where: { id: id }
+    where: { id: id },
   })
-    .then(num => {
+    .then((num) => {
       if (num == 1) {
         res.send({
-          message: "User was deleted successfully!"
+          message: "User was deleted successfully!",
         });
       } else {
         res.send({
-          message: `Cannot delete User with id=${id}. Maybe User was not found!`
+          message: `Cannot delete User with id=${id}. Maybe User was not found!`,
         });
       }
     })
-    .catch(err => {
+    .catch((err) => {
       res.status(500).send({
-        message: "Could not delete User with id=" + id
+        message: "Could not delete User with id=" + id,
       });
     });
 };
@@ -309,91 +363,89 @@ exports.deleteAll = (req, res) => {
   // Validate request
   if (!req.user) {
     res.status(400).send({
-      message: "Content can not be empty!"
+      message: "Content can not be empty!",
     });
     return;
   }
 
   User.destroy({
     where: {},
-    truncate: false
+    truncate: false,
   })
-    .then(nums => {
+    .then((nums) => {
       res.send({ message: `${nums} Users were deleted successfully!` });
     })
-    .catch(err => {
+    .catch((err) => {
       res.status(500).send({
-        message:
-          err.message || "Some error occurred while removing all users."
+        message: err.message || "Some error occurred while removing all users.",
       });
     });
 };
 
 function generateRandomNumber(min, max) {
-  return Math.floor(Math.random()*(max-min) + min);
+  return Math.floor(Math.random() * (max - min) + min);
 }
 
 //Send SMS and save password
 exports.sendSMS = (req, res) => {
-  var OTP = generateRandomNumber(1000,9999);
+  var OTP = generateRandomNumber(1000, 9999);
 
   var params = {
     Message: "Here is SMS code for StrongNode : " + OTP,
-    PhoneNumber: '+' + req.body.number,
+    PhoneNumber: "+" + req.body.number,
   };
 
-  var publishTextPromise = new AWS.SNS({ apiVersion: '2021-09-05' }).publish(params).promise();
+  var publishTextPromise = new AWS.SNS({ apiVersion: "2021-09-05" })
+    .publish(params)
+    .promise();
 
-  publishTextPromise.then(
-    function (data) {
+  publishTextPromise
+    .then(function (data) {
       const user_sms = {
-        smscode: OTP
-      }
+        smscode: OTP,
+      };
       User.update(user_sms, {
-        where: { email: req.body.email }
+        where: { email: req.body.email },
       })
-        .then(num => {
+        .then((num) => {
           if (num == 1) {
             res.send({
               result: 1,
-              message: "Sent SMS Code successfully."
+              message: "Sent SMS Code successfully.",
             });
           } else {
             res.send({
               result: 2,
-              message: `Cannot send SMS code with email=${req.body.email}. Maybe User email was not found or req.body is empty!`
+              message: `Cannot send SMS code with email=${req.body.email}. Maybe User email was not found or req.body is empty!`,
             });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           res.status(500).send({
             result: 3,
-            message: err
+            message: err,
           });
         });
-    }
-  ).catch(
-    function(err) {
-      res.end(JSON.stringify({ Error: err}));
-    }
-  );
+    })
+    .catch(function (err) {
+      res.end(JSON.stringify({ Error: err }));
+    });
 };
 
 //Get Userinfo from DB by email
 exports.getUser = (req, res) => {
   const para_email = req.query.email;
 
-  User.findAll({ where: {email: para_email} })
-    .then(data => {
+  User.findAll({ where: { email: para_email } })
+    .then((data) => {
       res.send(data);
     })
-    .catch(err => {
+    .catch((err) => {
       res.status(500).send({
-        message:
-          err.message || "Some error occurred while retrieving users."
+        message: err.message || "Some error occurred while retrieving users.",
       });
     });
-}
+};
 
 //Generate QR code for TOTP
 exports.qrcode = async (req, res) => {
@@ -404,80 +456,79 @@ exports.qrcode = async (req, res) => {
 
   const db_qr = {
     qrcode: totp_qrcode,
-    qr_secret: temp_secret.base32
+    qr_secret: temp_secret.base32,
   };
 
   User.update(db_qr, {
-    where: { email: email }
+    where: { email: email },
   })
-    .then(num => {
+    .then((num) => {
       if (num == 1) {
         res.send({
           secret: temp_secret.base32,
-          url: totp_qrcode
+          url: totp_qrcode,
         });
       } else {
         res.send({
           result: num,
-          message: `Cannot generate QR code with email=${email}. Maybe User email was not found!`
+          message: `Cannot generate QR code with email=${email}. Maybe User email was not found!`,
         });
       }
     })
-    .catch(err => {
+    .catch((err) => {
       res.status(500).send({
         result: 3,
-        message: err
+        message: err,
       });
     });
-}
+};
 
 // Verify TOTP
 exports.verifyTOTP = async (req, res) => {
   const { email, token } = req.body;
 
-  User.findAll({ where: {email: email} })
-    .then(data => {
+  User.findAll({ where: { email: email } })
+    .then((data) => {
       const secret = data[0].qr_secret;
       const verified = speakeasy.totp.verify({
         secret,
-        encoding: 'base32',
-        token
+        encoding: "base32",
+        token,
       });
 
-      if(verified) {
+      if (verified) {
         const db_secret = {
           qr_secret: secret,
-          enable_totp: true
+          enable_totp: true,
         };
         User.update(db_secret, {
-          where: { email: email }
+          where: { email: email },
         })
-          .then(num => {
+          .then((num) => {
             if (num == 1) {
-              res.json({ verified: true })
+              res.json({ verified: true });
             } else {
               res.send({
                 result: num,
-                message: `Cannot update QR sercret code with email=${email}. Maybe User email was not found!`
+                message: `Cannot update QR sercret code with email=${email}. Maybe User email was not found!`,
               });
             }
           })
-          .catch(err => {
+          .catch((err) => {
             res.status(500).send({
               result: 3,
-              message: err
+              message: err,
             });
           });
       } else {
         res.send({
-          verified: false
-        })
+          verified: false,
+        });
       }
     })
-    .catch(err => {
+    .catch((err) => {
       res.status(500).send({
-        message:
-          err.message || "Some error occurred while retrieving users."
+        message: err.message || "Some error occurred while retrieving users.",
       });
     });
-}
+};
