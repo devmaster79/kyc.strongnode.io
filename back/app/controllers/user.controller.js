@@ -73,7 +73,7 @@ exports.createPassword = async (req, res) => {
     { user_name: user.dataValues.user_name, email: user.dataValues.email },
     process.env.TOKEN_SECRET,
     {
-      expiresIn: "2h",
+      expiresIn: "168h",
     }
   );
 
@@ -118,47 +118,45 @@ exports.signin = async (req, res) => {
     return;
   }
 
-  const user = await User.findOne({ where: { email: req.body.email } });
+  try {
+    const user = await User.findOne({ where: { email: req.body.email } });
+    if (req.body.password !== user.dataValues.password) {
+      res.send({
+        message: `Cannot login User email = ${req.body.password} and password = ${req.body.password}.`,
+      });
+    }
 
-  if (req.body.password !== user.dataValues.password) {
-    res.send({
-      message: `Cannot login User email = ${req.body.password} and password = ${req.body.password}.`,
+    const token = jwt.sign(
+      { user_name: user.dataValues.user_name, email: user.dataValues.email },
+      process.env.TOKEN_SECRET,
+      {
+        expiresIn: "168h",
+      }
+    );
+    // Create a User password
+    const data = {
+      token: token,
+    };
+
+    const ret = await User.update(data, {
+      where: { email: req.body.email },
+    })
+
+    if (ret == 1) {
+      res.send({
+        message: "Logged in successfully",
+        token: token,
+      });
+    } else {
+      res.send({
+        message: `Cannot update token with user email=${req.body.email}.`,
+      });
+    }
+  } catch (err) {
+    res.status(500).send({
+      message: err.message,
     });
   }
-
-  const token = jwt.sign(
-    { user_name: user.dataValues.user_name, email: user.dataValues.email },
-    process.env.TOKEN_SECRET,
-    {
-      expiresIn: "2h",
-    }
-  );
-
-  // Create a User password
-  const data = {
-    token: token,
-  };
-
-  User.update(data, {
-    where: { email: req.body.email },
-  })
-    .then((num) => {
-      if (num == 1) {
-        res.send({
-          message: "Logged in successfully",
-          token: token,
-        });
-      } else {
-        res.send({
-          message: `Cannot update token with user email=${req.body.email}.`,
-        });
-      }
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: "Error updating token with email=" + req.body.email,
-      });
-    });
 };
 
 // Create and Save a User profile
