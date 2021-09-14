@@ -68,6 +68,24 @@ module.exports = (sequelize, Sequelize) => {
     },
     investor_fund_website: {
       type: Sequelize.STRING
+    },
+    vested_amount: {
+      type: Sequelize.STRING
+    },
+    bonus_amount: {
+      type: Sequelize.STRING
+    },
+    lockedup_amount: {
+      type: Sequelize.STRING
+    },
+    purchased_date: {
+      type: Sequelize.DATE
+    },
+    purchased_round: {
+      type: Sequelize.STRING
+    },
+    purchased_total: {
+      type: Sequelize.STRING
     }
   });
 
