@@ -1,4 +1,4 @@
-module.exports = app => {
+module.exports = (app) => {
   const users = require("../controllers/user.controller.js");
   const auth = require("../middleware/auth");
 
@@ -9,6 +9,9 @@ module.exports = app => {
   router.put("/createPassword", users.createPassword);
   router.put("/createProfile", auth, users.createProfile);
   router.put("/createInvestor", auth, users.createInvestor);
+
+  // signin with user email and password
+  router.put("/signin", users.signin);
 
   // Retrieve all Users
   router.get("/", auth, users.findAll);
@@ -37,5 +40,5 @@ module.exports = app => {
   //Verify TOTP
   router.post("/totp/verify", users.verifyTOTP);
 
-  app.use('/api/users', router);
+  app.use("/api/users", router);
 };
