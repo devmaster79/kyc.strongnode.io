@@ -19,7 +19,7 @@ exports.create = async (req, res) => {
   };
 
   try {
-    const response = News.create(data)
+    const response = await News.create(data)
     res.send(response)
   } catch (err) {
     res.status(500).send({

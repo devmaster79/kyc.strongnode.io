@@ -32,6 +32,8 @@ app.get("/", (req, res) => {
   res.json({ message: "Welcome to StrongNode application." });
 });
 
+require("./app/routes/history.routes")(app);
+require("./app/routes/news.routes")(app);
 require("./app/routes/user.routes")(app);
 
 // set port, listen for requests

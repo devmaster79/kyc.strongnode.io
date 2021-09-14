@@ -16,7 +16,6 @@ exports.create = async (req, res) => {
     user_name: req.body.user_name,
     action_type: req.body.action_type,
     token_amount: req.body.token_amount,
-    user_name: req.body.user_name,
     date: req.body.date,
   };
 
@@ -41,9 +40,12 @@ exports.findAllVested = async (req, res) => {
   }
 
   const user_name = req.query.user_name;
+  console.log("req.query??", req.query)
   const condition = user_name
-    ? { user_name: { [Op.and]: [{ user_name: req.body.user_name }, { action_type: 'vested' }] } }
+    ? { [Op.and]: [{ "user_name": user_name }, { "action_type": 'vested' }]}
     : null;
+
+  console.log("condition??", condition)
 
   try {
     const data = await History.findAll({ where: condition })
@@ -67,7 +69,7 @@ exports.findAllWithdrawn = async (req, res) => {
 
   const user_name = req.query.user_name;
   const condition = user_name
-    ? { user_name: { [Op.and]: [{ user_name: req.body.user_name }, { action_type: 'withdrawn' }] } }
+    ? { [Op.and]: [{ user_name: user_name }, { action_type: 'withdrawn' }] }
     : null;
 
   try {
