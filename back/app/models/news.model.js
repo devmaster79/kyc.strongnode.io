@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-    const News = sequelize.define("history", {
+    const News = sequelize.define("news", {
       logo: {
         type: Sequelize.STRING
       },
@@ -10,7 +10,7 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.STRING
       },
       status: {
-        type: DataTypes.ENUM('active', 'inactive')
+        type: Sequelize.DataTypes.ENUM('active', 'inactive')
       }
     });
   

@@ -4,9 +4,9 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING
     },
     action_type: {
-      type: DataTypes.ENUM('vested', 'earned', 'unlocked', 'withdrawn')
+      type: Sequelize.DataTypes.ENUM('vested', 'earned', 'unlocked', 'withdrawn')
     },
-    token_account: {
+    token_amount: {
       type: Sequelize.STRING
     },
     date: {

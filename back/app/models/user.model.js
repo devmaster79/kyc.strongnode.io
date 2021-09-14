@@ -72,10 +72,19 @@ module.exports = (sequelize, Sequelize) => {
     vested_amount: {
       type: Sequelize.STRING
     },
-    bonus_amount: {
+    locked_bonus_amount: {
+      type: Sequelize.STRING
+    },
+    earned_amount: {
       type: Sequelize.STRING
     },
     lockedup_amount: {
+      type: Sequelize.STRING
+    },
+    withdrawn_total_amount: {
+      type: Sequelize.STRING
+    },
+    remaining_total_amount: {
       type: Sequelize.STRING
     },
     purchased_date: {
@@ -85,6 +94,9 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING
     },
     purchased_total: {
+      type: Sequelize.STRING
+    },
+    investment_amount: {
       type: Sequelize.STRING
     }
   });
