@@ -1,6 +1,5 @@
 const db = require("../models");
 const News = db.news;
-const Op = db.Sequelize.Op;
 
 // Create and Save a News
 exports.create = async (req, res) => {
