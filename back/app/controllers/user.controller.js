@@ -121,9 +121,10 @@ exports.signin = async (req, res) => {
   try {
     const user = await User.findOne({ where: { email: req.body.email } });
     if (req.body.password !== user.dataValues.password) {
-      res.send({
-        message: `Cannot login User email = ${req.body.password} and password = ${req.body.password}.`,
+      res.status(401).send({
+        message: `Wrong password.`,
       });
+      return;
     }
 
     const token = jwt.sign(
@@ -151,6 +152,7 @@ exports.signin = async (req, res) => {
       res.send({
         message: `Cannot update token with user email=${req.body.email}.`,
       });
+      return;
     }
   } catch (err) {
     res.status(500).send({
