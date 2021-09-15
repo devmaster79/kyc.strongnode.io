@@ -66,46 +66,56 @@ exports.createPassword = async (req, res) => {
     return;
   }
 
-  const user = await User.findOne({
-    where: { password_token: req.body.password_token },
-  });
-  const token = jwt.sign(
-    { user_name: user.dataValues.user_name, email: user.dataValues.email },
-    process.env.TOKEN_SECRET,
-    {
-      expiresIn: "168h",
-    }
-  );
-
-  // Create a User password
-  const data = {
-    password: req.body.password,
-    email_verified: true,
-    token: token,
-  };
-
-  User.update(data, {
-    where: { password_token: req.body.password_token },
-  })
-    .then((num) => {
-      if (num == 1) {
-        res.send({
-          message: "User password was created successfully.",
-          token: token,
-        });
-      } else {
-        res.send({
-          message: `Cannot create User password with password_token=${req.body.password_token}. Maybe User password was not found or req.body is empty!`,
-        });
-      }
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message:
-          "Error creating User password with password_token=" +
-          req.body.password_token,
-      });
+  try {
+    const user = await User.findOne({
+      where: { password_token: req.body.password_token },
     });
+    if (!user) {
+      res.send({
+        message: `Cannot find a User with password_token=${req.body.password_token}.`,
+      });
+    }
+
+    if(user.dataValues.email_verified) {
+      res.send({
+        message: `Already verified the User with password_token=${req.body.password_token}.`,
+      });
+    }
+
+    const token = jwt.sign(
+      { user_name: user?.dataValues.user_name, email: user?.dataValues.email },
+      process.env.TOKEN_SECRET,
+      {
+        expiresIn: "168h",
+      }
+    );
+
+    // Create a User password
+    const data = {
+      password: req.body.password,
+      email_verified: true,
+      token: token,
+    };
+
+    const ret = await User.update(data, {
+      where: { password_token: req.body.password_token },
+    });
+
+    if (ret == 1) {
+      res.send({
+        message: "User password was created successfully.",
+        token: token,
+      });
+    } else {
+      res.send({
+        message: `Cannot create User password with password_token=${req.body.password_token}. Maybe User password was not found or req.body is empty!`,
+      });
+    }
+  } catch (err) {
+    res.status(500).send({
+      message: err.message,
+    });
+  }
 };
 
 // Signin and Save a new token
@@ -140,7 +150,7 @@ exports.signin = async (req, res) => {
 
     const ret = await User.update(data, {
       where: { email: req.body.email },
-    })
+    });
 
     if (ret == 1) {
       res.send({
