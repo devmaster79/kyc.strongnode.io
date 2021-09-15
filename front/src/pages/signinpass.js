@@ -8,7 +8,7 @@ import Input from "../components/Input";
 import InputGroup from "../components/InputGroup";
 import { ReactComponent as LockIcon } from "../icons/lock.svg";
 import { ReactComponent as MailIcon } from "../icons/message.svg";
-import { checkSMS } from "../utils/api";
+import { signin } from "../utils/api";
 
 const UserInfoWrapper = styled.div`
   display: flex;
@@ -31,6 +31,8 @@ function SigninPass() {
 
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const [showError, setShowError] = useState(false);
+  const [wrongPassWarning, setPassWrong] = useState(false);
 
   const handlePasswordInputChange = (event) => {
     setPassword(event.target.value);
@@ -39,7 +41,30 @@ function SigninPass() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     //Need to implement auth for login
-    navigate("/signinsms");
+    try {
+      signin(email, password).then(r => {
+        if(r.status === 200) {
+          localStorage.setItem('token', r.data.token);
+          navigate("/signinsms");
+        } else if(r.status === 401) {
+          setPassWrong(true);
+          setPassword("");
+        } else {
+          setShowError(true);
+          setPassword("");
+        }
+      }).catch (err => {
+        if (err = "Error: Request failed with status code 401") {
+          setPassWrong(true);
+          setPassword("");
+        } else {
+          setShowError(true);
+          setPassword("");
+        }
+      });
+    } catch (e) {
+      setShowError(true);
+    }
   };
 
   useEffect(() => {
@@ -71,6 +96,8 @@ function SigninPass() {
               onChange={handlePasswordInputChange}
             />
           </InputGroup>
+          {showError && <p style={{marginBottom: "10px", color: "red"}}>Invalid email and password. please try again</p>}
+          {wrongPassWarning && <p style={{marginBottom: "10px", color: "red"}}>Wrong password. please try again</p>}
           <Button type="submit" full>
             Confirm
           </Button>
