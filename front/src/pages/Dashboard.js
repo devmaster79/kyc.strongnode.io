@@ -1,4 +1,5 @@
 import { merge } from 'lodash'
+import { useSnackbar } from 'notistack5'
 import {
   Container,
   Typography,
@@ -10,8 +11,9 @@ import {
   Table,
   LinearProgress,
 } from '@material-ui/core'
-import ReactApexChart from 'react-apexcharts'
-import BaseOptionChart from 'components/Charts/BaseOptionChart'
+import { useEffect, useState } from 'react'
+import axios from 'utils/axios'
+
 import Status from 'components/Status'
 import VestTable from 'components/dashboard/VestTable'
 import SvgIconStyle from 'components/SvgIconStyle'
@@ -21,6 +23,12 @@ import RecentLockupsChart from 'components/Charts/RecentLockupsChart'
 import NewsCarousel from 'components/Carousels/NewsCarousel'
 
 export default function Dashboard() {
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar()
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+    if (!token) enqueueSnackbar('You must sign in!', { variant: 'error' })
+    else enqueueSnackbar('Welcome to dashboard', { variant: 'success' })
+  })
   return (
     <Container maxWidth="xl">
       <Box
