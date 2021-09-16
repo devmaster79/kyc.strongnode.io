@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { CssBaseline } from '@material-ui/core';
 import { createTheme, ThemeProvider, StyledEngineProvider } from '@material-ui/core/styles';
 import useSettings from '../hooks/useSettings';
@@ -14,7 +14,7 @@ export default function ThemeConfig({ children }) {
   const { themeMode, themeDirection } = useSettings();
   const isLight = themeMode === 'light';
 
-  const themeOptions = useMemo(
+  const themeOptions = React.useMemo(
     () => ({
       palette: isLight ? { ...palette.light, mode: 'light' } : { ...palette.dark, mode: 'dark' },
       typography,
