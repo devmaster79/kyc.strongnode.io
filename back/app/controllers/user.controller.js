@@ -76,7 +76,7 @@ exports.createPassword = async (req, res) => {
       });
     }
 
-    if(user.dataValues.email_verified) {
+    if (user.dataValues.email_verified) {
       res.send({
         message: `Already verified the User with password_token=${req.body.password_token}.`,
       });
@@ -537,6 +537,62 @@ exports.verifyTOTP = async (req, res) => {
       }
     })
     .catch((err) => {
+      res.status(500).send({
+        message: err.message || "Some error occurred while retrieving users.",
+      });
+    });
+};
+
+//Send Email
+exports.sendEmail = (req, res) => {
+  // Validate request
+  if (!req.body.email) {
+    res.status(400).send({
+      message: "Content can not be empty!",
+    });
+    return;
+  }
+
+  // Set the region
+  AWS.config.update({ region: "us-west-2" });
+
+  // Create sendEmail params
+  var params = {
+    Destination: {
+      ToAddresses: [
+        req.body.email,
+      ],
+    },
+    Message: {
+      Body: {
+        Html: {
+          Charset: "UTF-8",
+          Data: "This is a Data",
+        },
+        Text: {
+          Charset: "UTF-8",
+          Data: "This is a text",
+        },
+      },
+      Subject: {
+        Charset: "UTF-8",
+        Data: "Test email",
+      },
+    },
+    Source: "no-reply@strongnode.io"
+  };
+
+  var sendPromise = new AWS.SES({ apiVersion: "2010-12-01" })
+    .sendEmail(params)
+    .promise();
+
+  sendPromise
+    .then(function (data) {
+      console.log(data.MessageId);
+      res.send(data)
+    })
+    .catch(function (err) {
+      console.error(err, err.stack);
       res.status(500).send({
         message: err.message || "Some error occurred while retrieving users.",
       });
