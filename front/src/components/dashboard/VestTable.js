@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import {
   Table,
   TableRow,
@@ -13,17 +13,19 @@ import {
 } from '@material-ui/core'
 import Scrollbar from 'components/Scrollbar'
 import Status from 'components/Status'
+import axios from 'axios'
+import { fDate } from 'utils/formatTime'
 
 function createData(token, stock, date) {
   return { token, stock, date }
 }
 
 const GROUPING_TABLE = () => {
-  let datas = [];
+  let datas = []
   for (let i = 0; i < 50; i++) {
     datas.push(createData(169040 + i, 'Vested', '10/05/2021'))
   }
-  return datas;
+  return datas
 }
 
 const COLUMNS = [
@@ -55,6 +57,25 @@ export default function GroupingFixedHeader() {
   const [page, setPage] = useState(1)
   const [rowsPerPage, setRowsPerPage] = useState(10)
 
+  const [history, setHistory] = useState()
+  useEffect(() => {
+    async function fetch() {
+      const token = localStorage.getItem('token')
+
+      const url = process.env.REACT_APP_BASE_URL + '/api/history/findAllVested/?user_name=test.cool';
+      console.log("server url2: ", url);
+      const result = await axios.get(
+        url,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      )
+      console.log(result.data)
+      setHistory(result.data)
+    }
+    fetch()
+  }, [])
+
   const handleChangePage = (event, newPage) => {
     console.log(newPage)
     setPage(newPage)
@@ -85,28 +106,33 @@ export default function GroupingFixedHeader() {
             </TableHead>
 
             <TableBody>
-              {GROUPING_TABLE().slice(
-                (page - 1) * rowsPerPage,
-                (page - 1) * rowsPerPage + rowsPerPage,
-              ).map((row) => (
-                <TableRow tabIndex={-1} key={row.code}>
-                  <TableCell>
-                    <Stack direction="row" alignItems="center">
-                      <Status color="secondary.main" />
-                      <Typography variant="h5">{row.token} OGN</Typography>
-                    </Stack>
-                  </TableCell>
-                  <TableCell>
-                    <Typography variant="h5" color="typography.75">
-                      Vested
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography variant="h5" color="typography.75">
-                      {row.date}
-                    </Typography>
-                  </TableCell>
-                  {/* {COLUMNS.map((column) => {
+              {history &&
+                history
+                  .slice(
+                    (page - 1) * rowsPerPage,
+                    (page - 1) * rowsPerPage + rowsPerPage,
+                  )
+                  .map((row) => (
+                    <TableRow tabIndex={-1} key={row.code}>
+                      <TableCell>
+                        <Stack direction="row" alignItems="center">
+                          <Status color="secondary.main" />
+                          <Typography variant="h5">
+                            {row.token_amount} OGN
+                          </Typography>
+                        </Stack>
+                      </TableCell>
+                      <TableCell>
+                        <Typography variant="h5" color="typography.75">
+                          Vested
+                        </Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography variant="h5" color="typography.75">
+                          {fDate(row.date)}
+                        </Typography>
+                      </TableCell>
+                      {/* {COLUMNS.map((column) => {
                     const value = row[column.id];
                     return (
                       <TableCell key={column.id} align={column.align}>
@@ -114,8 +140,8 @@ export default function GroupingFixedHeader() {
                       </TableCell>
                     );
                   })} */}
-                </TableRow>
-              ))}
+                    </TableRow>
+                  ))}
             </TableBody>
           </Table>
         </TableContainer>
@@ -124,7 +150,7 @@ export default function GroupingFixedHeader() {
         <Pagination
           color="primary"
           page={page}
-          count={Math.ceil(GROUPING_TABLE().length / 10)}
+          count={Math.ceil(history && history.length / 10)}
           rowsPerPage={rowsPerPage}
           onChange={handleChangePage}
           sx={{ mt: 3 }}

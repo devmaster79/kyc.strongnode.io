@@ -1,5 +1,6 @@
 import Slider from 'react-slick'
-import { useRef } from 'react'
+import { useRef, useEffect, useState } from 'react'
+import axios from 'utils/axios'
 // material
 import { useTheme, styled } from '@material-ui/core/styles'
 import { Box, Stack, Typography } from '@material-ui/core'
@@ -13,7 +14,7 @@ const RootStyle = styled('div')(({ theme }) => ({
   },
 }))
 
-function CarouselItem() {
+function CarouselItem({ item }) {
   return (
     <Stack
       direction="row"
@@ -22,19 +23,28 @@ function CarouselItem() {
     >
       <Box component="img" src="/images/carousel1.png" alt="carousel" />
       <Stack justifyContent="space-between">
-        <Typography variant="h5">
-          A new Chapter for Dshop-Giving Control to the Community
-        </Typography>
-        <Typography sx={{ fontSize: 14 }}>
-          A new Chapter for Dshop-Giving Control to the Community Since the
-          launch of Origin’s Dshop platform
-        </Typography>
+        <Typography variant="h5">{item.title}</Typography>
+        <Typography sx={{ fontSize: 14 }}>{item.description}</Typography>
       </Stack>
     </Stack>
   )
 }
 
-export default function CarouselBasic3() {
+export default function NewsCarousel() {
+  const [news, setNews] = useState()
+  useEffect(() => {
+    async function fetch() {
+      const token = localStorage.getItem('token')
+
+      const url = process.env.REACT_APP_BASE_URL + '/api/news';
+      console.log("server url: ", url);
+      const result = await axios.get(url, { headers: {'Authorization': `Bearer ${token}`}})
+
+      setNews(result.data)
+    }
+    fetch()
+  }, [])
+
   const theme = useTheme()
   const carouselRef = useRef()
 
@@ -61,9 +71,8 @@ export default function CarouselBasic3() {
   return (
     <RootStyle>
       <Slider ref={carouselRef} {...settings}>
-        {[...Array(15)].map((_, index) => (
-          <CarouselItem key={index} />
-        ))}
+        {news &&
+          news.map((item, index) => <CarouselItem item={item} key={index} />)}
       </Slider>
     </RootStyle>
   )
