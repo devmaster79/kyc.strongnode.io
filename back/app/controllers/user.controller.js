@@ -157,6 +157,7 @@ exports.signin = async (req, res) => {
       res.send({
         message: "Logged in successfully",
         token: token,
+        user_name: user.dataValues.user_name
       });
     } else {
       res.send({

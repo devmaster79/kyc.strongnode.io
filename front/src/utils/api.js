@@ -1,5 +1,8 @@
 import axios from 'axios';
 import { signup_url, password_url, sms_url, check_sms_url, qr_url, verify_qr_url, signin_url } from './config';
+import { get_news } from './config';
+
+const bearer_token = localStorage.getItem('token');
 
 const signup = async (data) => {
     const config = {
@@ -78,5 +81,14 @@ const verifyTOTP = async (email, token) => {
     return axios(config);
 }
 
+const getNews = async () => {
+    const config = {
+        url: get_news,
+        headers: {'Authorization': `Bearer ${bearer_token}`}
+    };
+    return axios(config)
+}
+
 export default signup;
 export { createPassword, signin, sendSMS, checkSMS, createQR, verifyTOTP };
+export { getNews };

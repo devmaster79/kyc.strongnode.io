@@ -47,8 +47,7 @@ function SigninPass() {
         .then((r) => {
           if (r.status === 200) {
             localStorage.setItem('token', r.data.token)
-            console.log('[token]:', r.data.token)
-            axios.defaults.headers.common.Authorization = `Bearer ${r.data.token}`
+            localStorage.setItem('username', r.data.user_name)
             navigate('/signinsms')
           } else if (r.status === 401) {
             setPassWrong(true)
