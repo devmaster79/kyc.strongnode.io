@@ -557,7 +557,7 @@ exports.sendEmail = async (req, res) => {
 
   rand = crypto.randomBytes(20).toString("hex");
   host = req.get("host");
-  link = "https://" + req.get("host") + "/verify?id=" + rand;
+  link = "https://" + req.get("host") + "/api/users/verifyEmail?id=" + rand;
 
   const ses = new AWS.SES({
     region: "us-west-2",
