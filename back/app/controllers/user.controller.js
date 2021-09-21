@@ -578,9 +578,10 @@ exports.sendEmail = async (req, res) => {
     DefaultTemplateData: '{ "name":"unknown", "email":"unknown"}',
   };
 
-  const res = await ses.sendBulkTemplatedEmail(params).promise();
-  console.log("res?", res);
+  const resp = await ses.sendBulkTemplatedEmail(params).promise();
+  console.log("res?", resp);
   res.send({
+    result: resp,
     message: "email sent",
   });
 };
