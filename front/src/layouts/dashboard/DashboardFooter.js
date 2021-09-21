@@ -25,7 +25,7 @@ const RootStyle = styled(AppBar)(({ theme }) => ({
   position: 'relative',
   marginTop: 40,
   borderTopLeftRadius: '16px',
-  backgroundColor: theme.palette.background.default,
+  background: 'linear-gradient(90deg, #7C1EFB 0%, #AF56B8 30.21%, #7C1EFB 64.06%, #AF56B8 100%)',
   [theme.breakpoints.up('lg')]: {
     width: '100%',
   },
@@ -53,19 +53,19 @@ export default function DashboardNavbar({ onOpenSidebar }) {
           alignItems="center"
           spacing={{ xs: 0.5, sm: 1.5 }}
         >
-          <Typography color="typography.75" sx={{ fontSize: 14 }}>
+          <Typography color="white" sx={{ fontSize: 14 }}>
             daniel@redrobot.jp
           </Typography>
-          <Typography color="typography.75" sx={{ fontSize: 14 }}>
+          <Typography color="white" sx={{ fontSize: 14 }}>
             |
           </Typography>
-          <Typography color="typography.75" sx={{ fontSize: 14 }}>
+          <Typography color="white" sx={{ fontSize: 14 }}>
             Contact Support
           </Typography>
-          <Typography color="typography.75" sx={{ fontSize: 14 }}>
+          <Typography color="white" sx={{ fontSize: 14 }}>
             |
           </Typography>
-          <Typography color="typography.75" sx={{ fontSize: 14 }}>
+          <Typography color="white" sx={{ fontSize: 14 }}>
             Logout
           </Typography>
         </Stack>

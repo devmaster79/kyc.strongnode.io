@@ -18,8 +18,8 @@ function responsiveFontSizes({ sm, md, lg }) {
   };
 }
 
-const FONT_PRIMARY = 'Inter, sans-serif'; // Google Font
-// const FONT_SECONDARY = 'CircularStd, sans-serif'; // Local Font
+const FONT_PRIMARY = 'All Round Gothic'; // Google Font
+// const FONT_SECONDARY = 'All Round Gothic'; // Local Font
 
 const typography = {
   fontFamily: FONT_PRIMARY,

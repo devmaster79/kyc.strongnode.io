@@ -58,7 +58,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
         direction="row"
         alignItems="center"
         justifyContent="center"
-        sx={{ height: 80, borderBottom: '1px solid #666' }}
+        sx={{ height: 80 }}
       >
         <Box component={RouterLink} to="/" sx={{ display: 'inline-flex' }}>
           <Logo />
@@ -88,9 +88,9 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
           // onMouseLeave={onHoverLeave}
           PaperProps={{
             sx: {
-              borderRadius: '30px 30px 30px 30px',
+              borderRadius: '0px 30px 30px 0px',
               width: DRAWER_WIDTH,
-              bgcolor: '#2D405A',
+              background: 'linear-gradient(180deg, #7C1EFB 0%, #AF56B8 30.21%, #7C1EFB 64.06%, #AF56B8 100%)',
               ...(isCollapse && {
                 width: COLLAPSE_WIDTH,
               }),

@@ -21,7 +21,8 @@ const APPBAR_DESKTOP = 80
 
 const RootStyle = styled(AppBar)(({ theme }) => ({
   boxShadow: 'none',
-  backgroundColor: theme.palette.background.default,
+  backgroundColor: '#F3F5F9',
+  boxShadow: '0px 2px 2px rgba(0, 0, 0, 0.03)',
   [theme.breakpoints.up('lg')]: {
     width: `calc(100% - ${DRAWER_WIDTH}px + 30px)`,
   },

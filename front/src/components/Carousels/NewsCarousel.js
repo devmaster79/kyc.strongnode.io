@@ -15,30 +15,71 @@ const RootStyle = styled('div')(({ theme }) => ({
 }))
 
 function CarouselItem({ item }) {
+  const [open, setOpen] = useState(false)
   return (
-    <Stack
-      direction="row"
-      spacing={3}
-      sx={{ width: '100%', height: 106, objectFit: 'cover' }}
-    >
-      <Box component="img" src="/images/carousel1.png" alt="carousel" />
-      <Stack justifyContent="space-between">
-        <Typography variant="h5">{item.title}</Typography>
-        <Typography sx={{ fontSize: 14 }}>{item.description}</Typography>
+    <>
+      <Stack
+        direction="row"
+        spacing={3}
+        sx={{ width: '100%', height: 106, objectFit: 'cover' }}
+      >
+        <Box component="img" src="/images/carousel1.png" alt="carousel" />
+        <Stack
+          justifyContent="space-between"
+          sx={{ position: 'relative' }}
+          flexGrow={1}
+        >
+          <Typography variant="h5">{item.title}</Typography>
+          <Typography sx={{ fontSize: 14 }}>{item.description}</Typography>
+          <Typography
+            onClick={() => setOpen(!open)}
+            color="primary"
+            variant="h6"
+            sx={{
+              position: 'absolute',
+              right: 0,
+              bottom: 0,
+              cursor: 'pointer',
+            }}
+          >
+            {open ? 'Read Less' : 'Read More'}
+          </Typography>
+        </Stack>
       </Stack>
-    </Stack>
+      {open && (
+        <Stack sx={{ mt: 3 }}>
+          <Typography sx={{ fontSize: 14 }}>
+            Lorem ipsum dolor sit amet Lorem ipsum dolor sit ametLorem ipsum
+            dolor sit ametLorem ipsum dolor sit ametLorem ipsum dolor sit
+            ametLorem ipsum dolor sit ametLorem ipsum dolor sit ametLorem ipsum
+            dolor sit ametLorem ipsum dolor sit ametLorem ipsum dolor sit
+            ametLorem ipsum dolor sit ametLorem ipsum dolor sit ametLorem ipsum
+            dolor sit ametLorem ipsum dolor sit ametLorem ipsum dolor sit
+            ametLorem ipsum dolor sit ametLorem ipsum dolor sit ametLorem ipsum
+            dolor sit ametLorem ipsum dolor sit ametLorem ipsum dolor sit
+            ametLorem ipsum dolor sit ametLorem ipsum dolor sit ametLorem ipsum
+            dolor sit ametLorem ipsum dolor sit ametLorem ipsum dolor sit
+            ametLorem ipsum dolor sit ametLorem ipsum dolor sit ametLorem ipsum
+            dolor sit amet
+          </Typography>
+        </Stack>
+      )}
+    </>
   )
 }
 
+const item = { title: 'adsfadf', description: 'wowadsfasdfasdfasdasdfasd' }
 export default function NewsCarousel() {
   const [news, setNews] = useState()
   useEffect(() => {
     async function fetch() {
       const token = localStorage.getItem('token')
 
-      const url = process.env.REACT_APP_BASE_URL + '/api/news';
-      console.log("server url: ", url);
-      const result = await axios.get(url, { headers: {'Authorization': `Bearer ${token}`}})
+      const url = process.env.REACT_APP_BASE_URL + '/api/news'
+      console.log('server url: ', url)
+      const result = await axios.get(url, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
 
       setNews(result.data)
     }
@@ -71,8 +112,9 @@ export default function NewsCarousel() {
   return (
     <RootStyle>
       <Slider ref={carouselRef} {...settings}>
-        {news &&
-          news.map((item, index) => <CarouselItem item={item} key={index} />)}
+        {/* {news &&
+          news.map((item, index) => <CarouselItem item={item} key={index} />)} */}
+        <CarouselItem item={item} />
       </Slider>
     </RootStyle>
   )

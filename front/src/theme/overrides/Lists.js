@@ -7,7 +7,7 @@ export default function Lists(theme) {
         root: {
           color: 'inherit',
           minWidth: 'auto',
-          marginRight: theme.spacing(2)
+          marginRight: theme.spacing(0),
         }
       }
     },
@@ -16,6 +16,15 @@ export default function Lists(theme) {
         root: {
           minWidth: 'auto',
           marginRight: theme.spacing(2)
+        }
+      }
+    },
+    MuiListItemButton: {
+      styleOverrides: {
+        root: {
+          padding: '0px !important',
+          marginRight: 0,
+          justifyContent: 'center'
         }
       }
     },
