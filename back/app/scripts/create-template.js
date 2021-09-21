@@ -6,7 +6,7 @@ const ses = new AWS.SES({
  * @fileOverview create-template.js Create an email template
  * */
 const mainFunction =  async () => {
-  const params =  require("./email-template.json");
+  const params =  require("../jsons/email-template.json");
   return await ses.createTemplate(params).promise();
 }
 mainFunction().then(() => {
