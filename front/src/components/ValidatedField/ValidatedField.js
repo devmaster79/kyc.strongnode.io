@@ -56,7 +56,7 @@ const ValidatedField = (props) => {
           {field.name === "termsAgreement" && <TermsText />}
         </div>
       </InputGroup>
-      {touched && (
+      {touched && field.name !== "termsAgreement" && (
         <ErrorWrapper show={error}>
           <ErrorIcon />
           <p>{errorText}</p>
