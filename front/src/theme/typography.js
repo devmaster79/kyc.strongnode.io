@@ -18,11 +18,11 @@ function responsiveFontSizes({ sm, md, lg }) {
   };
 }
 
-const FONT_PRIMARY = 'Inter, sans-serif'; // Google Font
-const FONT_SECONDARY = 'All Round Gothic'; // Local Font
+const FONT_PRIMARY = 'All Round Gothic'; // Google Font
+// const FONT_SECONDARY = 'All Round Gothic'; // Local Font
 
 const typography = {
-  fontFamily: FONT_SECONDARY,
+  fontFamily: FONT_PRIMARY,
   fontWeightRegular: 400,
   fontWeightMedium: 600,
   fontWeightBold: 700,
