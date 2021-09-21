@@ -28,8 +28,10 @@ db.sequelize.sync();
 // });
 
 // simple route
-app.get("/", (req, res) => {
-  res.json({ message: "Welcome to StrongNode application." });
+app.use(express.static(path.join(__dirname, '../front/build')));
+
+app.get('/*', function(req,res) {
+		res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
 require("./app/routes/history.routes")(app);
