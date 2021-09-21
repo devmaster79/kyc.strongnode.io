@@ -157,7 +157,7 @@ exports.signin = async (req, res) => {
       res.send({
         message: "Logged in successfully",
         token: token,
-        user_name: user.dataValues.user_name
+        user_name: user.dataValues.user_name,
       });
     } else {
       res.send({
@@ -545,7 +545,7 @@ exports.verifyTOTP = async (req, res) => {
 };
 
 //Send Email
-exports.sendEmail = (req, res) => {
+exports.sendEmail = async (req, res) => {
   // Validate request
   if (!req.body.email) {
     res.status(400).send({
@@ -554,48 +554,32 @@ exports.sendEmail = (req, res) => {
     return;
   }
 
-  // Set the region
-  AWS.config.update({ region: "us-west-2" });
+  const ses = new AWS.SES({
+    region: "us-west-2",
+  });
 
-  // Create sendEmail params
-  var params = {
-    Destination: {
-      ToAddresses: [
-        req.body.email,
-      ],
-    },
-    Message: {
-      Body: {
-        Html: {
-          Charset: "UTF-8",
-          Data: "This is a Data",
+  const templateData = JSON.stringify({
+    name: "Oscar Buck",
+    email: "buckoscarengr@gmail.com",
+  });
+
+  const params = {
+    Destinations: [
+      {
+        Destination: {
+          ToAddresses: ["buckoscarengr@gmail.com"],
         },
-        Text: {
-          Charset: "UTF-8",
-          Data: "This is a text",
-        },
+        ReplacementTemplateData: templateData,
       },
-      Subject: {
-        Charset: "UTF-8",
-        Data: "Test email",
-      },
-    },
-    Source: "no-reply@strongnode.io"
+      /* more items */
+    ],
+    Source: "Notifications <no-reply@strongnode.io>",
+    Template: "EmailTemplate",
+    DefaultTemplateData: '{ "name":"unknown", "email":"unknown"}',
   };
-
-  var sendPromise = new AWS.SES({ apiVersion: "2010-12-01" })
-    .sendEmail(params)
-    .promise();
-
-  sendPromise
-    .then(function (data) {
-      console.log(data.MessageId);
-      res.send(data)
-    })
-    .catch(function (err) {
-      console.error(err, err.stack);
-      res.status(500).send({
-        message: err.message || "Some error occurred while retrieving users.",
-      });
-    });
+  
+  const res = await ses.sendBulkTemplatedEmail(params).promise();
+  res.send({
+    result: res
+  });
 };
