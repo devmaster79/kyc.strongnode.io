@@ -9,6 +9,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 var AWS = require("aws-sdk");
+var rand, host, link;
 
 // Create and Save a new User
 exports.create = async (req, res) => {
@@ -554,20 +555,23 @@ exports.sendEmail = async (req, res) => {
     return;
   }
 
+  rand = crypto.randomBytes(20).toString("hex");
+  host = req.get("host");
+  link = "https://" + req.get("host") + "/verify?id=" + rand;
+
   const ses = new AWS.SES({
     region: "us-west-2",
   });
 
   const templateData = JSON.stringify({
-    name: "Oscar Buck",
-    email: "buckoscarengr@gmail.com",
+    link: link,
   });
 
   const params = {
     Destinations: [
       {
         Destination: {
-          ToAddresses: ["buckoscarengr@gmail.com"],
+          ToAddresses: [req.body.email],
         },
         ReplacementTemplateData: templateData,
       },
@@ -575,13 +579,31 @@ exports.sendEmail = async (req, res) => {
     ],
     Source: "Notifications <no-reply@strongnode.io>",
     Template: "EmailTemplate",
-    DefaultTemplateData: '{ "name":"unknown", "email":"unknown"}',
+    DefaultTemplateData: '{ "link":"unknown"}',
   };
 
   const resp = await ses.sendBulkTemplatedEmail(params).promise();
-  console.log("res?", resp);
   res.send({
     result: resp,
-    message: "email sent",
   });
+};
+
+//Verify Email
+exports.verifyEmail = (req, res) => {
+  // Validate request
+  if (req.protocol + "://" + req.get("host") == "https://" + host) {
+    if (req.query.id == rand) {
+      res.send({
+        result: "200",
+      });
+    } else {
+      res.status(500).send({
+        message: "Bad Request",
+      });
+    }
+  } else {
+    res.status(500).send({
+      message: "Request is from unknown source",
+    });
+  }
 };
