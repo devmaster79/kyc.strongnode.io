@@ -19,10 +19,10 @@ function responsiveFontSizes({ sm, md, lg }) {
 }
 
 const FONT_PRIMARY = 'Inter, sans-serif'; // Google Font
-// const FONT_SECONDARY = 'CircularStd, sans-serif'; // Local Font
+const FONT_SECONDARY = 'All Round Gothic'; // Local Font
 
 const typography = {
-  fontFamily: FONT_PRIMARY,
+  fontFamily: FONT_SECONDARY,
   fontWeightRegular: 400,
   fontWeightMedium: 600,
   fontWeightBold: 700,

@@ -56,9 +56,9 @@ const IOSSwitch = styled((props) => (
 export default function ThemeSwitch({ sx, color }) {
   return (
     <Stack direction="row" alignItems="center">
-      <SvgIconStyle src="/icons/sun.svg" color="action" sx={{ width: 24, height: 24 }} />
+      <SvgIconStyle src="/icons/sun.svg" sx={{ width: 24, height: 24, background: 'white' }} />
       <IOSSwitch />
-      <SvgIconStyle src="/icons/moon.svg" color="action" sx={{ width: 24, height: 24 }} />
+      <SvgIconStyle src="/icons/moon.svg" sx={{ width: 24, height: 24, background: 'white' }} />
     </Stack>
   )
 }

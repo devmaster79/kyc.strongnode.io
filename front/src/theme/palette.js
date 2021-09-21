@@ -25,11 +25,11 @@ const GREY = {
 }
 
 const PRIMARY = {
-  main: '#4D79F6',
-  75: alpha('#4D79F6', 0.75),
-  50: alpha('#4D79F6', 0.5),
-  30: alpha('#4D79F6', 0.3),
-  10: alpha('#4D79F6', 0.1),
+  main: '#964CFA',
+  75: alpha('#964CFA', 0.75),
+  50: alpha('#964CFA', 0.5),
+  30: alpha('#964CFA', 0.3),
+  10: alpha('#964CFA', 0.1),
   contrastText: '#fff',
 }
 const SECONDARY = {
@@ -41,8 +41,8 @@ const SECONDARY = {
   contrastText: '#fff',
 }
 const INFO = {
-  main: '#296CF2',
-  light: alpha('#296CF2', 0.1),
+  main: '#556BE0',
+  light: alpha('#556BE0', 0.1),
   contrastText: '#fff',
 }
 const SUCCESS = {
@@ -51,13 +51,13 @@ const SUCCESS = {
   contrastText: GREY[800],
 }
 const WARNING = {
-  main: '#FF9500',
-  light: alpha('#FF9500', 0.1),
+  main: '#E7B32E',
+  light: alpha('#E7B32E', 0.1),
   contrastText: GREY[800],
 }
 const ERROR = {
-  main: '#FF3B30',
-  light: alpha('#FF3B30', 0.1),
+  main: '#DF53BB',
+  light: alpha('#DF53BB', 0.1),
   contrastText: '#fff',
 }
 
@@ -69,6 +69,14 @@ const TYPOGRAPHY = {
   10: alpha('#2D405A', 0.1),
 }
 
+const GRADIENTS = {
+  button: 'linear-gradient(180deg, #AF56B8 0%, #7C1EFB 100%)',
+  info: createGradient(INFO.light, INFO.main),
+  success: createGradient(SUCCESS.light, SUCCESS.main),
+  warning: createGradient(WARNING.light, WARNING.main),
+  error: createGradient(ERROR.light, ERROR.main)
+};
+
 const COMMON = {
   common: { black: '#000', white: '#fff' },
   primary: { ...PRIMARY },
@@ -79,6 +87,7 @@ const COMMON = {
   error: { ...ERROR },
   typography: { ...TYPOGRAPHY },
   grey: GREY,
+  gradients: GRADIENTS,
   divider: GREY[500_24],
   action: {
     hover: GREY[500_8],

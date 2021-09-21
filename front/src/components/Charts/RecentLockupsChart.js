@@ -6,20 +6,34 @@ import { useTheme, styled } from '@material-ui/core/styles'
 //
 import BaseOptionChart from './BaseOptionChart'
 
-const Lockup1 = [90, 90]
-const Lockup2 = [70, 70]
+const Lockup1 = [80]
+const Lockup2 = [65]
 
 export default function AppCurrentDownload() {
   const theme = useTheme()
 
   const chartOptions1 = merge(BaseOptionChart(), {
-    colors: [theme.palette.secondary.main, theme.palette.secondary.main],
-    labels: ['Mens', 'Womens'],
+    colors: ['#26A5C0'],
+    labels: 'Mens',
+    fill: {
+      type: ['gradient'],
+      gradient: {
+        type: ['diagonal2'],
+        shadeIntensity: 0.5,
+        gradientToColors: ['#2EF3C0'],
+        opacityFrom: 1,
+        opacityTo: 1,
+        stops: [0, 100],
+      },
+    },
+    stroke: {
+      lineCap: 'straight',
+    },
     plotOptions: {
       radialBar: {
         hollow: {
-          image: '/icons/lock1.svg',
-          size: '26%',
+          image: '/images/lock1.png',
+          size: '15%',
           imageWidth: 20,
           imageHeight: 20,
           margin: 5,
@@ -33,13 +47,27 @@ export default function AppCurrentDownload() {
   })
 
   const chartOptions2 = merge(BaseOptionChart(), {
-    colors: [theme.palette.warning.main, theme.palette.warning.main],
-    labels: ['Mens', 'Womens'],
+    colors: ['#5137FA'],
+    labels: 'Mens',
+    fill: {
+      type: ['gradient'],
+      gradient: {
+        type: ['diagonal2'],
+        shadeIntensity: 0.5,
+        gradientToColors: ['#7BDAD0'],
+        opacityFrom: 1,
+        opacityTo: 1,
+        stops: [0, 100],
+      },
+    },
+    stroke: {
+      lineCap: 'straight',
+    },
     plotOptions: {
       radialBar: {
         hollow: {
-          image: '/icons/lock2.svg',
-          size: '26%',
+          image: '/images/lock2.png',
+          size: '15%',
           imageWidth: 20,
           imageHeight: 20,
           margin: 5,
@@ -53,13 +81,27 @@ export default function AppCurrentDownload() {
   })
 
   const chartOptions3 = merge(BaseOptionChart(), {
-    colors: [theme.palette.primary.main, theme.palette.primary.main],
-    labels: ['Mens', 'Womens'],
+    colors: ['#604BE8'],
+    labels: 'Mens',
+    fill: {
+      type: ['gradient'],
+      gradient: {
+        type: ['diagonal2'],
+        shadeIntensity: 0.5,
+        gradientToColors: ['#B74BE8'],
+        opacityFrom: 1,
+        opacityTo: 1,
+        stops: [0, 100],
+      },
+    },
+    stroke: {
+      lineCap: 'straight',
+    },
     plotOptions: {
       radialBar: {
         hollow: {
-          image: '/icons/lock3.svg',
-          size: '26%',
+          image: '/images/lock3.png',
+          size: '15%',
           imageWidth: 20,
           imageHeight: 20,
           margin: 5,
