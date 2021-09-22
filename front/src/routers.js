@@ -17,15 +17,15 @@ import PrivateSaleInterestForm from './pages/privatesaleinterestform'
 export default function Router() {
   return useRoutes([
     {
-      path: '*',
+      path: 'dashboard',
       element: <DashboardLayout />,
       children: [
-        { path: 'dashboard/', element: <Navigate to="/dashboard/app" replace /> },
-        { path: 'dashboard/app', element: <Dashboard /> },
-        { path: 'dashboard/member', element: <Dashboard /> },
-        { path: 'dashboard/growth', element: <Dashboard /> },
-        { path: 'dashboard/sync', element: <Dashboard /> },
-        { path: 'dashboard/shield', element: <Dashboard /> },
+        { path: '/', element: <Navigate to="/dashboard/app" replace /> },
+        { path: 'app', element: <Dashboard /> },
+        { path: 'member', element: <Dashboard /> },
+        { path: 'growth', element: <Dashboard /> },
+        { path: 'sync', element: <Dashboard /> },
+        { path: 'shield', element: <Dashboard /> },
       ]
     },
     {
