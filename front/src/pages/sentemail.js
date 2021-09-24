@@ -26,7 +26,7 @@ function SentEmail() {
         <h2 style={{ marginTop: 25, marginBottom: 20 }}>Email Sent</h2>
         <P>Please check your mail inbox. We sent you an email.</P>
         <P style={{ paddingLeft: 32, paddingRight: 32 }}>
-          Click the magin link and enter your user password to activate your
+          Click the link and enter your user password to activate your
           create account
         </P>
         <Button full onClick={() => navigate("/")}>

@@ -51,7 +51,7 @@ function CreateAccountPassword() {
         console.log("Error for email verification", err);
       }
     },
-    [location]
+    []
   );
 
   const handleSubmit = (event) => {
