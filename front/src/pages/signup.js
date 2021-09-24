@@ -37,7 +37,6 @@ function Signup() {
     setSubmitting(true);
     // make async call to submit registration data here
     handleSignup(data);
-    console.log("submit: ", data);
     setSubmitting(false);
   };
 
@@ -46,8 +45,10 @@ function Signup() {
       const email = data.email;
       try {
         localStorage.setItem("email", email);
+        const resp = await signup(data);
+        console.log("resp???", resp)
         navigate("/sent-email");
-        await signup(data);
+       
       } catch (err) {
         console.log("Error for signup", err);
       }

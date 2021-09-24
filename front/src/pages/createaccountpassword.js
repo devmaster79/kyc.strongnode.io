@@ -45,8 +45,11 @@ function CreateAccountPassword() {
         const res = await verifyEmail({
           "password_token": localStorage.getItem("password_token")
         })
-        console.log("res???", res);
-        setUserName(res.data?.user.user_name)
+        if(res.data && res.data?.user.email_verified) {
+          setUserName(res.data?.user.user_name)
+          localStorage.setItem("user_name", res.data?.user.user_name)
+          localStorage.setItem("email", res.data?.user.email)
+        }
       } catch (err) {
         console.log("Error for email verification", err);
       }
@@ -69,10 +72,12 @@ function CreateAccountPassword() {
     async (data) => {
       try {
         const res = await createPassword(data)
-        console.log("-- handleCreatePassword --res???", res);
-        navigate("/profile");
+        if(res.data && res.data.token) {
+          localStorage.setItem("token", res.data.token)
+          navigate("/profile");
+        }
       } catch (err) {
-        console.log("Error for email verification", err);
+        console.log("Error for create password", err);
       }
     },
     []
