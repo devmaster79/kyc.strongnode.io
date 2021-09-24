@@ -21,7 +21,7 @@ exports.create = async (req, res) => {
     return;
   }
 
-  const password_token = crypto.randomBytes(20).toString("hex");
+  rand = crypto.randomBytes(20).toString("hex");
 
   // Create a User
   const data = {
@@ -30,7 +30,7 @@ exports.create = async (req, res) => {
     email: req.body.email,
     user_name: req.body.user_name,
     email_verified: false,
-    password_token: password_token,
+    password_token: rand,
   };
 
   const user = await User.findOne({
@@ -46,15 +46,45 @@ exports.create = async (req, res) => {
   }
 
   // Save User in the database
-  User.create(data)
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: err.message || "Some error occurred while creating the User.",
+  try {
+    const resp = await User.create(data);
+    if (!resp)
+      res.send({
+        result: resp,
       });
+    link = "https://stage.strongnode.io/verifyEmail?id=" + rand;
+    const ses = new AWS.SES({
+      region: "us-west-2",
     });
+    const templateData = JSON.stringify({
+      link: link,
+    });
+
+    const params = {
+      Destinations: [
+        {
+          Destination: {
+            ToAddresses: [req.body.email],
+          },
+          ReplacementTemplateData: templateData,
+        },
+        /* more items */
+      ],
+      Source: "Notifications <no-reply@strongnode.io>",
+      Template: "EmailTemplate",
+      DefaultTemplateData: '{ "link":"unknown"}',
+    };
+
+    const response = await ses.sendBulkTemplatedEmail(params).promise();
+    res.send({
+      result: response,
+      data: resp,
+    });
+  } catch (err) {
+    res.status(500).send({
+      message: err.message || "Some error occurred while creating the User.",
+    });
+  }
 };
 
 // Create and Save a new User password
@@ -543,49 +573,6 @@ exports.verifyTOTP = async (req, res) => {
         message: err.message || "Some error occurred while retrieving users.",
       });
     });
-};
-
-//Send Email
-exports.sendEmail = async (req, res) => {
-  // Validate request
-  if (!req.body.email) {
-    res.status(400).send({
-      message: "Content can not be empty!",
-    });
-    return;
-  }
-
-  rand = crypto.randomBytes(20).toString("hex");
-  host = req.get("host");
-  link = "https://" + req.get("host") + "/api/users/verifyEmail?id=" + rand;
-
-  const ses = new AWS.SES({
-    region: "us-west-2",
-  });
-
-  const templateData = JSON.stringify({
-    link: link,
-  });
-
-  const params = {
-    Destinations: [
-      {
-        Destination: {
-          ToAddresses: [req.body.email],
-        },
-        ReplacementTemplateData: templateData,
-      },
-      /* more items */
-    ],
-    Source: "Notifications <no-reply@strongnode.io>",
-    Template: "EmailTemplate",
-    DefaultTemplateData: '{ "link":"unknown"}',
-  };
-
-  const resp = await ses.sendBulkTemplatedEmail(params).promise();
-  res.send({
-    result: resp,
-  });
 };
 
 //Verify Email
