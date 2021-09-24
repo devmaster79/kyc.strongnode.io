@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { EntryPage } from "./style";
@@ -9,6 +9,7 @@ import Button from "../components/Button";
 import Navbar from "../components/Navar";
 import { ReactComponent as TelegramIcon } from "../icons/telegram.svg";
 import { ReactComponent as TwitterIcon } from "../icons/twitter.svg";
+import { createProfile } from "../utils/api";
 
 export const Container = styled.div`
   display: flex;
@@ -56,9 +57,41 @@ const InputWrapper = styled.div`
 function Profile() {
   const navigate = useNavigate();
 
+  const [telegramUserName, setTelegramUserName] = useState("");
+  const [twitterUserName, setTwitterUserName] = useState("");
+  const [walletAddress, setWalletAddress] = useState("");
+
+  const handleCreateProfile = useCallback(async (data) => {
+    try {
+      const res = await createProfile(data);
+      if (res.data) {
+        navigate("/private-sale-interest-form");
+      }
+    } catch (err) {
+      console.log("Error for create password", err);
+    }
+  }, []);
+
+  const handleTGUserNameInputChange = (event) => {
+    setTelegramUserName(event.target.value);
+  };
+
+  const handleTwitterUserNameInputChange = (event) => {
+    setTwitterUserName(event.target.value);
+  };
+
+  const handleWalletAddressInputChange = (event) => {
+    setWalletAddress(event.target.value);
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    navigate("/private-sale-interest-form");
+    const data = {
+      telegram_id: telegramUserName,
+      twitter_id: twitterUserName,
+      wallet_address: walletAddress,
+    };
+    handleCreateProfile(data);
   };
 
   return (
@@ -80,6 +113,8 @@ function Profile() {
                 placeholder="@username"
                 id="telegram-username"
                 style={{ padding: "16px 20px 16px 40px" }}
+                value={telegramUserName}
+                onChange={handleTGUserNameInputChange}
               />
             </InputGroup>
           </InputWrapper>
@@ -93,6 +128,8 @@ function Profile() {
                 placeholder="@username"
                 id="twitter-username"
                 style={{ padding: "16px 20px 16px 40px" }}
+                value={twitterUserName}
+                onChange={handleTwitterUserNameInputChange}
               />
             </InputGroup>
           </InputWrapper>
@@ -100,7 +137,13 @@ function Profile() {
           <InputWrapper>
             <p>Wallet address</p>
             <InputGroup>
-              <Input type="text" placeholder="Wallet id" id="wallet-id" />
+              <Input
+                type="text"
+                placeholder="Wallet id"
+                id="wallet-id"
+                value={walletAddress}
+                onChange={handleWalletAddressInputChange}
+              />
             </InputGroup>
           </InputWrapper>
 

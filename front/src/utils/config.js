@@ -4,6 +4,7 @@ const base_url = process.env.REACT_APP_BASE_URL + '/api';
 export const signup_url = `${base_url}/users`;
 export const verify_email_url = `${base_url}/users/verifyEmail`;
 export const password_url = `${base_url}/users/createPassword`;
+export const profile_url = `${base_url}/users/createProfile`;
 export const signin_url = `${base_url}/users/signin`;
 export const sms_url = `${base_url}/users/sms/send`;
 export const check_sms_url = `${base_url}/users/sms/check`;

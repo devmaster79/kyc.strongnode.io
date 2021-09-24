@@ -35,7 +35,6 @@ function Signup() {
 
   const handleFormSubmit = (data, { setSubmitting }) => {
     setSubmitting(true);
-    // make async call to submit registration data here
     handleSignup(data);
     setSubmitting(false);
   };
@@ -44,16 +43,18 @@ function Signup() {
     async (data) => {
       const email = data.email;
       try {
-        localStorage.setItem("email", email);
         const resp = await signup(data);
-        console.log("resp???", resp)
-        navigate("/sent-email");
-       
+        if (resp.data.result) {
+          navigate("/sent-email");
+          localStorage.setItem("email", resp.data.data.email);
+        } else {
+          //should show notification with signup failure.
+        }
       } catch (err) {
         console.log("Error for signup", err);
       }
     },
-    []  
+    []
   );
 
   return (

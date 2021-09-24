@@ -1,8 +1,9 @@
 import axios from 'axios';
-import { signup_url, verify_email_url, password_url, sms_url, check_sms_url, qr_url, verify_qr_url, signin_url } from './config';
+import { signup_url, verify_email_url, password_url, profile_url, sms_url, check_sms_url, qr_url, verify_qr_url, signin_url } from './config';
 import { get_news } from './config';
 
-const bearer_token = localStorage.getItem('token');
+const token = localStorage.getItem('token');
+console.log("token????", token)
 
 const signup = async (data) => {
     const config = {
@@ -10,8 +11,7 @@ const signup = async (data) => {
         method: "POST",
         data: data
     };
-    axios(config)
-        .then(res => console.log(res));
+    return axios(config)
 }
 
 const verifyEmail = async (data) => {
@@ -26,6 +26,16 @@ const verifyEmail = async (data) => {
 const createPassword = async (data) => {
     const config = {
         url: password_url,
+        method: "PUT",
+        data: data
+    }
+    return axios(config);
+}
+
+const createProfile = async (data) => {
+    const config = {
+        url: profile_url,
+        headers: {'Authorization': `Bearer ${token}`},
         method: "PUT",
         data: data
     }
@@ -93,11 +103,11 @@ const verifyTOTP = async (email, token) => {
 const getNews = async () => {
     const config = {
         url: get_news,
-        headers: {'Authorization': `Bearer ${bearer_token}`}
+        headers: {'Authorization': `Bearer ${token}`}
     };
     return axios(config)
 }
 
 export default signup;
-export { verifyEmail, createPassword, signin, sendSMS, checkSMS, createQR, verifyTOTP };
+export { verifyEmail, createPassword, createProfile, signin, sendSMS, checkSMS, createQR, verifyTOTP };
 export { getNews };
