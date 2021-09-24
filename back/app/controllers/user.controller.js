@@ -32,21 +32,21 @@ exports.create = async (req, res) => {
     email_verified: false,
     password_token: rand,
   };
-
-  const user = await User.findOne({
-    where: {
-      [Op.or]: [{ user_name: req.body.user_name }, { email: req.body.email }],
-    },
-  });
-  if (user) {
-    res.status(409).send({
-      message: "Same email or user_name already exists!",
-    });
-    return;
-  }
-
-  // Save User in the database
   try {
+    const user = await User.findOne({
+      where: {
+        [Op.or]: [{ user_name: req.body.user_name }, { email: req.body.email }],
+      },
+    });
+    if (user) {
+      res.status(409).send({
+        message: "Same email or user_name already exists!",
+      });
+      return;
+    }
+
+    // Save User in the database
+
     const resp = await User.create(data);
     if (!resp)
       res.send({
@@ -573,6 +573,49 @@ exports.verifyTOTP = async (req, res) => {
         message: err.message || "Some error occurred while retrieving users.",
       });
     });
+};
+
+//Send Email
+exports.sendEmail = async (req, res) => {
+  // Validate request
+  if (!req.body.email) {
+    res.status(400).send({
+      message: "Content can not be empty!",
+    });
+    return;
+  }
+
+  // host = req.get("host");
+  // link = "https://" + req.get("host") + "/api/users/verifyEmail?id=" + rand;
+  link = "https://stage.strongnode.io/verifyEmail?id=" + rand;
+
+  const ses = new AWS.SES({
+    region: "us-west-2",
+  });
+
+  const templateData = JSON.stringify({
+    link: link,
+  });
+
+  const params = {
+    Destinations: [
+      {
+        Destination: {
+          ToAddresses: [req.body.email],
+        },
+        ReplacementTemplateData: templateData,
+      },
+      /* more items */
+    ],
+    Source: "Notifications <no-reply@strongnode.io>",
+    Template: "EmailTemplate",
+    DefaultTemplateData: '{ "link":"unknown"}',
+  };
+
+  const resp = await ses.sendBulkTemplatedEmail(params).promise();
+  res.send({
+    result: resp,
+  });
 };
 
 //Verify Email
