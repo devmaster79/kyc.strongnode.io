@@ -92,7 +92,7 @@ function CreateAccountPassword() {
         <h2>Create Account Password</h2>
         <UserInfoWrapper>
           <UserIcon />
-          <p>{{ userName }}</p>
+          <p>{ userName }</p>
         </UserInfoWrapper>
         <form onSubmit={handleSubmit} style={{ marginTop: 30 }}>
           <InputGroup>
