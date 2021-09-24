@@ -1,3 +1,4 @@
+import React, { useState, useCallback, useEffect } from "react";
 import { Form, Formik } from "formik";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -9,6 +10,7 @@ import Input from "../components/Input";
 import Line from "../components/Line";
 import ValidatedField from "../components/ValidatedField";
 import { signupSchema } from "../static/formSchemas";
+import signup from "../utils/api";
 
 const AlreadyWrapper = styled.p`
   background: white;
@@ -21,21 +23,37 @@ const AlreadyWrapper = styled.p`
 
 function Signup() {
   const navigate = useNavigate();
+  const [email, setEmail] = useState("");
 
   const initFormState = {
-    firstName: "",
-    lastName: "",
+    first_name: "",
+    last_name: "",
     email: "",
-    username: "",
-    termsAgreement: false
-  }
+    user_name: "",
+    termsAgreement: false,
+  };
 
   const handleFormSubmit = (data, { setSubmitting }) => {
     setSubmitting(true);
     // make async call to submit registration data here
+    handleSignup(data);
     console.log("submit: ", data);
     setSubmitting(false);
-  }
+  };
+
+  const handleSignup = useCallback(
+    async (data) => {
+      const email = data.email;
+      try {
+        localStorage.setItem("email", email);
+        navigate("/sent-email");
+        await signup(data);
+      } catch (err) {
+        console.log("Error for signup", err);
+      }
+    },
+    []  
+  );
 
   return (
     <EntryPage>
@@ -50,7 +68,7 @@ function Signup() {
             <Form style={{ marginTop: 30 }}>
               <ValidatedField
                 as={Input}
-                name="firstName"
+                name="first_name"
                 onBlur={handleBlur}
                 placeholder="First Name"
                 type="input"
@@ -58,7 +76,7 @@ function Signup() {
               />
               <ValidatedField
                 as={Input}
-                name="lastName"
+                name="last_name"
                 onBlur={handleBlur}
                 placeholder="Last Name"
                 type="input"
@@ -75,7 +93,7 @@ function Signup() {
               />
               <ValidatedField
                 as={Input}
-                name="username"
+                name="user_name"
                 onBlur={handleBlur}
                 placeholder="User Name"
                 style={{ padding: "16px 20px 16px 40px" }}
@@ -88,13 +106,13 @@ function Signup() {
                 onBlur={handleBlur}
                 style={{ width: "auto" }}
                 type="checkbox"
-                wrapperStyle={{ alignItems: "center", display: "flex", height: "20px" }}
+                wrapperStyle={{
+                  alignItems: "center",
+                  display: "flex",
+                  height: "20px",
+                }}
               />
-              <Button
-                disabled={isSubmitting}
-                type="submit"
-                full
-              >
+              <Button disabled={isSubmitting} type="submit" full>
                 Sign Up
               </Button>
             </Form>
