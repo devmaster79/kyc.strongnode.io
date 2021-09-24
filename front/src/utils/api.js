@@ -1,9 +1,8 @@
 import axios from 'axios';
-import { signup_url, verify_email_url, password_url, profile_url, sms_url, check_sms_url, qr_url, verify_qr_url, signin_url } from './config';
+import { signup_url, verify_email_url, password_url, profile_url, investor_url, sms_url, check_sms_url, qr_url, verify_qr_url, signin_url } from './config';
 import { get_news } from './config';
 
 const token = localStorage.getItem('token');
-console.log("token????", token)
 
 const signup = async (data) => {
     const config = {
@@ -35,6 +34,16 @@ const createPassword = async (data) => {
 const createProfile = async (data) => {
     const config = {
         url: profile_url,
+        headers: {'Authorization': `Bearer ${token}`},
+        method: "PUT",
+        data: data
+    }
+    return axios(config);
+}
+
+const createInvestor = async (data) => {
+    const config = {
+        url: investor_url,
         headers: {'Authorization': `Bearer ${token}`},
         method: "PUT",
         data: data
@@ -109,5 +118,5 @@ const getNews = async () => {
 }
 
 export default signup;
-export { verifyEmail, createPassword, createProfile, signin, sendSMS, checkSMS, createQR, verifyTOTP };
+export { verifyEmail, createPassword, createProfile, createInvestor, signin, sendSMS, checkSMS, createQR, verifyTOTP };
 export { getNews };

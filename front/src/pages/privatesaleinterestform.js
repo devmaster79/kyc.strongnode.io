@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import InputGroup from "../components/InputGroup";
@@ -6,6 +6,7 @@ import Line from "../components/Line";
 import Input from "../components/Input";
 import Button from "../components/Button";
 import Navbar from "../components/Navar";
+import { createInvestor } from "../utils/api";
 
 export const Container = styled.div`
   display: flex;
@@ -72,9 +73,72 @@ const SubmitButtonWrapper = styled.div`
 function PrivateSaleInterestForm() {
   const navigate = useNavigate();
 
+  const [investorName, setInvestorName] = useState("");
+  const [investorTelegramId, setInvestorTelegramId] = useState("");
+  const [investorCountry, setInvestorCountry] = useState("");
+  const [investorCommitmentAmount, setInvestorCommitmentAmount] = useState("");
+  const [investorWalletAddress, setInvestorWalletAddress] = useState("");
+  const [investorEmail, setInvestorEmail] = useState("");
+  const [investorFundName, setInvestorFundName] = useState("");
+  const [investorFundWebsite, setInvestorFundWebsite] = useState("");
+
+  const handleInvestorNameInputChange = (event) => {
+    setInvestorName(event.target.value);
+  };
+
+  const handleInvestorTelegramIdInputChange = (event) => {
+    setInvestorTelegramId(event.target.value);
+  };
+
+  const handleInvestorCountryInputChange = (event) => {
+    setInvestorCountry(event.target.value);
+  };
+
+  const handleInvestorCommitmentAmountInputChange = (event) => {
+    setInvestorCommitmentAmount(event.target.value);
+  };
+
+  const handleInvestorWalletAddressInputChange = (event) => {
+    setInvestorWalletAddress(event.target.value);
+  };
+
+  const handleInvestorEmailInputChange = (event) => {
+    setInvestorEmail(event.target.value);
+  };
+
+  const handleInvestorFundNameInputChange = (event) => {
+    setInvestorFundName(event.target.value);
+  };
+
+  const handleInvestorFundWebsiteInputChange = (event) => {
+    setInvestorFundWebsite(event.target.value);
+  };
+
+  const handleCreateInvestor = useCallback(async (data) => {
+    try {
+      const res = await createInvestor(data);
+      if (res.data) {
+        navigate("/dashboard");
+      }
+    } catch (err) {
+      console.log("Error for create password", err);
+    }
+  }, []);
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    navigate("/signup");
+
+    const data = {
+      investor_name: investorName,
+      investor_telegram_id: investorTelegramId,
+      investor_country: investorCountry,
+      investor_commitment_amount: investorCommitmentAmount,
+      investor_wallet_address: investorWalletAddress,
+      investor_email: investorEmail,
+      investor_fund_name: investorFundName,
+      investor_fund_website: investorFundWebsite,
+    };
+    handleCreateInvestor(data);
   };
 
   return (
@@ -100,14 +164,26 @@ function PrivateSaleInterestForm() {
             <InputCol>
               <InputGroup>
                 <h5>Name *</h5>
-                <Input type="text" placeholder="Name" id="name" />
+                <Input
+                  type="text"
+                  placeholder="Name"
+                  id="name"
+                  value={investorName}
+                  onChange={handleInvestorNameInputChange}
+                />
               </InputGroup>
             </InputCol>
 
             <InputCol>
               <InputGroup>
                 <h5>Telegram Handle(@username)</h5>
-                <Input type="text" placeholder="@username" id="telegram" />
+                <Input
+                  type="text"
+                  placeholder="@username"
+                  id="telegram"
+                  value={investorTelegramId}
+                  onChange={handleInvestorTelegramIdInputChange}
+                />
               </InputGroup>
             </InputCol>
           </InputRow>
@@ -116,14 +192,26 @@ function PrivateSaleInterestForm() {
             <InputCol>
               <InputGroup>
                 <h5>Country of Residence*</h5>
-                <Input type="text" placeholder="USA" id="country" />
+                <Input
+                  type="text"
+                  placeholder="USA"
+                  id="country"
+                  value={investorCountry}
+                  onChange={handleInvestorCountryInputChange}
+                />
               </InputGroup>
             </InputCol>
 
             <InputCol>
               <InputGroup>
                 <h5>Commitment amount (Minimum $500) *</h5>
-                <Input type="text" placeholder="500" id="amount" />
+                <Input
+                  type="text"
+                  placeholder="500"
+                  id="amount"
+                  value={investorCommitmentAmount}
+                  onChange={handleInvestorCommitmentAmountInputChange}
+                />
               </InputGroup>
             </InputCol>
           </InputRow>
@@ -136,6 +224,8 @@ function PrivateSaleInterestForm() {
                   type="text"
                   placeholder="Wallet address"
                   id="wallet-address"
+                  value={investorWalletAddress}
+                  onChange={handleInvestorWalletAddressInputChange}
                 />
               </InputGroup>
             </InputCol>
@@ -143,7 +233,13 @@ function PrivateSaleInterestForm() {
             <InputCol>
               <InputGroup>
                 <h5>Email *</h5>
-                <Input type="text" placeholder="Email address" id="email" />
+                <Input
+                  type="text"
+                  placeholder="Email address"
+                  id="email"
+                  value={investorEmail}
+                  onChange={handleInvestorEmailInputChange}
+                />
               </InputGroup>
             </InputCol>
           </InputRow>
@@ -152,7 +248,13 @@ function PrivateSaleInterestForm() {
             <InputCol>
               <InputGroup>
                 <h5>Fund name</h5>
-                <Input type="text" placeholder="Fund name" id="fund-name" />
+                <Input
+                  type="text"
+                  placeholder="Fund name"
+                  id="fund-name"
+                  value={investorFundName}
+                  onChange={handleInvestorFundNameInputChange}
+                />
               </InputGroup>
             </InputCol>
 
@@ -163,6 +265,8 @@ function PrivateSaleInterestForm() {
                   type="text"
                   placeholder="https://www.google.com"
                   id="fund-website"
+                  value={investorFundWebsite}
+                  onChange={handleInvestorFundWebsiteInputChange}
                 />
               </InputGroup>
             </InputCol>

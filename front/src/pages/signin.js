@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback } from "react";
 import { Form, Formik } from "formik";
 import { useNavigate } from "react-router-dom";
 import { EntryPage } from "./style";

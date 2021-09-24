@@ -1,8 +1,7 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useCallback } from "react";
 import { Form, Formik } from "formik";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-
 import { EntryPage } from "./style";
 import Button from "../components/Button";
 import EntryCard from "../components/EntryCard";
@@ -23,7 +22,6 @@ const AlreadyWrapper = styled.p`
 
 function Signup() {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
 
   const initFormState = {
     first_name: "",
@@ -41,7 +39,6 @@ function Signup() {
 
   const handleSignup = useCallback(
     async (data) => {
-      const email = data.email;
       try {
         const resp = await signup(data);
         if (resp.data.result) {
