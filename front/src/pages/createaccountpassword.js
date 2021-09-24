@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState, useCallback, useEffect } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { EntryPage } from "./style";
 import EntryCard from "../components/EntryCard";
@@ -8,6 +8,7 @@ import Input from "../components/Input";
 import Button from "../components/Button";
 import { ReactComponent as UserIcon } from "../icons/user.svg";
 import { ReactComponent as LockIcon } from "../icons/lock.svg";
+import { verifyEmail, createPassword } from "../utils/api";
 
 const UserInfoWrapper = styled.div`
   display: flex;
@@ -28,7 +29,13 @@ const UserInfoWrapper = styled.div`
 function CreateAccountPassword() {
   const navigate = useNavigate();
 
+  const location = useLocation();
   const [password, setPassword] = useState("");
+
+  useEffect(() => {
+    localStorage.setItem('password_token', location.search.split("=")[1])
+    console.log("password_token?", localStorage.getItem("password_token"))
+  }, [])
 
   const handleSubmit = (event) => {
     event.preventDefault();
