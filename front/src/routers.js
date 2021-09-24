@@ -41,7 +41,7 @@ export default function Router() {
         { path: 'signinsms', element: <SigninSMS/> },
         { path: 'profile', element: <Profile /> },
         { path: 'sent-email', element: <SentEmail /> },
-        { path: 'verifyEmail/', element: <CreateAccountPassword /> },
+        { path: 'verifyEmail', element: <CreateAccountPassword /> },
         { path: 'private-sale-interest-form', element: <PrivateSaleInterestForm /> },
         // { path: '*', element: <Navigate to="/404" replace /> }
       ]
