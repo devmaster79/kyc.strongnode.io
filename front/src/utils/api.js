@@ -32,6 +32,7 @@ const createPassword = async (data) => {
 }
 
 const createProfile = async (data) => {
+    console.log("token?", token)
     const config = {
         url: profile_url,
         headers: {'Authorization': `Bearer ${token}`},
