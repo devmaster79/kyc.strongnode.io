@@ -29,7 +29,7 @@ function SentEmail() {
           Click the magin link and enter your user password to activate your
           create account
         </P>
-        <Button full onClick={() => navigate("/create-account-password")}>
+        <Button full onClick={() => navigate("/")}>
           OK
         </Button>
       </EntryCard>
