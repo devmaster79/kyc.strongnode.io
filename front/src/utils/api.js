@@ -99,5 +99,5 @@ const getNews = async () => {
 }
 
 export default signup;
-export { createPassword, signin, sendSMS, checkSMS, createQR, verifyTOTP };
+export { verifyEmail, createPassword, signin, sendSMS, checkSMS, createQR, verifyTOTP };
 export { getNews };

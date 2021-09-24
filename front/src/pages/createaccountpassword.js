@@ -33,9 +33,23 @@ function CreateAccountPassword() {
   const [password, setPassword] = useState("");
 
   useEffect(() => {
-    localStorage.setItem('password_token', location.search.split("=")[1])
-    console.log("password_token?", localStorage.getItem("password_token"))
+    handleVerifyEmail()
   }, [])
+
+  const handleVerifyEmail = useCallback(
+    async () => {
+      try {
+        localStorage.setItem('password_token', location.search.split("=")[1])
+        const res = await verifyEmail({
+          "password_token": localStorage.getItem("password_token")
+        })
+        console.log("res???", res);
+      } catch (err) {
+        console.log("Error for email verification", err);
+      }
+    },
+    []  
+  );
 
   const handleSubmit = (event) => {
     event.preventDefault();

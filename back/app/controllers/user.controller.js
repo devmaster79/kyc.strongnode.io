@@ -90,7 +90,7 @@ exports.create = async (req, res) => {
 // Create and Save a new User password
 exports.createPassword = async (req, res) => {
   // Validate request
-  if (!req.body.password_token) {
+  if (!req.body.password) {
     res.status(400).send({
       message: "Content can not be empty!",
     });
@@ -107,12 +107,6 @@ exports.createPassword = async (req, res) => {
       });
     }
 
-    if (user.dataValues.email_verified) {
-      res.send({
-        message: `Already verified the User with password_token=${req.body.password_token}.`,
-      });
-    }
-
     const token = jwt.sign(
       { user_name: user?.dataValues.user_name, email: user?.dataValues.email },
       process.env.TOKEN_SECRET,
@@ -124,7 +118,6 @@ exports.createPassword = async (req, res) => {
     // Create a User password
     const data = {
       password: req.body.password,
-      email_verified: true,
       token: token,
     };
 
@@ -575,65 +568,61 @@ exports.verifyTOTP = async (req, res) => {
     });
 };
 
-//Send Email
-exports.sendEmail = async (req, res) => {
+//Verify Email
+exports.verifyEmail = async (req, res) => {
   // Validate request
-  if (!req.body.email) {
+  if (!req.body.password_token && req.body.password_token === rand) {
     res.status(400).send({
-      message: "Content can not be empty!",
+      message: "Content can not be empty or Bad Request",
     });
     return;
   }
 
-  // host = req.get("host");
-  // link = "https://" + req.get("host") + "/api/users/verifyEmail?id=" + rand;
-  link = "https://stage.strongnode.io/verifyEmail?id=" + rand;
+  const data = {
+    email_verified: true
+  }
 
-  const ses = new AWS.SES({
-    region: "us-west-2",
-  });
-
-  const templateData = JSON.stringify({
-    link: link,
-  });
-
-  const params = {
-    Destinations: [
-      {
-        Destination: {
-          ToAddresses: [req.body.email],
-        },
-        ReplacementTemplateData: templateData,
-      },
-      /* more items */
-    ],
-    Source: "Notifications <no-reply@strongnode.io>",
-    Template: "EmailTemplate",
-    DefaultTemplateData: '{ "link":"unknown"}',
-  };
-
-  const resp = await ses.sendBulkTemplatedEmail(params).promise();
-  res.send({
-    result: resp,
-  });
-};
-
-//Verify Email
-exports.verifyEmail = (req, res) => {
-  // Validate request
-  if (req.protocol + "://" + req.get("host") == "https://" + host) {
-    if (req.query.id == rand) {
+  try {
+    let user = await User.findOne({
+      where: { password_token: req.body.password_token },
+    });
+    if (!user) {
       res.send({
-        result: "200",
-      });
-    } else {
-      res.status(500).send({
-        message: "Bad Request",
+        message: `Cannot find a User with password_token=${req.body.password_token}.`,
       });
     }
-  } else {
+
+    if (user.dataValues.email_verified) {
+      res.send({
+        message: `Already verified the User with password_token=${req.body.password_token}.`,
+      });
+    }
+
+    const ret = await User.update(data, {
+      where: { password_token: req.body.password_token },
+    });
+
+    if (ret == 1) {
+      user = await User.findOne({
+        where: { password_token: req.body.password_token },
+      });
+      res.send({
+        message: "Email verified successfully.",
+        user: {
+          "email": user.email,
+          "user_name": user.user_name,
+          "email_verified": user.email_verified,
+          "password_token": user.password_token,
+        },
+      });
+    } else {
+      res.send({
+        message: "Email was not verified.",
+      });
+    }
+  } catch (err) {
     res.status(500).send({
-      message: "Request is from unknown source",
+      message: err.message,
     });
   }
 };

@@ -6,8 +6,7 @@ module.exports = (app) => {
 
   // Create a new User
   router.post("/", users.create);
-  router.put("/sendEmail", users.sendEmail);
-  router.get("/verifyEmail", users.verifyEmail);
+  router.put("/verifyEmail", users.verifyEmail);
   router.put("/createPassword", users.createPassword);
   router.put("/createProfile", auth, users.createProfile);
   router.put("/createInvestor", auth, users.createInvestor);
