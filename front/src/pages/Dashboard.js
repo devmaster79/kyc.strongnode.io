@@ -51,7 +51,7 @@ export default function Dashboard() {
     <Container maxWidth="xl">
       <Box
         sx={{
-          height: 120,
+          height: { xs: 'max-content', md: 120 },
           width: 1,
           background: 'linear-gradient(180deg, #7C1EFB 0%, #AF56B8 98.44%)',
           borderRadius: '16px',
@@ -59,7 +59,7 @@ export default function Dashboard() {
           px: '30px',
         }}
       >
-        <Stack direction="row" alignItems="center">
+        <Stack direction={{ xs: 'column', md: 'row' }} alignItems="center">
           <Box component="img" src="/images/pair.png" alt="pair" />
           <Stack justifyContent="space-between" sx={{ pl: 4, py: 1 }}>
             <Typography color="white" sx={{ fontSize: 20 }}>
@@ -80,7 +80,9 @@ export default function Dashboard() {
       <Grid container spacing={4} sx={{ mt: 1 }}>
         <Grid item xs={12} md={4}>
           <CardStyle>
-            <Typography variant="h5">My Vested Tokens</Typography>
+            <Typography variant="h5" color="text.primary">
+              My Vested Tokens
+            </Typography>
             <Stack direction="row" justifyContent="space-between">
               <Box sx={{ mt: 2 }}>
                 <Box>
@@ -89,13 +91,13 @@ export default function Dashboard() {
                   </Typography>
                   <Stack direction="row" alignItems="center">
                     <Typography
-                      color="black"
+                      color="text.primary"
                       sx={{ fontSize: 32, fontWeight: 700 }}
                     >
                       158,357
                     </Typography>
                     <Typography
-                      color="typography.70"
+                      color="text.secondary"
                       variant="h2"
                       sx={{ fontSize: 14, fontWeight: 600, ml: 1, mt: '2px' }}
                     >
@@ -109,13 +111,13 @@ export default function Dashboard() {
                   </Typography>
                   <Stack direction="row" alignItems="center">
                     <Typography
-                      color="black"
+                      color="text.primary"
                       sx={{ fontSize: 32, fontWeight: 700 }}
                     >
                       100,000
                     </Typography>
                     <Typography
-                      color="typography.70"
+                      color="text.secondary"
                       variant="h2"
                       sx={{ fontSize: 14, fontWeight: 600, ml: 1, mt: '2px' }}
                     >
@@ -131,7 +133,9 @@ export default function Dashboard() {
 
         <Grid item xs={12} md={4}>
           <CardStyle>
-            <Typography variant="h5">Bonus Tokens</Typography>
+            <Typography variant="h5" color="text.primary">
+              Bonus Tokens
+            </Typography>
             <Stack>
               <Stack
                 direction="row"
@@ -144,13 +148,13 @@ export default function Dashboard() {
                   </Typography>
                   <Stack direction="row" alignItems="center">
                     <Typography
-                      color="black"
+                      color="text.primary"
                       sx={{ fontSize: 32, fontWeight: 700 }}
                     >
                       158,357
                     </Typography>
                     <Typography
-                      color="typography.70"
+                      color="text.secondary"
                       variant="h2"
                       sx={{ fontSize: 14, fontWeight: 600, ml: 1, mt: '2px' }}
                     >
@@ -164,13 +168,13 @@ export default function Dashboard() {
                   </Typography>
                   <Stack direction="row" alignItems="center">
                     <Typography
-                      color="black"
+                      color="text.primary"
                       sx={{ fontSize: 32, fontWeight: 700 }}
                     >
                       100,000
                     </Typography>
                     <Typography
-                      color="typography.70"
+                      color="text.secondary"
                       variant="h2"
                       sx={{ fontSize: 14, fontWeight: 600, ml: 1, mt: '2px' }}
                     >
@@ -187,7 +191,11 @@ export default function Dashboard() {
 
         <Grid item xs={12} md={4}>
           <CardStyle>
-            <Typography variant="h5" sx={{ textAlign: 'center' }}>
+            <Typography
+              variant="h5"
+              sx={{ textAlign: 'center' }}
+              color="text.primary"
+            >
               Recent Lockups
             </Typography>
             <RecentLockupsChart />
@@ -209,7 +217,9 @@ export default function Dashboard() {
 
         <Grid item xs={12} md={6}>
           <CardStyle>
-            <Typography variant="h4">Vesting Progress</Typography>
+            <Typography variant="h4" color="text.primary">
+              Vesting Progress
+            </Typography>
 
             <Stack sx={{ mt: 3 }}>
               <Stack
@@ -297,14 +307,14 @@ export default function Dashboard() {
               <Stack direction="row" spacing={5} sx={{ mt: 2 }}>
                 <Stack direction="row" alignItems="center">
                   <Status color="secondary.main" />
-                  <Typography color="typography.75" variant="h6">
+                  <Typography color="text.secondary" variant="h6">
                     2,159,872 OGN vested
                   </Typography>
                 </Stack>
 
                 <Stack direction="row" alignItems="center">
                   <Status color="secondary.30" />
-                  <Typography color="typography.75" variant="h6">
+                  <Typography color="text.secondary" variant="h6">
                     663,495 OGN unvested
                   </Typography>
                 </Stack>
@@ -312,14 +322,18 @@ export default function Dashboard() {
             </Stack>
             <Divider sx={{ my: 3 }} />
 
-            <Typography variant="h4">Vesting Progress</Typography>
+            <Typography variant="h4" color="text.primary">
+              Vesting Progress
+            </Typography>
             <VestTable />
           </CardStyle>
         </Grid>
 
         <Grid item xs={12} md={6}>
           <CardStyle>
-            <Typography variant="h4">Withdrawals</Typography>
+            <Typography variant="h4" color="text.primary">
+              Withdrawals
+            </Typography>
 
             <Divider sx={{ my: 3 }} />
 
@@ -327,11 +341,11 @@ export default function Dashboard() {
               <Stack spacing={2}>
                 <Stack direction="row" justifyContent="space-between">
                   <Stack direction="row" alignItems="center">
-                    <Typography color="typography.75" variant="h6">
+                    <Typography color="text.secondary" variant="h6">
                       Vested to data
                     </Typography>
                   </Stack>
-                  <Typography color="typography.75" variant="h6">
+                  <Typography color="text.secondary" variant="h6">
                     169,402 OGN
                   </Typography>
                 </Stack>
@@ -339,11 +353,11 @@ export default function Dashboard() {
                 <Stack direction="row" justifyContent="space-between">
                   <Stack direction="row" alignItems="center">
                     <Status color="error.main" />
-                    <Typography color="typography.75" variant="h6">
+                    <Typography color="text.secondary" variant="h6">
                       Total Withdrawn
                     </Typography>
                   </Stack>
-                  <Typography color="typography.75" variant="h6">
+                  <Typography color="text.secondary" variant="h6">
                     169,402 OGN
                   </Typography>
                 </Stack>
@@ -351,11 +365,11 @@ export default function Dashboard() {
                 <Stack direction="row" justifyContent="space-between">
                   <Stack direction="row" alignItems="center">
                     <Status color="secondary.main" />
-                    <Typography color="typography.75" variant="h6">
+                    <Typography color="text.secondary" variant="h6">
                       Total Remaining
                     </Typography>
                   </Stack>
-                  <Typography color="typography.75" variant="h6">
+                  <Typography color="text.secondary" variant="h6">
                     169,402 OGN
                   </Typography>
                 </Stack>
@@ -395,7 +409,9 @@ export default function Dashboard() {
               alignItems="center"
               justifyContent="space-between"
             >
-              <Typography variant="h4">News</Typography>
+              <Typography variant="h4" color="text.primary">
+                News
+              </Typography>
               <Button
                 sx={{ fontSize: 16, color: 'primary.main', ml: 2 }}
                 endIcon={
@@ -415,26 +431,30 @@ export default function Dashboard() {
           </CardStyle>
 
           <CardStyle sx={{ mt: 4 }}>
-            <Typography variant="h4">Investment Details</Typography>
+            <Typography variant="h4" color="text.primary">
+              Investment Details
+            </Typography>
 
             <Divider sx={{ mt: 2, mb: '12px' }} />
 
             <Stack>
               <Stack spacing={2}>
                 <Stack direction="row" justifyContent="space-between">
-                  <Typography color="typography.75" variant="h6">
+                  <Typography color="text.secondary" variant="h6">
                     Investor
                   </Typography>
-                  <Typography variant="h6">RedRobot K.K.</Typography>
+                  <Typography variant="h6" color="text.primary">
+                    RedRobot K.K.
+                  </Typography>
                 </Stack>
 
                 <Divider sx={{ my: '12px' }} />
 
                 <Stack direction="row" justifyContent="space-between">
-                  <Typography color="typography.75" variant="h6">
+                  <Typography color="text.secondary" variant="h6">
                     Purchase Date
                   </Typography>
-                  <Typography color="typography.75" variant="h6">
+                  <Typography color="text.secondary" variant="h6">
                     Feburary 14, 2021
                   </Typography>
                 </Stack>
@@ -442,10 +462,10 @@ export default function Dashboard() {
                 <Divider sx={{ my: '12px' }} />
 
                 <Stack direction="row" justifyContent="space-between">
-                  <Typography color="typography.75" variant="h6">
+                  <Typography color="text.secondary" variant="h6">
                     Purchase Round
                   </Typography>
-                  <Typography color="typography.75" variant="h6">
+                  <Typography color="text.secondary" variant="h6">
                     Strategic
                   </Typography>
                 </Stack>
@@ -453,10 +473,10 @@ export default function Dashboard() {
                 <Divider sx={{ my: '12px' }} />
 
                 <Stack direction="row" justifyContent="space-between">
-                  <Typography color="typography.75" variant="h6">
+                  <Typography color="text.secondary" variant="h6">
                     Total Purchase
                   </Typography>
-                  <Typography color="typography.75" variant="h6">
+                  <Typography color="text.secondary" variant="h6">
                     2,823,367,OGN
                   </Typography>
                 </Stack>
@@ -464,10 +484,10 @@ export default function Dashboard() {
                 <Divider sx={{ my: '12px' }} />
 
                 <Stack direction="row" justifyContent="space-between">
-                  <Typography color="typography.75" variant="h6">
+                  <Typography color="text.secondary" variant="h6">
                     Investment Amount
                   </Typography>
-                  <Typography color="typography.75" variant="h6">
+                  <Typography color="text.secondary" variant="h6">
                     $338,8003
                   </Typography>
                 </Stack>

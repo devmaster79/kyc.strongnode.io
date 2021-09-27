@@ -8,7 +8,7 @@ import {
   IconButton,
   Typography,
   Badge,
-  Hidden
+  Hidden,
 } from '@material-ui/core'
 import useCollapseDrawer from '../../hooks/useCollapseDrawer'
 import AccountPopover from './AccountPopover'
@@ -21,7 +21,7 @@ const APPBAR_DESKTOP = 80
 
 const RootStyle = styled(AppBar)(({ theme }) => ({
   boxShadow: 'none',
-  backgroundColor: '#F3F5F9',
+  backgroundColor: theme.palette.background.default,
   boxShadow: '0px 2px 2px rgba(0, 0, 0, 0.03)',
   [theme.breakpoints.up('lg')]: {
     width: `calc(100% - ${DRAWER_WIDTH}px + 30px)`,
@@ -50,25 +50,32 @@ export default function DashboardNavbar({ onOpenSidebar }) {
       }}
     >
       <ToolbarStyle>
-        {/* <Hidden width="lgUp">
+        <Hidden lgUp>
           <IconButton
             onClick={onOpenSidebar}
             sx={{ mr: 1, color: 'text.primary' }}
           >
             <SvgIconStyle
               src="/icons/hamburger.svg"
-              sx={{ width: '100%', height: '100%' }}
+              color="action"
+              sx={{ width: 22, height: 22 }}
             />
           </IconButton>
-        </Hidden> */}
-        <IconButton onClick={onToggleCollapse}>
-          <SvgIconStyle
-            src="/icons/hamburger.svg"
-            color="action"
-            sx={{ width: 22, height: 22 }}
-          />
-        </IconButton>
-        <Typography color="black" variant="body2" sx={{ml: 4}}>
+        </Hidden>
+        <Hidden lgDown>
+          <IconButton onClick={onToggleCollapse}>
+            <SvgIconStyle
+              src="/icons/hamburger.svg"
+              color="action"
+              sx={{ width: 22, height: 22 }}
+            />
+          </IconButton>
+        </Hidden>
+        <Typography
+          variant="body2"
+          sx={{ ml: 4, display: { xs: 'none', md: 'block' } }}
+          color="text.secondary"
+        >
           Check out the latest OGN token metrics 300+ investors have locked up
           20m+ tokens
         </Typography>
@@ -80,7 +87,10 @@ export default function DashboardNavbar({ onOpenSidebar }) {
         >
           <IconButton>
             <Badge badgeContent={3} color="error">
-              <SvgIconStyle src="/icons/bell.svg" sx={{width: 20, height: 24}} />
+              <SvgIconStyle
+                src="/icons/bell.svg"
+                sx={{ width: 20, height: 24 }}
+              />
             </Badge>
           </IconButton>
           <AccountPopover />

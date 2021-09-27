@@ -57,19 +57,21 @@ export default function GroupingFixedHeader() {
   const [page, setPage] = useState(1)
   const [rowsPerPage, setRowsPerPage] = useState(10)
 
-  const [history, setHistory] = useState()
+  const [history, setHistory] = useState([])
+  console.log("history1 ======================= >", history);
+  console.log("history2 ======================= >", history.length);
+
   useEffect(() => {
     async function fetch() {
       const token = localStorage.getItem('token')
 
-      const url = process.env.REACT_APP_BASE_URL + '/api/history/findAllVested/?user_name=test.cool';
-      console.log("server url2: ", url);
-      const result = await axios.get(
-        url,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        },
-      )
+      const url =
+        process.env.REACT_APP_BASE_URL +
+        '/api/history/findAllVested/?user_name=admin'
+      console.log('server url2: ', url)
+      const result = await axios.get(url, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       console.log(result.data)
       setHistory(result.data)
     }
@@ -106,7 +108,7 @@ export default function GroupingFixedHeader() {
             </TableHead>
 
             <TableBody>
-              {history &&
+              {history.length > 0 &&
                 history
                   .slice(
                     (page - 1) * rowsPerPage,

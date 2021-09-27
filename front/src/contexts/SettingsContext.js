@@ -1,24 +1,24 @@
-import { createContext } from 'react';
-import useLocalStorage from '../hooks/useLocalStorage';
+import { createContext } from 'react'
+import useLocalStorage from '../hooks/useLocalStorage'
 
 const initialState = {
   themeMode: 'light',
   onChangeMode: () => {},
-};
+}
 
-const SettingsContext = createContext(initialState);
+const SettingsContext = createContext(initialState)
 
 function SettingsProvider({ children }) {
   const [settings, setSettings] = useLocalStorage('settings', {
     themeMode: 'light',
-  });
+  })
 
-  const onChangeMode = (event) => {
+  const onChangeMode = (mode) => {
     setSettings({
       ...settings,
-      themeMode: event.target.value
-    });
-  };
+      themeMode: mode,
+    })
+  }
 
   return (
     <SettingsContext.Provider
@@ -29,7 +29,7 @@ function SettingsProvider({ children }) {
     >
       {children}
     </SettingsContext.Provider>
-  );
+  )
 }
 
-export { SettingsProvider, SettingsContext };
+export { SettingsProvider, SettingsContext }
