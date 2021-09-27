@@ -9,11 +9,12 @@ import DashboardFooter from './DashboardFooter'
 const APP_BAR_MOBILE = 64
 const APP_BAR_DESKTOP = 92
 
-const RootStyle = styled('div')({
+const RootStyle = styled('div')(({ theme }) => ({
   display: 'flex',
   minHeight: '100%',
   overflow: 'hidden',
-})
+  background: theme.palette.background.default,
+}))
 
 const MainStyle = styled('div')(({ theme }) => ({
   flexGrow: 1,

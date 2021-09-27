@@ -30,10 +30,11 @@ db.sequelize.sync();
 
 // simple route
 app.use(express.static(path.join(__dirname, '../front/build')));
-
+/*
 app.get('/*', function(req,res) {
 		res.sendFile(path.join(__dirname, '../front/build', 'index.html'));
 });
+*/
 
 require("./app/routes/history.routes")(app);
 require("./app/routes/news.routes")(app);

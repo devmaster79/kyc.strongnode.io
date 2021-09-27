@@ -1,6 +1,7 @@
 import { Switch, Stack } from '@material-ui/core'
 import { styled } from '@material-ui/styles'
 import SvgIconStyle from 'components/SvgIconStyle'
+import useSettings from 'hooks/useSettings'
 
 const IOSSwitch = styled((props) => (
   <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
@@ -54,11 +55,21 @@ const IOSSwitch = styled((props) => (
   },
 }))
 export default function ThemeSwitch({ sx, color }) {
+  const { themeMode, onChangeMode } = useSettings()
+  const handleChange = (event) => {
+    onChangeMode(event.target.checked ? 'dark' : 'light')
+  }
   return (
     <Stack direction="row" alignItems="center">
-      <SvgIconStyle src="/icons/sun.svg" sx={{ width: 24, height: 24, background: 'white' }} />
-      <IOSSwitch />
-      <SvgIconStyle src="/icons/moon.svg" sx={{ width: 24, height: 24, background: 'white' }} />
+      <SvgIconStyle
+        src="/icons/sun.svg"
+        sx={{ width: 24, height: 24, background: 'white' }}
+      />
+      <IOSSwitch onChange={handleChange} checked={themeMode === 'dark'} />
+      <SvgIconStyle
+        src="/icons/moon.svg"
+        sx={{ width: 24, height: 24, background: 'white' }}
+      />
     </Stack>
   )
 }

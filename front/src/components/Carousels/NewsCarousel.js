@@ -29,8 +29,12 @@ function CarouselItem({ item }) {
           sx={{ position: 'relative' }}
           flexGrow={1}
         >
-          <Typography variant="h5">{item.title}</Typography>
-          <Typography sx={{ fontSize: 14 }}>{item.description}</Typography>
+          <Typography variant="h5" color="text.primary">
+            {item.title}
+          </Typography>
+          <Typography sx={{ fontSize: 14 }} color="text.primary">
+            {item.description}
+          </Typography>
           <Typography
             onClick={() => setOpen(!open)}
             color="primary"
@@ -48,7 +52,7 @@ function CarouselItem({ item }) {
       </Stack>
       {open && (
         <Stack sx={{ mt: 3 }}>
-          <Typography sx={{ fontSize: 14 }}>
+          <Typography sx={{ fontSize: 14 }} color="text.primary">
             Lorem ipsum dolor sit amet Lorem ipsum dolor sit ametLorem ipsum
             dolor sit ametLorem ipsum dolor sit ametLorem ipsum dolor sit
             ametLorem ipsum dolor sit ametLorem ipsum dolor sit ametLorem ipsum

@@ -1,12 +1,7 @@
 import { useEffect } from 'react'
 import { Link as RouterLink, useLocation } from 'react-router-dom'
-import {alpha, styled } from '@material-ui/core/styles'
-import {
-  Box,
-  Stack,
-  Drawer,
-  Hidden
-} from '@material-ui/core'
+import { alpha, styled } from '@material-ui/core/styles'
+import { Box, Stack, Drawer, Hidden } from '@material-ui/core'
 import useCollapseDrawer from '../../hooks/useCollapseDrawer'
 import Logo from '../../components/Logo'
 import Scrollbar from '../../components/Scrollbar'
@@ -80,7 +75,31 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
         }),
       }}
     >
-      <Hidden width="lgDown">
+      <Hidden lgUp>
+        <Drawer
+          open={isOpenSidebar}
+          onClose={onCloseSidebar}
+          PaperProps={{
+            sx: {
+              borderRadius: '0px 30px 30px 0px',
+              width: DRAWER_WIDTH,
+              background:
+                'linear-gradient(180deg, #7C1EFB 0%, #AF56B8 30.21%, #7C1EFB 64.06%, #AF56B8 100%)',
+              ...(isCollapse && {
+                width: COLLAPSE_WIDTH,
+              }),
+              ...(collapseHover && {
+                borderRight: 0,
+                boxShadow: (theme) => theme.customShadows.z20,
+                bgcolor: '#2D405A',
+              }),
+            },
+          }}
+        >
+          {renderContent}
+        </Drawer>
+      </Hidden>
+      <Hidden lgDown>
         <Drawer
           open
           variant="persistent"
@@ -90,7 +109,8 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
             sx: {
               borderRadius: '0px 30px 30px 0px',
               width: DRAWER_WIDTH,
-              background: 'linear-gradient(180deg, #7C1EFB 0%, #AF56B8 30.21%, #7C1EFB 64.06%, #AF56B8 100%)',
+              background:
+                'linear-gradient(180deg, #7C1EFB 0%, #AF56B8 30.21%, #7C1EFB 64.06%, #AF56B8 100%)',
               ...(isCollapse && {
                 width: COLLAPSE_WIDTH,
               }),
