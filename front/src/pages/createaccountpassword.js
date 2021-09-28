@@ -74,7 +74,7 @@ function CreateAccountPassword() {
         const res = await createPassword(data)
         if(res.data && res.data.token) {
           localStorage.setItem("token", res.data.token)
-          navigate("/profile");
+          navigate("/kyc");
         }
       } catch (err) {
         console.log("Error for create password", err);

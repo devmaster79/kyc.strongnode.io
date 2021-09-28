@@ -11,8 +11,9 @@ import MagicLink from './pages/magiclink';
 import SigninPass from './pages/signinpass';
 import SigninTwoStep from './pages/signintwostep';
 import SigninSMS from './pages/singinsms';
-import CreateAccountPassword from './pages/createaccountpassword'
-import PrivateSaleInterestForm from './pages/privatesaleinterestform'
+import CreateAccountPassword from './pages/createaccountpassword';
+import PrivateSaleInterestForm from './pages/privatesaleinterestform';
+import KYC from './pages/kyc';
 
 export default function Router() {
   return useRoutes([
@@ -43,6 +44,7 @@ export default function Router() {
         { path: 'sent-email', element: <SentEmail /> },
         { path: 'verifyEmail', element: <CreateAccountPassword /> },
         { path: 'private-sale-interest-form', element: <PrivateSaleInterestForm /> },
+        { path: 'kyc', element: <KYC /> },
         // { path: '*', element: <Navigate to="/404" replace /> }
       ]
     },
