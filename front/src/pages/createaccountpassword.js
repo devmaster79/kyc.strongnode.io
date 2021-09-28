@@ -47,7 +47,7 @@ function CreateAccountPassword() {
         })
         if(res.data && res.data?.user.email_verified) {
           setUserName(res.data?.user.user_name)
-          localStorage.setItem("user_name", res.data?.user.user_name)
+          localStorage.setItem("username", res.data?.user.user_name)
           localStorage.setItem("email", res.data?.user.email)
         }
       } catch (err) {
