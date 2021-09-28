@@ -56,7 +56,7 @@ export default function Dashboard() {
         }
       } catch (err) {
         enqueueSnackbar('You must sign in!', { variant: 'error' })
-        console.log("Error for email verification", err);
+        console.log("Error for getting user info", err);
       }
     },
     []
