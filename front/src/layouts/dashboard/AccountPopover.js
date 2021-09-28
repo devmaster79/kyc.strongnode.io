@@ -1,7 +1,29 @@
+import { useState, useEffect, useCallback } from 'react'
 import { Avatar, Stack, Typography } from '@material-ui/core'
 import SvgIconStyle from 'components/SvgIconStyle'
 
 export default function AccountPopover() {
+  const [userName, setUserName] = useState("");
+  const [email, setEmail] = useState("");
+
+  useEffect(() => {
+    handleDashboard();
+  })
+
+  const handleDashboard = useCallback(
+    async () => {
+      try {
+        if(localStorage.getItem("username") && localStorage.getItem("email")) {
+          setUserName(localStorage.getItem("username"))
+          setEmail(localStorage.getItem("email"))
+        } 
+      } catch (err) {
+        console.log("Error for email verification", err);
+      }
+    },
+    []
+  )
+
   return (
     <>
       <Stack
@@ -19,9 +41,9 @@ export default function AccountPopover() {
       >
         <Avatar src="/images/avatar.png" alt="avatar" />
         <Stack sx={{ color: 'black', ml: 2, mr: 3 }}>
-          <Typography color="white" sx={{ fontSize: 18 }}>Lois James</Typography>
+          <Typography color="white" sx={{ fontSize: 18 }}>{userName}</Typography>
           <Typography color="white" sx={{ fontSize: 12 }}>
-            David@gmail.com
+            {email}
           </Typography>
         </Stack>
         <SvgIconStyle

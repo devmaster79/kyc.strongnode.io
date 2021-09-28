@@ -12,7 +12,7 @@ import {
   LinearProgress,
 } from '@material-ui/core'
 import { styled } from '@material-ui/core/styles'
-import { useEffect, useState } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import axios from 'utils/axios'
 import Status from 'components/Status'
 import VestTable from 'components/dashboard/VestTable'
@@ -43,10 +43,25 @@ export default function Dashboard() {
     setNewsOpen(!newsOpen)
   }
   useEffect(() => {
-    const token = localStorage.getItem('token')
-    if (!token) enqueueSnackbar('You must sign in!', { variant: 'error' })
-    else enqueueSnackbar('Welcome to dashboard', { variant: 'success' })
+    handleDashboard();
   })
+
+  const handleDashboard = useCallback(
+    async () => {
+      try {
+        if(localStorage.getItem("username") && localStorage.getItem("email")) {
+          enqueueSnackbar('Welcome to dashboard', { variant: 'success' })
+        } else {
+          enqueueSnackbar('You must sign in!', { variant: 'error' })
+        }
+      } catch (err) {
+        enqueueSnackbar('You must sign in!', { variant: 'error' })
+        console.log("Error for email verification", err);
+      }
+    },
+    []
+  )
+
   return (
     <Container maxWidth="xl">
       <Box
