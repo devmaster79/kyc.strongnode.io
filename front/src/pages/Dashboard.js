@@ -44,7 +44,7 @@ export default function Dashboard() {
   }
   useEffect(() => {
     handleDashboard();
-  })
+  }, [])
 
   const handleDashboard = useCallback(
     async () => {
