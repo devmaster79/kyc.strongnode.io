@@ -8,11 +8,13 @@ import Input from "../components/Input";
 import ValidatedField from "../components/ValidatedField";
 import { magic } from '../utils/index';
 import { singinSchema } from "../static/formSchemas";
+import { checkSMS } from "../utils/api";
 
 function Signin() {
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
+  const [showError, setShowError] = useState(false);
 
   const initFormState = {
     email: ""
@@ -21,7 +23,14 @@ function Signin() {
   const handleFormSubmit = (data, { setSubmitting }) => {
     setSubmitting(true);
     // make async call to submit registration data here
-    magicLogin(data);
+    const t_email = data.email
+    checkSMS(t_email).then(r => {
+			if(r.data.length !== 0 && r.data[0].email === t_email) {
+				magicLogin(data);
+			} else {
+				setShowError(true);
+			}
+		});
     setSubmitting(false);
   }
 
@@ -62,13 +71,14 @@ function Signin() {
                 type="email"
                 validateField={validateField}
             />
+              {showError && <p style={{marginBottom: "10px", color: "red"}}>Not registered, please signup first!</p>}
               <Button
                 disabled={isSubmitting}
                 type="submit"
                 full
               >
                 Confirm
-          </Button>
+              </Button>
             </Form>
           )}
         </Formik>
