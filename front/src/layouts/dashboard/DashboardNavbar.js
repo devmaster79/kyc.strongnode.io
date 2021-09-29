@@ -76,7 +76,7 @@ export default function DashboardNavbar({ onOpenSidebar }) {
           sx={{ ml: 4, display: { xs: 'none', md: 'block' } }}
           color="text.secondary"
         >
-          Check out the latest OGN token metrics 300+ investors have locked up
+          Check out the latest SNE token metrics 300+ investors have locked up
           20m+ tokens
         </Typography>
         <Box sx={{ flexGrow: 1 }} />

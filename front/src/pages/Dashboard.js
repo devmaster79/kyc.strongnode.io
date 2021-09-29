@@ -78,16 +78,16 @@ export default function Dashboard() {
           <Box component="img" src="/images/pair.png" alt="pair" />
           <Stack justifyContent="space-between" sx={{ pl: 4, py: 1 }}>
             <Typography color="white" sx={{ fontSize: 20 }}>
-              Stake OGN on ousd.com
+              Stake SNE on ousd.com
             </Typography>
             <Typography color="white" sx={{ fontSize: 12 }}>
-              As part of the Origin Dolllar governance project, OGN staking has
+              As part of the Origin Dolllar governance project, SNE staking has
               moved to ousd.com
             </Typography>
           </Stack>
           <Box sx={{ flexGrow: 1 }} />
           <Button variant="contained" size="large">
-            Earn OGN
+            Earn SNE
           </Button>
         </Stack>
       </Box>
@@ -116,7 +116,7 @@ export default function Dashboard() {
                       variant="h2"
                       sx={{ fontSize: 14, fontWeight: 600, ml: 1, mt: '2px' }}
                     >
-                      OGN
+                      SNE
                     </Typography>
                   </Stack>
                 </Box>
@@ -136,7 +136,7 @@ export default function Dashboard() {
                       variant="h2"
                       sx={{ fontSize: 14, fontWeight: 600, ml: 1, mt: '2px' }}
                     >
-                      OGN
+                      SNE
                     </Typography>
                   </Stack>
                 </Box>
@@ -173,7 +173,7 @@ export default function Dashboard() {
                       variant="h2"
                       sx={{ fontSize: 14, fontWeight: 600, ml: 1, mt: '2px' }}
                     >
-                      OGN
+                      SNE
                     </Typography>
                   </Stack>
                 </Box>
@@ -193,7 +193,7 @@ export default function Dashboard() {
                       variant="h2"
                       sx={{ fontSize: 14, fontWeight: 600, ml: 1, mt: '2px' }}
                     >
-                      OGN
+                      SNE
                     </Typography>
                   </Stack>
                 </Box>
@@ -323,14 +323,14 @@ export default function Dashboard() {
                 <Stack direction="row" alignItems="center">
                   <Status color="secondary.main" />
                   <Typography color="text.secondary" variant="h6">
-                    2,159,872 OGN vested
+                    2,159,872 SNE vested
                   </Typography>
                 </Stack>
 
                 <Stack direction="row" alignItems="center">
                   <Status color="secondary.30" />
                   <Typography color="text.secondary" variant="h6">
-                    663,495 OGN unvested
+                    663,495 SNE unvested
                   </Typography>
                 </Stack>
               </Stack>
@@ -361,7 +361,7 @@ export default function Dashboard() {
                     </Typography>
                   </Stack>
                   <Typography color="text.secondary" variant="h6">
-                    169,402 OGN
+                    169,402 SNE
                   </Typography>
                 </Stack>
 
@@ -373,7 +373,7 @@ export default function Dashboard() {
                     </Typography>
                   </Stack>
                   <Typography color="text.secondary" variant="h6">
-                    169,402 OGN
+                    169,402 SNE
                   </Typography>
                 </Stack>
 
@@ -385,7 +385,7 @@ export default function Dashboard() {
                     </Typography>
                   </Stack>
                   <Typography color="text.secondary" variant="h6">
-                    169,402 OGN
+                    169,402 SNE
                   </Typography>
                 </Stack>
               </Stack>
@@ -492,7 +492,7 @@ export default function Dashboard() {
                     Total Purchase
                   </Typography>
                   <Typography color="text.secondary" variant="h6">
-                    2,823,367,OGN
+                    2,823,367,SNE
                   </Typography>
                 </Stack>
 

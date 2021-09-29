@@ -15,6 +15,7 @@ import Scrollbar from 'components/Scrollbar'
 import Status from 'components/Status'
 import axios from 'axios'
 import { fDate } from 'utils/formatTime'
+import { useSnackbar } from 'notistack5'
 
 function createData(token, stock, date) {
   return { token, stock, date }
@@ -31,10 +32,10 @@ const GROUPING_TABLE = () => {
 const COLUMNS = [
   {
     id: 'token',
-    label: 'OGN Token',
+    label: 'SNE Token',
     // minWidth: 170,
     align: 'left',
-    format: (value) => `${value.toLocaleString('en-US')} OGN`,
+    format: (value) => `${value.toLocaleString('en-US')} SNE`,
   },
   {
     id: 'stock',
@@ -54,26 +55,25 @@ const COLUMNS = [
 // ----------------------------------------------------------------------
 
 export default function GroupingFixedHeader() {
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar()
   const [page, setPage] = useState(1)
   const [rowsPerPage, setRowsPerPage] = useState(10)
 
-  const [history, setHistory] = useState([])
-  console.log("history1 ======================= >", history);
-  console.log("history2 ======================= >", history.length);
-
+  const [history, setHistory] = useState()
   useEffect(() => {
     async function fetch() {
       const token = localStorage.getItem('token')
-
       const url =
         process.env.REACT_APP_BASE_URL +
-        '/api/history/findAllVested/?user_name=admin'
-      console.log('server url2: ', url)
+        '/api/history/findAllVested/?user_name=test'
       const result = await axios.get(url, {
         headers: { Authorization: `Bearer ${token}` },
       })
-      console.log(result.data)
-      setHistory(result.data)
+      if (typeof history === 'string') {
+        enqueueSnackbar('History data is not array!', { variant: 'error' })
+      } else {
+        setHistory(result.data)
+      }
     }
     fetch()
   }, [])
@@ -108,7 +108,7 @@ export default function GroupingFixedHeader() {
             </TableHead>
 
             <TableBody>
-              {history.length > 0 &&
+              {history &&
                 history
                   .slice(
                     (page - 1) * rowsPerPage,
@@ -120,7 +120,7 @@ export default function GroupingFixedHeader() {
                         <Stack direction="row" alignItems="center">
                           <Status color="secondary.main" />
                           <Typography variant="h5">
-                            {row.token_amount} OGN
+                            {row.token_amount} SNE
                           </Typography>
                         </Stack>
                       </TableCell>
