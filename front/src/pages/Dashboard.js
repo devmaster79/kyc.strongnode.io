@@ -157,7 +157,7 @@ export default function Dashboard() {
                 justifyContent="space-between"
                 sx={{ mt: 2, mr: 1 }}
               >
-                <Box>
+                <Box sx={{mr:1}}>
                   <Typography color="warning.main" variant="h2">
                     Earned
                   </Typography>
@@ -177,7 +177,7 @@ export default function Dashboard() {
                     </Typography>
                   </Stack>
                 </Box>
-                <Box>
+                <Box sx={{ml:1}}>
                   <Typography color="primary" variant="h2">
                     Locked Up
                   </Typography>
