@@ -140,4 +140,4 @@ const updateProfile = async (data) => {
 
 export default signup;
 export { verifyEmail, createPassword, createProfile, createInvestor, signin, sendSMS, checkSMS, createQR, verifyTOTP };
-export { getNews };
+export { getNews, getProfile, updateProfile };
