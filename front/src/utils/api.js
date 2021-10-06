@@ -118,7 +118,7 @@ const getNews = async () => {
     return axios(config)
 }
 
-const getProfile = async () => {
+const getProfile = async (email) => {
     const config = {
         url: get_profile,
         method: "GET",
@@ -129,7 +129,7 @@ const getProfile = async () => {
     return axios(config);
 }
 
-const updateProfile = async () => {
+const updateProfile = async (data) => {
     const config = {
         url: update_profile,
         method: "PUT",
@@ -140,4 +140,4 @@ const updateProfile = async () => {
 
 export default signup;
 export { verifyEmail, createPassword, createProfile, createInvestor, signin, sendSMS, checkSMS, createQR, verifyTOTP };
-export { getNews };
+export { getNews, getProfile, updateProfile };
