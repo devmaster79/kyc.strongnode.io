@@ -41,5 +41,11 @@ module.exports = (app) => {
   //Verify TOTP
   router.post("/totp/verify", users.verifyTOTP);
 
+  //get profile
+  router.get("/profile/get", users.getProfile);
+
+  //update profile
+  router.put("/profile/update", users.updateProfile);
+
   app.use("/api/users", router);
 };

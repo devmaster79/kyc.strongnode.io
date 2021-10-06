@@ -626,3 +626,62 @@ exports.verifyEmail = async (req, res) => {
     });
   }
 };
+
+//Get profile
+exports.getProfile = (req, res) => {
+  const para_email = req.query.email;
+
+  User.findAll({ where: { email: para_email } })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: err.message || "Some error occurred while retrieving users.",
+      });
+    });
+};
+
+//Update profile
+exports.updateProfile = async (req, res) => {
+  const { email } = req.body;
+  const { first_name, last_name, user_name, twitter_id, telegram_id, wallet_address, enable_totp} = req.body;
+
+  if (!email) {
+    res.status(400).send({
+      message: "Email is required!",
+    });
+    return;
+  }
+
+  const data = {
+    first_name: first_name,
+    last_name: last_name,
+    user_name: user_name,
+    telegram_id: telegram_id,
+    twitter_id: twitter_id,
+    wallet_address: wallet_address,
+    enable_totp: enable_totp,
+  };
+
+  User.update(data, {
+    where: { email: email },
+  })
+    .then((num) => {
+      if (num == 1) {
+        res.send({
+          message: "User profile was created successfully.",
+        });
+      } else {
+        res.send({
+          message: `Cannot create User profile with username=${req.user.user_name}. Maybe User profile info was not found or req.body is empty!`,
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message:
+          "Error creating User profile with username=" + req.user.user_name,
+      });
+    });
+};
