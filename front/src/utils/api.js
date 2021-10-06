@@ -118,7 +118,7 @@ const getNews = async () => {
     return axios(config)
 }
 
-const getProfile = async () => {
+const getProfile = async (email) => {
     const config = {
         url: get_profile,
         method: "GET",
@@ -129,7 +129,7 @@ const getProfile = async () => {
     return axios(config);
 }
 
-const updateProfile = async () => {
+const updateProfile = async (data) => {
     const config = {
         url: update_profile,
         method: "PUT",
