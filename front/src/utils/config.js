@@ -12,4 +12,6 @@ export const check_sms_url = `${base_url}/users/sms/check`;
 export const qr_url = `${base_url}/users/totp/qrcode`;
 export const verify_qr_url = `${base_url}/users/totp/verify`;
 export const get_news = `${base_url}/news`;
+export const get_profile = `${base_url}/users/profile/get`;
+export const update_profile = `${base_url}/users/profile/update`;
 export default base_url;

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { signup_url, verify_email_url, password_url, profile_url, investor_url, sms_url, check_sms_url, qr_url, verify_qr_url, signin_url } from './config';
-import { get_news } from './config';
+import { get_news, get_profile, update_profile } from './config';
 
 const token = localStorage.getItem('token');
 
@@ -116,6 +116,26 @@ const getNews = async () => {
         headers: {'Authorization': `Bearer ${token}`}
     };
     return axios(config)
+}
+
+const getProfile = async () => {
+    const config = {
+        url: get_profile,
+        method: "GET",
+        params: {
+            email: email
+        }
+    };
+    return axios(config);
+}
+
+const updateProfile = async () => {
+    const config = {
+        url: update_profile,
+        method: "PUT",
+        data: data
+    }
+    return axios(config);
 }
 
 export default signup;
