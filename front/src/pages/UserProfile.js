@@ -36,22 +36,7 @@ const CardStyle = styled(Box)(({ theme }) => ({
 export default function Dashboard() {
   const [user, setUser] = useState();
   const token = localStorage.getItem("token");
-  useEffect(() => {
-    async function fetch() {
-      const useremail = localStorage.getItem("email");
 
-      const url =
-        process.env.REACT_APP_BASE_URL +
-        `/api/users/profile/get?email=${useremail}`;
-      console.log("server url: ", url);
-      const result = await axios.get(url, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      setUser(result.data);
-    }
-    fetch();
-  }, []);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const ProfileSchema = Yup.object().shape({
     first_name: Yup.string().required("First Name is required"),
@@ -121,6 +106,25 @@ export default function Dashboard() {
     },
   });
 
+  useEffect(() => {
+    async function fetch() {
+      const useremail = localStorage.getItem("email");
+
+      const url =
+        process.env.REACT_APP_BASE_URL +
+        `/api/users/profile/get?email=${useremail}`;
+      console.log("server url: ", url);
+      const result = await axios.get(url, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      // console.log("result =============== ", result.data[0]);
+      formik.setValues(result.data[0]);
+      // setUser(result.data[0]);
+    }
+    fetch();
+  }, []);
+
   const {
     values,
     errors,
@@ -178,14 +182,15 @@ export default function Dashboard() {
                 >
                   <TextField
                     fullWidth
-                    label="First Name"
+                    // label="First Name"
+                    placeholder="First Name"
                     {...getFieldProps("first_name")}
                     error={Boolean(touched.first_name && errors.first_name)}
                     helperText={touched.first_name && errors.first_name}
                   />
                   <TextField
                     fullWidth
-                    label="Last Name"
+                    placeholder="Last Name"
                     {...getFieldProps("last_name")}
                     error={Boolean(touched.last_name && errors.last_name)}
                     helperText={touched.last_name && errors.last_name}
@@ -193,14 +198,14 @@ export default function Dashboard() {
                 </Stack>
                 <TextField
                   fullWidth
-                  label="User Name"
+                  placeholder="User Name"
                   {...getFieldProps("user_name")}
                   error={Boolean(touched.user_name && errors.user_name)}
                   helperText={touched.user_name && errors.user_name}
                 />
                 <TextField
                   fullWidth
-                  label="Email"
+                  placeholder="Email"
                   {...getFieldProps("email")}
                   error={Boolean(touched.email && errors.email)}
                   helperText={touched.email && errors.email}
@@ -208,28 +213,28 @@ export default function Dashboard() {
                 />
                 <TextField
                   fullWidth
-                  label="Password"
+                  placeholder="Password"
                   {...getFieldProps("password")}
                   error={Boolean(touched.password && errors.password)}
                   helperText={touched.password && errors.password}
                 />
                 <TextField
                   fullWidth
-                  label="Telegram"
+                  placeholder="Telegram"
                   {...getFieldProps("telegram_id")}
                   error={Boolean(touched.telegram_id && errors.telegram_id)}
                   helperText={touched.telegram_id && errors.telegram_id}
                 />
                 <TextField
                   fullWidth
-                  label="Twitter"
+                  placeholder="Twitter"
                   {...getFieldProps("twitter_id")}
                   error={Boolean(touched.twitter_id && errors.twitter_id)}
                   helperText={touched.twitter_id && errors.twitter_id}
                 />
                 <TextField
                   fullWidth
-                  label="Wallet Address"
+                  placeholder="Wallet Address"
                   {...getFieldProps("wallet_address")}
                   error={Boolean(
                     touched.wallet_address && errors.wallet_address
@@ -248,7 +253,7 @@ export default function Dashboard() {
                   <TextField
                     id="outlined-select-currency"
                     select
-                    label="KYC Completed"
+                    placeholder="KYC Completed"
                     value={levels}
                     sx={{ flexGrow: 1 }}
                     {...getFieldProps("KYC_Completed")}
@@ -261,7 +266,9 @@ export default function Dashboard() {
                     ))}
                   </TextField>
                 </Stack>
-                <Button variant="contained" type="submit">Edit</Button>
+                <Button variant="contained" type="submit">
+                  Edit
+                </Button>
               </Stack>
             </Stack>
           </form>
