@@ -30,19 +30,19 @@ function KYC() {
     blockpass.startKYCConnect()
     blockpass.on('KYCConnectSuccess', () => {
       //add code that will trigger when data have been sent
-      navigate("/profile");
+      navigate("/dashboard");
     })
 
     blockpass.on('KYCConnectClose', () =>{
       //add code that will trigger when the workflow is finished. ex:
       //alert('Finished!')
-      navigate("/profile");
+      navigate("/dashboard");
     })
 
     blockpass.on('KYCConnectCancel', () => {
       //add code that will trigger when the workflow is aborted. ex:
       //alert('Cancelled!')
-      navigate("/profile");
+      navigate("/dashboard");
     })
   }
 
