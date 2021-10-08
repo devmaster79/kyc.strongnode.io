@@ -152,6 +152,7 @@ export default function Dashboard() {
       // setUser(result.data[0]);
     }
     fetch();
+    loadBlockpassWidget()
   }, []);
 
   const {
@@ -203,7 +204,7 @@ export default function Dashboard() {
                     sx={{ height: 200 }}
                   />
                 </Box>
-                <Button variant="contained" onClick={() => this.loadBlockpassWidget() }>Register KYC</Button>
+                <Button id="blockpass-kyc-connect" variant="contained">Register KYC</Button>
               </Stack>
               <Stack spacing={3}>
                 <Stack
