@@ -433,9 +433,9 @@ exports.sendSMS = (req, res) => {
   var registeredKeyword = "strongnode";
   var senderId = "MySenderID";
 
-  var credentials = new AWS.SharedIniFileCredentials({profile: 'default'});
+  // var credentials = new AWS.SharedIniFileCredentials({profile: 'default'});
 
-  AWS.config.credentials = credentials;
+  // AWS.config.credentials = credentials;
   AWS.config.update({region: aws_region});
 
   var pinpoint = new AWS.Pinpoint();
