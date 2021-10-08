@@ -430,7 +430,9 @@ exports.sendSMS = (req, res) => {
     PhoneNumber: "+" + req.body.number,
   };
 
-  var publishTextPromise = new AWS.SNS({ apiVersion: "2021-09-05" })
+  var publishTextPromise = new AWS.SNS({
+    region: "us-west-2"
+  })
     .publish(params)
     .promise();
 
