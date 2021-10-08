@@ -153,26 +153,29 @@ export default function Dashboard() {
         <FormikProvider value={formik}>
           <form onSubmit={handleSubmit}>
             <Stack direction="row" spacing={5} alignItems="flex-start">
-              <Box
-                sx={{
-                  width: 200,
-                  height: 200,
-                  borderRadius: 1,
-                }}
-              >
-                <UploadSingleFile
-                  maxSize={31457280}
-                  accept="image/*"
-                  file={
-                    values.cover && {
-                      preview: URL.createObjectURL(values.cover),
+              <Stack spacing={5}>
+                <Box
+                  sx={{
+                    width: 200,
+                    height: 200,
+                    borderRadius: 1,
+                  }}
+                >
+                  <UploadSingleFile
+                    maxSize={31457280}
+                    accept="image/*"
+                    file={
+                      values.cover && {
+                        preview: URL.createObjectURL(values.cover),
+                      }
                     }
-                  }
-                  onDrop={(e) => handleDrop(e, 1)}
-                  error={Boolean(touched.cover && errors.cover)}
-                  sx={{ height: 200 }}
-                />
-              </Box>
+                    onDrop={(e) => handleDrop(e, 1)}
+                    error={Boolean(touched.cover && errors.cover)}
+                    sx={{ height: 200 }}
+                  />
+                </Box>
+                <Button variant="contained" onClick={() => console.log("KYC button is clicked!")}>Register KYC</Button>
+              </Stack>
               <Stack spacing={3}>
                 <Stack
                   direction="row"
