@@ -21,7 +21,7 @@ function SigninTwoStep() {
     event.preventDefault();
     verifyTOTP(email, totp).then(r => {
       if(r.data.verified) {
-        navigate("/profile");
+        navigate("/dashboard");
       } else {
         setShowError(true);
       }

@@ -1,5 +1,6 @@
 import { merge } from "lodash";
 import { useSnackbar } from "notistack5";
+import { useNavigate } from "react-router-dom";
 import {
   Container,
   Typography,
@@ -34,6 +35,8 @@ const CardStyle = styled(Box)(({ theme }) => ({
 }));
 
 export default function Dashboard() {
+  const navigate = useNavigate();
+
   const [user, setUser] = useState();
   const token = localStorage.getItem("token");
 
@@ -106,6 +109,32 @@ export default function Dashboard() {
     },
   });
 
+  const loadBlockpassWidget = async (event) => {
+    const blockpass =  new window.BlockpassKYCConnect('strongnode_596cc',
+      {
+        env: 'prod',
+        refId: '1632811259976',
+      })
+
+    blockpass.startKYCConnect()
+    blockpass.on('KYCConnectSuccess', () => {
+      //add code that will trigger when data have been sent
+      navigate("/dashboard");
+    })
+
+    blockpass.on('KYCConnectClose', () =>{
+      //add code that will trigger when the workflow is finished. ex:
+      //alert('Finished!')
+      navigate("/dashboard");
+    })
+
+    blockpass.on('KYCConnectCancel', () => {
+      //add code that will trigger when the workflow is aborted. ex:
+      //alert('Cancelled!')
+      navigate("/dashboard");
+    })
+  }
+
   useEffect(() => {
     async function fetch() {
       const useremail = localStorage.getItem("email");
@@ -174,7 +203,7 @@ export default function Dashboard() {
                     sx={{ height: 200 }}
                   />
                 </Box>
-                <Button variant="contained" onClick={() => console.log("KYC button is clicked!")}>Register KYC</Button>
+                <Button variant="contained" onClick={() => this.loadBlockpassWidget() }>Register KYC</Button>
               </Stack>
               <Stack spacing={3}>
                 <Stack
