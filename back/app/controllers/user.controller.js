@@ -428,7 +428,7 @@ exports.sendSMS = (req, res) => {
   var originationNumber = "+18555460621";
   var destinationNumber = req.body.number;
   var message = "Here is SMS code for StrongNode : " + OTP;
-  var applicationId = process.env.applicationId;
+  var applicationId = process.env.ApplicationId;
   var messageType = "TRANSACTIONAL";
   var registeredKeyword = "strongnode";
   var senderId = "MySenderID";
