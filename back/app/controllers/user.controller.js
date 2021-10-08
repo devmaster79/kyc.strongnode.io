@@ -424,20 +424,46 @@ function generateRandomNumber(min, max) {
 //Send SMS and save password
 exports.sendSMS = (req, res) => {
   var OTP = generateRandomNumber(1000, 9999);
+  var aws_region = "us-west-2";
+  var originationNumber = "+18555460621";
+  var destinationNumber = req.body.number;
+  var message = "Here is SMS code for StrongNode : " + OTP;
+  var applicationId = process.env.applicationId;
+  var messageType = "TRANSACTIONAL";
+  var registeredKeyword = "strongnode";
+  var senderId = "MySenderID";
+
+  var credentials = new AWS.SharedIniFileCredentials({profile: 'default'});
+
+  AWS.config.credentials = credentials;
+  AWS.config.update({region: aws_region});
+
+  var pinpoint = new AWS.Pinpoint();
 
   var params = {
-    Message: "Here is SMS code for StrongNode : " + OTP,
-    PhoneNumber: "+" + req.body.number,
+    ApplicationId: applicationId,
+    MessageRequest: {
+      Addresses: {
+        [destinationNumber]: {
+          ChannelType: 'SMS'
+        }
+      },
+      MessageConfiguration: {
+        SMSMessage: {
+          Body: message,
+          Keyword: registeredKeyword,
+          MessageType: messageType,
+          OriginationNumber: originationNumber,
+          SenderId: senderId,
+        }
+      }
+    }
   };
 
-  var publishTextPromise = new AWS.SNS({
-    region: "us-west-2"
-  })
-    .publish(params)
-    .promise();
-
-  publishTextPromise
-    .then(function (data) {
+  pinpoint.sendMessages(params, function(err, data) {
+    if(err) {
+      res.end(JSON.stringify({ Error: err }));
+    } else {
       const user_sms = {
         smscode: OTP,
       };
@@ -463,10 +489,8 @@ exports.sendSMS = (req, res) => {
             message: err,
           });
         });
-    })
-    .catch(function (err) {
-      res.end(JSON.stringify({ Error: err }));
-    });
+    }
+  });
 };
 
 //Get Userinfo from DB by email
