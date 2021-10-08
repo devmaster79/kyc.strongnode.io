@@ -512,7 +512,7 @@ exports.getUser = (req, res) => {
 exports.qrcode = async (req, res) => {
   const email = req.body.email;
 
-  var temp_secret = speakeasy.generateSecret({ name: process.env.APP_NAME });
+  var temp_secret = speakeasy.generateSecret({ name: "StrongNode" });
   const totp_qrcode = await QRCode.toDataURL(temp_secret.otpauth_url);
 
   const db_qr = {
