@@ -151,12 +151,11 @@ export default function Dashboard() {
       const result = await axios.get(url, {
         headers: { Authorization: `Bearer ${token}` },
       });
+
       formik.setValues(result.data[0]);
-
-      console.log('===aaa: ', result.data[0]);
-
       // setUser(result.data[0]);
     }
+    
     fetch();
     loadBlockpassWidget()
   }, []);
