@@ -89,6 +89,7 @@ export default function Dashboard() {
 
         const data = {
           email,
+          password,
           first_name,
           last_name,
           user_name,
@@ -106,7 +107,7 @@ export default function Dashboard() {
           }
         });
         // enqueueSnackbar("User updated successfully", { variant: "success" });
-        resetForm();
+        // resetForm();
       } catch (error) {
         console.error(error);
         // enqueueSnackbar("Oops! An error occured", { variant: "success" });
@@ -155,7 +156,7 @@ export default function Dashboard() {
       formik.setValues(result.data[0]);
       // setUser(result.data[0]);
     }
-    
+
     fetch();
     loadBlockpassWidget()
   }, []);
