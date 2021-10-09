@@ -57,10 +57,10 @@ export default function AccountPopover() {
         <Avatar src="/images/avatar.png" alt="avatar" />
         <Stack sx={{ color: "black", ml: 2, mr: 2 }}>
           <Typography color="white" sx={{ fontSize: { md: 18, xs: 14 } }}>
-            {userName}Lois James
+            {userName}
           </Typography>
           <Typography color="white" sx={{ fontSize: { md: 12, xs: 10 } }}>
-            {email}David@email.com
+            {email}
           </Typography>
         </Stack>
         <SvgIconStyle

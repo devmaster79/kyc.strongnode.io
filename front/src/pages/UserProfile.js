@@ -19,6 +19,7 @@ import {
 import { styled } from "@material-ui/core/styles";
 import { useState, useEffect, useCallback } from "react";
 import axios from "utils/axios";
+import { updateProfile } from "../utils/api";
 import * as Yup from "yup";
 import { useFormik, Form, FormikProvider } from "formik";
 import UploadSingleFile from "components/UploadSingleFile";
@@ -50,17 +51,18 @@ export default function Dashboard() {
 
   const formik = useFormik({
     initialValues: {
-      first_name: user?.first_name,
-      last_name: user?.last_name,
-      user_name: user?.user_name,
-      password: user?.password,
-      telegram_id: "",
-      twitter_id: "",
-      email: user?.email,
-      wallet_address: "",
-      KYC_Completed: "level1",
-      MFA: false,
-      cover: "",
+      first_name: '',
+      last_name: '',
+      user_name: '',
+      password: '',
+      telegram_id: '',
+      twitter_id: '',
+      email: '',
+      wallet_address: '',
+      KYC_Completed: 'level1',
+      enable_totp: user?.enable_totp,
+      MFA: user?.enable_totp,
+      cover: '',
     },
     validationSchema: ProfileSchema,
     onSubmit: async (values, { setErrors, setSubmitting, resetForm }) => {
@@ -81,29 +83,33 @@ export default function Dashboard() {
         // formData.append("image", cover);
         // formData.append("name", name);
         // formData.append("description", description);
-        const url =
-          process.env.REACT_APP_BASE_URL + `/api/users/profile/update`;
+        const url = process.env.REACT_APP_BASE_URL + `/api/users/profile/update`;        
         console.log("server url: ", url);
-        const result = await axios.post(
-          url,
-          {
-            first_name,
-            last_name,
-            user_name,
-            wallet_address,
-            telegram_id,
-            twitter_id,
-          },
-          {
-            headers: { Authorization: `Bearer ${token}` },
+
+
+        const data = {
+          email,
+          first_name,
+          last_name,
+          user_name,
+          wallet_address,
+          telegram_id,
+          twitter_id,
+        };
+
+        updateProfile(data).then(r => {
+          if(r.status === 200) {
+            enqueueSnackbar("User updated successfully1", { variant: "success" });
+
+          } else {
+            enqueueSnackbar("Failed to update profile2", { variant: "fail" });
           }
-        );
-        console.log(values);
-        enqueueSnackbar("User updated successfully", { variant: "success" });
+        });
+        // enqueueSnackbar("User updated successfully", { variant: "success" });
         resetForm();
       } catch (error) {
         console.error(error);
-        enqueueSnackbar("Oops! An error occured", { variant: "success" });
+        // enqueueSnackbar("Oops! An error occured", { variant: "success" });
         setSubmitting(false);
       }
     },
@@ -134,8 +140,7 @@ export default function Dashboard() {
       navigate("/dashboard");
     })
   }
-
-  useEffect(() => {
+   useEffect(() => {
     async function fetch() {
       const useremail = localStorage.getItem("email");
 
@@ -147,10 +152,10 @@ export default function Dashboard() {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      // console.log("result =============== ", result.data[0]);
       formik.setValues(result.data[0]);
       // setUser(result.data[0]);
     }
+    
     fetch();
     loadBlockpassWidget()
   }, []);
@@ -176,6 +181,7 @@ export default function Dashboard() {
   );
 
   const levels = ["level1", "level2", "level3"];
+  console.log("1.test =============== ", formik);
 
   return (
     <Container maxWidth="xl">
@@ -247,6 +253,7 @@ export default function Dashboard() {
                 <TextField
                   fullWidth
                   placeholder="Password"
+                  type="Password"
                   {...getFieldProps("password")}
                   error={Boolean(touched.password && errors.password)}
                   helperText={touched.password && errors.password}
@@ -278,7 +285,7 @@ export default function Dashboard() {
                   <FormControlLabel
                     value="start"
                     control={
-                      <Switch color="primary" {...getFieldProps("MFA")} />
+                      <Switch color="primary"  checked={values.enable_totp}  onClick={(e) => setFieldValue("enable_totp", !values.enable_totp) } />
                     }
                     label="MFA"
                     labelPlacement="start"
