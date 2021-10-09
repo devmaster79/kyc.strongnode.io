@@ -82,7 +82,7 @@ export default function AccountPopover() {
           horizontal: "left",
         }}
         sx={{
-          top: { xs: -11, md: -3 },
+          top: { xs: 0, md: -3 },
         }}
       >
         <Stack
@@ -92,7 +92,7 @@ export default function AccountPopover() {
             border: "2px solid rgba(238, 238, 238, 0.5)",
             background: "linear-gradient(180deg, #7C1EFB 0%, #AF56BB 100%)",
             boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
-            borderRadius: "30px",
+            borderRadius: "30px !important",
             pl: 1,
             pr: 1,
           }}
