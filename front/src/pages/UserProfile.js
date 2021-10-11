@@ -117,7 +117,7 @@ export default function Dashboard() {
   });
 
   const loadBlockpassWidget = async (event) => {
-    const blockpass =  new window.BlockpassKYCConnect('strongnode_596cc',
+    const blockpass = new window.BlockpassKYCConnect('strongnode_596cc',
       {
         env: 'prod',
         refId: '1632811259976',
@@ -129,7 +129,7 @@ export default function Dashboard() {
       navigate("/dashboard");
     })
 
-    blockpass.on('KYCConnectClose', () =>{
+    blockpass.on('KYCConnectClose', () => {
       //add code that will trigger when the workflow is finished. ex:
       //alert('Finished!')
       navigate("/dashboard");
@@ -170,7 +170,7 @@ export default function Dashboard() {
     getFieldProps,
     setFieldValue,
   } = formik;
-
+  const formStyle = {  }
   const handleDrop = useCallback(
     (acceptedFiles) => {
       const file = acceptedFiles[0];
@@ -189,11 +189,13 @@ export default function Dashboard() {
       <CardStyle>
         <FormikProvider value={formik}>
           <form onSubmit={handleSubmit}>
-            <Stack direction="row" spacing={5} alignItems="flex-start">
-              <Stack spacing={5}>
+            <Stack direction="row" spacing={4} alignItems="flex-start" sx={{
+                display: {xs:'flex',}, justifyContent: {xs:'space-evenly'}, flexWrap:{xs:'wrap',md:'nowrap'}}}>
+              <Stack spacing={5} sx={{mb:{xs:5,md:0}}}>
                 <Box
                   sx={{
-                    width: 200,
+                    textAlign:'center',
+                    width:{xs:'80%',md:200},
                     height: 200,
                     borderRadius: 1,
                   }}
@@ -211,9 +213,9 @@ export default function Dashboard() {
                     sx={{ height: 200 }}
                   />
                 </Box>
-                <Button id="blockpass-kyc-connect" variant="contained">Register KYC</Button>
+                <Button sx={{ mb: 5 }} id="blockpass-kyc-connect" variant="contained">Register KYC</Button>
               </Stack>
-              <Stack spacing={3}>
+              <Stack spacing={3} sx={{width:{xs:'80%'}}}>
                 <Stack
                   direction="row"
                   justifyContent="space-between"
@@ -221,6 +223,7 @@ export default function Dashboard() {
                   spacing={3}
                 >
                   <TextField
+                    
                     fullWidth
                     // label="First Name"
                     placeholder="First Name"
@@ -298,7 +301,7 @@ export default function Dashboard() {
                     value={levels}
                     sx={{ flexGrow: 1 }}
                     {...getFieldProps("KYC_Completed")}
-                    // onChange={handleChange}
+                  // onChange={handleChange}
                   >
                     {levels.map((option) => (
                       <MenuItem key={option} value={option}>

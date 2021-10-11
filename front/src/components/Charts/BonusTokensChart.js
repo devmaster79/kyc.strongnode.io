@@ -3,10 +3,14 @@ import ReactApexChart from 'react-apexcharts'
 import { useTheme, styled } from '@material-ui/core/styles'
 // import { fNumber } from '../../../utils/formatNumber';
 //
+import useCollapseDrawer from '../../hooks/useCollapseDrawer'
 import BaseOptionChart from './BaseOptionChart'
 
 export default function AppCurrentDownload() {
   const theme = useTheme()
+  const {
+    isCollapse,
+  } = useCollapseDrawer()
   const chartOptions = merge(BaseOptionChart(), {
     colors: [
       theme.palette.primary.main,
@@ -32,7 +36,7 @@ export default function AppCurrentDownload() {
       type="line"
       series={CHART_DATA}
       options={chartOptions}
-      width="100%"
+      width={isCollapse?"90%":"100%"}
       height={30}
       style={{ marginTop: 42 }}
     />

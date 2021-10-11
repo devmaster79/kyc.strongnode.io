@@ -1,4 +1,5 @@
 import { merge } from 'lodash'
+import * as React from 'react';
 import { useSnackbar } from 'notistack5'
 import {
   Container,
@@ -12,7 +13,7 @@ import {
   LinearProgress,
 } from '@material-ui/core'
 import { styled } from '@material-ui/core/styles'
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import axios from 'utils/axios'
 import Status from 'components/Status'
 import VestTable from 'components/dashboard/VestTable'
@@ -21,6 +22,12 @@ import MyVestedTokensChart from 'components/Charts/MyVestedTokensChart'
 import BonusTokensChart from 'components/Charts/BonusTokensChart'
 import RecentLockupsChart from 'components/Charts/RecentLockupsChart'
 import NewsCarousel from 'components/Carousels/NewsCarousel'
+import useCollapseDrawer from '../hooks/useCollapseDrawer'
+import Snackbar from '@mui/material/Snackbar';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
+import MuiAlert from '@mui/material/Alert';
+
 
 const CardStyle = styled(Box)(({ theme }) => ({
   background:
@@ -35,21 +42,28 @@ export default function Dashboard() {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
   const [historyOpen, setHistoryOpen] = useState()
   const [newsOpen, setNewsOpen] = useState()
+const [open, setOpen] = useState(false);
   const handleViewHistory = () => {
     setHistoryOpen(!historyOpen)
   }
-
+  const {
+    isCollapse,
+  } = useCollapseDrawer()
+  const dash = useRef();
+  let isChanged = false;
   const handleAllNews = () => {
     setNewsOpen(!newsOpen)
   }
   useEffect(() => {
     handleDashboard();
-  }, [])
+    setOpen(true);
+    console.log('width', dash.current ? dash.current.offsetWidth : 0);
+  }, [dash]);
 
   const handleDashboard = useCallback(
     async () => {
       try {
-        if(localStorage.getItem("username") && localStorage.getItem("email")) {
+        if (localStorage.getItem("username") && localStorage.getItem("email")) {
           enqueueSnackbar('Welcome to dashboard', { variant: 'success' })
         } else {
           enqueueSnackbar('You must sign in!', { variant: 'error' })
@@ -62,8 +76,43 @@ export default function Dashboard() {
     []
   )
 
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
+
+  const action = (
+    <Box>
+      <IconButton
+        size="small"
+        aria-label="close"
+        color="inherit"
+        onClick={handleClose}
+      >
+        <CloseIcon fontSize="small" />
+      </IconButton>
+    </Box>
+  );
+
   return (
-    <Container maxWidth="xl">
+    <Container ref={dash} maxWidth="xl">
+      <Box>
+        <Snackbar
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+          open={open}
+          autoHideDuration={6000}
+          //onClose={handleClose}
+           message="KYC should be verified."
+          action={action}
+        > 
+        <MuiAlert variant="filled" elevation={6} onClose={handleClose} severity="warning" sx={{ width: '100%' }}>
+          KYC should be verified.
+        </MuiAlert>
+      </Snackbar>
+      </Box>
       <Box
         sx={{
           height: { xs: 'max-content', md: 120 },
@@ -107,7 +156,8 @@ export default function Dashboard() {
                   <Stack direction="row" alignItems="center">
                     <Typography
                       color="text.primary"
-                      sx={{ fontSize: 32, fontWeight: 700 }}
+                      sx={{ fontSize: isCollapse ? 32 : 25, fontWeight: 700 }}
+                      style={{ fontSize: '5bw' }}
                     >
                       158,357
                     </Typography>
@@ -127,7 +177,7 @@ export default function Dashboard() {
                   <Stack direction="row" alignItems="center">
                     <Typography
                       color="text.primary"
-                      sx={{ fontSize: 32, fontWeight: 700 }}
+                      sx={{ fontSize: isCollapse ? 32 : 25, fontWeight: 700 }}
                     >
                       100,000
                     </Typography>
@@ -147,7 +197,7 @@ export default function Dashboard() {
         </Grid>
 
         <Grid item xs={12} md={4}>
-          <CardStyle>
+          <CardStyle sx={{ paddingBottom: isCollapse ? '32px' : '45px', paddingLeft: '28px' }}>
             <Typography variant="h5" color="text.primary">
               Bonus Tokens
             </Typography>
@@ -157,14 +207,14 @@ export default function Dashboard() {
                 justifyContent="space-between"
                 sx={{ mt: 2, mr: 1 }}
               >
-                <Box sx={{mr:1}}>
+                <Box sx={{ mr: 1 }}>
                   <Typography color="warning.main" variant="h2">
                     Earned
                   </Typography>
                   <Stack direction="row" alignItems="center">
                     <Typography
                       color="text.primary"
-                      sx={{ fontSize: 32, fontWeight: 700 }}
+                      sx={{ fontSize: isCollapse ? 28 : 21, fontWeight: 700 }}
                     >
                       158,357
                     </Typography>
@@ -177,14 +227,14 @@ export default function Dashboard() {
                     </Typography>
                   </Stack>
                 </Box>
-                <Box sx={{ml:1}}>
+                <Box sx={{ ml: 1 }}>
                   <Typography color="primary" variant="h2">
                     Locked Up
                   </Typography>
                   <Stack direction="row" alignItems="center">
                     <Typography
                       color="text.primary"
-                      sx={{ fontSize: 32, fontWeight: 700 }}
+                      sx={{ fontSize: isCollapse ? 28 : 21, fontWeight: 700 }}
                     >
                       100,000
                     </Typography>
@@ -199,7 +249,7 @@ export default function Dashboard() {
                 </Box>
               </Stack>
 
-              <BonusTokensChart />
+              <BonusTokensChart sx={{ flexShrink: isCollapse ? 0 : 1 }} />
             </Stack>
           </CardStyle>
         </Grid>
