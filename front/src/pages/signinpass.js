@@ -47,7 +47,7 @@ function SigninPass() {
           if (r.status === 200) {
             localStorage.setItem('token', r.data.token)
             localStorage.setItem('username', r.data.user_name)
-            navigate('/signinsms')
+            navigate('/dashboard')
           } else if (r.status === 401) {
             setPassWrong(true)
             setPassword('')
