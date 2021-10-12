@@ -11,6 +11,7 @@ import {
   Divider,
   Table,
   LinearProgress,
+  Modal,
   TextField,
   MenuItem,
   Switch,
@@ -19,10 +20,13 @@ import {
 import { styled } from "@material-ui/core/styles";
 import { useState, useEffect, useCallback } from "react";
 import axios from "utils/axios";
-import { updateProfile } from "../utils/api";
+import { updateProfile, createQR, verifyTOTP } from "../utils/api";
 import * as Yup from "yup";
 import { useFormik, Form, FormikProvider } from "formik";
 import UploadSingleFile from "components/UploadSingleFile";
+import Input from "../components/Input";
+import InputGroup from "../components/InputGroup";
+import { ReactComponent as LockIcon } from "../icons/lock.svg";
 
 const CardStyle = styled(Box)(({ theme }) => ({
   background:
@@ -35,13 +39,48 @@ const CardStyle = styled(Box)(({ theme }) => ({
   margin: "auto",
 }));
 
+const mfastyle = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
+
 export default function Dashboard() {
   const navigate = useNavigate();
 
   const [user, setUser] = useState();
-  const token = localStorage.getItem("token");
+  const [openMfa, setOpenMfa] = useState(false);
+  const [showQR, setShowQR] = useState(false);
+  const [showError, setShowError] = useState(false);
+  const [totp, setTOTP] = useState("");
+  const [qrURL, setQRURL] = useState("");
 
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+
+  //Fetch value from local storage
+  const token = localStorage.getItem("token");
+  const useremail = localStorage.getItem("email");
+
+  const handleOpenMfa = () => setOpenMfa(true);
+  const handleCloseMfa = () => {
+    setOpenMfa(false);
+  }
+
+  const handleTOTPInputChange = (event) => {
+    if (event.target.value.length > 6) {
+      event.target.value = event.target.value.slice(0, 6);
+      setTOTP(event.target.value);
+    } else {
+      setTOTP(event.target.value);
+    }
+  };
+
   const ProfileSchema = Yup.object().shape({
     first_name: Yup.string().required("First Name is required"),
     last_name: Yup.string().required("Last Name is required"),
@@ -83,9 +122,8 @@ export default function Dashboard() {
         // formData.append("image", cover);
         // formData.append("name", name);
         // formData.append("description", description);
-        const url = process.env.REACT_APP_BASE_URL + `/api/users/profile/update`;        
+        const url = process.env.REACT_APP_BASE_URL + `/api/users/profile/update`;
         console.log("server url: ", url);
-
 
         const data = {
           email,
@@ -116,6 +154,25 @@ export default function Dashboard() {
     },
   });
 
+  const doMFA = () => {
+    if(values.enable_totp == true) {
+      setFieldValue("enable_totp", !values.enable_totp)
+    } else {
+      handleOpenMfa();
+    }
+  }
+
+  const checkMFACode = () => {
+    verifyTOTP(useremail, totp).then(r => {
+      if(r.data.verified) {
+        setFieldValue("enable_totp", true);
+        handleCloseMfa();
+      } else {
+        setShowError(true);
+      }
+		});
+  }
+
   const loadBlockpassWidget = async (event) => {
     const blockpass = new window.BlockpassKYCConnect('strongnode_596cc',
       {
@@ -141,10 +198,9 @@ export default function Dashboard() {
       navigate("/dashboard");
     })
   }
-   useEffect(() => {
-    async function fetch() {
-      const useremail = localStorage.getItem("email");
 
+  useEffect(() => {
+    async function fetch() {
       const url =
         process.env.REACT_APP_BASE_URL +
         `/api/users/profile/get?email=${useremail}`;
@@ -153,6 +209,12 @@ export default function Dashboard() {
         headers: { Authorization: `Bearer ${token}` },
       });
 
+      if(!result.data[0].enable_totp || result.data[0].enable_totp == null) {
+        setShowQR(true);
+        createQR(useremail).then(rq => {
+          setQRURL(rq.data.url);
+        });
+      }
       formik.setValues(result.data[0]);
       // setUser(result.data[0]);
     }
@@ -223,7 +285,6 @@ export default function Dashboard() {
                   spacing={3}
                 >
                   <TextField
-                    
                     fullWidth
                     // label="First Name"
                     placeholder="First Name"
@@ -289,7 +350,7 @@ export default function Dashboard() {
                   <FormControlLabel
                     value="start"
                     control={
-                      <Switch color="primary"  checked={values.enable_totp}  onClick={(e) => setFieldValue("enable_totp", !values.enable_totp) } />
+                      <Switch color="primary"  checked={values.enable_totp}  onClick={doMFA} />
                     }
                     label="MFA"
                     labelPlacement="start"
@@ -310,6 +371,36 @@ export default function Dashboard() {
                     ))}
                   </TextField>
                 </Stack>
+                <Modal
+                  open={openMfa}
+                  onClose={handleCloseMfa}
+                  aria-labelledby="modal-modal-title"
+                  aria-describedby="modal-modal-description"
+                >
+                  <Box sx={mfastyle}>
+                    {showQR &&
+                      <div style={{marginTop: '20px'}}>
+                        <img style={{margin: 'auto'}} src={qrURL} />
+                        <p>Please setup MFA on authenticator app</p>
+                      </div>
+                    }
+                    <InputGroup>
+                      <LockIcon />
+                      <Input
+                        type="input"
+                        placeholder="Enter your TOTP"
+                        id="totp"
+                        value={totp}
+                        style={{ padding: "16px 20px 16px 40px" }}
+                        onChange={handleTOTPInputChange}
+                      />
+                    </InputGroup>
+                    {showError && <p style={{marginBottom: "10px", color: "red"}}>Invalid code please try again</p>}
+                    <Button onClick={checkMFACode} full>
+                      Confirm
+                    </Button>
+                  </Box>
+                </Modal>
                 <Button variant="contained" type="submit">
                   Edit
                 </Button>

@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Form, Formik } from "formik";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -23,6 +23,8 @@ const AlreadyWrapper = styled.p`
 function Signup() {
   const navigate = useNavigate();
 
+  const [showError, setShowError] = useState(false);
+
   const initFormState = {
     first_name: "",
     last_name: "",
@@ -42,17 +44,29 @@ function Signup() {
       try {
         const resp = await signup(data);
         if (resp.data.result) {
-          navigate("/sent-email");
           localStorage.setItem("email", resp.data.data.email);
+          navigate("/sent-email");
         } else {
           //should show notification with signup failure.
         }
       } catch (err) {
-        console.log("Error for signup", err);
+        if(err == "Error: Request failed with status code 409") {
+          setShowError(true);
+        } else {
+          console.log(err);
+        }
       }
     },
     []
   );
+
+  useEffect(() => {
+    const user_email = localStorage.getItem("email")
+    const loggedin = localStorage.getItem("loggedin")
+    if (user_email != null && loggedin == "true") {
+      navigate("/dashboard");
+    }
+  }, [])
 
   return (
     <EntryPage>
@@ -111,6 +125,7 @@ function Signup() {
                   height: "20px",
                 }}
               />
+              {showError && <p style={{marginBottom: "10px", color: "red"}}>There is a user with same email.</p>}
               <Button disabled={isSubmitting} type="submit" full>
                 Sign Up
               </Button>

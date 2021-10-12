@@ -42,7 +42,8 @@ export default function Dashboard() {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
   const [historyOpen, setHistoryOpen] = useState()
   const [newsOpen, setNewsOpen] = useState()
-const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false);
+
   const handleViewHistory = () => {
     setHistoryOpen(!historyOpen)
   }
