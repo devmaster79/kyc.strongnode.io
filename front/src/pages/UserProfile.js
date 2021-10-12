@@ -20,13 +20,14 @@ import {
 import { styled } from "@material-ui/core/styles";
 import { useState, useEffect, useCallback } from "react";
 import axios from "utils/axios";
-import { updateProfile, createQR, verifyTOTP } from "../utils/api";
+import { updateProfile, createQR, verifyTOTP, sendSMS, checkSMS } from "../utils/api";
 import * as Yup from "yup";
 import { useFormik, Form, FormikProvider } from "formik";
 import UploadSingleFile from "components/UploadSingleFile";
 import Input from "../components/Input";
 import InputGroup from "../components/InputGroup";
 import { ReactComponent as LockIcon } from "../icons/lock.svg";
+import PhoneInput from 'react-phone-number-input';
 
 const CardStyle = styled(Box)(({ theme }) => ({
   background:
@@ -60,6 +61,13 @@ export default function Dashboard() {
   const [showError, setShowError] = useState(false);
   const [totp, setTOTP] = useState("");
   const [qrURL, setQRURL] = useState("");
+  const [opensms, setOpensms] = useState(false);
+  const [showSMSError, setSMSshowError] = useState(false);
+  const [disabled, setDisabled] = useState(true);
+	const [cdisable, setCdisable] = useState(true);
+  const [value, setValue] = useState("");
+	const [btnLabel, setBtnLabel] = useState("Send");
+  const [smscode, setSmscode] = useState("");
 
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
@@ -70,6 +78,11 @@ export default function Dashboard() {
   const handleOpenMfa = () => setOpenMfa(true);
   const handleCloseMfa = () => {
     setOpenMfa(false);
+  }
+
+  const handleOpensms = () => setOpensms(true);
+  const handleClosesms = () => {
+    setOpensms(false);
   }
 
   const handleTOTPInputChange = (event) => {
@@ -100,6 +113,7 @@ export default function Dashboard() {
       wallet_address: '',
       KYC_Completed: 'level1',
       enable_totp: user?.enable_totp,
+      enable_sms: user?.enable_sms,
       MFA: user?.enable_totp,
       cover: '',
     },
@@ -155,7 +169,7 @@ export default function Dashboard() {
   });
 
   const doMFA = () => {
-    if(values.enable_totp == true) {
+    if(values.enable_totp === true) {
       setFieldValue("enable_totp", !values.enable_totp)
     } else {
       handleOpenMfa();
@@ -171,6 +185,54 @@ export default function Dashboard() {
         setShowError(true);
       }
 		});
+  }
+
+  const doSMS = () => {
+    if(values.enable_sms === true) {
+      setFieldValue("enable_sms", !values.enable_sms);
+    } else {
+      handleOpensms();
+    }
+  }
+
+  const check2faCode = () => {
+    checkSMS(useremail).then(r => {
+			if(smscode === r.data[0].smscode) {
+				setFieldValue("enable_sms", true);
+        handleClosesms();
+			} else {
+				setSMSshowError(true);
+			}
+		});
+  }
+
+  const sendMessage = () => {
+    let count = 30;
+    setDisabled(true);
+    setSMSshowError(false);
+    sendSMS(value.substring(1), useremail).then(r => console.log(r));
+    const counter = setInterval(() => {
+      setBtnLabel(`${count}s`)
+      count --;
+      if (count === -1) {
+          clearInterval(counter);
+          setBtnLabel("Send");
+          setDisabled(false)
+      }
+    }, 1000);
+  }
+
+  const handle2FA = (val) => {
+    if (val.length > 4) {
+      val = val.slice(0, 4);
+      setSmscode(val);
+    } else {
+      setSmscode(val);
+    }
+
+    if (val) setCdisable(false);
+    else setCdisable(true);
+    setShowError(false);
   }
 
   const loadBlockpassWidget = async (event) => {
@@ -215,13 +277,17 @@ export default function Dashboard() {
           setQRURL(rq.data.url);
         });
       }
+
       formik.setValues(result.data[0]);
       // setUser(result.data[0]);
     }
 
+    console.log(value);
+    if (value !== "") setDisabled(false);
+    if (!value) setDisabled(true);
     fetch();
     loadBlockpassWidget()
-  }, []);
+  }, [value]);
 
   const {
     values,
@@ -355,6 +421,14 @@ export default function Dashboard() {
                     label="MFA"
                     labelPlacement="start"
                   />
+                  <FormControlLabel
+                    value="start"
+                    control={
+                      <Switch color="primary"  checked={values.enable_sms}  onClick={doSMS} />
+                    }
+                    label="SMS Verification"
+                    labelPlacement="start"
+                  />
                   <TextField
                     id="outlined-select-currency"
                     select
@@ -397,6 +471,42 @@ export default function Dashboard() {
                     </InputGroup>
                     {showError && <p style={{marginBottom: "10px", color: "red"}}>Invalid code please try again</p>}
                     <Button onClick={checkMFACode} full>
+                      Confirm
+                    </Button>
+                  </Box>
+                </Modal>
+                <Modal
+                  open={opensms}
+                  onClose={handleClosesms}
+                  aria-labelledby="modal-modal-title"
+                  aria-describedby="modal-modal-description"
+                >
+                  <Box sx={mfastyle}>
+                    <h2>2-Step Verification</h2>
+                    <div style={{display: 'flex'}}>
+                        <PhoneInput
+                          defaultCountry="US"
+                          placeholder="Enter phone number"
+                          value={value}
+                          onChange={setValue}
+                        />
+                        <Button type="text" style={{ marginLeft: '10px', height:'auto', flex: '1' }} onClick={ sendMessage } disabled={ disabled }>
+                          {btnLabel}
+                        </Button>
+                    </div>
+                    <InputGroup>
+                      <LockIcon />
+                      <Input
+                        type="number"
+                        placeholder="Enter your SMS code"
+                        id="smsConfirm"
+                        value={smscode}
+                        style={{ padding: "16px 20px 16px 40px" }}
+                        onChange={(e) => handle2FA(e.target.value)}
+                      />
+                    </InputGroup>
+                    {showSMSError && <p style={{marginBottom: "10px", color: "red"}}>Invalid code please try again</p>}
+                    <Button onClick={check2faCode} full disabled={cdisable}>
                       Confirm
                     </Button>
                   </Box>
