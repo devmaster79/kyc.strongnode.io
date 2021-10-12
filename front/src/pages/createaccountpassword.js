@@ -74,6 +74,7 @@ function CreateAccountPassword() {
         const res = await createPassword(data)
         if(res.data && res.data.token) {
           localStorage.setItem("token", res.data.token)
+          localStorage.setItem('loggedin', true);
           navigate("/dashboard");
         }
       } catch (err) {
