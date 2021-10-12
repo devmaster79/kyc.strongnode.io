@@ -8,7 +8,7 @@ import Input from '../components/Input'
 import InputGroup from '../components/InputGroup'
 import { ReactComponent as LockIcon } from '../icons/lock.svg'
 import { ReactComponent as MailIcon } from '../icons/message.svg'
-import { signin } from '../utils/api'
+import { signin, checkSMS } from '../utils/api'
 
 const UserInfoWrapper = styled.div`
   display: flex;
@@ -48,7 +48,15 @@ function SigninPass() {
             localStorage.setItem('token', r.data.token)
             localStorage.setItem('username', r.data.user_name)
             localStorage.setItem('loggedin', true);
-            navigate('/dashboard')
+            checkSMS(email).then(r => {
+              if(r.data[0].enable_totp === true) {
+                navigate("/signintwostep");
+              } else if (r.data[0].enable_sms === true)  {
+                navigate("/signinsms");
+              } else {
+                navigate('/dashboard');
+              }
+            });
           } else if (r.status === 401) {
             setPassWrong(true)
             setPassword('')

@@ -36,6 +36,9 @@ module.exports = (sequelize, Sequelize) => {
     enable_totp: {
       type: Sequelize.BOOLEAN
     },
+    enable_sms: {
+      type: Sequelize.BOOLEAN
+    },
     telegram_id: {
       type: Sequelize.STRING
     },

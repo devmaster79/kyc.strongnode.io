@@ -50,7 +50,7 @@ function Signup() {
           //should show notification with signup failure.
         }
       } catch (err) {
-        if(err == "Error: Request failed with status code 409") {
+        if(err === "Error: Request failed with status code 409") {
           setShowError(true);
         } else {
           console.log(err);
@@ -63,7 +63,7 @@ function Signup() {
   useEffect(() => {
     const user_email = localStorage.getItem("email")
     const loggedin = localStorage.getItem("loggedin")
-    if (user_email != null && loggedin == "true") {
+    if (user_email != null && loggedin === "true") {
       navigate("/dashboard");
     }
   }, [])

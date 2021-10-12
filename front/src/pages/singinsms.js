@@ -25,7 +25,7 @@ function SigninSMS() {
     event.preventDefault();
 		checkSMS(email).then(r => {
 			if(smscode === r.data[0].smscode) {
-				navigate("/signintwostep");
+				navigate("/dashboard");
 			} else {
 				setShowError(true);
 			}
