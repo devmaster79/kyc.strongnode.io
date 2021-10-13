@@ -33,6 +33,7 @@ function CreateAccountPassword() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [userName, setUserName] = useState("");
+  const [showError, setShowError] = useState(false)
 
   useEffect(() => {
     handleVerifyEmail()
@@ -89,6 +90,11 @@ function CreateAccountPassword() {
   };
 
   const handleConfirmPasswordInputChange = (event) => {
+    if(password === event.target.value) {
+      setShowError(false);
+    } else {
+      setShowError(true);
+    }
     setConfirmPassword(event.target.value);
   };
 
@@ -112,7 +118,11 @@ function CreateAccountPassword() {
               onChange={handlePasswordInputChange}
             />
           </InputGroup>
-
+          {showError && (
+            <p style={{ marginBottom: '10px', color: 'red' }}>
+              Password doesn't match!
+            </p>
+          )}
           <InputGroup>
             <LockIcon />
             <Input
