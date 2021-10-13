@@ -7,6 +7,7 @@ import Divider from '@mui/material/Divider';
 import Button from '@mui/material/Button';
 import { styled } from '@material-ui/core/styles'
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const MyPopover = styled(Popover)`
   > div{ border-radius:30px !important;}
@@ -45,7 +46,7 @@ export default function AccountPopover() {
   )
   const signOut = () => {
     window.localStorage.clear();
-    navigate("/");
+    navigate("/signin");
   }
   
 
@@ -95,7 +96,7 @@ export default function AccountPopover() {
           horizontal: 'left',
         }}
         sx={{
-          top: { xs: "-2vh", md: -3 },
+          top: { xs: "-2vh", md: -12,lg:-3},
         }}
       >
         <Stack
@@ -119,8 +120,8 @@ export default function AccountPopover() {
             </Typography>
             <Divider light color="white" sx={{ width: 200 }} />
           </Stack>
-          <Typography color="white" sx={{ fontSize: 18, ml: 3 }}>My account</Typography>
-          <Typography color="white" sx={{ fontSize: 18, ml: 3 }}>Settings</Typography>
+          <Link to="/#"><Typography color="white" sx={{ fontSize: 18, ml: 3 }}>My account</Typography></Link>
+          <Link to="/#"><Typography color="white" sx={{ fontSize: 18, ml: 3 }}>Settings</Typography></Link>
           <Stack alignItems="center" sx={{ mt: 1 }}>
             <Button onClick={signOut} variant="contained" sx={{ height: 30 }}>sign out</Button>
           </Stack>

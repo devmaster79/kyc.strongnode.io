@@ -43,6 +43,7 @@ export default function Dashboard() {
   const [historyOpen, setHistoryOpen] = useState()
   const [newsOpen, setNewsOpen] = useState()
   const [open, setOpen] = useState(false);
+  
 
   const handleViewHistory = () => {
     setHistoryOpen(!historyOpen)
@@ -65,7 +66,10 @@ export default function Dashboard() {
     async () => {
       try {
         if (localStorage.getItem("username") && localStorage.getItem("email")) {
-          enqueueSnackbar('Welcome to dashboard', { variant: 'success' })
+          if(localStorage.getItem('visit') !== 'true') {
+            enqueueSnackbar('Welcome to dashboard', { variant: 'success' })
+            localStorage.setItem('visit', 'true')
+          }
         } else {
           enqueueSnackbar('You must sign in!', { variant: 'error' })
         }
@@ -106,13 +110,13 @@ export default function Dashboard() {
           open={open}
           autoHideDuration={6000}
           //onClose={handleClose}
-           message="KYC should be verified."
+          message="KYC should be verified."
           action={action}
-        > 
-        <MuiAlert variant="filled" elevation={6} onClose={handleClose} severity="warning" sx={{ width: '100%' }}>
-          KYC should be verified.
-        </MuiAlert>
-      </Snackbar>
+        >
+          <MuiAlert variant="filled" elevation={6} onClose={handleClose} severity="warning" sx={{ width: '100%' }}>
+            KYC should be verified.
+          </MuiAlert>
+        </Snackbar>
       </Box>
       <Box
         sx={{
@@ -143,8 +147,8 @@ export default function Dashboard() {
       </Box>
 
       <Grid container spacing={4} sx={{ mt: 1 }}>
-        <Grid item xs={12} md={4}>
-          <CardStyle>
+        <Grid item xs={12} md={4} >
+          <CardStyle sx={{ height: { md: '275px' } }}>
             <Typography variant="h5" color="text.primary">
               My Vested Tokens
             </Typography>
@@ -157,7 +161,7 @@ export default function Dashboard() {
                   <Stack direction="row" alignItems="center">
                     <Typography
                       color="text.primary"
-                      sx={{ fontSize: isCollapse ? 32 : 25, fontWeight: 700 }}
+                      sx={{ fontSize: { lg: isCollapse ? 32 : 25, md: 19 }, fontWeight: 700 }}
                       style={{ fontSize: '5bw' }}
                     >
                       158,357
@@ -178,7 +182,7 @@ export default function Dashboard() {
                   <Stack direction="row" alignItems="center">
                     <Typography
                       color="text.primary"
-                      sx={{ fontSize: isCollapse ? 32 : 25, fontWeight: 700 }}
+                      sx={{ fontSize: { lg: isCollapse ? 32 : 25, md: 19 }, fontWeight: 700 }}
                     >
                       100,000
                     </Typography>
@@ -198,51 +202,53 @@ export default function Dashboard() {
         </Grid>
 
         <Grid item xs={12} md={4}>
-          <CardStyle sx={{ paddingBottom: isCollapse ? '32px' : '45px', paddingLeft: '28px' }}>
+          <CardStyle sx={{ height: { md: '275px' } }}>
             <Typography variant="h5" color="text.primary">
               Bonus Tokens
             </Typography>
-            <Stack>
+            <Stack sx={{}}>
               <Stack
                 direction="row"
                 justifyContent="space-between"
-                sx={{ mt: 2, mr: 1 }}
+                sx={{ mt: 2, mr: 1 ,marginLeft:{lg:isCollapse ?'0px':'-10px',md:'0px'}}}
               >
                 <Box sx={{ mr: 1 }}>
-                  <Typography color="warning.main" variant="h2">
+                  <Typography color="warning.main" sx={{ fontSize: { lg: 25, md: 21 }, fontWeight: 700 }}>
                     Earned
                   </Typography>
                   <Stack direction="row" alignItems="center">
                     <Typography
                       color="text.primary"
-                      sx={{ fontSize: isCollapse ? 28 : 21, fontWeight: 700 }}
+                      sx={{ fontSize: { lg: isCollapse ? 28 : 24, md: 19 }, fontWeight: 700 }}
                     >
                       158,357
                     </Typography>
                     <Typography
                       color="text.secondary"
-                      variant="h2"
-                      sx={{ fontSize: 14, fontWeight: 600, ml: 1, mt: '2px' }}
+
+                      sx={{ fontSize: isCollapse ? 25 : 22, fontWeight: 600, ml: 0.5, mt: '2px' }}
                     >
                       SNE
                     </Typography>
                   </Stack>
                 </Box>
                 <Box sx={{ ml: 1 }}>
-                  <Typography color="primary" variant="h2">
+                  <Typography color="primary"
+                    sx={{ fontSize: { lg: 25, md: 21 }, fontWeight: 700 }}
+                  >
                     Locked Up
                   </Typography>
                   <Stack direction="row" alignItems="center">
                     <Typography
                       color="text.primary"
-                      sx={{ fontSize: isCollapse ? 28 : 21, fontWeight: 700 }}
+                      sx={{ fontSize: { lg: isCollapse ? 28 : 24, md: 19 }, fontWeight: 700 }}
                     >
                       100,000
                     </Typography>
                     <Typography
                       color="text.secondary"
-                      variant="h2"
-                      sx={{ fontSize: 14, fontWeight: 600, ml: 1, mt: '2px' }}
+
+                      sx={{ fontSize: isCollapse ? 25 : 22, fontWeight: 600, ml: 0.5, mt: '2px' }}
                     >
                       SNE
                     </Typography>
@@ -256,7 +262,7 @@ export default function Dashboard() {
         </Grid>
 
         <Grid item xs={12} md={4}>
-          <CardStyle>
+          <CardStyle sx={{ height: { md: '275px', px: 0 } }}>
             <Typography
               variant="h5"
               sx={{ textAlign: 'center' }}
@@ -270,7 +276,7 @@ export default function Dashboard() {
                 endIcon={
                   <SvgIconStyle
                     src="/icons/arrow-right.svg"
-                    sx={{ width: 6, height: 12 }}
+                    sx={{ width: 12, height: 16 }}
                   />
                 }
                 sx={{ margin: 'auto' }}
