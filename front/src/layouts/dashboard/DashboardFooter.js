@@ -1,3 +1,4 @@
+import { useState, useEffect, useCallback } from 'react'
 import SvgIconStyle from 'components/SvgIconStyle'
 import { styled } from '@material-ui/core/styles'
 import {
@@ -11,7 +12,7 @@ import {
 } from '@material-ui/core'
 import useCollapseDrawer from '../../hooks/useCollapseDrawer'
 import AccountPopover from './AccountPopover'
-
+import { useNavigate } from "react-router-dom";
 import ThemeSwitch from 'components/ThemeSwitch'
 
 const DRAWER_WIDTH = 280
@@ -44,6 +45,15 @@ const ToolbarStyle = styled(Toolbar)(({ theme }) => ({
 
 export default function DashboardNavbar({ onOpenSidebar }) {
   const { isCollapse, onToggleCollapse } = useCollapseDrawer()
+  const [email, setEmail] = useState("");
+  const navigate = useNavigate();
+  useEffect(()=>{
+    setEmail(localStorage.getItem("email"))
+  })
+  const signOut = () => {
+    window.localStorage.clear();
+    navigate("/signin");
+  }
   return (
     <RootStyle>
       <ToolbarStyle>
@@ -53,19 +63,19 @@ export default function DashboardNavbar({ onOpenSidebar }) {
           alignItems="center"
           spacing={{ xs: 0.5, sm: 1.5 }}
         >
-          <Typography color="white" sx={{ fontSize: 14 }}>
-            daniel@redrobot.jp
+          <Typography color="white" sx={{ fontSize:{xs:10,md:14} }}>
+            {email}
           </Typography>
-          <Typography color="white" sx={{ fontSize: 14 }}>
+          <Typography color="white" sx={{ fontSize:{xs:10,md:14} }}>
             |
           </Typography>
-          <Typography color="white" sx={{ fontSize: 14 }}>
+          <Typography color="white" sx={{ fontSize:{xs:10,md:14} }}>
             Contact Support
           </Typography>
-          <Typography color="white" sx={{ fontSize: 14 }}>
+          <Typography color="white" sx={{ fontSize:{xs:10,md:14} }}>
             |
           </Typography>
-          <Typography color="white" sx={{ fontSize: 14 }}>
+          <Typography onClick={signOut} color="white" sx={{cursor:'pointer', fontSize:{xs:10,md:14} }}>
             Logout
           </Typography>
         </Stack>

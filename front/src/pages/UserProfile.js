@@ -16,6 +16,7 @@ import {
   MenuItem,
   Switch,
   FormControlLabel,
+  Paper
 } from "@material-ui/core";
 import { styled } from "@material-ui/core/styles";
 import { useState, useEffect, useCallback } from "react";
@@ -28,6 +29,8 @@ import Input from "../components/Input";
 import InputGroup from "../components/InputGroup";
 import { ReactComponent as LockIcon } from "../icons/lock.svg";
 import PhoneInput from 'react-phone-number-input';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
 
 const CardStyle = styled(Box)(({ theme }) => ({
   background:
@@ -36,10 +39,12 @@ const CardStyle = styled(Box)(({ theme }) => ({
   boxSizing: "border-box",
   borderRadius: "16px",
   padding: theme.spacing(4),
-  width: "50%",
+  width: "90%",
   margin: "auto",
 }));
-
+const SBPhoneInput = styled(PhoneInput)`
+  >input {width:'90%'}
+`
 const mfastyle = {
   position: 'absolute',
   top: '50%',
@@ -51,7 +56,9 @@ const mfastyle = {
   boxShadow: 24,
   p: 4,
 };
-
+const SBGrid = styled(Grid)`
+  padding-left:0!important;
+`
 export default function Dashboard() {
   const navigate = useNavigate();
 
@@ -64,9 +71,9 @@ export default function Dashboard() {
   const [opensms, setOpensms] = useState(false);
   const [showSMSError, setSMSshowError] = useState(false);
   const [disabled, setDisabled] = useState(true);
-	const [cdisable, setCdisable] = useState(true);
+  const [cdisable, setCdisable] = useState(true);
   const [value, setValue] = useState("");
-	const [btnLabel, setBtnLabel] = useState("Send");
+  const [btnLabel, setBtnLabel] = useState("Send");
   const [smscode, setSmscode] = useState("");
 
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -151,7 +158,7 @@ export default function Dashboard() {
         };
 
         updateProfile(data).then(r => {
-          if(r.status === 200) {
+          if (r.status === 200) {
             enqueueSnackbar("User updated successfully1", { variant: "success" });
 
           } else {
@@ -169,7 +176,7 @@ export default function Dashboard() {
   });
 
   const doMFA = () => {
-    if(values.enable_totp === true) {
+    if (values.enable_totp === true) {
       setFieldValue("enable_totp", !values.enable_totp)
     } else {
       handleOpenMfa();
@@ -178,17 +185,17 @@ export default function Dashboard() {
 
   const checkMFACode = () => {
     verifyTOTP(useremail, totp).then(r => {
-      if(r.data.verified) {
+      if (r.data.verified) {
         setFieldValue("enable_totp", true);
         handleCloseMfa();
       } else {
         setShowError(true);
       }
-		});
+    });
   }
 
   const doSMS = () => {
-    if(values.enable_sms === true) {
+    if (values.enable_sms === true) {
       setFieldValue("enable_sms", !values.enable_sms);
     } else {
       handleOpensms();
@@ -197,13 +204,13 @@ export default function Dashboard() {
 
   const check2faCode = () => {
     checkSMS(useremail).then(r => {
-			if(smscode === r.data[0].smscode) {
-				setFieldValue("enable_sms", true);
+      if (smscode === r.data[0].smscode) {
+        setFieldValue("enable_sms", true);
         handleClosesms();
-			} else {
-				setSMSshowError(true);
-			}
-		});
+      } else {
+        setSMSshowError(true);
+      }
+    });
   }
 
   const sendMessage = () => {
@@ -213,11 +220,11 @@ export default function Dashboard() {
     sendSMS(value.substring(1), useremail).then(r => console.log(r));
     const counter = setInterval(() => {
       setBtnLabel(`${count}s`)
-      count --;
+      count--;
       if (count === -1) {
-          clearInterval(counter);
-          setBtnLabel("Send");
-          setDisabled(false)
+        clearInterval(counter);
+        setBtnLabel("Send");
+        setDisabled(false)
       }
     }, 1000);
   }
@@ -271,7 +278,7 @@ export default function Dashboard() {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      if(!result.data[0].enable_totp || result.data[0].enable_totp == null) {
+      if (!result.data[0].enable_totp || result.data[0].enable_totp == null) {
         setShowQR(true);
         createQR(useremail).then(rq => {
           setQRURL(rq.data.url);
@@ -298,7 +305,7 @@ export default function Dashboard() {
     getFieldProps,
     setFieldValue,
   } = formik;
-  const formStyle = {  }
+  const formStyle = {}
   const handleDrop = useCallback(
     (acceptedFiles) => {
       const file = acceptedFiles[0];
@@ -310,22 +317,35 @@ export default function Dashboard() {
   );
 
   const levels = ["level1", "level2", "level3"];
+  const MyStack = styled(Stack)`
+  @media (max-width:1023px) {
+    
+  }
+  `
+  // const MyStack = styled(Stack)(({ theme }) => ({
+
+  //   [theme.breakpoints.down('md')]: {
+  //     marginLeft:0
+  //   },
+  // }))
   console.log("1.test =============== ", formik);
 
   return (
     <Container maxWidth="xl">
       <CardStyle>
         <FormikProvider value={formik}>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={formik.handleSubmit}>
             <Stack direction="row" spacing={4} alignItems="flex-start" sx={{
-                display: {xs:'flex',}, justifyContent: {xs:'space-evenly'}, flexWrap:{xs:'wrap',md:'nowrap'}}}>
-              <Stack spacing={5} sx={{mb:{xs:5,md:0}}}>
+              display: { xs: 'flex', }, justifyContent: { xs: 'space-evenly' }, flexWrap: { xs: 'wrap', md: 'nowrap' }
+            }}>
+              <Stack spacing={5} sx={{ mb: { xs: 5, md: 0 } }}>
                 <Box
                   sx={{
-                    textAlign:'center',
-                    width:{xs:'80%',md:200},
+                    textAlign: 'center',
+                    width: '100%',
                     height: 200,
                     borderRadius: 1,
+                    mt: 5
                   }}
                 >
                   <UploadSingleFile
@@ -342,8 +362,23 @@ export default function Dashboard() {
                   />
                 </Box>
                 <Button sx={{ mb: 5 }} id="blockpass-kyc-connect" variant="contained">Register KYC</Button>
+                <TextField
+                  id="outlined-select-currency"
+                  select
+                  placeholder="KYC Completed"
+                  value={levels}
+                  sx={{ flexGrow: 1, width: '100%'}}
+                  {...getFieldProps("KYC_Completed")}
+                // onChange={handleChange}
+                >
+                  {levels.map((option) => (
+                    <MenuItem key={option} value={option}>
+                      {option}
+                    </MenuItem>
+                  ))}
+                </TextField>
               </Stack>
-              <Stack spacing={3} sx={{width:{xs:'80%'}}}>
+              <MyStack spacing={3} sx={{ width: '100%' }}>
                 <Stack
                   direction="row"
                   justifyContent="space-between"
@@ -351,6 +386,10 @@ export default function Dashboard() {
                   spacing={3}
                 >
                   <TextField
+                    id="first_name"
+                    value={formik.values.first_name}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
                     fullWidth
                     // label="First Name"
                     placeholder="First Name"
@@ -359,6 +398,9 @@ export default function Dashboard() {
                     helperText={touched.first_name && errors.first_name}
                   />
                   <TextField
+                    id="last_name"
+                    value={formik.values.last_name}
+                    onChange={formik.handleChange}
                     fullWidth
                     placeholder="Last Name"
                     {...getFieldProps("last_name")}
@@ -412,39 +454,33 @@ export default function Dashboard() {
                   )}
                   helperText={touched.wallet_address && errors.wallet_address}
                 />
-                <Stack direction="row" flexGrow="1" spacing={5}>
-                  <FormControlLabel
-                    value="start"
-                    control={
-                      <Switch color="primary"  checked={values.enable_totp}  onClick={doMFA} />
-                    }
-                    label="MFA"
-                    labelPlacement="start"
-                  />
-                  <FormControlLabel
-                    value="start"
-                    control={
-                      <Switch color="primary"  checked={values.enable_sms}  onClick={doSMS} />
-                    }
-                    label="SMS Verification"
-                    labelPlacement="start"
-                  />
-                  <TextField
-                    id="outlined-select-currency"
-                    select
-                    placeholder="KYC Completed"
-                    value={levels}
-                    sx={{ flexGrow: 1 }}
-                    {...getFieldProps("KYC_Completed")}
-                  // onChange={handleChange}
-                  >
-                    {levels.map((option) => (
-                      <MenuItem key={option} value={option}>
-                        {option}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-                </Stack>
+                <Grid container direction={{ xs: 'column', sm: 'row' }} sx={{ width: '100%' }}
+                  justifyContent="space-around" spacing={3}>
+                  <SBGrid item xs={6} sm={6} md={6} sx={{ textAlign: 'center' }}>
+                    <FormControlLabel
+                      value="start"
+                      control={
+                        <Switch color="primary" checked={openMfa} onClick={doMFA} />
+                      }
+                      label="MFA"
+                      labelPlacement="start"
+                    />
+                  </SBGrid>
+                  <SBGrid item xs={6} sm={6} md={6} sx={{ textAlign: 'center' }}>
+                    <FormControlLabel
+                      value="start"
+                      control={
+                        <Switch color="primary" checked={opensms} onClick={doSMS} />
+                      }
+                      label="SMS Verification"
+                      labelPlacement="start"
+                    />
+                  </SBGrid>
+                  <SBGrid item xs={12} sm={12} md={4} >
+
+                  </SBGrid>
+
+                </Grid>
                 <Modal
                   open={openMfa}
                   onClose={handleCloseMfa}
@@ -452,15 +488,26 @@ export default function Dashboard() {
                   aria-describedby="modal-modal-description"
                 >
                   <Box sx={mfastyle}>
+                    <Box style={{ float: 'right', marginTop: '-22px', marginRight: '-20px' }}>
+                      <IconButton
+                        size="small"
+                        aria-label="close"
+                        color="inherit"
+                        onClick={handleCloseMfa}
+                      >
+                        <CloseIcon fontSize="small" />
+                      </IconButton>
+                    </Box>
                     {showQR &&
-                      <div style={{marginTop: '20px'}}>
-                        <img style={{margin: 'auto'}} src={qrURL} />
-                        <p>Please setup MFA on authenticator app</p>
+                      <div style={{ marginTop: '20px' }}>
+                        <img style={{ margin: 'auto' }} src={qrURL} />
+                        <p style={{ marginLeft: '20px' }}>Please setup MFA on authenticator app</p>
                       </div>
                     }
+
                     <InputGroup>
                       <LockIcon />
-                      <Input
+                      <TextField
                         type="input"
                         placeholder="Enter your TOTP"
                         id="totp"
@@ -469,11 +516,13 @@ export default function Dashboard() {
                         onChange={handleTOTPInputChange}
                       />
                     </InputGroup>
-                    {showError && <p style={{marginBottom: "10px", color: "red"}}>Invalid code please try again</p>}
-                    <Button onClick={checkMFACode} full>
+                    {showError && <p style={{ marginBottom: "10px", color: "red" }}>Invalid code please try again</p>}
+                    <Button variant="contained" sx={{ width: '100%' }} onClick={checkMFACode} full>
                       Confirm
                     </Button>
+
                   </Box>
+
                 </Modal>
                 <Modal
                   open={opensms}
@@ -482,21 +531,32 @@ export default function Dashboard() {
                   aria-describedby="modal-modal-description"
                 >
                   <Box sx={mfastyle}>
+                    <Box style={{ float: 'right', marginTop: '-22px', marginRight: '-20px' }}>
+                      <IconButton
+                        size="small"
+                        aria-label="close"
+                        color="inherit"
+                        onClick={handleClosesms}
+                      >
+                        <CloseIcon fontSize="small" />
+                      </IconButton>
+                    </Box>
                     <h2>2-Step Verification</h2>
-                    <div style={{display: 'flex'}}>
-                        <PhoneInput
-                          defaultCountry="US"
-                          placeholder="Enter phone number"
-                          value={value}
-                          onChange={setValue}
-                        />
-                        <Button type="text" style={{ marginLeft: '10px', height:'auto', flex: '1' }} onClick={ sendMessage } disabled={ disabled }>
-                          {btnLabel}
-                        </Button>
+                    <div style={{ display: 'flex', marginTop: '20px', marginBottom: '20px' }}>
+                      <SBPhoneInput
+                        defaultCountry="US"
+                        placeholder="Enter phone number"
+                        value={value}
+                        onChange={setValue}
+                        sx={{ width: '80%' }}
+                      />
+                      <Button type="text" style={{ marginLeft: '10px', height: 'auto', flex: '1' }} onClick={sendMessage} disabled={disabled}>
+                        {btnLabel}
+                      </Button>
                     </div>
-                    <InputGroup>
+                    <InputGroup sx={{ mt: 3 }}>
                       <LockIcon />
-                      <Input
+                      <TextField
                         type="number"
                         placeholder="Enter your SMS code"
                         id="smsConfirm"
@@ -505,16 +565,16 @@ export default function Dashboard() {
                         onChange={(e) => handle2FA(e.target.value)}
                       />
                     </InputGroup>
-                    {showSMSError && <p style={{marginBottom: "10px", color: "red"}}>Invalid code please try again</p>}
-                    <Button onClick={check2faCode} full disabled={cdisable}>
+                    {showSMSError && <p style={{ marginBottom: "10px", color: "red" }}>Invalid code please try again</p>}
+                    <Button variant="contained" sx={{ width: '100%' }} onClick={check2faCode} full disabled={cdisable}>
                       Confirm
                     </Button>
                   </Box>
                 </Modal>
                 <Button variant="contained" type="submit">
-                  Edit
+                  Save
                 </Button>
-              </Stack>
+              </MyStack>
             </Stack>
           </form>
         </FormikProvider>
