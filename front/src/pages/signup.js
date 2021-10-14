@@ -34,9 +34,6 @@ function Signup() {
   };
 
   const handleFormSubmit = (data, { setSubmitting }) => {
-    if (data.email !== null ) {
-      data.email = data.email.toLowerCase();
-    }
     setSubmitting(true);
     handleSignup(data);
     setSubmitting(false);

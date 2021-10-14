@@ -23,18 +23,18 @@ function CarouselItem({ item }) {
         spacing={3}
         sx={{ width: '100%', height: 106, objectFit: 'cover' }}
       >
-        <Box component="img" src="/images/carousel1.png" alt="carousel" />
+        <Box component="img" src={item.imgInfo.url} alt="carousel" />
         <Stack
           justifyContent="space-between"
           sx={{ position: 'relative' }}
           flexGrow={1}
         >
           <Typography variant="h5" color="text.primary">
-            {item.title}
+            {item.imgInfo.title}
           </Typography>
-          <Typography sx={{ fontSize: 14 }} color="text.primary">
-            {item.description}
-          </Typography>
+          <a href={item.imgInfo.link} sx={{ fontSize: 14 }} color="text.primary">
+            {item.imgInfo.link}
+          </a>
           <Typography
             onClick={() => setOpen(!open)}
             color="primary"
@@ -72,22 +72,35 @@ function CarouselItem({ item }) {
   )
 }
 
-const item = { title: 'adsfadf', description: 'wowadsfasdfasdfasdasdfasd' }
+
 export default function NewsCarousel() {
   const [news, setNews] = useState()
-  useEffect(() => {
-    async function fetch() {
-      const token = localStorage.getItem('token')
+  const getRss = async () => {
+    const res = await fetch(`https://api.allorigins.win/get?url=${'https://strongnode.io/feed/'}`);
+    const { contents } = await res.json();
+    const feed = new window.DOMParser().parseFromString(contents, "text/xml");
+    const items = feed.querySelectorAll("image");
 
-      const url = process.env.REACT_APP_BASE_URL + '/api/news'
-      console.log('server url: ', url)
-      const result = await axios.get(url, {
-        headers: { Authorization: `Bearer ${token}` },
+    let feedItems = [];
+    items.forEach((each) => {
+      feedItems.push({
+        'mainImg': each,
+        'imgInfo': {
+          'url': each.querySelector("url").innerHTML,
+          'title': each.querySelector("title").innerHTML,
+          'link': each.querySelector("link").innerHTML,
+          'width': each.querySelector("width").innerHTML,
+          'height': each.querySelector("height").innerHTML,
+        }
       })
+    })
 
-      setNews(result.data)
-    }
-    fetch()
+    console.log(feedItems)
+    setNews(feedItems);
+
+  };
+  useEffect(() => {
+    getRss();
   }, [])
 
   const theme = useTheme()
@@ -116,9 +129,11 @@ export default function NewsCarousel() {
   return (
     <RootStyle>
       <Slider ref={carouselRef} {...settings}>
+        {news &&
+          news.map((item, index) => <CarouselItem item={item} key={index} />)}
         {/* {news &&
-          news.map((item, index) => <CarouselItem item={item} key={index} />)} */}
-        <CarouselItem item={item} />
+          <CarouselItem item={news} />
+        } */}
       </Slider>
     </RootStyle>
   )

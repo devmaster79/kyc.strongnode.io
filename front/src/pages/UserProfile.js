@@ -59,6 +59,11 @@ const mfastyle = {
 const SBGrid = styled(Grid)`
   padding-left:0!important;
 `
+const MyStack = styled(Stack)`
+  @media (max-width: 1024px) {
+    margin-left:0!important;
+  }
+`
 export default function Dashboard() {
   const navigate = useNavigate();
 
@@ -93,6 +98,7 @@ export default function Dashboard() {
   }
 
   const handleTOTPInputChange = (event) => {
+    console.log(event.target.value);
     if (event.target.value.length > 6) {
       event.target.value = event.target.value.slice(0, 6);
       setTOTP(event.target.value);
@@ -317,11 +323,7 @@ export default function Dashboard() {
   );
 
   const levels = ["level1", "level2", "level3"];
-  const MyStack = styled(Stack)`
-  @media (max-width:1023px) {
-    
-  }
-  `
+
   // const MyStack = styled(Stack)(({ theme }) => ({
 
   //   [theme.breakpoints.down('md')]: {
@@ -460,7 +462,7 @@ export default function Dashboard() {
                     <FormControlLabel
                       value="start"
                       control={
-                        <Switch color="primary" checked={openMfa} onClick={doMFA} />
+                        <Switch color="primary" checked={values.enable_totp} onClick={doMFA} />
                       }
                       label="MFA"
                       labelPlacement="start"
@@ -470,7 +472,7 @@ export default function Dashboard() {
                     <FormControlLabel
                       value="start"
                       control={
-                        <Switch color="primary" checked={opensms} onClick={doSMS} />
+                        <Switch color="primary" checked={values.enable_sms} onClick={doSMS} />
                       }
                       label="SMS Verification"
                       labelPlacement="start"
