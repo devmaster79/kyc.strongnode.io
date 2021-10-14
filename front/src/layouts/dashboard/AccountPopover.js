@@ -48,6 +48,9 @@ export default function AccountPopover() {
     window.localStorage.clear();
     navigate("/signin");
   }
+  const toProfile =() => {
+    navigate('/dashboard/profile');
+  }
   
 
   return (
@@ -120,8 +123,8 @@ export default function AccountPopover() {
             </Typography>
             <Divider light color="white" sx={{ width: 200 }} />
           </Stack>
-          <Link to="/#"><Typography color="white" sx={{ fontSize: 18, ml: 3 }}>My account</Typography></Link>
-          <Link to="/#"><Typography color="white" sx={{ fontSize: 18, ml: 3 }}>Settings</Typography></Link>
+          <Typography onClick={toProfile}  color="white" sx={{cursor:'pointer', fontSize: 18, ml: 3 }}>My account</Typography>
+          <Typography color="white" sx={{ fontSize: 18, ml: 3 }}>Settings</Typography>
           <Stack alignItems="center" sx={{ mt: 1 }}>
             <Button onClick={signOut} variant="contained" sx={{ height: 30 }}>sign out</Button>
           </Stack>
