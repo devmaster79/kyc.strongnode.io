@@ -98,7 +98,6 @@ export default function Dashboard() {
   }
 
   const handleTOTPInputChange = (event) => {
-    console.log(event.target.value);
     if (event.target.value.length > 6) {
       event.target.value = event.target.value.slice(0, 6);
       setTOTP(event.target.value);
@@ -462,7 +461,7 @@ export default function Dashboard() {
                     <FormControlLabel
                       value="start"
                       control={
-                        <Switch color="primary" checked={values.enable_totp} onClick={doMFA} />
+                        <Switch color="primary" checked={values.enable_totp===true} onClick={doMFA} />
                       }
                       label="MFA"
                       labelPlacement="start"
@@ -472,7 +471,7 @@ export default function Dashboard() {
                     <FormControlLabel
                       value="start"
                       control={
-                        <Switch color="primary" checked={values.enable_sms} onClick={doSMS} />
+                        <Switch color="primary" checked={values.enable_sms === true} onClick={doSMS} />
                       }
                       label="SMS Verification"
                       labelPlacement="start"
@@ -488,6 +487,7 @@ export default function Dashboard() {
                   onClose={handleCloseMfa}
                   aria-labelledby="modal-modal-title"
                   aria-describedby="modal-modal-description"
+                  hideBackdrop
                 >
                   <Box sx={mfastyle}>
                     <Box style={{ float: 'right', marginTop: '-22px', marginRight: '-20px' }}>
@@ -531,6 +531,7 @@ export default function Dashboard() {
                   onClose={handleClosesms}
                   aria-labelledby="modal-modal-title"
                   aria-describedby="modal-modal-description"
+                  hideBackdrop
                 >
                   <Box sx={mfastyle}>
                     <Box style={{ float: 'right', marginTop: '-22px', marginRight: '-20px' }}>

@@ -12,6 +12,11 @@ import {
 } from '@material-ui/core'
 import useCollapseDrawer from '../../hooks/useCollapseDrawer'
 import AccountPopover from './AccountPopover'
+import { useState, useEffect, useCallback, useRef } from 'react'
+import Snackbar from '@mui/material/Snackbar';
+
+import CloseIcon from '@mui/icons-material/Close';
+import MuiAlert from '@mui/material/Alert';
 
 const DRAWER_WIDTH = 280
 const COLLAPSE_WIDTH = 130
@@ -41,6 +46,58 @@ const ToolbarStyle = styled(Toolbar)(({ theme }) => ({
 
 export default function DashboardNavbar({ onOpenSidebar }) {
   const { isCollapse, onToggleCollapse } = useCollapseDrawer()
+  const [open, setOpen] = useState([false,false]);
+  
+  useEffect(() => {
+    
+  }, []);
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    let tmp = [...open]
+    tmp[0]=false
+    setOpen(tmp)
+  };
+  const handleSmsClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    let tmp = [...open]
+    tmp[1]=false
+    setOpen(tmp)
+  };
+  const showNotification =()=>{
+    let tmp = [...open]
+    tmp[0]=true
+    tmp[1]=true
+    setOpen(tmp)
+    
+  }
+  const action = (
+    <Box>
+      <IconButton
+        size="small"
+        aria-label="close"
+        color="inherit"
+        onClick={handleClose}
+      >
+        <CloseIcon fontSize="small" />
+      </IconButton>
+    </Box>
+  );
+  const smsAction = (
+    <Box>
+      <IconButton
+        size="small"
+        aria-label="close"
+        color="inherit"
+        onClick={handleSmsClose}
+      >
+        <CloseIcon fontSize="small" />
+      </IconButton>
+    </Box>
+  );
   return (
     <RootStyle
       sx={{
@@ -49,6 +106,36 @@ export default function DashboardNavbar({ onOpenSidebar }) {
         }),
       }}
     >
+      <Box>
+        <Snackbar
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+          open={open[0]}
+          autoHideDuration={6000}
+          //onClose={handleClose}
+          message="KYC should be verified."
+          action={action}
+        >
+          <MuiAlert variant="filled" elevation={6} onClose={handleClose} severity="warning" sx={{ width: '100%' }}>
+            KYC should be verified.
+          </MuiAlert>
+        </Snackbar>
+      </Box>
+      <Box>
+        <Snackbar
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+          open={open[1]}
+          autoHideDuration={6000}
+          //onClose={handleClose}
+          message="SMS should be verified."
+          action={smsAction}
+          sx={{ marginTop: open[0] ? '60px' : '10px' }}
+
+        >
+          <MuiAlert variant="filled" elevation={6} onClose={handleSmsClose} severity="warning" sx={{ width: '100%' }}>
+            SMS should be verified.
+          </MuiAlert>
+        </Snackbar>
+      </Box>
       <ToolbarStyle>
         <Hidden lgUp>
           <IconButton
@@ -85,8 +172,8 @@ export default function DashboardNavbar({ onOpenSidebar }) {
           alignItems="center"
           spacing={{ xs: 0.5, sm: 1.5 }}
         >
-          <IconButton>
-            <Badge badgeContent={3} color="error">
+          <IconButton onClick={showNotification}>
+            <Badge badgeContent={open.filter(e=> e === false).length} color="error">
               <SvgIconStyle
                 src="/icons/bell.svg"
                 sx={{ width: 20, height: 24 }}

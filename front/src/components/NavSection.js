@@ -30,6 +30,8 @@ const ListItemStyle = styled((props) => (
 const ListItemIconStyle = styled(ListItemIcon)({
   width: 26,
   height: 26,
+  marginRight:12,
+  marginLeft:'11px',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -46,6 +48,7 @@ function NavItem({ item, active, isShow }) {
     background: 'linear-gradient(180deg, #AF56B8 0%, #7C1EFB 100%)',
     border: '2px solid rgba(255, 255, 255, 0.5)',
     boxShadow: '0px 5px 5px rgba(0, 0, 0, 0.25)',
+    
   }
 
   return (
@@ -58,7 +61,7 @@ function NavItem({ item, active, isShow }) {
       }}
     >
       <ListItemIconStyle>{icon && icon}</ListItemIconStyle>
-      {isShow && <ListItemText disableTypography primary={title} />}
+      {isShow && <ListItemText sx={{color:'white'}} disableTypography primary={title} />}
     </ListItemStyle>
   )
 }

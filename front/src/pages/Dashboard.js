@@ -23,10 +23,7 @@ import BonusTokensChart from 'components/Charts/BonusTokensChart'
 import RecentLockupsChart from 'components/Charts/RecentLockupsChart'
 import NewsCarousel from 'components/Carousels/NewsCarousel'
 import useCollapseDrawer from '../hooks/useCollapseDrawer'
-import Snackbar from '@mui/material/Snackbar';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
-import MuiAlert from '@mui/material/Alert';
+
 
 
 const CardStyle = styled(Box)(({ theme }) => ({
@@ -42,8 +39,6 @@ export default function Dashboard() {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
   const [historyOpen, setHistoryOpen] = useState()
   const [newsOpen, setNewsOpen] = useState()
-  const [open, setOpen] = useState(false);
-  
 
   const handleViewHistory = () => {
     setHistoryOpen(!historyOpen)
@@ -58,7 +53,7 @@ export default function Dashboard() {
   }
   useEffect(() => {
     handleDashboard();
-    setOpen(true);
+   
     console.log('width', dash.current ? dash.current.offsetWidth : 0);
   }, [dash]);
 
@@ -80,44 +75,8 @@ export default function Dashboard() {
     },
     []
   )
-
-  const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-
-    setOpen(false);
-  };
-
-  const action = (
-    <Box>
-      <IconButton
-        size="small"
-        aria-label="close"
-        color="inherit"
-        onClick={handleClose}
-      >
-        <CloseIcon fontSize="small" />
-      </IconButton>
-    </Box>
-  );
-
   return (
     <Container ref={dash} maxWidth="xl">
-      <Box>
-        <Snackbar
-          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-          open={open}
-          autoHideDuration={6000}
-          //onClose={handleClose}
-          message="KYC should be verified."
-          action={action}
-        >
-          <MuiAlert variant="filled" elevation={6} onClose={handleClose} severity="warning" sx={{ width: '100%' }}>
-            KYC should be verified.
-          </MuiAlert>
-        </Snackbar>
-      </Box>
       <Box
         sx={{
           height: { xs: 'max-content', md: 120 },
@@ -156,7 +115,7 @@ export default function Dashboard() {
               <Box sx={{ mt: 2 }}>
                 <Box>
                   <Typography color="error" variant="h2">
-                    Avaiable
+                    Available
                   </Typography>
                   <Stack direction="row" alignItems="center">
                     <Typography
