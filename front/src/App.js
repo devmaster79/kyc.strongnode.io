@@ -11,6 +11,7 @@ function App() {
           vertical: 'top',
           horizontal: 'right',
         }}
+        maxSnack={2}
       >
         <div className="App">
           <Routes />
