@@ -90,11 +90,15 @@ export default function Dashboard() {
   const handleOpenMfa = () => setOpenMfa(true);
   const handleCloseMfa = () => {
     setOpenMfa(false);
+    setTOTP(false);
+    setShowError(false);
   }
 
   const handleOpensms = () => setOpensms(true);
   const handleClosesms = () => {
     setOpensms(false);
+    setSmscode("");
+    setSMSshowError(false);
   }
 
   const handleTOTPInputChange = (event) => {
