@@ -9,6 +9,7 @@ import Button from "../components/Button";
 import { ReactComponent as UserIcon } from "../icons/user.svg";
 import { ReactComponent as LockIcon } from "../icons/lock.svg";
 import { verifyEmail, createPassword } from "../utils/api";
+import PasswordStrengthBar from 'react-password-strength-bar';
 
 const UserInfoWrapper = styled.div`
   display: flex;
@@ -33,6 +34,7 @@ function CreateAccountPassword() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [userName, setUserName] = useState("");
+  const [showError, setShowError] = useState(false)
 
   useEffect(() => {
     handleVerifyEmail()
@@ -85,10 +87,20 @@ function CreateAccountPassword() {
   );
 
   const handlePasswordInputChange = (event) => {
+    if(password === event.target.value) {
+      setShowError(false);
+    } else {
+      setShowError(true);
+    }
     setPassword(event.target.value);
   };
 
   const handleConfirmPasswordInputChange = (event) => {
+    if(password === event.target.value) {
+      setShowError(false);
+    } else {
+      setShowError(true);
+    }
     setConfirmPassword(event.target.value);
   };
 
@@ -112,7 +124,12 @@ function CreateAccountPassword() {
               onChange={handlePasswordInputChange}
             />
           </InputGroup>
-
+          <PasswordStrengthBar password={password} />
+          {showError && (
+            <p style={{ marginBottom: '10px', color: 'red' }}>
+              Password doesn't match!
+            </p>
+          )}
           <InputGroup>
             <LockIcon />
             <Input
@@ -124,7 +141,6 @@ function CreateAccountPassword() {
               onChange={handleConfirmPasswordInputChange}
             />
           </InputGroup>
-
           <Button type="submit" full>
             Confirm / Sign In
           </Button>

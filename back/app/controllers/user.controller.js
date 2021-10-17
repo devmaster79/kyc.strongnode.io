@@ -6,6 +6,10 @@ const jwt = require("jsonwebtoken");
 const speakeasy = require("speakeasy");
 const QRCode = require("qrcode");
 const dotenv = require("dotenv");
+const gravatar = require("gravatar");
+const axios = require("axios");
+const md5 = require("md5");
+const fs = require("fs");
 dotenv.config();
 
 var AWS = require("aws-sdk");
@@ -23,68 +27,96 @@ exports.create = async (req, res) => {
 
   rand = crypto.randomBytes(20).toString("hex");
 
-  // Create a User
-  const data = {
-    first_name: req.body.first_name,
-    last_name: req.body.last_name,
-    email: req.body.email,
-    user_name: req.body.user_name,
-    email_verified: false,
-    password_token: rand,
-  };
-  try {
-    const user = await User.findOne({
-      where: {
-        [Op.or]: [{ user_name: req.body.user_name }, { email: req.body.email }],
-      },
-    });
-    if (user) {
-      res.status(409).send({
-        message: "Same email or user_name already exists!",
-      });
-      return;
-    }
+  //check if gravatar exists
+  // var url = gravatar.url(req.body.email, {d: '404'});
+  var email_md5 = md5(req.body.email.trim().toLowerCase());
+  var url = "http://www.gravatar.com/avatar/" + email_md5 + "?d=404";
 
-    // Save User in the database
+  let apiRes = null;
+  let data = null;
+  ( async() => {
+    try {
+      apiRes = await axios.get(url);
+    } catch (err) {
+      apiRes = err.response.status;
+    } finally {
+      console.log("******", apiRes);
+      if (apiRes === 404) {
+        data = {
+          first_name: req.body.first_name,
+          last_name: req.body.last_name,
+          email: req.body.email,
+          user_name: req.body.user_name,
+          email_verified: false,
+          password_token: rand,
+        };
+      } else {
+        data = {
+          first_name: req.body.first_name,
+          last_name: req.body.last_name,
+          email: req.body.email,
+          user_name: req.body.user_name,
+          email_verified: false,
+          password_token: rand,
+          profile_img_url: apiRes
+        };
+      }
 
-    const resp = await User.create(data);
-    if (!resp)
-      res.send({
-        result: resp,
-      });
-    link = "https://stage.strongnode.io/verifyEmail?id=" + rand;
-    const ses = new AWS.SES({
-      region: "us-west-2",
-    });
-    const templateData = JSON.stringify({
-      link: link,
-    });
-
-    const params = {
-      Destinations: [
-        {
-          Destination: {
-            ToAddresses: [req.body.email],
+      try {
+        const user = await User.findOne({
+          where: {
+            [Op.or]: [{ user_name: req.body.user_name }, { email: req.body.email }],
           },
-          ReplacementTemplateData: templateData,
-        },
-        /* more items */
-      ],
-      Source: "Notifications <no-reply@strongnode.io>",
-      Template: "EmailTemplate",
-      DefaultTemplateData: '{ "link":"unknown"}',
-    };
+        });
+        if (user) {
+          res.status(409).send({
+            message: "Same email or user_name already exists!",
+          });
+          return;
+        }
 
-    const response = await ses.sendBulkTemplatedEmail(params).promise();
-    res.send({
-      result: response,
-      data: resp,
-    });
-  } catch (err) {
-    res.status(500).send({
-      message: err.message || "Some error occurred while creating the User.",
-    });
-  }
+        // Save User in the database
+
+        const resp = await User.create(data);
+        if (!resp)
+          res.send({
+            result: resp,
+          });
+        link = "https://stage.strongnode.io/verifyEmail?id=" + rand;
+        const ses = new AWS.SES({
+          region: "us-west-2",
+        });
+        const templateData = JSON.stringify({
+          link: link,
+        });
+
+        const params = {
+          Destinations: [
+            {
+              Destination: {
+                ToAddresses: [req.body.email],
+              },
+              ReplacementTemplateData: templateData,
+            },
+            /* more items */
+          ],
+          Source: "Notifications <no-reply@strongnode.io>",
+          Template: "EmailTemplate",
+          DefaultTemplateData: '{ "link":"unknown"}',
+        };
+
+        const response = await ses.sendBulkTemplatedEmail(params).promise();
+        res.send({
+          result: response,
+          data: resp,
+        });
+      } catch (err) {
+        res.status(500).send({
+          message: err.message || "Some error occurred while creating the User.",
+        });
+      }
+    }
+  })();
 };
 
 // Create and Save a new User password

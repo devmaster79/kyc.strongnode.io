@@ -23,6 +23,7 @@ function Signin() {
   const handleFormSubmit = (data, { setSubmitting }) => {
     setSubmitting(true);
     // make async call to submit registration data here
+    data.email = data.email.toLowerCase();
     const t_email = data.email
     checkSMS(t_email).then(r => {
 			if(r.data.length !== 0 && r.data[0].email === t_email) {

@@ -12,6 +12,15 @@ module.exports = (sequelize, Sequelize) => {
     user_name: {
       type: Sequelize.STRING
     },
+    profile_img_type: {
+      type: Sequelize.STRING
+    },
+    profile_img_url: {
+      type: Sequelize.STRING
+    },
+    profile_img_data: {
+      type: Sequelize.BLOB("long")
+    },
     email_verified: {
       type: Sequelize.BOOLEAN
     },
