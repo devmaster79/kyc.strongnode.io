@@ -14,4 +14,5 @@ export const verify_qr_url = `${base_url}/users/totp/verify`;
 export const get_news = `${base_url}/news`;
 export const get_profile = `${base_url}/users/profile/get`;
 export const update_profile = `${base_url}/users/profile/update`;
+export const upload_profile_img = `${base_url}/users/profile/image`;
 export default base_url;

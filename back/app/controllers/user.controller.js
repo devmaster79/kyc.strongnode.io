@@ -748,7 +748,7 @@ exports.updateProfile = async (req, res) => {
 //Upload profile Image
 exports.uploadImg = async (req, res) => {
   const { email } = req.body;
-  const { image_name, image_data } = req.body;
+  const { image_data } = req.body;
 
   if (!email) {
     res.status(400).send({

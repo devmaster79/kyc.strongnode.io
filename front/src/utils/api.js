@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { signup_url, verify_email_url, password_url, profile_url, investor_url, sms_url, check_sms_url, qr_url, verify_qr_url, signin_url } from './config';
-import { get_news, get_profile, update_profile } from './config';
+import { get_news, get_profile, update_profile, upload_profile_img } from './config';
 
 const token = localStorage.getItem('token');
 
@@ -138,6 +138,18 @@ const updateProfile = async (data) => {
     return axios(config);
 }
 
+const uploadProfileImage = async (email, img_data) => {
+    const config = {
+        url: upload_profile_img,
+        method: "PUT",
+        data: {
+            email: email,
+            image_data: img_data
+        }
+    };
+    return axios(config);
+}
+
 export default signup;
 export { verifyEmail, createPassword, createProfile, createInvestor, signin, sendSMS, checkSMS, createQR, verifyTOTP };
-export { getNews, getProfile, updateProfile };
+export { getNews, getProfile, updateProfile, uploadProfileImage };
