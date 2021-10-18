@@ -21,6 +21,9 @@ module.exports = (sequelize, Sequelize) => {
     profile_img_data: {
       type: Sequelize.BLOB("long")
     },
+    profile_img_key: {
+      type: Sequelize.STRING
+    },
     email_verified: {
       type: Sequelize.BOOLEAN
     },

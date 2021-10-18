@@ -47,5 +47,8 @@ module.exports = (app) => {
   //update profile
   router.put("/profile/update", users.updateProfile);
 
+  //upload image to s3
+  router.put("/profile/image", users.uploadImg);
+
   app.use("/api/users", router);
 };

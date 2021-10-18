@@ -703,7 +703,7 @@ exports.getProfile = (req, res) => {
 //Update profile
 exports.updateProfile = async (req, res) => {
   const { email } = req.body;
-  const { first_name, last_name, user_name, twitter_id, telegram_id, wallet_address, enable_totp} = req.body;
+  const { first_name, last_name, user_name, twitter_id, telegram_id, wallet_address, enable_totp, enable_sms } = req.body;
 
   if (!email) {
     res.status(400).send({
@@ -720,6 +720,7 @@ exports.updateProfile = async (req, res) => {
     twitter_id: twitter_id,
     wallet_address: wallet_address,
     enable_totp: enable_totp,
+    enable_sms: enable_sms
   };
 
   User.update(data, {
@@ -740,6 +741,73 @@ exports.updateProfile = async (req, res) => {
       res.status(500).send({
         message:
           "Error creating User profile with username=" + req.user.user_name,
+      });
+    });
+};
+
+//Upload profile Image
+exports.uploadImg = async (req, res) => {
+  const { email } = req.body;
+  const { image_name, image_data } = req.body;
+
+  if (!email) {
+    res.status(400).send({
+      message: "Email is required!",
+    });
+    return;
+  }
+
+  //upload image data to S3
+  const s3 = new AWS.S3();
+  const base64Data = new Buffer.from(image_data.replace(/^data:image\/\w+;base64,/, ""), 'base64');
+  const image_type = image_data.split(';')[0].split('/')[1];
+
+  const s3_params = {
+    Bucket: 'strong-profile-img',
+    Key: `${user_name}.${image_type}`,
+    Body: base64Data,
+    ACL: 'public-read',
+    ContentEncoding: 'base64',
+    ContentType: `image/${type}`
+  }
+
+  let s3_image_url = '';
+  let key = '';
+  try {
+    const { Location, Key } = await s3.upload(s3_params).promise();
+    s3_image_url = Location;
+    key = Key;
+  } catch (error) {
+    res.status(500).send({
+      message:
+        "Error uploading User profile image with username=" + req.user.user_name,
+    });
+  }
+
+  const data = {
+    profile_img_type: image_type,
+    profile_image_url: s3_image_url,
+    profile_img_key: key
+  };
+
+  User.update(data, {
+    where: { email: email },
+  })
+    .then((num) => {
+      if (num == 1) {
+        res.send({
+          message: "User profile image was uploaded successfully.",
+        });
+      } else {
+        res.send({
+          message: `Cannot upload User profile image with username=${req.user.user_name}.`,
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message:
+          "Error uploading User profile image with username=" + req.user.user_name,
       });
     });
 };
