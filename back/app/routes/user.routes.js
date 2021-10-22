@@ -1,7 +1,8 @@
 module.exports = (app) => {
   const users = require("../controllers/user.controller.js");
   const auth = require("../middleware/auth");
-
+  const multer  = require('multer')
+  const upload = multer({ dest: 'uploads/' })
   const router = require("express").Router();
 
   // Create a new User
@@ -48,7 +49,7 @@ module.exports = (app) => {
   router.put("/profile/update", users.updateProfile);
 
   //upload image to s3
-  router.put("/profile/image", users.uploadImg);
+  router.put("/profile/image", upload.single('image_data'), users.uploadImg);
 
   app.use("/api/users", router);
 };
