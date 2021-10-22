@@ -90,7 +90,7 @@ export default function Dashboard() {
   const handleOpenMfa = () => setOpenMfa(true);
   const handleCloseMfa = () => {
     setOpenMfa(false);
-    setTOTP(false);
+    setTOTP("");
     setShowError(false);
   }
 
@@ -196,6 +196,20 @@ export default function Dashboard() {
     verifyTOTP(useremail, totp).then(r => {
       if (r.data.verified) {
         setFieldValue("enable_totp", true);
+        const {
+          enable_totp
+        } = values;
+        const data = {
+          enable_totp,
+        };
+        updateProfile(data).then(r => {
+          if (r.status === 200) {
+            enqueueSnackbar("User updated successfully1", { variant: "success" });
+
+          } else {
+            enqueueSnackbar("Failed to update profile2", { variant: "fail" });
+          }
+        });
         handleCloseMfa();
       } else {
         setShowError(true);
@@ -215,6 +229,20 @@ export default function Dashboard() {
     checkSMS(useremail).then(r => {
       if (smscode === r.data[0].smscode) {
         setFieldValue("enable_sms", true);
+        const {
+          enable_sms
+        } = values;
+        const data = {
+          enable_sms,
+        };
+        updateProfile(data).then(r => {
+          if (r.status === 200) {
+            enqueueSnackbar("User updated successfully1", { variant: "success" });
+
+          } else {
+            enqueueSnackbar("Failed to update profile2", { variant: "fail" });
+          }
+        });
         handleClosesms();
       } else {
         setSMSshowError(true);
