@@ -10,6 +10,7 @@ const gravatar = require("gravatar");
 const axios = require("axios");
 const md5 = require("md5");
 const fs = require("fs");
+
 dotenv.config();
 
 var AWS = require("aws-sdk");
@@ -746,10 +747,12 @@ exports.updateProfile = async (req, res) => {
 };
 
 //Upload profile Image
-exports.uploadImg = async (req, res) => {
+exports.uploadImg = async  (req, res) => {
+  
   const { email } = req.body;
   const { image_data } = req.body;
-
+  
+  console.log(req);
   if (!email) {
     res.status(400).send({
       message: "Email is required!",
@@ -770,7 +773,7 @@ exports.uploadImg = async (req, res) => {
     ContentEncoding: 'base64',
     ContentType: `image/${type}`
   }
-
+  console.log("ddddddddddddddddd"+image_data);
   let s3_image_url = '';
   let key = '';
   try {

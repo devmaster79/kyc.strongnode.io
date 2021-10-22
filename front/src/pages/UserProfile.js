@@ -21,7 +21,7 @@ import {
 import { styled } from "@material-ui/core/styles";
 import { useState, useEffect, useCallback } from "react";
 import axios from "utils/axios";
-import { updateProfile, createQR, verifyTOTP, sendSMS, checkSMS } from "../utils/api";
+import { updateProfile, createQR, verifyTOTP, sendSMS, checkSMS, uploadProfileImage } from "../utils/api";
 import * as Yup from "yup";
 import { useFormik, Form, FormikProvider } from "formik";
 import UploadSingleFile from "components/UploadSingleFile";
@@ -318,12 +318,23 @@ export default function Dashboard() {
   const handleDrop = useCallback(
     (acceptedFiles) => {
       const file = acceptedFiles[0];
+      console.log(file.type);
       if (file) {
         setFieldValue("cover", file);
       }
     },
     [setFieldValue]
   );
+  const upload = () => {
+    uploadProfileImage(values.email, values.cover)
+      .then(res => {
+        if (res.status === 200) { console.log(res) }
+      })
+      .catch(err => {
+        if (err.request) { console.log(err.request) }
+        if (err.response) { console.log(err.response) }
+      });
+  }
 
   const levels = ["level1", "level2", "level3"];
 
@@ -333,17 +344,17 @@ export default function Dashboard() {
   //     marginLeft:0
   //   },
   // }))
-  console.log("1.test =============== ", formik);
+
 
   return (
     <Container maxWidth="xl">
       <CardStyle>
         <FormikProvider value={formik}>
-          <form onSubmit={formik.handleSubmit}>
+          <form onSubmit={formik.handleSubmit} enctype="multipart/form-data">
             <Stack direction="row" spacing={4} alignItems="flex-start" sx={{
               display: { xs: 'flex', }, justifyContent: { xs: 'space-evenly' }, flexWrap: { xs: 'wrap', md: 'nowrap' }
             }}>
-              <Stack spacing={5} sx={{ mb: { xs: 5, md: 0 } }}>
+              <Stack spacing={5} sx={{ width: '200px', mb: { xs: 5, md: 0 } }}>
                 <Box
                   sx={{
                     textAlign: 'center',
@@ -366,13 +377,14 @@ export default function Dashboard() {
                     sx={{ height: 200 }}
                   />
                 </Box>
+                <Button onClick={upload} sx={{ mb: 5 }} variant="contained">Upload</Button>
                 <Button sx={{ mb: 5 }} id="blockpass-kyc-connect" variant="contained">Register KYC</Button>
                 <TextField
                   id="outlined-select-currency"
                   select
                   placeholder="KYC Completed"
                   value={levels}
-                  sx={{ flexGrow: 1, width: '100%'}}
+                  sx={{ flexGrow: 1, width: '100%' }}
                   {...getFieldProps("KYC_Completed")}
                 // onChange={handleChange}
                 >
@@ -465,7 +477,7 @@ export default function Dashboard() {
                     <FormControlLabel
                       value="start"
                       control={
-                        <Switch color="primary" checked={values.enable_totp===true} onClick={doMFA} />
+                        <Switch color="primary" checked={values.enable_totp === true} onClick={doMFA} />
                       }
                       label="MFA"
                       labelPlacement="start"

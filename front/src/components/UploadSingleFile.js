@@ -94,11 +94,11 @@ export default function UploadSingleFile({
 
         {/* <UploadIllustration sx={{ width: 220 }} /> */}
 
-        <Box sx={{ p: 3, ml: { md: 2 } }}>
+        {!file && (<Box sx={{ p: 3, ml: { md: 2 } }}>
           <Typography variant="body2" sx={{ color: "text.secondary" }}>
             Drop files here or click
           </Typography>
-        </Box>
+        </Box>)}
 
         {file && (
           <Box
