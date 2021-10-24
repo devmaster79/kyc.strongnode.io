@@ -16,21 +16,28 @@ import {
   MenuItem,
   Switch,
   FormControlLabel,
-  Paper
+  Paper,
 } from "@material-ui/core";
 import { styled } from "@material-ui/core/styles";
 import { useState, useEffect, useCallback } from "react";
 import axios from "utils/axios";
-import { updateProfile, createQR, verifyTOTP, sendSMS, checkSMS, uploadProfileImage } from "../utils/api";
+import {
+  updateProfile,
+  createQR,
+  verifyTOTP,
+  sendSMS,
+  checkSMS,
+  uploadProfileImage,
+} from "../utils/api";
 import * as Yup from "yup";
 import { useFormik, Form, FormikProvider } from "formik";
 import UploadSingleFile from "components/UploadSingleFile";
 import Input from "../components/Input";
 import InputGroup from "../components/InputGroup";
 import { ReactComponent as LockIcon } from "../icons/lock.svg";
-import PhoneInput from 'react-phone-number-input';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
+import PhoneInput from "react-phone-number-input";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
 
 const CardStyle = styled(Box)(({ theme }) => ({
   background:
@@ -43,27 +50,29 @@ const CardStyle = styled(Box)(({ theme }) => ({
   margin: "auto",
 }));
 const SBPhoneInput = styled(PhoneInput)`
-  >input {width:'90%'}
-`
+  > input {
+    width: "90%";
+  }
+`;
 const mfastyle = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
   width: 400,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
+  bgcolor: "background.paper",
+  border: "2px solid #000",
   boxShadow: 24,
   p: 4,
 };
 const SBGrid = styled(Grid)`
-  padding-left:0!important;
-`
+  padding-left: 0 !important;
+`;
 const MyStack = styled(Stack)`
   @media (max-width: 1024px) {
-    margin-left:0!important;
+    margin-left: 0 !important;
   }
-`
+`;
 export default function Dashboard() {
   const navigate = useNavigate();
 
@@ -92,14 +101,14 @@ export default function Dashboard() {
     setOpenMfa(false);
     setTOTP("");
     setShowError(false);
-  }
+  };
 
   const handleOpensms = () => setOpensms(true);
   const handleClosesms = () => {
     setOpensms(false);
     setSmscode("");
     setSMSshowError(false);
-  }
+  };
 
   const handleTOTPInputChange = (event) => {
     if (event.target.value.length > 6) {
@@ -119,19 +128,20 @@ export default function Dashboard() {
 
   const formik = useFormik({
     initialValues: {
-      first_name: '',
-      last_name: '',
-      user_name: '',
-      password: '',
-      telegram_id: '',
-      twitter_id: '',
-      email: '',
-      wallet_address: '',
-      KYC_Completed: 'level1',
+      first_name: "",
+      last_name: "",
+      user_name: "",
+      password: "",
+      telegram_id: "",
+      twitter_id: "",
+      email: "",
+      wallet_address: "",
+      KYC_Completed: "level1",
       enable_totp: user?.enable_totp,
       enable_sms: user?.enable_sms,
       MFA: user?.enable_totp,
-      cover: '',
+      cover: "",
+      file: "",
     },
     validationSchema: ProfileSchema,
     onSubmit: async (values, { setErrors, setSubmitting, resetForm }) => {
@@ -152,7 +162,8 @@ export default function Dashboard() {
         // formData.append("image", cover);
         // formData.append("name", name);
         // formData.append("description", description);
-        const url = process.env.REACT_APP_BASE_URL + `/api/users/profile/update`;
+        const url =
+          process.env.REACT_APP_BASE_URL + `/api/users/profile/update`;
         console.log("server url: ", url);
 
         const data = {
@@ -166,10 +177,11 @@ export default function Dashboard() {
           twitter_id,
         };
 
-        updateProfile(data).then(r => {
+        updateProfile(data).then((r) => {
           if (r.status === 200) {
-            enqueueSnackbar("User updated successfully1", { variant: "success" });
-
+            enqueueSnackbar("User updated successfully1", {
+              variant: "success",
+            });
           } else {
             enqueueSnackbar("Failed to update profile2", { variant: "fail" });
           }
@@ -186,26 +198,25 @@ export default function Dashboard() {
 
   const doMFA = () => {
     if (values.enable_totp === true) {
-      setFieldValue("enable_totp", !values.enable_totp)
+      setFieldValue("enable_totp", !values.enable_totp);
     } else {
       handleOpenMfa();
     }
-  }
+  };
 
   const checkMFACode = () => {
-    verifyTOTP(useremail, totp).then(r => {
+    verifyTOTP(useremail, totp).then((r) => {
       if (r.data.verified) {
         setFieldValue("enable_totp", true);
-        const {
-          enable_totp
-        } = values;
+        const { enable_totp } = values;
         const data = {
           enable_totp,
         };
-        updateProfile(data).then(r => {
+        updateProfile(data).then((r) => {
           if (r.status === 200) {
-            enqueueSnackbar("User updated successfully1", { variant: "success" });
-
+            enqueueSnackbar("User updated successfully1", {
+              variant: "success",
+            });
           } else {
             enqueueSnackbar("Failed to update profile2", { variant: "fail" });
           }
@@ -215,7 +226,7 @@ export default function Dashboard() {
         setShowError(true);
       }
     });
-  }
+  };
 
   const doSMS = () => {
     if (values.enable_sms === true) {
@@ -223,22 +234,21 @@ export default function Dashboard() {
     } else {
       handleOpensms();
     }
-  }
+  };
 
   const check2faCode = () => {
-    checkSMS(useremail).then(r => {
+    checkSMS(useremail).then((r) => {
       if (smscode === r.data[0].smscode) {
         setFieldValue("enable_sms", true);
-        const {
-          enable_sms
-        } = values;
+        const { enable_sms } = values;
         const data = {
           enable_sms,
         };
-        updateProfile(data).then(r => {
+        updateProfile(data).then((r) => {
           if (r.status === 200) {
-            enqueueSnackbar("User updated successfully1", { variant: "success" });
-
+            enqueueSnackbar("User updated successfully1", {
+              variant: "success",
+            });
           } else {
             enqueueSnackbar("Failed to update profile2", { variant: "fail" });
           }
@@ -248,23 +258,23 @@ export default function Dashboard() {
         setSMSshowError(true);
       }
     });
-  }
+  };
 
   const sendMessage = () => {
     let count = 30;
     setDisabled(true);
     setSMSshowError(false);
-    sendSMS(value.substring(1), useremail).then(r => console.log(r));
+    sendSMS(value.substring(1), useremail).then((r) => console.log(r));
     const counter = setInterval(() => {
-      setBtnLabel(`${count}s`)
+      setBtnLabel(`${count}s`);
       count--;
       if (count === -1) {
         clearInterval(counter);
         setBtnLabel("Send");
-        setDisabled(false)
+        setDisabled(false);
       }
     }, 1000);
-  }
+  };
 
   const handle2FA = (val) => {
     if (val.length > 4) {
@@ -277,33 +287,32 @@ export default function Dashboard() {
     if (val) setCdisable(false);
     else setCdisable(true);
     setShowError(false);
-  }
+  };
 
   const loadBlockpassWidget = async (event) => {
-    const blockpass = new window.BlockpassKYCConnect('strongnode_596cc',
-      {
-        env: 'prod',
-        refId: '1632811259976',
-      })
+    const blockpass = new window.BlockpassKYCConnect("strongnode_596cc", {
+      env: "prod",
+      refId: "1632811259976",
+    });
 
-    blockpass.startKYCConnect()
-    blockpass.on('KYCConnectSuccess', () => {
+    blockpass.startKYCConnect();
+    blockpass.on("KYCConnectSuccess", () => {
       //add code that will trigger when data have been sent
       navigate("/dashboard");
-    })
+    });
 
-    blockpass.on('KYCConnectClose', () => {
+    blockpass.on("KYCConnectClose", () => {
       //add code that will trigger when the workflow is finished. ex:
       //alert('Finished!')
       navigate("/dashboard");
-    })
+    });
 
-    blockpass.on('KYCConnectCancel', () => {
+    blockpass.on("KYCConnectCancel", () => {
       //add code that will trigger when the workflow is aborted. ex:
       //alert('Cancelled!')
       navigate("/dashboard");
-    })
-  }
+    });
+  };
 
   useEffect(() => {
     async function fetch() {
@@ -317,7 +326,7 @@ export default function Dashboard() {
 
       if (!result.data[0].enable_totp || result.data[0].enable_totp == null) {
         setShowQR(true);
-        createQR(useremail).then(rq => {
+        createQR(useremail).then((rq) => {
           setQRURL(rq.data.url);
         });
       }
@@ -330,7 +339,7 @@ export default function Dashboard() {
     if (value !== "") setDisabled(false);
     if (!value) setDisabled(true);
     fetch();
-    loadBlockpassWidget()
+    loadBlockpassWidget();
   }, [value]);
 
   const {
@@ -342,27 +351,57 @@ export default function Dashboard() {
     getFieldProps,
     setFieldValue,
   } = formik;
-  const formStyle = {}
+
+  const formStyle = {};
+
+  const getBase64 = (file) => {
+    return new Promise((resolve) => {
+      let fileInfo;
+      let baseURL = "";
+      // Make new FileReader
+      let reader = new FileReader();
+
+      // Convert the file to base64 text
+      reader.readAsDataURL(file);
+
+      // on reader load somthing...
+      reader.onload = () => {
+        // Make a fileInfo Object
+        console.log("Called", reader);
+        baseURL = reader.result;
+        resolve(baseURL);
+      };
+      console.log("fileInfo: ", fileInfo);
+    });
+  };
+
   const handleDrop = useCallback(
     (acceptedFiles) => {
       const file = acceptedFiles[0];
-      console.log(file.type);
+      let base64;
+      getBase64(file).then((result) => setFieldValue("cover", result));
       if (file) {
-        setFieldValue("cover", file);
+        setFieldValue("file", file);
       }
     },
     [setFieldValue]
   );
   const upload = () => {
     uploadProfileImage(values.email, values.cover)
-      .then(res => {
-        if (res.status === 200) { console.log(res) }
+      .then((res) => {
+        if (res.status === 200) {
+          console.log(res);
+        }
       })
-      .catch(err => {
-        if (err.request) { console.log(err.request) }
-        if (err.response) { console.log(err.response) }
+      .catch((err) => {
+        if (err.request) {
+          console.log(err.request);
+        }
+        if (err.response) {
+          console.log(err.response);
+        }
       });
-  }
+  };
 
   const levels = ["level1", "level2", "level3"];
 
@@ -373,23 +412,29 @@ export default function Dashboard() {
   //   },
   // }))
 
-
   return (
     <Container maxWidth="xl">
       <CardStyle>
         <FormikProvider value={formik}>
           <form onSubmit={formik.handleSubmit} enctype="multipart/form-data">
-            <Stack direction="row" spacing={4} alignItems="flex-start" sx={{
-              display: { xs: 'flex', }, justifyContent: { xs: 'space-evenly' }, flexWrap: { xs: 'wrap', md: 'nowrap' }
-            }}>
-              <Stack spacing={5} sx={{ width: '200px', mb: { xs: 5, md: 0 } }}>
+            <Stack
+              direction="row"
+              spacing={4}
+              alignItems="flex-start"
+              sx={{
+                display: { xs: "flex" },
+                justifyContent: { xs: "space-evenly" },
+                flexWrap: { xs: "wrap", md: "nowrap" },
+              }}
+            >
+              <Stack spacing={5} sx={{ width: "200px", mb: { xs: 5, md: 0 } }}>
                 <Box
                   sx={{
-                    textAlign: 'center',
-                    width: '100%',
+                    textAlign: "center",
+                    width: "100%",
                     height: 200,
                     borderRadius: 1,
-                    mt: 5
+                    mt: 5,
                   }}
                 >
                   <UploadSingleFile
@@ -397,7 +442,7 @@ export default function Dashboard() {
                     accept="image/*"
                     file={
                       values.cover && {
-                        preview: URL.createObjectURL(values.cover),
+                        preview: URL.createObjectURL(values.file),
                       }
                     }
                     onDrop={(e) => handleDrop(e, 1)}
@@ -405,16 +450,24 @@ export default function Dashboard() {
                     sx={{ height: 200 }}
                   />
                 </Box>
-                <Button onClick={upload} sx={{ mb: 5 }} variant="contained">Upload</Button>
-                <Button sx={{ mb: 5 }} id="blockpass-kyc-connect" variant="contained">Register KYC</Button>
+                <Button onClick={upload} sx={{ mb: 5 }} variant="contained">
+                  Upload
+                </Button>
+                <Button
+                  sx={{ mb: 5 }}
+                  id="blockpass-kyc-connect"
+                  variant="contained"
+                >
+                  Register KYC
+                </Button>
                 <TextField
                   id="outlined-select-currency"
                   select
                   placeholder="KYC Completed"
                   value={levels}
-                  sx={{ flexGrow: 1, width: '100%' }}
+                  sx={{ flexGrow: 1, width: "100%" }}
                   {...getFieldProps("KYC_Completed")}
-                // onChange={handleChange}
+                  // onChange={handleChange}
                 >
                   {levels.map((option) => (
                     <MenuItem key={option} value={option}>
@@ -423,7 +476,7 @@ export default function Dashboard() {
                   ))}
                 </TextField>
               </Stack>
-              <MyStack spacing={3} sx={{ width: '100%' }}>
+              <MyStack spacing={3} sx={{ width: "100%" }}>
                 <Stack
                   direction="row"
                   justifyContent="space-between"
@@ -499,32 +552,54 @@ export default function Dashboard() {
                   )}
                   helperText={touched.wallet_address && errors.wallet_address}
                 />
-                <Grid container direction={{ xs: 'column', sm: 'row' }} sx={{ width: '100%' }}
-                  justifyContent="space-around" spacing={3}>
-                  <SBGrid item xs={6} sm={6} md={6} sx={{ textAlign: 'center' }}>
+                <Grid
+                  container
+                  direction={{ xs: "column", sm: "row" }}
+                  sx={{ width: "100%" }}
+                  justifyContent="space-around"
+                  spacing={3}
+                >
+                  <SBGrid
+                    item
+                    xs={6}
+                    sm={6}
+                    md={6}
+                    sx={{ textAlign: "center" }}
+                  >
                     <FormControlLabel
                       value="start"
                       control={
-                        <Switch color="primary" checked={values.enable_totp === true} onClick={doMFA} />
+                        <Switch
+                          color="primary"
+                          checked={values.enable_totp === true}
+                          onClick={doMFA}
+                        />
                       }
                       label="MFA"
                       labelPlacement="start"
                     />
                   </SBGrid>
-                  <SBGrid item xs={6} sm={6} md={6} sx={{ textAlign: 'center' }}>
+                  <SBGrid
+                    item
+                    xs={6}
+                    sm={6}
+                    md={6}
+                    sx={{ textAlign: "center" }}
+                  >
                     <FormControlLabel
                       value="start"
                       control={
-                        <Switch color="primary" checked={values.enable_sms === true} onClick={doSMS} />
+                        <Switch
+                          color="primary"
+                          checked={values.enable_sms === true}
+                          onClick={doSMS}
+                        />
                       }
                       label="SMS Verification"
                       labelPlacement="start"
                     />
                   </SBGrid>
-                  <SBGrid item xs={12} sm={12} md={4} >
-
-                  </SBGrid>
-
+                  <SBGrid item xs={12} sm={12} md={4}></SBGrid>
                 </Grid>
                 <Modal
                   open={openMfa}
@@ -534,7 +609,13 @@ export default function Dashboard() {
                   hideBackdrop
                 >
                   <Box sx={mfastyle}>
-                    <Box style={{ float: 'right', marginTop: '-22px', marginRight: '-20px' }}>
+                    <Box
+                      style={{
+                        float: "right",
+                        marginTop: "-22px",
+                        marginRight: "-20px",
+                      }}
+                    >
                       <IconButton
                         size="small"
                         aria-label="close"
@@ -544,12 +625,14 @@ export default function Dashboard() {
                         <CloseIcon fontSize="small" />
                       </IconButton>
                     </Box>
-                    {showQR &&
-                      <div style={{ marginTop: '20px' }}>
-                        <img style={{ margin: 'auto' }} src={qrURL} />
-                        <p style={{ marginLeft: '20px' }}>Please setup MFA on authenticator app</p>
+                    {showQR && (
+                      <div style={{ marginTop: "20px" }}>
+                        <img style={{ margin: "auto" }} src={qrURL} />
+                        <p style={{ marginLeft: "20px" }}>
+                          Please setup MFA on authenticator app
+                        </p>
                       </div>
-                    }
+                    )}
 
                     <InputGroup>
                       <LockIcon />
@@ -562,13 +645,20 @@ export default function Dashboard() {
                         onChange={handleTOTPInputChange}
                       />
                     </InputGroup>
-                    {showError && <p style={{ marginBottom: "10px", color: "red" }}>Invalid code please try again</p>}
-                    <Button variant="contained" sx={{ width: '100%' }} onClick={checkMFACode} full>
+                    {showError && (
+                      <p style={{ marginBottom: "10px", color: "red" }}>
+                        Invalid code please try again
+                      </p>
+                    )}
+                    <Button
+                      variant="contained"
+                      sx={{ width: "100%" }}
+                      onClick={checkMFACode}
+                      full
+                    >
                       Confirm
                     </Button>
-
                   </Box>
-
                 </Modal>
                 <Modal
                   open={opensms}
@@ -578,7 +668,13 @@ export default function Dashboard() {
                   hideBackdrop
                 >
                   <Box sx={mfastyle}>
-                    <Box style={{ float: 'right', marginTop: '-22px', marginRight: '-20px' }}>
+                    <Box
+                      style={{
+                        float: "right",
+                        marginTop: "-22px",
+                        marginRight: "-20px",
+                      }}
+                    >
                       <IconButton
                         size="small"
                         aria-label="close"
@@ -589,15 +685,30 @@ export default function Dashboard() {
                       </IconButton>
                     </Box>
                     <h2>2-Step Verification</h2>
-                    <div style={{ display: 'flex', marginTop: '20px', marginBottom: '20px' }}>
+                    <div
+                      style={{
+                        display: "flex",
+                        marginTop: "20px",
+                        marginBottom: "20px",
+                      }}
+                    >
                       <SBPhoneInput
                         defaultCountry="US"
                         placeholder="Enter phone number"
                         value={value}
                         onChange={setValue}
-                        sx={{ width: '80%' }}
+                        sx={{ width: "80%" }}
                       />
-                      <Button type="text" style={{ marginLeft: '10px', height: 'auto', flex: '1' }} onClick={sendMessage} disabled={disabled}>
+                      <Button
+                        type="text"
+                        style={{
+                          marginLeft: "10px",
+                          height: "auto",
+                          flex: "1",
+                        }}
+                        onClick={sendMessage}
+                        disabled={disabled}
+                      >
                         {btnLabel}
                       </Button>
                     </div>
@@ -612,8 +723,18 @@ export default function Dashboard() {
                         onChange={(e) => handle2FA(e.target.value)}
                       />
                     </InputGroup>
-                    {showSMSError && <p style={{ marginBottom: "10px", color: "red" }}>Invalid code please try again</p>}
-                    <Button variant="contained" sx={{ width: '100%' }} onClick={check2faCode} full disabled={cdisable}>
+                    {showSMSError && (
+                      <p style={{ marginBottom: "10px", color: "red" }}>
+                        Invalid code please try again
+                      </p>
+                    )}
+                    <Button
+                      variant="contained"
+                      sx={{ width: "100%" }}
+                      onClick={check2faCode}
+                      full
+                      disabled={cdisable}
+                    >
                       Confirm
                     </Button>
                   </Box>
