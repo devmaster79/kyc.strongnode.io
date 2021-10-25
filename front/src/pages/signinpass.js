@@ -54,7 +54,7 @@ function SigninPass() {
               } else if (r.data[0].enable_sms === true)  {
                 navigate("/signinsms");
               } else {
-                navigate('/dashboard');
+                navigate('/dashboard/app');
               }
             });
           } else if (r.status === 401) {

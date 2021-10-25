@@ -77,7 +77,7 @@ function CreateAccountPassword() {
         if(res.data && res.data.token) {
           localStorage.setItem("token", res.data.token)
           localStorage.setItem('loggedin', true);
-          navigate("/dashboard");
+          navigate("/dashboard/app");
         }
       } catch (err) {
         console.log("Error for create password", err);
