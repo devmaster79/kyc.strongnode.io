@@ -387,7 +387,8 @@ export default function Dashboard() {
     [setFieldValue]
   );
   const upload = () => {
-    uploadProfileImage(values.email, values.cover)
+    console.log("1111111111", values);
+    uploadProfileImage(values.email, values.user_name, values.cover)
       .then((res) => {
         if (res.status === 200) {
           console.log(res);

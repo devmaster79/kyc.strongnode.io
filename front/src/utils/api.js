@@ -154,23 +154,16 @@ const updateProfile = async (data) => {
   return axios(config);
 };
 
-const uploadProfileImage = async (email, img_data) => {
-  console.log("img_data: ", img_data);
-  let formData = new FormData();
-  formData.append("image_data", img_data);
+const uploadProfileImage = async (email, user_name, img_data) => {
   const config = {
     url: upload_profile_img,
     method: "PUT",
-    headers: new Headers({
-      "Content-Type":
-        "application/x-www-form-urlencoded; charset=UTF-8;application/json",
-    }),
     data: {
       email: email,
-      image_data: formData,
+      user_name: user_name,
+      image_data: img_data,
     },
   };
-  console.log(formData.get("image_data"));
   return axios(config);
 };
 
