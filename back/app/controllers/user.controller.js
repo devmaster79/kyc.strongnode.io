@@ -748,11 +748,8 @@ exports.updateProfile = async (req, res) => {
 
 //Upload profile Image
 exports.uploadImg = async  (req, res) => {
-  
-  const { email } = req.body;
-  const { image_data } = req.body;
-  
-  console.log(req);
+  const { email, user_name, image_data } = req.body;
+
   if (!email) {
     res.status(400).send({
       message: "Email is required!",
@@ -771,11 +768,12 @@ exports.uploadImg = async  (req, res) => {
     Body: base64Data,
     ACL: 'public-read',
     ContentEncoding: 'base64',
-    ContentType: `image/${type}`
+    ContentType: `image/${image_type}`
   }
-  console.log("ddddddddddddddddd"+image_data);
+
   let s3_image_url = '';
   let key = '';
+
   try {
     const { Location, Key } = await s3.upload(s3_params).promise();
     s3_image_url = Location;
@@ -783,7 +781,7 @@ exports.uploadImg = async  (req, res) => {
   } catch (error) {
     res.status(500).send({
       message:
-        "Error uploading User profile image with username=" + req.user.user_name,
+        "Error uploading User profile image with username=" + user_name,
     });
   }
 
@@ -803,14 +801,13 @@ exports.uploadImg = async  (req, res) => {
         });
       } else {
         res.send({
-          message: `Cannot upload User profile image with username=${req.user.user_name}.`,
+          message: "Cannot upload User profile image with username=" + user_name,
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message:
-          "Error uploading User profile image with username=" + req.user.user_name,
+        message: err,
       });
     });
 };
