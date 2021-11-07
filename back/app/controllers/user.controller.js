@@ -41,7 +41,7 @@ exports.create = async (req, res) => {
     } catch (err) {
       apiRes = err.response.status;
     } finally {
-      console.log("******", apiRes);
+      console.log("******", apiRes.config.url);
       if (apiRes === 404) {
         data = {
           first_name: req.body.first_name,
@@ -59,7 +59,7 @@ exports.create = async (req, res) => {
           user_name: req.body.user_name,
           email_verified: false,
           password_token: rand,
-          profile_img_url: apiRes
+          profile_img_url: apiRes.config.url
         };
       }
 
