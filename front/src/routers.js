@@ -1,5 +1,5 @@
 import React from "react";
-import { Navigate, useRoutes, useLocation } from "react-router-dom";
+import { Navigate, useRoutes } from "react-router-dom";
 import DashboardLayout from "./layouts/dashboard";
 import Dashboard from "./pages/Dashboard";
 import UserProfile from "./pages/UserProfile";

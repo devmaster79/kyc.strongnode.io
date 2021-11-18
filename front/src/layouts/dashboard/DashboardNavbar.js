@@ -1,5 +1,5 @@
 import SvgIconStyle from 'components/SvgIconStyle'
-import { alpha, styled } from '@material-ui/core/styles'
+import { styled } from '@material-ui/core/styles'
 import {
   Box,
   Stack,
@@ -12,7 +12,7 @@ import {
 } from '@material-ui/core'
 import useCollapseDrawer from '../../hooks/useCollapseDrawer'
 import AccountPopover from './AccountPopover'
-import { useState, useEffect, useCallback, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import Snackbar from '@mui/material/Snackbar';
 
 import CloseIcon from '@mui/icons-material/Close';

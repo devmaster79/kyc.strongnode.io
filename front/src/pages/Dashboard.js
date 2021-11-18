@@ -1,4 +1,3 @@
-import { merge } from 'lodash'
 import * as React from 'react';
 import { useSnackbar } from 'notistack5'
 import {
@@ -9,12 +8,10 @@ import {
   Button,
   Grid,
   Divider,
-  Table,
   LinearProgress,
 } from '@material-ui/core'
 import { styled } from '@material-ui/core/styles'
 import { useState, useEffect, useCallback, useRef } from 'react'
-import axios from 'utils/axios'
 import Status from 'components/Status'
 import VestTable from 'components/dashboard/VestTable'
 import SvgIconStyle from 'components/SvgIconStyle'
@@ -53,7 +50,6 @@ export default function Dashboard() {
   }
   useEffect(() => {
     handleDashboard();
-   
     console.log('width', dash.current ? dash.current.offsetWidth : 0);
   }, [dash]);
 

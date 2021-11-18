@@ -4,18 +4,16 @@ import styled from "styled-components";
 import { EntryPage } from "./style";
 import EntryCard from "../components/EntryCard";
 import Button from "../components/Button";
-import { ReactComponent as CheckIcon } from "../icons/check.svg";
-import { NavigateBefore } from "@material-ui/icons";
 
-const P = styled.p`
-  font-style: normal;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 26px;
-  color: #210e43;
-  margin-bottom: 20px;
-  text-align: center;
-`;
+// const P = styled.p`
+//   font-style: normal;
+//   font-weight: 400;
+//   font-size: 16px;
+//   line-height: 26px;
+//   color: #210e43;
+//   margin-bottom: 20px;
+//   text-align: center;
+// `;
 
 function KYC() {
   const navigate = useNavigate();

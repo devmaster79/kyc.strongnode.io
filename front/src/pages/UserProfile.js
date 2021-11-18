@@ -1,22 +1,16 @@
-import { merge } from "lodash";
 import { useSnackbar } from "notistack5";
 import { useNavigate } from "react-router-dom";
 import {
   Container,
-  Typography,
   Box,
   Stack,
   Button,
   Grid,
-  Divider,
-  Table,
-  LinearProgress,
   Modal,
   TextField,
   MenuItem,
   Switch,
   FormControlLabel,
-  Paper,
 } from "@material-ui/core";
 import { styled } from "@material-ui/core/styles";
 import { useState, useEffect, useCallback } from "react";
@@ -30,9 +24,8 @@ import {
   uploadProfileImage,
 } from "../utils/api";
 import * as Yup from "yup";
-import { useFormik, Form, FormikProvider } from "formik";
+import { useFormik, FormikProvider } from "formik";
 import UploadSingleFile from "components/UploadSingleFile";
-import Input from "../components/Input";
 import InputGroup from "../components/InputGroup";
 import { ReactComponent as LockIcon } from "../icons/lock.svg";
 import PhoneInput from "react-phone-number-input";

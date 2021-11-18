@@ -70,7 +70,7 @@ function SigninTwoStep() {
         {!showQR && <h5>Re-enter your OTP for Verification</h5>}
         {showQR &&
           <div style={{marginTop: '20px'}}>
-            <img style={{margin: 'auto'}} src={qrURL} />
+            <img style={{margin: 'auto'}} src={qrURL} alt="qr" />
             <p>Please setup MFA on authenticator app</p>
           </div>}
         <form onSubmit={handleSubmit} style={{ marginTop: 30 }}>
