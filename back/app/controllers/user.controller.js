@@ -41,7 +41,7 @@ exports.create = async (req, res) => {
     } catch (err) {
       apiRes = err.response.status;
     } finally {
-      console.log("******", apiRes.config.url);
+      // console.log("******", apiRes.config.url);
       if (apiRes === 404) {
         data = {
           first_name: req.body.first_name,
