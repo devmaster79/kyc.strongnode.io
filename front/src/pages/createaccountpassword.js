@@ -107,7 +107,7 @@ function CreateAccountPassword() {
   return (
     <EntryPage>
       <EntryCard>
-        <h2>Create Account Password</h2>
+        <h2>Add a password to your account</h2>
         <UserInfoWrapper>
           <UserIcon />
           <p>{ userName }</p>
@@ -142,7 +142,7 @@ function CreateAccountPassword() {
             />
           </InputGroup>
           <Button type="submit" full>
-            Confirm / Sign In
+            Confirm your password and sign in to StrongNode
           </Button>
         </form>
       </EntryCard>
