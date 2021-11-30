@@ -36,7 +36,6 @@ jobs:
         run: cd front && yarn build --if-present
         env:
            CI: false
-    steps:
       - name: Add .env file
         shell: bash
         run: echo ${{ secrets.ENV_STAGE_FILE }} | base64 -d > back/.env
@@ -84,7 +83,6 @@ jobs:
         run: cd front && yarn build --if-present
         env:
            CI: false
-    steps:
       - name: Add .env file
         shell: bash
         run: echo ${{ secrets.ENV_PROD_FILE }} | base64 -d > back/.env
