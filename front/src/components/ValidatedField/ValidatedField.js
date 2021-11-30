@@ -26,8 +26,7 @@ const TermsText = () => (
     paddingLeft: "12px",
     }}
   >
-    By continuing, you agree to
-    <Link to="/#">Terms of Use Privacy policy.</Link>
+    By continuing, you agree to the <Link to="/#">Terms of Use</Link>.
   </p>
 );
 
