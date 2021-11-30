@@ -87,11 +87,10 @@ export default function Dashboard() {
           <Box component="img" src="/images/pair.png" alt="pair" />
           <Stack justifyContent="space-between" sx={{ pl: 4, py: 1 }}>
             <Typography color="white" sx={{ fontSize: 20 }}>
-              Stake SNE on ousd.com
+              Stake SNE on StrongNode
             </Typography>
             <Typography color="white" sx={{ fontSize: 12 }}>
-              As part of the Origin Dolllar governance project, SNE staking has
-              moved to ousd.com
+              Stake your SNE on StrongNode, COMING SOON!
             </Typography>
           </Stack>
           <Box sx={{ flexGrow: 1 }} />

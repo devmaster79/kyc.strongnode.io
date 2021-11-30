@@ -6,7 +6,7 @@ name: CI
 on:
   # Triggers the workflow on push or pull request events but only for the dev branch
   push:
-    branches: [ dev ]
+    branches: [ dev, main ]
 
   pull_request:
     branches: [ dev, main ]
@@ -102,11 +102,17 @@ jobs:
           host: ${{ secrets.REMOTE_PROD_HOST }}
           username: ${{ secrets.REMOTE_PROD_USER }}
           key: ${{ secrets.SERVER_PROD_SSH_KEY }}
-          script: cd kyc/back && npm install
+          script: |
+            export NVM_DIR=~/.nvm
+            source ~/.nvm/nvm.sh
+            cd kyc/back && npm install
       - name: restart pm2
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.REMOTE_PROD_HOST }}
           username: ${{ secrets.REMOTE_PROD_USER }}
           key: ${{ secrets.SERVER_PROD_SSH_KEY }}
-          script: pm2 restart all
+          script: |
+            export NVM_DIR=~/.nvm
+            source ~/.nvm/nvm.sh
+            pm2 restart all
