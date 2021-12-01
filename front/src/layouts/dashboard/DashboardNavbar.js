@@ -112,11 +112,11 @@ export default function DashboardNavbar({ onOpenSidebar }) {
           open={open[0]}
           autoHideDuration={6000}
           //onClose={handleClose}
-          message="Please finish KYC registration"
+          message="Please complete your KYC registration"
           action={action}
         >
           <MuiAlert variant="filled" elevation={6} onClose={handleClose} severity="warning" sx={{ width: '100%' }}>
-            Please finish KYC registration
+            Please complete your KYC registration
           </MuiAlert>
         </Snackbar>
       </Box>
@@ -126,13 +126,13 @@ export default function DashboardNavbar({ onOpenSidebar }) {
           open={open[1]}
           autoHideDuration={6000}
           //onClose={handleClose}
-          message="Please finish SMS registration"
+          message="Please complete your SMS registration"
           action={smsAction}
           sx={{ marginTop: open[0] ? '60px' : '10px' }}
 
         >
           <MuiAlert variant="filled" elevation={6} onClose={handleSmsClose} severity="warning" sx={{ width: '100%' }}>
-          Please finish SMS registration
+          Please complete your SMS registration
           </MuiAlert>
         </Snackbar>
       </Box>

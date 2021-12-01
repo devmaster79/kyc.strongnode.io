@@ -460,7 +460,7 @@ exports.sendSMS = (req, res) => {
   var aws_region = "us-west-2";
   var originationNumber = "+18555460621";
   var destinationNumber = req.body.number;
-  var message = "Here is SMS code for StrongNode : " + OTP;
+  var message = "Here is your SMS 2-factor authentication code for StrongNode : " + OTP;
   var applicationId = process.env.ApplicationId;
   var messageType = "TRANSACTIONAL";
   var registeredKeyword = "strongnode";

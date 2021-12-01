@@ -58,7 +58,7 @@ export default function Dashboard() {
       try {
         if (localStorage.getItem("username") && localStorage.getItem("email")) {
           if(localStorage.getItem('visit') !== 'true') {
-            enqueueSnackbar('Welcome to dashboard', { variant: 'success' })
+            enqueueSnackbar('Welcome to the StrongNodeID dashboard', { variant: 'success' })
             localStorage.setItem('visit', 'true')
           }
         } else {
