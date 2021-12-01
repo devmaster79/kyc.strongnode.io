@@ -118,7 +118,7 @@ export default function Dashboard() {
                       sx={{ fontSize: { lg: isCollapse ? 32 : 25, md: 19 }, fontWeight: 700 }}
                       style={{ fontSize: '5bw' }}
                     >
-                      158,357
+                      0
                     </Typography>
                     <Typography
                       color="text.secondary"
@@ -138,7 +138,7 @@ export default function Dashboard() {
                       color="text.primary"
                       sx={{ fontSize: { lg: isCollapse ? 32 : 25, md: 19 }, fontWeight: 700 }}
                     >
-                      100,000
+                      0
                     </Typography>
                     <Typography
                       color="text.secondary"
@@ -175,7 +175,7 @@ export default function Dashboard() {
                       color="text.primary"
                       sx={{ fontSize: { lg: isCollapse ? 28 : 24, md: 19 }, fontWeight: 700 }}
                     >
-                      158,357
+                      0
                     </Typography>
                     <Typography
                       color="text.secondary"
@@ -197,7 +197,7 @@ export default function Dashboard() {
                       color="text.primary"
                       sx={{ fontSize: { lg: isCollapse ? 28 : 24, md: 19 }, fontWeight: 700 }}
                     >
-                      100,000
+                      0
                     </Typography>
                     <Typography
                       color="text.secondary"
@@ -334,14 +334,14 @@ export default function Dashboard() {
                 <Stack direction="row" alignItems="center">
                   <Status color="secondary.main" />
                   <Typography color="text.secondary" variant="h6">
-                    2,159,872 SNE vested
+                    0 SNE vested
                   </Typography>
                 </Stack>
 
                 <Stack direction="row" alignItems="center">
                   <Status color="secondary.30" />
                   <Typography color="text.secondary" variant="h6">
-                    663,495 SNE unvested
+                    0 SNE unvested
                   </Typography>
                 </Stack>
               </Stack>
@@ -372,7 +372,7 @@ export default function Dashboard() {
                     </Typography>
                   </Stack>
                   <Typography color="text.secondary" variant="h6">
-                    169,402 SNE
+                    0 SNE
                   </Typography>
                 </Stack>
 
@@ -384,7 +384,7 @@ export default function Dashboard() {
                     </Typography>
                   </Stack>
                   <Typography color="text.secondary" variant="h6">
-                    169,402 SNE
+                    0 SNE
                   </Typography>
                 </Stack>
 
@@ -396,7 +396,7 @@ export default function Dashboard() {
                     </Typography>
                   </Stack>
                   <Typography color="text.secondary" variant="h6">
-                    169,402 SNE
+                    0 SNE
                   </Typography>
                 </Stack>
               </Stack>
@@ -470,7 +470,7 @@ export default function Dashboard() {
                     Investor
                   </Typography>
                   <Typography variant="h6" color="text.primary">
-                    RedRobot K.K.
+                    Pull this out from the fucking database
                   </Typography>
                 </Stack>
 
@@ -481,7 +481,7 @@ export default function Dashboard() {
                     Purchase Date
                   </Typography>
                   <Typography color="text.secondary" variant="h6">
-                    Feburary 14, 2021
+                    Do not be static
                   </Typography>
                 </Stack>
 
@@ -503,7 +503,7 @@ export default function Dashboard() {
                     Total Purchase
                   </Typography>
                   <Typography color="text.secondary" variant="h6">
-                    2,823,367,SNE
+                    0SNE
                   </Typography>
                 </Stack>
 
@@ -514,7 +514,7 @@ export default function Dashboard() {
                     Investment Amount
                   </Typography>
                   <Typography color="text.secondary" variant="h6">
-                    $338,8003
+                    $0
                   </Typography>
                 </Stack>
               </Stack>

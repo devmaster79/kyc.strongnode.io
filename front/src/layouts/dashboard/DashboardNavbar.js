@@ -163,8 +163,7 @@ export default function DashboardNavbar({ onOpenSidebar }) {
           sx={{ ml: 4, display: { xs: 'none', md: 'block' } }}
           color="text.secondary"
         >
-          Check out the latest SNE token metrics 300+ investors have locked up
-          20m+ tokens
+          Welcome to StrongNodeID! 
         </Typography>
         <Box sx={{ flexGrow: 1 }} />
         <Stack
