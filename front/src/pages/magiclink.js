@@ -27,7 +27,7 @@ function MagicLink() {
         <MagicImg />
         <h2 style={{ marginTop: 25, marginBottom: 20 }}>Check your email</h2>
         <P>
-            We've sent a magic login link. Please check your email to get your login link.
+            We've sent a magic login link. Please check your email to login to StrongNodeID.
         </P>
         <Button style={{ width: '30%' }} full onClick={() => navigate("/signin")}>
           OK
