@@ -67,7 +67,7 @@ function Signup() {
     const user_email = localStorage.getItem("email")
     const loggedin = localStorage.getItem("loggedin")
     if (user_email != null && loggedin === "true") {
-      navigate("/dashboard");
+      navigate("/dashboard/app");
     }
   }, [])
 

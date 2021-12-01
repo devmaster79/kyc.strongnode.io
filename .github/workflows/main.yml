@@ -6,17 +6,18 @@ name: CI
 on:
   # Triggers the workflow on push or pull request events but only for the dev branch
   push:
-    branches: [ dev ]
+    branches: [ dev, main ]
+
   pull_request:
-    branches: [ dev ]
+    branches: [ dev, main ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
+  deploy_dev:
+    if: github.ref == 'refs/heads/dev'
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
@@ -24,7 +25,7 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-      
+
       - name: Install Node.js
         uses: actions/setup-node@v1
         with:
@@ -62,3 +63,56 @@ jobs:
           username: ${{ secrets.REMOTE_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: pm2 restart all
+  deploy_prod:
+    if: github.ref == 'refs/heads/main'
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      - name: Install Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '14.17.5'
+      - name: Install npm dependencies
+        run: cd front && yarn
+      - name: Run build task
+        run: cd front && yarn build --if-present
+        env:
+           CI: false
+      - name: Add .env file
+        shell: bash
+        run: echo ${{ secrets.ENV_PROD_FILE }} | base64 -d > back/.env
+      - name: Deploy to Server
+        uses: easingthemes/ssh-deploy@main
+        env:
+            SSH_PRIVATE_KEY: ${{ secrets.SERVER_PROD_SSH_KEY }}
+            ARGS: "-rltgoDzvO --delete"
+            SOURCE: "/"
+            REMOTE_HOST: ${{ secrets.REMOTE_PROD_HOST }}
+            REMOTE_USER: ${{ secrets.REMOTE_PROD_USER }}
+            TARGET: ${{ secrets.REMOTE_PROD_TARGET }}
+            EXCLUDE: "/.git/, /dist/, /node_modules/"
+      - name: run npm install on server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.REMOTE_PROD_HOST }}
+          username: ${{ secrets.REMOTE_PROD_USER }}
+          key: ${{ secrets.SERVER_PROD_SSH_KEY }}
+          script: |
+            export NVM_DIR=~/.nvm
+            source ~/.nvm/nvm.sh
+            cd kyc/back && npm install
+      - name: restart pm2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.REMOTE_PROD_HOST }}
+          username: ${{ secrets.REMOTE_PROD_USER }}
+          key: ${{ secrets.SERVER_PROD_SSH_KEY }}
+          script: |
+            export NVM_DIR=~/.nvm
+            source ~/.nvm/nvm.sh
+            pm2 restart all

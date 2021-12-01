@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { EntryPage } from "./style";
 import EntryCard from "../components/EntryCard";
@@ -27,7 +27,7 @@ function MagicLink() {
         <MagicImg />
         <h2 style={{ marginTop: 25, marginBottom: 20 }}>Check your email</h2>
         <P>
-            We've sent a magic link. Open your email to get your one time password (OTP)
+            We've sent a magic login link. Please check your email to login to StrongNodeID.
         </P>
         <Button style={{ width: '30%' }} full onClick={() => navigate("/signin")}>
           OK

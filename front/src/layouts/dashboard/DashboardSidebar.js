@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { Link as RouterLink, useLocation } from 'react-router-dom'
-import { alpha, styled } from '@material-ui/core/styles'
+import { styled } from '@material-ui/core/styles'
 import { Box, Stack, Drawer, Hidden } from '@material-ui/core'
 import useCollapseDrawer from '../../hooks/useCollapseDrawer'
 import Logo from '../../components/Logo'

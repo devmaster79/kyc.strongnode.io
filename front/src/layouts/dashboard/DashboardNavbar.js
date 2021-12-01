@@ -1,5 +1,5 @@
 import SvgIconStyle from 'components/SvgIconStyle'
-import { alpha, styled } from '@material-ui/core/styles'
+import { styled } from '@material-ui/core/styles'
 import {
   Box,
   Stack,
@@ -12,7 +12,7 @@ import {
 } from '@material-ui/core'
 import useCollapseDrawer from '../../hooks/useCollapseDrawer'
 import AccountPopover from './AccountPopover'
-import { useState, useEffect, useCallback, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import Snackbar from '@mui/material/Snackbar';
 
 import CloseIcon from '@mui/icons-material/Close';
@@ -112,11 +112,11 @@ export default function DashboardNavbar({ onOpenSidebar }) {
           open={open[0]}
           autoHideDuration={6000}
           //onClose={handleClose}
-          message="Please finish KYC registration"
+          message="Please complete your KYC registration"
           action={action}
         >
           <MuiAlert variant="filled" elevation={6} onClose={handleClose} severity="warning" sx={{ width: '100%' }}>
-            Please finish KYC registration
+            Please complete your KYC registration
           </MuiAlert>
         </Snackbar>
       </Box>
@@ -126,13 +126,13 @@ export default function DashboardNavbar({ onOpenSidebar }) {
           open={open[1]}
           autoHideDuration={6000}
           //onClose={handleClose}
-          message="Please finish SMS registration"
+          message="Please complete your SMS registration"
           action={smsAction}
           sx={{ marginTop: open[0] ? '60px' : '10px' }}
 
         >
           <MuiAlert variant="filled" elevation={6} onClose={handleSmsClose} severity="warning" sx={{ width: '100%' }}>
-          Please finish SMS registration
+          Please complete your SMS registration
           </MuiAlert>
         </Snackbar>
       </Box>
@@ -163,8 +163,7 @@ export default function DashboardNavbar({ onOpenSidebar }) {
           sx={{ ml: 4, display: { xs: 'none', md: 'block' } }}
           color="text.secondary"
         >
-          Check out the latest SNE token metrics 300+ investors have locked up
-          20m+ tokens
+          Welcome to StrongNodeID! 
         </Typography>
         <Box sx={{ flexGrow: 1 }} />
         <Stack
