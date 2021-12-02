@@ -85,5 +85,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@usedapp/core": "^0.6.3"
   }
 }
