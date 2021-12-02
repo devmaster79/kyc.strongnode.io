@@ -8,6 +8,7 @@ import Divider from "@mui/material/Divider";
 import Button from "@mui/material/Button";
 import { styled } from "@material-ui/core/styles";
 import { useNavigate } from "react-router-dom";
+import { getProfile } from "../../utils/api";
 import { Link } from "react-router-dom";
 
 const MyPopover = styled(Popover)`
@@ -19,6 +20,7 @@ export default function AccountPopover() {
   const navigate = useNavigate();
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
+  const [avatar, setAvatar] = useState("");
 
   useEffect(() => {
     handleDashboard();
@@ -39,6 +41,9 @@ export default function AccountPopover() {
       if (localStorage.getItem("username") && localStorage.getItem("email")) {
         setUserName(localStorage.getItem("username"));
         setEmail(localStorage.getItem("email"));
+        getProfile(localStorage.getItem("email")).then(r => {
+          setAvatar(r.data[0].profile_img_url);
+        });
       }
     } catch (err) {
       console.log("Error for email verification", err);
@@ -71,7 +76,7 @@ export default function AccountPopover() {
         onClick={handleClick}
         justifyContent="space-between"
       >
-        <Avatar src="/images/avatar.png" alt="avatar" />
+        <Avatar src={avatar} alt="avatar" />
 
         <Stack sx={{ color: "black", ml: 2, mr: 2 }}>
           <Typography
