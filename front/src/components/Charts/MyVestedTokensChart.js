@@ -5,9 +5,9 @@ import { useTheme, styled } from '@material-ui/core/styles'
 //
 import BaseOptionChart from './BaseOptionChart'
 
-const CHART_DATA = [78343, 44313]
+const CHART_DATA = [10, 10]
 
-export default function AppCurrentDownload() {
+export default function AppCurrentDownload(props) {
   const theme = useTheme()
 
   const chartOptions = merge(BaseOptionChart(), {
@@ -49,7 +49,7 @@ export default function AppCurrentDownload() {
   return (
     <ReactApexChart
       type="donut"
-      series={CHART_DATA}
+      series={props.chartData}
       options={chartOptions}
       width={140}
       height={140}
