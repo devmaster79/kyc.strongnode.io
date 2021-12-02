@@ -123,7 +123,7 @@ export default function Dashboard() {
         <Grid item xs={12} md={4}>
           <CardStyle sx={{ height: { md: "275px" } }}>
             <Typography variant="h5" color="text.primary">
-              My Vested Tokens2
+              My Vested Tokens
             </Typography>
             <Stack direction="row" justifyContent="space-between">
               <Box sx={{ mt: 2 }}>
