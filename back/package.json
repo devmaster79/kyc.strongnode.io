@@ -14,7 +14,7 @@
     "sequelize",
     "mysql"
   ],
-  "author": "0xBlockchain",
+  "author": "StrongNode",
   "license": "ISC",
   "dependencies": {
     "ansi-regex": "^5.0.1",
