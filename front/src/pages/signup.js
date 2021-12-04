@@ -51,9 +51,10 @@ function Signup() {
           navigate("/sent-email");
         } else {
           //should show notification with signup failure.
+         
         }
       } catch (err) {
-        if(err === "Error: Request failed with status code 409") {
+        if(err == "Error: Request failed with status code 409") {
           setShowError(true);
         } else {
           console.log(err);
