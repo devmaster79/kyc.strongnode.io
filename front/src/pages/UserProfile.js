@@ -16,6 +16,7 @@ import { styled } from "@material-ui/core/styles";
 import { useState, useEffect, useCallback } from "react";
 import axios from "utils/axios";
 import {
+  getProfile,
   updateProfile,
   createQR,
   verifyTOTP,
@@ -155,9 +156,8 @@ export default function Dashboard() {
         // formData.append("image", cover);
         // formData.append("name", name);
         // formData.append("description", description);
-        const url =
-          process.env.REACT_APP_BASE_URL + `/api/users/profile/update`;
-        console.log("server url: ", url);
+        // const url =
+        //   process.env.REACT_APP_BASE_URL + `/api/users/profile/update`;
 
         const data = {
           email,
@@ -201,9 +201,11 @@ export default function Dashboard() {
     verifyTOTP(useremail, totp).then((r) => {
       if (r.data.verified) {
         setFieldValue("enable_totp", true);
+        values.enable_totp = true;
         const { enable_totp } = values;
         const data = {
-          enable_totp,
+          email: values.email,
+          enable_totp: enable_totp
         };
         updateProfile(data).then((r) => {
           if (r.status === 200) {
@@ -216,6 +218,7 @@ export default function Dashboard() {
         });
         handleCloseMfa();
       } else {
+        values.enable_totp = false;
         setShowError(true);
       }
     });
@@ -233,9 +236,11 @@ export default function Dashboard() {
     checkSMS(useremail).then((r) => {
       if (smscode === r.data[0].smscode) {
         setFieldValue("enable_sms", true);
+        values.enable_sms = true;
         const { enable_sms } = values;
         const data = {
-          enable_sms,
+          email: values.email,
+          enable_sms: enable_sms
         };
         updateProfile(data).then((r) => {
           if (r.status === 200) {
@@ -248,10 +253,36 @@ export default function Dashboard() {
         });
         handleClosesms();
       } else {
+        values.enable_sms = false;
         setSMSshowError(true);
       }
     });
   };
+
+  const saveData = () => {
+    const data = {
+      first_name: values.first_name,
+      last_name: values.last_name,
+      user_name: values.user_name,
+      password: values.password,
+      telegram_id: values.telegram_id,
+      twitter_id: values.twitter_id,
+      email: values.email,
+      wallet_address: values.wallet_address,
+      KYC_Completed: values.KYC_Completed,
+      enable_totp: values.enable_totp,
+      enable_sms: values.enable_sms,
+    }
+    updateProfile(data).then((r) => {
+      if (r.status === 200) {
+        enqueueSnackbar("User updated successfully1", {
+          variant: "success",
+        });
+      } else {
+        enqueueSnackbar("Failed to update profile2", { variant: "fail" });
+      }
+    });
+  }
 
   const sendMessage = () => {
     let count = 30;
@@ -309,26 +340,19 @@ export default function Dashboard() {
 
   useEffect(() => {
     async function fetch() {
-      const url =
-        process.env.REACT_APP_BASE_URL +
-        `/api/users/profile/get?email=${useremail}`;
-      console.log("server url: ", url);
-      const result = await axios.get(url, {
-        headers: { Authorization: `Bearer ${token}` },
+      getProfile(useremail).then((result) => {
+        if (!result.data[0].enable_totp || result.data[0].enable_totp == null) {
+          setShowQR(true);
+          createQR(useremail).then((rq) => {
+            setQRURL(rq.data.url);
+          });
+        }
+
+        formik.setValues(result.data[0]);
       });
-
-      if (!result.data[0].enable_totp || result.data[0].enable_totp == null) {
-        setShowQR(true);
-        createQR(useremail).then((rq) => {
-          setQRURL(rq.data.url);
-        });
-      }
-
-      formik.setValues(result.data[0]);
-      // setUser(result.data[0]);
     }
 
-    console.log(value);
+    // console.log(value);
     if (value !== "") setDisabled(false);
     if (!value) setDisabled(true);
     fetch();
@@ -380,7 +404,6 @@ export default function Dashboard() {
     [setFieldValue]
   );
   const upload = () => {
-    console.log("1111111111", values);
     uploadProfileImage(values.email, values.user_name, values.cover)
       .then((res) => {
         if (res.status === 200) {
@@ -733,7 +756,7 @@ export default function Dashboard() {
                     </Button>
                   </Box>
                 </Modal>
-                <Button variant="contained" type="submit">
+                <Button variant="contained" type="submit" onClick={saveData}>
                   Save
                 </Button>
               </MyStack>
