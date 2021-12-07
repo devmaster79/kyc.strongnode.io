@@ -98,12 +98,12 @@ export default function Dashboard() {
           width: 1,
           background: "linear-gradient(180deg, #7C1EFB 0%, #AF56B8 98.44%)",
           borderRadius: "16px",
-          py: 3,
+          py: 1.5,
           px: "30px",
         }}
       >
         <Stack direction={{ xs: "column", md: "row" }} alignItems="center">
-          <Box component="img" src="/images/pair.png" alt="pair" />
+          <Box component="img" src="/images/logo.png" alt="pair" />
           <Stack justifyContent="space-between" sx={{ pl: 4, py: 1 }}>
             <Typography color="white" sx={{ fontSize: 20 }}>
               Stake SNE on StrongNode
