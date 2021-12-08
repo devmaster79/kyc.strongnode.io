@@ -15,6 +15,7 @@ const RootStyle = styled('div')(({ theme }) => ({
 }))
 
 function CarouselItem({ item }) {
+  console.log(item);
   const [open, setOpen] = useState(false)
   return (
     <>
@@ -53,18 +54,13 @@ function CarouselItem({ item }) {
       {open && (
         <Stack sx={{ mt: 3 }}>
           <Typography sx={{ fontSize: 14 }} color="text.primary">
-            Lorem ipsum dolor sit amet Lorem ipsum dolor sit ametLorem ipsum
-            dolor sit ametLorem ipsum dolor sit ametLorem ipsum dolor sit
-            ametLorem ipsum dolor sit ametLorem ipsum dolor sit ametLorem ipsum
-            dolor sit ametLorem ipsum dolor sit ametLorem ipsum dolor sit
-            ametLorem ipsum dolor sit ametLorem ipsum dolor sit ametLorem ipsum
-            dolor sit ametLorem ipsum dolor sit ametLorem ipsum dolor sit
-            ametLorem ipsum dolor sit ametLorem ipsum dolor sit ametLorem ipsum
-            dolor sit ametLorem ipsum dolor sit ametLorem ipsum dolor sit
-            ametLorem ipsum dolor sit ametLorem ipsum dolor sit ametLorem ipsum
-            dolor sit ametLorem ipsum dolor sit ametLorem ipsum dolor sit
-            ametLorem ipsum dolor sit ametLorem ipsum dolor sit ametLorem ipsum
-            dolor sit amet
+            Description : {item.description}
+          </Typography>
+          <Typography sx={{ fontSize: 14 }} color="text.primary">
+            LastBuildDate : {item.lastbuild}
+          </Typography>
+          <Typography sx={{ fontSize: 14 }} color="text.primary">
+            Language : {item.language}
           </Typography>
         </Stack>
       )}
@@ -79,10 +75,13 @@ export default function NewsCarousel() {
     const res = await fetch(`https://api.allorigins.win/get?url=${'https://strongnode.io/feed/'}`);
     const { contents } = await res.json();
     const feed = new window.DOMParser().parseFromString(contents, "text/xml");
+    console.log(feed);
     const items = feed.querySelectorAll("image");
-
+    const descriptions = feed.querySelectorAll('description');
+    const lastbuild = feed.querySelectorAll('lastBuildDate');
+    const languages = feed.querySelectorAll('language');
     let feedItems = [];
-    items.forEach((each) => {
+    items.forEach((each, i) => {
       feedItems.push({
         'mainImg': each,
         'imgInfo': {
@@ -91,7 +90,10 @@ export default function NewsCarousel() {
           'link': each.querySelector("link").innerHTML,
           'width': each.querySelector("width").innerHTML,
           'height': each.querySelector("height").innerHTML,
-        }
+        },
+        'description' : descriptions[i].innerHTML,
+        'lastbuild' : lastbuild[i].innerHTML,
+        'language' : languages[i].innerHTML
       })
     })
 
