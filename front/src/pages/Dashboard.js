@@ -37,8 +37,8 @@ export default function Dashboard() {
   const [newsOpen, setNewsOpen] = useState();
 
   // const [vestedTokens, setVestedTokens] = useState(0);
-  const [availableToken, setAvailableToken] = useState(0);
-  const [lockedToken, setLockedToken] = useState(0);
+  const [availableToken, setAvailableToken] = useState(6);
+  const [lockedToken, setLockedToken] = useState(6);
 
   const handleViewHistory = () => {
     setHistoryOpen(!historyOpen);
