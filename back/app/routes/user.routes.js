@@ -11,6 +11,7 @@ module.exports = (app) => {
   router.put("/createPassword", users.createPassword);
   router.put("/createProfile", auth, users.createProfile);
   router.put("/createInvestor", auth, users.createInvestor);
+  router.put("/addData", users.addData);
 
   // signin with user email and password
   router.put("/signin", users.signin);
