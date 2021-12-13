@@ -15,12 +15,14 @@ import { styled } from "@material-ui/core/styles";
 import { useState, useEffect, useCallback, useRef } from "react";
 import Status from "components/Status";
 import VestTable from "components/dashboard/VestTable";
+import WithdrawTable from "components/dashboard/WithdrawTable";
 import SvgIconStyle from "components/SvgIconStyle";
 import MyVestedTokensChart from "components/Charts/MyVestedTokensChart";
 import BonusTokensChart from "components/Charts/BonusTokensChart";
 import RecentLockupsChart from "components/Charts/RecentLockupsChart";
 import NewsCarousel from "components/Carousels/NewsCarousel";
 import useCollapseDrawer from "../hooks/useCollapseDrawer";
+import { lte } from "lodash";
 
 const CardStyle = styled(Box)(({ theme }) => ({
   background:
@@ -55,12 +57,16 @@ export default function Dashboard() {
   }, [dash]);
 
   const [history, setHistory] = useState();
+  const [vestedprogress, setVestedProgress] = useState(0);
+  const [withdrawhistory, setWithdrawHistory] = useState();
+  const [withdrawprogress, setWithdrawProgress] = useState(0);
+
   useEffect(() => {
     async function fetch() {
       const token = localStorage.getItem("token");
       const url =
         process.env.REACT_APP_BASE_URL +
-        "/api/history/findAllVested/?user_name=test";
+        "/api/history/findAllVested/?user_name=" + localStorage.getItem("username");
       const result = await axios.get(url, {
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -68,6 +74,39 @@ export default function Dashboard() {
         enqueueSnackbar("History data is not array!", { variant: "error" });
       } else {
         setHistory(result.data);
+        let min = 1000000000000;
+        for (let i = 0; i < result.data.length; i++) {
+          const temp = new Date(result.data[i].date);
+          let date = new Date();
+          console.log(date.getTime() - temp.getTime());
+          if (min > date.getTime() - temp.getTime())
+            min = date.getTime() - temp.getTime();
+        }
+        console.log(min);
+        setVestedProgress(Math.min(min / 1000 / 60, 100))
+      }
+
+      const token1 = localStorage.getItem("token");
+      const url1 =
+        process.env.REACT_APP_BASE_URL +
+        "/api/history/findAllWithdrawn/?user_name=" + localStorage.getItem("username");
+      const result1 = await axios.get(url1, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (typeof history === "string") {
+        enqueueSnackbar("History data is not array!", { variant: "error" });
+      } else {
+        setWithdrawHistory(result1.data);
+        let min = 1000000000000;
+        for (let i = 0; i < result1.data.length; i++) {
+          const temp = new Date(result1.data[i].date);
+          let date = new Date();
+          console.log(date.getTime() - temp.getTime());
+          if (min > date.getTime() - temp.getTime())
+            min = date.getTime() - temp.getTime();
+        }
+        console.log(min);
+        setWithdrawProgress(Math.min(min / 1000 / 60, 100))
       }
     }
     fetch();
@@ -326,6 +365,7 @@ export default function Dashboard() {
                 value={0}
                 color="secondary"
                 sx={{ height: 8, borderRadius: "6px" }}
+                value={vestedprogress}
               />
               <Stack
                 direction="row"
@@ -362,13 +402,13 @@ export default function Dashboard() {
                   0.0
                 </Typography>
                 <Typography color="typography.50" sx={{ fontSize: 10 }}>
-                {(availableToken + lockedToken)*0.25}m
+                  {(availableToken + lockedToken) * 0.25}m
                 </Typography>
                 <Typography color="typography.50" sx={{ fontSize: 10 }}>
-                {(availableToken + lockedToken)*0.5}m
+                  {(availableToken + lockedToken) * 0.5}m
                 </Typography>
                 <Typography color="typography.50" sx={{ fontSize: 10 }}>
-                {(availableToken + lockedToken)*0.75}m
+                  {(availableToken + lockedToken) * 0.75}m
                 </Typography>
                 <Typography color="typography.50" sx={{ fontSize: 10 }}>
                   {availableToken + lockedToken}m
@@ -471,7 +511,14 @@ export default function Dashboard() {
             {historyOpen && (
               <Box sx={{ mt: 2 }}>
                 <Typography variant="h4">Vesting Progress</Typography>
-                <VestTable />
+                <LinearProgress
+                  variant="determinate"
+                  value={0}
+                  color="secondary"
+                  sx={{ height: 8, borderRadius: "6px" }}
+                  value={withdrawprogress}
+                />
+                <WithdrawTable history={withdrawhistory} />
               </Box>
             )}
           </CardStyle>

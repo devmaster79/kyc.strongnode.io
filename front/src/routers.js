@@ -15,6 +15,7 @@ import SigninSMS from "./pages/singinsms";
 import CreateAccountPassword from "./pages/createaccountpassword";
 import PrivateSaleInterestForm from "./pages/privatesaleinterestform";
 import KYC from "./pages/kyc";
+import AddData from "./pages/AddData";
 
 export default function Router() {
   return useRoutes([
@@ -28,6 +29,7 @@ export default function Router() {
         { path: "growth", element: <Dashboard /> },
         { path: "sync", element: <Dashboard /> },
         { path: "shield", element: <Dashboard /> },
+        { path: "add_data", element: <AddData /> }
       ],
     },
     {

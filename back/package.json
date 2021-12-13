@@ -14,7 +14,7 @@
     "sequelize",
     "mysql"
   ],
-  "author": "StrongNode",
+  "author": "StrongNodeTeam",
   "license": "ISC",
   "dependencies": {
     "ansi-regex": "^5.0.1",
