@@ -10,12 +10,18 @@ import {
   Typography,
   Stack,
   Pagination,
+  Button,
+  TextField
 } from "@material-ui/core";
 import Scrollbar from "components/Scrollbar";
 import Status from "components/Status";
 
 import { fDate } from "utils/formatTime";
 import { useSnackbar } from "notistack5";
+
+import {
+  historyAction,
+} from "../../utils/api";
 
 function createData(token, stock, date) {
   return { token, stock, date };
@@ -54,10 +60,14 @@ const COLUMNS = [
 
 // ----------------------------------------------------------------------
 
-export default function GroupingFixedHeader({ history }) {
+export default function GroupingFixedHeader({ history, setRefresh }) {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [editflag, setEditFlag] = useState(false);
+  const [curdata, setCurData] = useState(-1);
+  const [tokenamount, setTokenAmount] = useState();
+  console.log(history);
 
   const handleChangePage = (event, newPage) => {
     console.log(newPage);
@@ -69,6 +79,52 @@ export default function GroupingFixedHeader({ history }) {
     setPage(0);
   };
 
+  const onSave = async (row) => {
+    if (tokenamount <= 0) {
+      alert("Input Correct Amount");
+      return;
+    }
+    const url =
+      process.env.REACT_APP_BASE_URL + `/api/history/update`;
+    console.log("server url: ", url);
+    const data = {
+      _id: row.id,
+      token_amount: tokenamount,
+      date : Date.now()
+    };
+    historyAction(url, data).then((r) => {
+      console.log(r);
+
+      if (r.status === 200) {
+        enqueueSnackbar("History updated successfully", {
+          variant: "success",
+        });
+        setRefresh(true);
+      } else {
+        enqueueSnackbar("Failed to Update Data", { variant: "fail" });
+      }
+    });
+  }
+
+  const onDel = (row) => {
+    const url =
+      process.env.REACT_APP_BASE_URL + `/api/history/delete`;
+    console.log("server url: ", url);
+    const data = {
+      _id: row.id,
+    };
+    historyAction(url, data).then((r) => {
+      console.log(r);
+      if (r.status === 200) {
+        enqueueSnackbar("History deleted successfully", {
+          variant: "success",
+        });
+        setRefresh(true);
+      } else {
+        enqueueSnackbar("Failed to Delete Data", { variant: "fail" });
+      }
+    });
+  }
   return (
     <>
       <Scrollbar>
@@ -85,6 +141,7 @@ export default function GroupingFixedHeader({ history }) {
                     {column.label}
                   </TableCell>
                 ))}
+                <TableCell>Action</TableCell>
               </TableRow>
             </TableHead>
 
@@ -100,9 +157,11 @@ export default function GroupingFixedHeader({ history }) {
                       <TableCell>
                         <Stack direction="row" alignItems="center">
                           <Status color="secondary.main" />
-                          <Typography variant="h5">
+                          {(editflag === false || curdata !== row.id) && <Typography variant="h5">
                             {row.token_amount} SNE
                           </Typography>
+                          }
+                          {editflag == true && curdata === row.id && <TextField style={{ width: "70px" }} value={tokenamount} onChange={(event) => setTokenAmount(event.target.value / 1)} />}
                         </Stack>
                       </TableCell>
                       <TableCell>
@@ -115,7 +174,14 @@ export default function GroupingFixedHeader({ history }) {
                           {fDate(row.date)}
                         </Typography>
                       </TableCell>
-                      {/* {COLUMNS.map((column) => {
+                      {localStorage.getItem('username') === row.user_name && <TableCell>
+                        {(!editflag || curdata !== row.id) && <Button onClick={() => { setCurData(row.id); setEditFlag(true); setTokenAmount(row.token_amount) }}>Edit</Button>}
+                        {(editflag && curdata === row.id) && <Button onClick={() => { setCurData(-1); setEditFlag(false); onSave(row) }}>Save</Button>}
+                        {(!editflag || curdata !== row.id) && <Button onClick={() => onDel(row)}>Del</Button>}
+                        {(editflag && curdata === row.id) && <Button onClick={() => { setCurData(-1); setEditFlag(false) }}>Cancel</Button>}
+                      </TableCell>
+                      /* {COLUMNS.map((colu
+                      }mn) => {
                     const value = row[column.id];
                     return (
                       <TableCell key={column.id} align={column.align}>
