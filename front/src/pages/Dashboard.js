@@ -21,6 +21,8 @@ import BonusTokensChart from "components/Charts/BonusTokensChart";
 import RecentLockupsChart from "components/Charts/RecentLockupsChart";
 import NewsCarousel from "components/Carousels/NewsCarousel";
 import useCollapseDrawer from "../hooks/useCollapseDrawer";
+import { useTokenList,useToken,useEthers, useEtherBalance, useTokenBalance } from "@usedapp/core";
+import { ethers } from "ethers";
 
 const CardStyle = styled(Box)(({ theme }) => ({
   background:
@@ -35,7 +37,10 @@ export default function Dashboard() {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [historyOpen, setHistoryOpen] = useState();
   const [newsOpen, setNewsOpen] = useState();
-
+  const { activateBrowserWallet, deactivate, account } = useEthers();
+  const tokenInfo = useToken(account);
+  const balance = useEtherBalance(account);
+  const accountBalance = balance ? ethers.utils.formatEther(balance) : 0;
   // const [vestedTokens, setVestedTokens] = useState(0);
   const [availableToken, setAvailableToken] = useState(6);
   const [lockedToken, setLockedToken] = useState(6);
@@ -140,7 +145,7 @@ export default function Dashboard() {
                       }}
                       style={{ fontSize: "5bw" }}
                     >
-                      {availableToken}
+                      {accountBalance}
                     </Typography>
                     <Typography
                       color="text.secondary"

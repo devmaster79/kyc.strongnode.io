@@ -84,6 +84,7 @@ export default function Dashboard() {
   const [value, setValue] = useState("");
   const [btnLabel, setBtnLabel] = useState("Send");
   const [smscode, setSmscode] = useState("");
+  const [uploaded, setUploaded] = useState(false);
 
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
@@ -245,7 +246,7 @@ export default function Dashboard() {
         };
         updateProfile(data).then((r) => {
           if (r.status === 200) {
-            enqueueSnackbar("User updated successfully1", {
+            enqueueSnackbar("User updated successfully!", {
               variant: "success",
             });
           } else {
@@ -276,7 +277,7 @@ export default function Dashboard() {
     }
     updateProfile(data).then((r) => {
       if (r.status === 200) {
-        enqueueSnackbar("User updated successfully1", {
+        enqueueSnackbar("User updated successfully!", {
           variant: "success",
         });
       } else {
@@ -437,6 +438,12 @@ export default function Dashboard() {
       .then((res) => {
         if (res.status === 200) {
           console.log(res);
+          enqueueSnackbar("Uploaded successfully!", {
+            variant: "success",
+          });
+          window.location.reload();
+        } else {
+          enqueueSnackbar("Failed to upload!", { variant: "fail"});
         }
       })
       .catch((err) => {
