@@ -24,6 +24,8 @@ import useCollapseDrawer from "../hooks/useCollapseDrawer";
 import { useTokenList,useToken,useEthers, useEtherBalance, useTokenBalance } from "@usedapp/core";
 import { ethers } from "ethers";
 
+const SneAddress="0x32934CB16DA43fd661116468c1B225Fc26CF9A8c";
+
 const CardStyle = styled(Box)(({ theme }) => ({
   background:
     "linear-gradient(180deg, rgba(248, 255, 255, 0.15) 0%, rgba(156, 255, 249, 0.15) 100%)",
@@ -41,6 +43,11 @@ export default function Dashboard() {
   const tokenInfo = useToken(account);
   const balance = useEtherBalance(account);
   const accountBalance = balance ? ethers.utils.formatEther(balance) : 0;
+  const SneBalanceBigNumber = useTokenBalance(SneAddress, account);
+  const SneBalance =
+    SneBalanceBigNumber &&
+    ethers.utils.formatUnits(SneBalanceBigNumber, 18);
+
   // const [vestedTokens, setVestedTokens] = useState(0);
   const [availableToken, setAvailableToken] = useState(6);
   const [lockedToken, setLockedToken] = useState(6);
@@ -145,7 +152,7 @@ export default function Dashboard() {
                       }}
                       style={{ fontSize: "5bw" }}
                     >
-                      {accountBalance}
+                      {SneBalance}
                     </Typography>
                     <Typography
                       color="text.secondary"
