@@ -60,9 +60,11 @@ export default function Dashboard() {
   const [vestedprogress, setVestedProgress] = useState(0);
   const [withdrawhistory, setWithdrawHistory] = useState();
   const [withdrawprogress, setWithdrawProgress] = useState(0);
+  const [refresh, setRefresh] = useState(true);
 
   useEffect(() => {
     async function fetch() {
+      if (!refresh) return;
       const token = localStorage.getItem("token");
       const url =
         process.env.REACT_APP_BASE_URL +
@@ -108,10 +110,11 @@ export default function Dashboard() {
         console.log(min);
         setWithdrawProgress(Math.min(min / 1000 / 60, 100))
       }
+      console.log(refresh);
+      setRefresh(false);
     }
     fetch();
-  }, []);
-
+  }, [refresh]);
   const handleDashboard = useCallback(async () => {
     try {
       if (localStorage.getItem("username") && localStorage.getItem("email")) {
@@ -438,7 +441,7 @@ export default function Dashboard() {
             <Typography variant="h4" color="text.primary">
               Vesting Progress
             </Typography>
-            <VestTable history={history} />
+            <VestTable history={history} setRefresh={setRefresh} />
           </CardStyle>
         </Grid>
 
@@ -510,15 +513,116 @@ export default function Dashboard() {
             </Stack>
             {historyOpen && (
               <Box sx={{ mt: 2 }}>
-                <Typography variant="h4">Vesting Progress</Typography>
-                <LinearProgress
-                  variant="determinate"
-                  value={0}
-                  color="secondary"
-                  sx={{ height: 8, borderRadius: "6px" }}
-                  value={withdrawprogress}
-                />
-                <WithdrawTable history={withdrawhistory} />
+                <Typography variant="h4" color="text.primary">
+                  Withdrawing Progress.
+                </Typography>
+
+                <Stack sx={{ mt: 3 }}>
+                  <Stack
+                    direction="row"
+                    justifyContent="space-between"
+                    sx={{ marginBottom: "2px" }}
+                  >
+                    <Divider
+                      orientation="vertical"
+                      sx={{ height: 5, borderRight: "2px solid #C0C6CE" }}
+                    />
+                    <Divider
+                      orientation="vertical"
+                      sx={{ height: 5, borderRight: "2px solid #C0C6CE" }}
+                    />
+                    <Divider
+                      orientation="vertical"
+                      sx={{ height: 5, borderRight: "2px solid #C0C6CE" }}
+                    />
+                    <Divider
+                      orientation="vertical"
+                      sx={{ height: 5, borderRight: "2px solid #C0C6CE" }}
+                    />
+                    <Divider
+                      orientation="vertical"
+                      sx={{ height: 5, borderRight: "2px solid #C0C6CE" }}
+                    />
+                  </Stack>
+                  <LinearProgress
+                    variant="determinate"
+                    value={0}
+                    color="secondary"
+                    sx={{ height: 8, borderRadius: "6px" }}
+                    value={withdrawprogress}
+                  />
+                  <Stack
+                    direction="row"
+                    justifyContent="space-between"
+                    sx={{ marginBottom: "2px", marginTop: "2px" }}
+                  >
+                    <Divider
+                      orientation="vertical"
+                      sx={{ height: 8, borderRight: "2px solid #C0C6CE" }}
+                    />
+                    <Divider
+                      orientation="vertical"
+                      sx={{ height: 8, borderRight: "2px solid #C0C6CE" }}
+                    />
+                    <Divider
+                      orientation="vertical"
+                      sx={{ height: 8, borderRight: "2px solid #C0C6CE" }}
+                    />
+                    <Divider
+                      orientation="vertical"
+                      sx={{ height: 8, borderRight: "2px solid #C0C6CE" }}
+                    />
+                    <Divider
+                      orientation="vertical"
+                      sx={{ height: 8, borderRight: "2px solid #C0C6CE" }}
+                    />
+                  </Stack>
+                  <Stack
+                    direction="row"
+                    justifyContent="space-between"
+                    sx={{ marginBottom: "2px" }}
+                  >
+                    <Typography color="typography.50" sx={{ fontSize: 10 }}>
+                      0.0
+                    </Typography>
+                    <Typography color="typography.50" sx={{ fontSize: 10 }}>
+                      {(availableToken + lockedToken) * 0.25}m
+                    </Typography>
+                    <Typography color="typography.50" sx={{ fontSize: 10 }}>
+                      {(availableToken + lockedToken) * 0.5}m
+                    </Typography>
+                    <Typography color="typography.50" sx={{ fontSize: 10 }}>
+                      {(availableToken + lockedToken) * 0.75}m
+                    </Typography>
+                    <Typography color="typography.50" sx={{ fontSize: 10 }}>
+                      {availableToken + lockedToken}m
+                    </Typography>
+                  </Stack>
+                </Stack>
+
+                <Stack>
+                  <Stack direction="row" spacing={5} sx={{ mt: 2 }}>
+                    <Stack direction="row" alignItems="center">
+                      <Status color="secondary.main" />
+                      <Typography color="text.secondary" variant="h6">
+                        0 SNE vested
+                      </Typography>
+                    </Stack>
+
+                    <Stack direction="row" alignItems="center">
+                      <Status color="secondary.30" />
+                      <Typography color="text.secondary" variant="h6">
+                        0 SNE unvested
+                      </Typography>
+                    </Stack>
+                  </Stack>
+                </Stack>
+                <Divider sx={{ my: 3 }} />
+
+                <Typography variant="h4" color="text.primary">
+                  Withdrawing Progress
+                </Typography>
+                <WithdrawTable history={withdrawhistory} setRefresh={setRefresh}/>
               </Box>
             )}
           </CardStyle>
