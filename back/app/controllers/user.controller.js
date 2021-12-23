@@ -759,27 +759,61 @@ exports.uploadImg = async (req, res) => {
   }
 
   //upload image data to S3
-  const s3 = new AWS.S3();
-  const base64Data = new Buffer.from(image_data.replace(/^data:image\/\w+;base64,/, ""), 'base64');
-  const image_type = image_data.split(';')[0].split('/')[1];
+  const s3 = new AWS.S3({
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    region: process.env.AWS_REGION,
+    Bucket: "strong-profile-img",
+    ACL: "public-read",
+  });
+
+  if (image_data !== undefined) {
+    const base64Data = new Buffer.from(
+      image_data.replace(/^data:image\/\w+;base64,/, ""),
+      "base64"
+    );
+    const image_type = image_data.split(";")[0].split("/")[1];
+
+    let s3_image_url = "";
+    let key = "";
+
+    // s3.createBucket(function(){
+    //   var s3_params={
+    //     Bucket: 'strong-profile-img',
+    //     Key: `${user_name}.${image_type}`,
+    //     Body: base64Data,
+    //     ContentEncoding: 'base64',
+    //     ContentType: `image/${image_type}`
+    //   };
+    //   const { Location, Key } =s3.upload(s3_params, function(err,data)
+    //   {
+    //     if(err){
+    //       console.log(err);
+    //     }
+    //     else{
+    //     console.log('success');
+    //     console.log(data);
+    //     }
+    //   }).promise();
+    //   s3_image_url = Location;
+    //   key = Key;
+    // })
 
   const s3_params = {
-    Bucket: 'strong-profile-img',
+      Bucket: "strong-profile-img",
     Key: `${user_name}.${image_type}`,
     Body: base64Data,
-    ACL: 'public-read',
-    ContentEncoding: 'base64',
-    ContentType: `image/${image_type}`
-  }
-
-  let s3_image_url = '';
-  let key = '';
+      ACL: "public-read",
+      ContentEncoding: "base64",
+      ContentType: `image/${image_type}`,
+    };
 
   try {
     const { Location, Key } = await s3.upload(s3_params).promise();
     s3_image_url = Location;
     key = Key;
   } catch (error) {
+      console.log(error);
     res.status(500).send({
       message:
         "Error uploading User profile image with username=" + user_name,
@@ -788,8 +822,8 @@ exports.uploadImg = async (req, res) => {
 
   const data = {
     profile_img_type: image_type,
-    profile_image_url: s3_image_url,
-    profile_img_key: key
+      profile_img_url: s3_image_url,
+      profile_img_key: key,
   };
 
   User.update(data, {
@@ -802,7 +836,8 @@ exports.uploadImg = async (req, res) => {
         });
       } else {
         res.send({
-          message: "Cannot upload User profile image with username=" + user_name,
+            message:
+              "Cannot upload User profile image with username=" + user_name,
         });
       }
     })
@@ -829,4 +864,5 @@ exports.addData = async (req, res) => {
     console.log("success");
     res.send("success");
   })
+  }
 };

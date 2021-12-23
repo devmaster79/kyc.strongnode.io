@@ -83,6 +83,7 @@ export default function Dashboard() {
   const [value, setValue] = useState("");
   const [btnLabel, setBtnLabel] = useState("Send");
   const [smscode, setSmscode] = useState("");
+  const [uploaded, setUploaded] = useState(false);
 
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
@@ -240,7 +241,7 @@ export default function Dashboard() {
         };
         updateProfile(data).then((r) => {
           if (r.status === 200) {
-            enqueueSnackbar("User updated successfully1", {
+            enqueueSnackbar("User updated successfully!", {
               variant: "success",
             });
           } else {
@@ -253,6 +254,31 @@ export default function Dashboard() {
       }
     });
   };
+
+  const saveData = () => {
+    const data = {
+      first_name: values.first_name,
+      last_name: values.last_name,
+      user_name: values.user_name,
+      password: values.password,
+      telegram_id: values.telegram_id,
+      twitter_id: values.twitter_id,
+      email: values.email,
+      wallet_address: values.wallet_address,
+      KYC_Completed: values.KYC_Completed,
+      enable_totp: values.enable_totp,
+      enable_sms: values.enable_sms,
+    }
+    updateProfile(data).then((r) => {
+      if (r.status === 200) {
+        enqueueSnackbar("User updated successfully!", {
+          variant: "success",
+        });
+      } else {
+        enqueueSnackbar("Failed to update profile2", { variant: "fail" });
+      }
+    });
+  }
 
   const sendMessage = () => {
     let count = 30;
@@ -386,6 +412,12 @@ export default function Dashboard() {
       .then((res) => {
         if (res.status === 200) {
           console.log(res);
+          enqueueSnackbar("Uploaded successfully!", {
+            variant: "success",
+          });
+          window.location.reload();
+        } else {
+          enqueueSnackbar("Failed to upload!", { variant: "fail"});
         }
       })
       .catch((err) => {
