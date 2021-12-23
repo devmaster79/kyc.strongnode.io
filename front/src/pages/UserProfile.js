@@ -16,7 +16,6 @@ import { styled } from "@material-ui/core/styles";
 import { useState, useEffect, useCallback } from "react";
 import axios from "utils/axios";
 import {
-  getProfile,
   updateProfile,
   createQR,
   verifyTOTP,
@@ -24,7 +23,6 @@ import {
   checkSMS,
   uploadProfileImage,
 } from "../utils/api";
-import sha3 from 'sha3';
 import * as Yup from "yup";
 import { useFormik, FormikProvider } from "formik";
 import UploadSingleFile from "components/UploadSingleFile";
@@ -33,6 +31,7 @@ import { ReactComponent as LockIcon } from "../icons/lock.svg";
 import PhoneInput from "react-phone-number-input";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
+import ethereum_address from 'ethereum-address-es5';
 
 const CardStyle = styled(Box)(({ theme }) => ({
   background:
@@ -158,8 +157,9 @@ export default function Dashboard() {
         // formData.append("image", cover);
         // formData.append("name", name);
         // formData.append("description", description);
-        // const url =
-        //   process.env.REACT_APP_BASE_URL + `/api/users/profile/update`;
+        const url =
+          process.env.REACT_APP_BASE_URL + `/api/users/profile/update`;
+        console.log("server url: ", url);
 
         const data = {
           email,
@@ -203,11 +203,9 @@ export default function Dashboard() {
     verifyTOTP(useremail, totp).then((r) => {
       if (r.data.verified) {
         setFieldValue("enable_totp", true);
-        values.enable_totp = true;
         const { enable_totp } = values;
         const data = {
-          email: values.email,
-          enable_totp: enable_totp
+          enable_totp,
         };
         updateProfile(data).then((r) => {
           if (r.status === 200) {
@@ -220,7 +218,6 @@ export default function Dashboard() {
         });
         handleCloseMfa();
       } else {
-        values.enable_totp = false;
         setShowError(true);
       }
     });
@@ -238,11 +235,9 @@ export default function Dashboard() {
     checkSMS(useremail).then((r) => {
       if (smscode === r.data[0].smscode) {
         setFieldValue("enable_sms", true);
-        values.enable_sms = true;
         const { enable_sms } = values;
         const data = {
-          email: values.email,
-          enable_sms: enable_sms
+          enable_sms,
         };
         updateProfile(data).then((r) => {
           if (r.status === 200) {
@@ -255,7 +250,6 @@ export default function Dashboard() {
         });
         handleClosesms();
       } else {
-        values.enable_sms = false;
         setSMSshowError(true);
       }
     });
@@ -342,19 +336,26 @@ export default function Dashboard() {
 
   useEffect(() => {
     async function fetch() {
-      getProfile(useremail).then((result) => {
-        if (!result.data[0].enable_totp || result.data[0].enable_totp == null) {
-          setShowQR(true);
-          createQR(useremail).then((rq) => {
-            setQRURL(rq.data.url);
-          });
-        }
-
-        formik.setValues(result.data[0]);
+      const url =
+        process.env.REACT_APP_BASE_URL +
+        `/api/users/profile/get?email=${useremail}`;
+      console.log("server url: ", url);
+      const result = await axios.get(url, {
+        headers: { Authorization: `Bearer ${token}` },
       });
+      console.log(result.data);
+      if (!result.data[0].enable_totp || result.data[0].enable_totp == null) {
+        setShowQR(true);
+        createQR(useremail).then((rq) => {
+          setQRURL(rq.data.url);
+        });
+      }
+
+      formik.setValues(result.data[0]);
+      // setUser(result.data[0]);
     }
 
-    // console.log(value);
+    console.log(value);
     if (value !== "") setDisabled(false);
     if (!value) setDisabled(true);
     fetch();
@@ -371,34 +372,6 @@ export default function Dashboard() {
     setFieldValue,
   } = formik;
 
-  var isChecksumAddress = function (address) {
-    // Check each case
-    address = address.replace('0x','');
-    var addressHash = sha3(address.toLowerCase());
-    for (var i = 0; i < 40; i++ ) {
-        // the nth letter should be uppercase if the nth digit of casemap is 1
-        if ((parseInt(addressHash[i], 16) > 7 && address[i].toUpperCase() !== address[i]) || (parseInt(addressHash[i], 16) <= 7 && address[i].toLowerCase() !== address[i])) {
-            return false;
-        }
-    }
-    return true;
-};
-
-
-  var isAddress = function (address) {
-    console.log("address: ", isAddress);
-    
-    if (!/^(0x)?[0-9a-f]{40}$/i.test(address)) {
-      // check if it has the basic requirements of an address
-      return false;
-    } else if (/^(0x)?[0-9a-f]{40}$/.test(address) || /^(0x)?[0-9A-F]{40}$/.test(address)) {
-      // If it's all small caps or all all caps, return true
-      return true;
-    } else {
-      // Otherwise check each case
-      return isChecksumAddress(address);
-    }
-  };
   const formStyle = {};
 
   const getBase64 = (file) => {
@@ -434,6 +407,7 @@ export default function Dashboard() {
     [setFieldValue]
   );
   const upload = () => {
+    console.log("1111111111", values);
     uploadProfileImage(values.email, values.user_name, values.cover)
       .then((res) => {
         if (res.status === 200) {
@@ -602,9 +576,9 @@ export default function Dashboard() {
                   placeholder="Wallet Address"
                   {...getFieldProps("wallet_address")}
                   error={Boolean(
-                    touched.wallet_address && errors.wallet_address && !isAddress(formik.values.wallet_address)
+                    touched.wallet_address && errors.wallet_address || !ethereum_address.isAddress(formik.values.wallet_address)
                   )}
-                  helperText={touched.wallet_address && errors.wallet_address && !isAddress(formik.values.wallet_address)}
+                  helperText={touched.wallet_address && errors.wallet_address || !ethereum_address.isAddress(formik.values.wallet_address) ? "Incorrect Address" : ""}
                 />
                 <Grid
                   container
@@ -793,7 +767,7 @@ export default function Dashboard() {
                     </Button>
                   </Box>
                 </Modal>
-                <Button variant="contained" type="submit" onClick={saveData}>
+                <Button variant="contained" type="submit">
                   Save
                 </Button>
               </MyStack>

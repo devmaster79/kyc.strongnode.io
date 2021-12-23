@@ -30,7 +30,7 @@ function createData(token, stock, date) {
 const GROUPING_TABLE = () => {
   let datas = [];
   for (let i = 0; i < 50; i++) {
-    datas.push(createData(169040 + i, "Vested", "10/05/2021"));
+    datas.push(createData(169040 + i, "Withdrawed", "10/05/2021"));
   }
   return datas;
 };
@@ -166,7 +166,7 @@ export default function GroupingFixedHeader({ history, setRefresh }) {
                       </TableCell>
                       <TableCell>
                         <Typography variant="h5" color="typography.75">
-                          Vested
+                          Withdrawed
                         </Typography>
                       </TableCell>
                       <TableCell>

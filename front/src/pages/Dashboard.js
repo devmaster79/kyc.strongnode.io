@@ -15,12 +15,14 @@ import { styled } from "@material-ui/core/styles";
 import { useState, useEffect, useCallback, useRef } from "react";
 import Status from "components/Status";
 import VestTable from "components/dashboard/VestTable";
+import WithdrawTable from "components/dashboard/WithdrawTable";
 import SvgIconStyle from "components/SvgIconStyle";
 import MyVestedTokensChart from "components/Charts/MyVestedTokensChart";
 import BonusTokensChart from "components/Charts/BonusTokensChart";
 import RecentLockupsChart from "components/Charts/RecentLockupsChart";
 import NewsCarousel from "components/Carousels/NewsCarousel";
 import useCollapseDrawer from "../hooks/useCollapseDrawer";
+import { lte } from "lodash";
 import { useTokenList,useToken,useEthers, useEtherBalance, useTokenBalance } from "@usedapp/core";
 import { ethers } from "ethers";
 
@@ -67,12 +69,18 @@ export default function Dashboard() {
   }, [dash]);
 
   const [history, setHistory] = useState();
+  const [vestedprogress, setVestedProgress] = useState(0);
+  const [withdrawhistory, setWithdrawHistory] = useState();
+  const [withdrawprogress, setWithdrawProgress] = useState(0);
+  const [refresh, setRefresh] = useState(true);
+
   useEffect(() => {
     async function fetch() {
+      if (!refresh) return;
       const token = localStorage.getItem("token");
       const url =
         process.env.REACT_APP_BASE_URL +
-        "/api/history/findAllVested/?user_name=test";
+        "/api/history/findAllVested/?user_name=" + localStorage.getItem("username");
       const result = await axios.get(url, {
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -80,11 +88,45 @@ export default function Dashboard() {
         enqueueSnackbar("History data is not array!", { variant: "error" });
       } else {
         setHistory(result.data);
+        let min = 1000000000000;
+        for (let i = 0; i < result.data.length; i++) {
+          const temp = new Date(result.data[i].date);
+          let date = new Date();
+          console.log(date.getTime() - temp.getTime());
+          if (min > date.getTime() - temp.getTime())
+            min = date.getTime() - temp.getTime();
+        }
+        console.log(min);
+        setVestedProgress(Math.min(min / 1000 / 60, 100))
       }
+
+      const token1 = localStorage.getItem("token");
+      const url1 =
+        process.env.REACT_APP_BASE_URL +
+        "/api/history/findAllWithdrawn/?user_name=" + localStorage.getItem("username");
+      const result1 = await axios.get(url1, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (typeof history === "string") {
+        enqueueSnackbar("History data is not array!", { variant: "error" });
+      } else {
+        setWithdrawHistory(result1.data);
+        let min = 1000000000000;
+        for (let i = 0; i < result1.data.length; i++) {
+          const temp = new Date(result1.data[i].date);
+          let date = new Date();
+          console.log(date.getTime() - temp.getTime());
+          if (min > date.getTime() - temp.getTime())
+            min = date.getTime() - temp.getTime();
+        }
+        console.log(min);
+        setWithdrawProgress(Math.min(min / 1000 / 60, 100))
+      }
+      console.log(refresh);
+      setRefresh(false);
     }
     fetch();
-  }, []);
-
+  }, [refresh]);
   const handleDashboard = useCallback(async () => {
     try {
       if (localStorage.getItem("username") && localStorage.getItem("email")) {
@@ -338,6 +380,7 @@ export default function Dashboard() {
                 value={0}
                 color="secondary"
                 sx={{ height: 8, borderRadius: "6px" }}
+                value={vestedprogress}
               />
               <Stack
                 direction="row"
@@ -374,13 +417,13 @@ export default function Dashboard() {
                   0.0
                 </Typography>
                 <Typography color="typography.50" sx={{ fontSize: 10 }}>
-                {(availableToken + lockedToken)*0.25}m
+                  {(availableToken + lockedToken) * 0.25}m
                 </Typography>
                 <Typography color="typography.50" sx={{ fontSize: 10 }}>
-                {(availableToken + lockedToken)*0.5}m
+                  {(availableToken + lockedToken) * 0.5}m
                 </Typography>
                 <Typography color="typography.50" sx={{ fontSize: 10 }}>
-                {(availableToken + lockedToken)*0.75}m
+                  {(availableToken + lockedToken) * 0.75}m
                 </Typography>
                 <Typography color="typography.50" sx={{ fontSize: 10 }}>
                   {availableToken + lockedToken}m
@@ -410,7 +453,7 @@ export default function Dashboard() {
             <Typography variant="h4" color="text.primary">
               Vesting Progress
             </Typography>
-            <VestTable history={history} />
+            <VestTable history={history} setRefresh={setRefresh} />
           </CardStyle>
         </Grid>
 
@@ -482,8 +525,116 @@ export default function Dashboard() {
             </Stack>
             {historyOpen && (
               <Box sx={{ mt: 2 }}>
-                <Typography variant="h4">Vesting Progress</Typography>
-                <VestTable />
+                <Typography variant="h4" color="text.primary">
+                  Withdrawing Progress.
+                </Typography>
+
+                <Stack sx={{ mt: 3 }}>
+                  <Stack
+                    direction="row"
+                    justifyContent="space-between"
+                    sx={{ marginBottom: "2px" }}
+                  >
+                    <Divider
+                      orientation="vertical"
+                      sx={{ height: 5, borderRight: "2px solid #C0C6CE" }}
+                    />
+                    <Divider
+                      orientation="vertical"
+                      sx={{ height: 5, borderRight: "2px solid #C0C6CE" }}
+                    />
+                    <Divider
+                      orientation="vertical"
+                      sx={{ height: 5, borderRight: "2px solid #C0C6CE" }}
+                    />
+                    <Divider
+                      orientation="vertical"
+                      sx={{ height: 5, borderRight: "2px solid #C0C6CE" }}
+                    />
+                    <Divider
+                      orientation="vertical"
+                      sx={{ height: 5, borderRight: "2px solid #C0C6CE" }}
+                    />
+                  </Stack>
+                  <LinearProgress
+                    variant="determinate"
+                    value={0}
+                    color="secondary"
+                    sx={{ height: 8, borderRadius: "6px" }}
+                    value={withdrawprogress}
+                  />
+                  <Stack
+                    direction="row"
+                    justifyContent="space-between"
+                    sx={{ marginBottom: "2px", marginTop: "2px" }}
+                  >
+                    <Divider
+                      orientation="vertical"
+                      sx={{ height: 8, borderRight: "2px solid #C0C6CE" }}
+                    />
+                    <Divider
+                      orientation="vertical"
+                      sx={{ height: 8, borderRight: "2px solid #C0C6CE" }}
+                    />
+                    <Divider
+                      orientation="vertical"
+                      sx={{ height: 8, borderRight: "2px solid #C0C6CE" }}
+                    />
+                    <Divider
+                      orientation="vertical"
+                      sx={{ height: 8, borderRight: "2px solid #C0C6CE" }}
+                    />
+                    <Divider
+                      orientation="vertical"
+                      sx={{ height: 8, borderRight: "2px solid #C0C6CE" }}
+                    />
+                  </Stack>
+                  <Stack
+                    direction="row"
+                    justifyContent="space-between"
+                    sx={{ marginBottom: "2px" }}
+                  >
+                    <Typography color="typography.50" sx={{ fontSize: 10 }}>
+                      0.0
+                    </Typography>
+                    <Typography color="typography.50" sx={{ fontSize: 10 }}>
+                      {(availableToken + lockedToken) * 0.25}m
+                    </Typography>
+                    <Typography color="typography.50" sx={{ fontSize: 10 }}>
+                      {(availableToken + lockedToken) * 0.5}m
+                    </Typography>
+                    <Typography color="typography.50" sx={{ fontSize: 10 }}>
+                      {(availableToken + lockedToken) * 0.75}m
+                    </Typography>
+                    <Typography color="typography.50" sx={{ fontSize: 10 }}>
+                      {availableToken + lockedToken}m
+                    </Typography>
+                  </Stack>
+                </Stack>
+
+                <Stack>
+                  <Stack direction="row" spacing={5} sx={{ mt: 2 }}>
+                    <Stack direction="row" alignItems="center">
+                      <Status color="secondary.main" />
+                      <Typography color="text.secondary" variant="h6">
+                        0 SNE vested
+                      </Typography>
+                    </Stack>
+
+                    <Stack direction="row" alignItems="center">
+                      <Status color="secondary.30" />
+                      <Typography color="text.secondary" variant="h6">
+                        0 SNE unvested
+                      </Typography>
+                    </Stack>
+                  </Stack>
+                </Stack>
+                <Divider sx={{ my: 3 }} />
+
+                <Typography variant="h4" color="text.primary">
+                  Withdrawing Progress
+                </Typography>
+                <WithdrawTable history={withdrawhistory} setRefresh={setRefresh}/>
               </Box>
             )}
           </CardStyle>

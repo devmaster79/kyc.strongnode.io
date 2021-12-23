@@ -42,7 +42,7 @@ exports.findAllVested = async (req, res) => {
   const user_name = req.query.user_name;
   console.log("req.query??", req.query)
   const condition = user_name
-    ? { [Op.and]: [{ "user_name": user_name }, { "action_type": 'vested' }]}
+    ? { [Op.and]: [{ "user_name": user_name }, { "action_type": 'vested' }] }
     : null;
 
   console.log("condition??", condition)
@@ -82,3 +82,49 @@ exports.findAllWithdrawn = async (req, res) => {
   }
 };
 
+exports.delete = async (req, res) => {
+  // Validate request
+  if (!req.user) {
+    res.status(400).send({
+      message: "Content can not be empty!",
+    });
+    return;
+  }
+  console.log(req.body._id);
+  try {
+    const ret = await History.destroy({
+      where: { id: req.body._id },
+    })
+    res.send({message : "ok"});
+  }
+  catch (err) {
+    console.log(err);
+    res.status(500).send({
+
+      message: err.message || "Some error occurred while retrieving remove history with user_name.",
+    })
+  }
+}
+
+exports.update = async (req, res) => {
+  // Validate request
+  if (!req.user) {
+    res.status(400).send({
+      message: "Content can not be empty!",
+    });
+    return;
+  }
+  console.log(req.body.token_amount, req.body._id, req.body.date)
+  try {
+    const ret = await History.update({token_amount : req.body.token_amount, date : req.body.date}, {
+      where: { id: req.body._id },
+    })
+    res.send(ret);
+  }
+  catch (err) {
+    res.status(500).send({
+
+      message: err.message || "Some error occurred while retrieving update history with user_name.",
+    })
+  }
+}

@@ -127,7 +127,7 @@ export default function AccountPopover() {
           }}
         >
           <Stack alignItems="center">
-            <Avatar sx={{ mt: 2 }} src={avatar} alt="avatar" />
+            <Avatar sx={{ mt: 2 }} src="/images/avatar.png" alt="avatar" />
             <Typography color="white" sx={{ fontSize: 18 }}>
               {userName}
             </Typography>

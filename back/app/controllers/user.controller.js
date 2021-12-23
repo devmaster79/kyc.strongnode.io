@@ -1,6 +1,7 @@
 const db = require("../models");
 const crypto = require("crypto");
 const User = db.users;
+const History = db.history;
 const Op = db.Sequelize.Op;
 const jwt = require("jsonwebtoken");
 const speakeasy = require("speakeasy");
@@ -35,7 +36,7 @@ exports.create = async (req, res) => {
 
   let apiRes = null;
   let data = null;
-  ( async() => {
+  (async () => {
     try {
       apiRes = await axios.get(url);
     } catch (err) {
@@ -469,7 +470,7 @@ exports.sendSMS = (req, res) => {
   // var credentials = new AWS.SharedIniFileCredentials({profile: 'default'});
 
   // AWS.config.credentials = credentials;
-  AWS.config.update({region: aws_region});
+  AWS.config.update({ region: aws_region });
 
   var pinpoint = new AWS.Pinpoint();
 
@@ -493,8 +494,8 @@ exports.sendSMS = (req, res) => {
     }
   };
 
-  pinpoint.sendMessages(params, function(err, data) {
-    if(err) {
+  pinpoint.sendMessages(params, function (err, data) {
+    if (err) {
       res.end(JSON.stringify({ Error: err }));
     } else {
       const user_sms = {
@@ -747,7 +748,7 @@ exports.updateProfile = async (req, res) => {
 };
 
 //Upload profile Image
-exports.uploadImg = async  (req, res) => {
+exports.uploadImg = async (req, res) => {
   const { email, user_name, image_data } = req.body;
 
   if (!email) {
@@ -845,5 +846,23 @@ exports.uploadImg = async  (req, res) => {
         message: err,
       });
     });
+};
+
+exports.addData = async (req, res) => {
+
+  // Create a User profile
+  const data = {
+    username: req.body.user_name,
+    token_amount: req.body.value,
+    action_type: req.body.type,
+    date: Date.now(),
+    createdAt : Date.now(),
+    updatedAt : Date.now(),
+  };
+  const history = new History(data);
+  history.save().then(()=>{
+    console.log("success");
+    res.send("success");
+  })
   }
 };

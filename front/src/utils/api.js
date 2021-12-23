@@ -167,6 +167,16 @@ const uploadProfileImage = async (email, user_name, img_data) => {
   return axios(config);
 };
 
+const historyAction = async (url, data) => {
+  const config = {
+    url: url,
+    headers: { Authorization: `Bearer ${token}` },
+    method: "POST",
+    data: data,
+  };
+  return axios(config);
+};
+
 export default signup;
 export {
   verifyEmail,
@@ -178,5 +188,6 @@ export {
   checkSMS,
   createQR,
   verifyTOTP,
+  historyAction
 };
 export { getNews, getProfile, updateProfile, uploadProfileImage };
