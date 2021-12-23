@@ -13,10 +13,13 @@ import { styled } from "@material-ui/core/styles";
 import { useState, useEffect, useCallback } from "react";
 import axios from "utils/axios";
 import {
-  addData,
+  historyAction,
 } from "../utils/api";
 import * as Yup from "yup";
 import { useFormik, FormikProvider } from "formik";
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import DateTimePicker from '@mui/lab/DateTimePicker';
 
 const CardStyle = styled(Box)(({ theme }) => ({
   background:
@@ -41,6 +44,7 @@ export default function Dashboard() {
   const [user, setUser] = useState();
   const [value, setValue] = useState(0);
   const [type, setType] = useState(0);
+  const [date, setDate] = useState(new Date());
 
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
@@ -69,10 +73,10 @@ export default function Dashboard() {
           user_name: user.user_name,
           token_amount: value / 1,
           action_type: types[type],
-          date : Date.now()
+          date: date
         };
         console.log(data);
-        addData(url, data).then((r) => {
+        historyAction(url, data).then((r) => {
           if (r.status === 200) {
             enqueueSnackbar("Data added successfully1", {
               variant: "success",
@@ -156,6 +160,17 @@ export default function Dashboard() {
                     })
                   }
                 </Select>
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                  <DateTimePicker
+                    renderInput={(params) => <TextField {...params} />}
+                    label="Ignore date and time"
+                    value={date}
+                    onChange={(newValue) => {
+                      setDate(newValue);
+                    }}
+                    minDateTime={new Date()}
+                  />
+                </LocalizationProvider>
                 <Button variant="contained" type="submit">
                   Save
                 </Button>

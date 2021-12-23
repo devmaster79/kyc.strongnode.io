@@ -167,7 +167,7 @@ const uploadProfileImage = async (email, user_name, img_data) => {
   return axios(config);
 };
 
-const addData = async (url, data) => {
+const historyAction = async (url, data) => {
   const config = {
     url: url,
     headers: { Authorization: `Bearer ${token}` },
@@ -188,6 +188,6 @@ export {
   checkSMS,
   createQR,
   verifyTOTP,
-  addData
+  historyAction
 };
 export { getNews, getProfile, updateProfile, uploadProfileImage };

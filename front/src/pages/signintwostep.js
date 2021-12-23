@@ -21,14 +21,7 @@ function SigninTwoStep() {
     event.preventDefault();
     verifyTOTP(email, totp).then(r => {
       if(r.data.verified) {
-        // navigate("/dashboard/app");
-        checkSMS(email).then(r => {
-          if (r.data[0].enable_sms === true)  {
-            navigate("/signinsms");
-          } else {
-            navigate('/dashboard/app');
-          }
-        });
+        navigate("/dashboard/app");
       } else {
         setShowError(true);
       }
