@@ -768,67 +768,69 @@ exports.uploadImg = async (req, res) => {
   });
 
   if (image_data !== undefined) {
+    
     const base64Data = new Buffer.from(
       image_data.replace(/^data:image\/\w+;base64,/, ""),
       "base64"
     );
     const image_type = image_data.split(";")[0].split("/")[1];
-
     let s3_image_url = "";
     let key = "";
 
-    // s3.createBucket(function(){
-    //   var s3_params={
-    //     Bucket: 'strong-profile-img',
-    //     Key: `${user_name}.${image_type}`,
-    //     Body: base64Data,
-    //     ContentEncoding: 'base64',
-    //     ContentType: `image/${image_type}`
-    //   };
-    //   const { Location, Key } =s3.upload(s3_params, function(err,data)
-    //   {
-    //     if(err){
-    //       console.log(err);
-    //     }
-    //     else{
-    //     console.log('success');
-    //     console.log(data);
-    //     }
-    //   }).promise();
-    //   s3_image_url = Location;
-    //   key = Key;
-    // })
+    /*
+      s3.createBucket(function(){
+        var s3_params={
+          Bucket: 'strong-profile-img',
+          Key: `${user_name}.${image_type}`,
+          Body: base64Data,
+          ContentEncoding: 'base64',
+          ContentType: `image/${image_type}`
+        };
+        const { Location, Key } =s3.upload(s3_params, function(err,data)
+        {
+          if(err){
+            console.log(err);
+          }
+          else{
+          console.log('success');
+          console.log(data);
+          }
+        }).promise();
+        s3_image_url = Location;
+        key = Key;
+      })
+    */
 
-  const s3_params = {
+    const s3_params = {
       Bucket: "strong-profile-img",
-    Key: `${user_name}.${image_type}`,
-    Body: base64Data,
+      Key: `${user_name}.${image_type}`,
+      Body: base64Data,
       ACL: "public-read",
       ContentEncoding: "base64",
       ContentType: `image/${image_type}`,
     };
 
-  try {
-    const { Location, Key } = await s3.upload(s3_params).promise();
-    s3_image_url = Location;
-    key = Key;
-  } catch (error) {
+    try {
+      const { Location, Key } = await s3.upload(s3_params).promise();
+      s3_image_url = Location;
+      key = Key;
+    } catch (error) {
       console.log(error);
-    res.status(500).send({
-      message:
-        "Error uploading User profile image with username=" + user_name,
-    });
-  }
+      res.status(500).send({
+        message:
+          "Error uploading User profile image with username=" + user_name,
+      });
+    }
 
-  const data = {
-    profile_img_type: image_type,
+    const data = {
+      profile_img_type: image_type,
       profile_img_url: s3_image_url,
       profile_img_key: key,
-  };
+    };
 
-  User.update(data, {
-    where: { email: email },
-  })
+    User.update(data, {
+      where: { email: email },
+    })
     .then((num) => {
       if (num == 1) {
         res.send({
@@ -836,8 +838,7 @@ exports.uploadImg = async (req, res) => {
         });
       } else {
         res.send({
-            message:
-              "Cannot upload User profile image with username=" + user_name,
+            message: "Cannot upload User profile image with username=" + user_name,
         });
       }
     })
@@ -846,10 +847,11 @@ exports.uploadImg = async (req, res) => {
         message: err,
       });
     });
+  };
+
 };
 
 exports.addData = async (req, res) => {
-
   // Create a User profile
   const data = {
     username: req.body.user_name,
@@ -859,10 +861,10 @@ exports.addData = async (req, res) => {
     createdAt : Date.now(),
     updatedAt : Date.now(),
   };
+  
   const history = new History(data);
   history.save().then(()=>{
     console.log("success");
     res.send("success");
   })
-  }
-};
+}
