@@ -16,6 +16,7 @@ import {
   useEthers,
 } from "@usedapp/core";
 import { GlobalStyle } from "./reset.css";
+import './index.css';
 
 const config = {
   readOnlyChainId: ChainId.Mainnet,

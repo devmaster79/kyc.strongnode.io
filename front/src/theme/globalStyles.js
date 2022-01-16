@@ -18,7 +18,8 @@ const GlobalStyles = withStyles((theme) => ({
     body: {
       width: '100%',
       height: '100%',
-      background: '#F3F5F9'
+      background: '#F3F5F9',
+      fontFamily : 'Halyard',
     },
     '#root': {
       width: '100%',

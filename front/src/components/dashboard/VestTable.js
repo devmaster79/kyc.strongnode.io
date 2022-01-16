@@ -90,7 +90,7 @@ export default function GroupingFixedHeader({ history, setRefresh }) {
     const data = {
       _id: row.id,
       token_amount: tokenamount,
-      date : Date.now()
+      date: Date.now()
     };
     historyAction(url, data).then((r) => {
       console.log(r);
@@ -136,12 +136,12 @@ export default function GroupingFixedHeader({ history, setRefresh }) {
                   <TableCell
                     key={column.id}
                     align={column.align}
-                    style={{ minWidth: column.minWidth }}
+                    style={{ minWidth: column.minWidth, background: 'transparent', color: 'white', borderColor: '#1DF4F6' }}
                   >
                     {column.label}
                   </TableCell>
                 ))}
-                <TableCell>Action</TableCell>
+                <TableCell style={{ background: 'transparent', color: 'white', borderColor: '#1DF4F6' }}>Action</TableCell>
               </TableRow>
             </TableHead>
 
@@ -156,21 +156,21 @@ export default function GroupingFixedHeader({ history, setRefresh }) {
                     <TableRow tabIndex={-1} key={row.code}>
                       <TableCell>
                         <Stack direction="row" alignItems="center">
-                          <Status color="secondary.main" />
-                          {(editflag === false || curdata !== row.id) && <Typography variant="h5">
+                          <Status color="#1DF4F6" />
+                          {(editflag === false || curdata !== row.id) && <Typography variant="h5" color='white'>
                             {row.token_amount} SNE
                           </Typography>
                           }
-                          {editflag == true && curdata === row.id && <TextField style={{ width: "70px" }} value={tokenamount} onChange={(event) => setTokenAmount(event.target.value / 1)} />}
+                          {editflag == true && curdata === row.id && <TextField style={{ width: "70px", color : 'white' }} value={tokenamount} onChange={(event) => setTokenAmount(event.target.value / 1)} />}
                         </Stack>
                       </TableCell>
                       <TableCell>
-                        <Typography variant="h5" color="typography.75">
+                        <Typography variant="h5" color="white">
                           Vested
                         </Typography>
                       </TableCell>
                       <TableCell>
-                        <Typography variant="h5" color="typography.75">
+                        <Typography variant="h5" color="white">
                           {fDate(row.date)}
                         </Typography>
                       </TableCell>
@@ -197,7 +197,7 @@ export default function GroupingFixedHeader({ history, setRefresh }) {
       </Scrollbar>
       <Stack direction="row" justifyContent="flex-end">
         <Pagination
-          color="primary"
+          color= 'primary'
           page={page}
           count={Math.ceil(history && history.length / 10)}
           rowsPerPage={rowsPerPage}

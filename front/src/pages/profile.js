@@ -9,6 +9,7 @@ import Navbar from "../components/Navar";
 import { ReactComponent as TelegramIcon } from "../icons/telegram.svg";
 import { ReactComponent as TwitterIcon } from "../icons/twitter.svg";
 import { createProfile } from "../utils/api";
+import { EntryPage } from "pages/style";
 
 export const Container = styled.div`
   display: flex;
@@ -29,19 +30,24 @@ const ProgressBarWrapper = styled.div`
     font-style: medium;
     font-size: 14px;
     line-height: 18px;
-    color: #584a72;
+    color: white;
   }
   progress {
-    margin-top: 12px;
-    width: 100%;
-    max-width: 401px;
-    height: 10px;
-    border: 1px solid transparent;
-    border-radius: 6px;
+    background: rgba(238, 238, 238, 0.0001);
+    border: 2px solid #1DF4F6;
+    box-sizing: border-box;
+    box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 50.5px;
+    height : 20px;
+    margin-top : 20px;
+    width : 100%;
+    &::-webkit-progress-value { 
+      background: rgba(29, 244, 246, 0.51);
+      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+      border-radius: 50.5px;
+     }
     &[value]::-webkit-progress-bar {
-      background-color: #eee;
-      border-radius: 2px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25) inset;
+      background: transparent;
     }
   }
 `;
@@ -49,7 +55,9 @@ const ProgressBarWrapper = styled.div`
 const InputWrapper = styled.div`
   text-align: left;
   p {
-    margin-bottom: 12px;
+    margin-bottom: 3px;
+    color : white;
+    font-size : 12px;
   }
 `;
 
@@ -94,10 +102,9 @@ function Profile() {
   };
 
   return (
-    <Container>
-      <Navbar />
+    <EntryPage>
       <EntryCard>
-        <h2>Profile</h2>
+        <h2 style={{ fontFamily: 'Halyard' }}>Profile</h2>
         <ProgressBarWrapper>
           <p>10/100% Complete</p>
           <progress value="10" max="100" />
@@ -111,7 +118,7 @@ function Profile() {
                 type="text"
                 placeholder="@username"
                 id="telegram-username"
-                style={{ padding: "16px 20px 16px 40px" }}
+                style={{ padding: "16px 20px 16px 50px" }}
                 value={telegramUserName}
                 onChange={handleTGUserNameInputChange}
               />
@@ -126,7 +133,7 @@ function Profile() {
                 type="text"
                 placeholder="@username"
                 id="twitter-username"
-                style={{ padding: "16px 20px 16px 40px" }}
+                style={{ padding: "16px 20px 16px 50px" }}
                 value={twitterUserName}
                 onChange={handleTwitterUserNameInputChange}
               />
@@ -138,7 +145,7 @@ function Profile() {
             <InputGroup>
               <Input
                 type="text"
-                placeholder="Wallet id"
+                placeholder="Wallet ID"
                 id="wallet-id"
                 value={walletAddress}
                 onChange={handleWalletAddressInputChange}
@@ -151,7 +158,7 @@ function Profile() {
           </Button>
         </form>
       </EntryCard>
-    </Container>
+    </EntryPage>
   );
 }
 

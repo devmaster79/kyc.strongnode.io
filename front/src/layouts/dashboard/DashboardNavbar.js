@@ -26,7 +26,7 @@ const APPBAR_DESKTOP = 80
 
 const RootStyle = styled(AppBar)(({ theme }) => ({
   boxShadow: 'none',
-  backgroundColor: theme.palette.background.default,
+  backgroundColor: '#15123D',
   boxShadow: '0px 2px 2px rgba(0, 0, 0, 0.03)',
   [theme.breakpoints.up('lg')]: {
     width: `calc(100% - ${DRAWER_WIDTH}px + 30px)`,
@@ -46,17 +46,17 @@ const ToolbarStyle = styled(Toolbar)(({ theme }) => ({
 
 export default function DashboardNavbar({ onOpenSidebar }) {
   const { isCollapse, onToggleCollapse } = useCollapseDrawer()
-  const [open, setOpen] = useState([false,false]);
-  
+  const [open, setOpen] = useState([false, false]);
+
   useEffect(() => {
-    
+
   }, []);
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
     }
     let tmp = [...open]
-    tmp[0]=false
+    tmp[0] = false
     setOpen(tmp)
   };
   const handleSmsClose = (event, reason) => {
@@ -64,15 +64,15 @@ export default function DashboardNavbar({ onOpenSidebar }) {
       return;
     }
     let tmp = [...open]
-    tmp[1]=false
+    tmp[1] = false
     setOpen(tmp)
   };
-  const showNotification =()=>{
+  const showNotification = () => {
     let tmp = [...open]
-    tmp[0]=true
-    tmp[1]=true
+    tmp[0] = true
+    tmp[1] = true
     setOpen(tmp)
-    
+
   }
   const action = (
     <Box>
@@ -132,7 +132,7 @@ export default function DashboardNavbar({ onOpenSidebar }) {
 
         >
           <MuiAlert variant="filled" elevation={6} onClose={handleSmsClose} severity="warning" sx={{ width: '100%' }}>
-          Please complete your SMS registration
+            Please complete your SMS registration
           </MuiAlert>
         </Snackbar>
       </Box>
@@ -161,9 +161,10 @@ export default function DashboardNavbar({ onOpenSidebar }) {
         <Typography
           variant="body2"
           sx={{ ml: 4, display: { xs: 'none', md: 'block' } }}
-          color="text.secondary"
+          color="rgba(255,255,255,0.5)"
+          fontFamily='Halyard-Book'
         >
-          Welcome to StrongNodeID! 
+          Check out the latest SNE token metrics 300+ investors have locked up 20m+ tokens
         </Typography>
         <Box sx={{ flexGrow: 1 }} />
         <Stack
@@ -172,7 +173,7 @@ export default function DashboardNavbar({ onOpenSidebar }) {
           spacing={{ xs: 0.5, sm: 1.5 }}
         >
           <IconButton onClick={showNotification}>
-            <Badge badgeContent={open.filter(e=> e === false).length} color="error">
+            <Badge badgeContent={open.filter(e => e === false).length} color="error">
               <SvgIconStyle
                 src="/icons/bell.svg"
                 sx={{ width: 20, height: 24 }}

@@ -9,11 +9,12 @@ import { ReactComponent as CheckIcon } from "../icons/check.svg";
 const P = styled.p`
   font-style: normal;
   font-weight: 400;
-  font-size: 16px;
+  font-size: 18px;
   line-height: 26px;
   color: #210e43;
   margin-bottom: 20px;
   text-align: center;
+  color : white;
 `;
 
 function SentEmail() {
@@ -23,12 +24,12 @@ function SentEmail() {
     <EntryPage>
       <EntryCard emailsent>
         <CheckIcon />
-        <h2 style={{ marginTop: 25, marginBottom: 20 }}>We Sent You Email</h2>
-        <P>Please check your inbox (or your spam/junk folder). We sent you a login link.</P>
+        <h2 style={{ fontFamily: 'Halyard', marginTop: 25, marginBottom: 20, fontSize: '34px', fontWeight: 'bold' }}>EMAIL SENT</h2>
+        <P >Please check your mail inbox. We sent you an email.</P>
         <P style={{ paddingLeft: 32, paddingRight: 32 }}>
-          Click the link and enter your password to activate your account. You will notice that your username is already pre-filled.
+          Click the magic link and enter your user password to activate your account.
         </P>
-        <Button full onClick={() => navigate("/")}>
+        <Button style={{ width: '180px' }} onClick={() => navigate("/")}>
           OK
         </Button>
       </EntryCard>

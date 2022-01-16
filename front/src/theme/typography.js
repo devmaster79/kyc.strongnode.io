@@ -22,7 +22,7 @@ const FONT_PRIMARY = 'All Round Gothic'; // Google Font
 // const FONT_SECONDARY = 'All Round Gothic'; // Local Font
 
 const typography = {
-  fontFamily: FONT_PRIMARY,
+  fontFamily: 'Halyard-Book',
   fontWeightRegular: 400,
   fontWeightMedium: 600,
   fontWeightBold: 700,

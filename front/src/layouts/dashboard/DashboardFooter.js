@@ -26,7 +26,10 @@ const RootStyle = styled(AppBar)(({ theme }) => ({
   position: 'relative',
   marginTop: 40,
   borderTopLeftRadius: '16px',
-  background: 'linear-gradient(90deg, #7C1EFB 0%, #AF56B8 30.21%, #7C1EFB 64.06%, #AF56B8 100%)',
+  background: 'rgba(255, 255, 255, 0.1)',
+  border: '1px solid #1DF4F6',
+  boxSizing: 'border-box',
+  backdropFilter: 'blur(10px)',
   [theme.breakpoints.up('lg')]: {
     width: '100%',
   },
@@ -47,7 +50,7 @@ export default function DashboardNavbar({ onOpenSidebar }) {
   const { isCollapse, onToggleCollapse } = useCollapseDrawer()
   const [email, setEmail] = useState("");
   const navigate = useNavigate();
-  useEffect(()=>{
+  useEffect(() => {
     setEmail(localStorage.getItem("email"))
   })
   const signOut = () => {
@@ -63,19 +66,19 @@ export default function DashboardNavbar({ onOpenSidebar }) {
           alignItems="center"
           spacing={{ xs: 0.5, sm: 1.5 }}
         >
-          <Typography color="white" sx={{ fontSize:{xs:10,md:14} }}>
+          <Typography color="white" sx={{ fontSize: { xs: 10, md: 14 } }}>
             {email}
           </Typography>
-          <Typography color="white" sx={{ fontSize:{xs:10,md:14} }}>
+          <Typography color="white" sx={{ fontSize: { xs: 10, md: 14 } }}>
             |
           </Typography>
-          <Typography color="white" sx={{ fontSize:{xs:10,md:14} }}>
+          <Typography color="white" sx={{ fontSize: { xs: 10, md: 14 } }}>
             Contact Support
           </Typography>
-          <Typography color="white" sx={{ fontSize:{xs:10,md:14} }}>
+          <Typography color="white" sx={{ fontSize: { xs: 10, md: 14 } }}>
             |
           </Typography>
-          <Typography onClick={signOut} color="white" sx={{cursor:'pointer', fontSize:{xs:10,md:14} }}>
+          <Typography onClick={signOut} color="white" sx={{ cursor: 'pointer', fontSize: { xs: 10, md: 14 } }}>
             Logout
           </Typography>
         </Stack>

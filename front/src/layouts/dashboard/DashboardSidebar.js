@@ -56,7 +56,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
         sx={{ height: 80 }}
       >
         <Box component={RouterLink} to="/dashboard/app" sx={{ display: 'inline-flex' }}>
-          <Logo sx = {{width : "65px", height : "65px", marginTop : "25px"}}/>
+          <Logo sx={{ width: "65px", height: "65px", marginTop: "25px" }} />
         </Box>
       </Stack>
 
@@ -84,7 +84,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
               borderRadius: '0px 30px 30px 0px',
               width: DRAWER_WIDTH,
               background:
-                'linear-gradient(180deg, #7C1EFB 0%, #AF56B8 30.21%, #7C1EFB 64.06%, #AF56B8 100%)',
+                'rgba(255, 255, 255, 0.1)',
               ...(isCollapse && {
                 width: COLLAPSE_WIDTH,
               }),
@@ -110,10 +110,12 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
               borderRadius: '0px 30px 30px 0px',
               width: DRAWER_WIDTH,
               background:
-                'linear-gradient(180deg, #7C1EFB 0%, #AF56B8 30.21%, #7C1EFB 64.06%, #AF56B8 100%)',
+                'rgba(255, 255, 255, 0.1)',
               ...(isCollapse && {
                 width: COLLAPSE_WIDTH,
               }),
+              border: '1px solid #1DF4F6',
+              backdropFilter: 'blur(3px)',
               ...(collapseHover && {
                 borderRight: 0,
                 boxShadow: (theme) => theme.customShadows.z20,
