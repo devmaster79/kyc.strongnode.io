@@ -2,29 +2,34 @@ import styled from 'styled-components';
 
 export const StyledEntryCard = styled.div`
   width: 100%;
-  max-width: ${props => props.emailsent ? '522px' : '482px'}; 
+  max-width: ${props => props.emailsent ? '449px' : '482px'}; 
   padding: 40px;
   margin-bottom: 40px;
-  background-color: #ffffff;
-  box-shadow: 0px 15px 30px rgba(16, 16, 16, 0.08);
-  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid #1DF4F6;
+  box-sizing: border-box;
+  box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(10px);
+  /* Note: backdrop-filter has minimal browser support */
+
+  border-radius: 5px;
   text-align: center;
   h2 {
     font-style: normal;
-    font-weight: bold;
-    font-size: 24px;
+    font-weight: normal;
+    font-size: 34px;
     line-height: 34px;
-    color: #210E43;
+    color: white;
   }
   span {
     display: block;
     margin-top: 40px;
-    color: #888888;
+    color: white;
     font-size: 14px;
   }
   a {
     margin-left: 4px;
-    color: #2f8bfd;
+    color: white;
   }
   h5 {
     font-family: Inter;
@@ -32,7 +37,7 @@ export const StyledEntryCard = styled.div`
     font-weight: normal;
     font-size: 16px;
     line-height: 26px;
-    color: #627083;
+    color: white;
     margin-top: 20px;
   }
 `

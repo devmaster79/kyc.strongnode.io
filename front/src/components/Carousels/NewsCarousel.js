@@ -3,9 +3,27 @@ import { useRef, useEffect, useState } from 'react'
 import axios from 'utils/axios'
 // material
 import { useTheme, styled } from '@material-ui/core/styles'
-import { Box, Stack, Typography } from '@material-ui/core'
+import { Box, Stack, Typography, Button } from '@material-ui/core'
+import SvgIconStyle from "components/SvgIconStyle";
 //
 import { CarouselControlsPaging2 } from './controls'
+
+const SBButton = styled(Button)`
+  background: #AA1FEC;
+  box-shadow: 4px 12px 10px rgba(0, 0, 0, 0.5);
+  border-radius: 30px;
+  border : none;
+  font-size : 14px;
+  font-family : 'Halyard-Book';
+  width : 150px;
+  height : 58px;
+`;
+
+const SB2Button = styled(SBButton)`
+  color: #1DF4F6;
+  background : transparent;
+  box-shadow : none;
+`
 
 const RootStyle = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -33,22 +51,22 @@ function CarouselItem({ item }) {
           <Typography variant="h5" color="text.primary">
             {item.imgInfo.title}
           </Typography>
-          <a href={item.imgInfo.link} sx={{ fontSize: 14 }} color="text.primary">
+          <a href={item.imgInfo.link} sx={{ fontSize: 14 }} style={{ color: 'white' }}>
             {item.imgInfo.link}
           </a>
-          <Typography
-            onClick={() => setOpen(!open)}
-            color="primary"
-            variant="h6"
-            sx={{
-              position: 'absolute',
-              right: 0,
-              bottom: 0,
-              cursor: 'pointer',
-            }}
-          >
-            {open ? 'Read Less' : 'Read More'}
-          </Typography>
+          <Box display='flex' justifyContent='right'>
+            <SB2Button
+              onClick={() => setOpen(!open)}
+              endIcon={
+                <SvgIconStyle
+                  src="/icons/arrow-right.svg"
+                  sx={{ width: 8, height: 12 }}
+                />
+              }
+            >
+              {open ? 'Read Less' : 'Read More'}
+            </SB2Button>
+          </Box>
         </Stack>
       </Stack>
       {open && (
@@ -91,9 +109,9 @@ export default function NewsCarousel() {
           'width': each.querySelector("width").innerHTML,
           'height': each.querySelector("height").innerHTML,
         },
-        'description' : descriptions[i].innerHTML,
-        'lastbuild' : lastbuild[i].innerHTML,
-        'language' : languages[i].innerHTML
+        'description': descriptions[i].innerHTML,
+        'lastbuild': lastbuild[i].innerHTML,
+        'language': languages[i].innerHTML
       })
     })
 

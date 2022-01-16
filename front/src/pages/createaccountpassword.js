@@ -6,7 +6,7 @@ import EntryCard from "../components/EntryCard";
 import InputGroup from "../components/InputGroup";
 import Input from "../components/Input";
 import Button from "../components/Button";
-import { ReactComponent as UserIcon } from "../icons/user.svg";
+import { ReactComponent as UserIcon } from "../icons/username.svg";
 import { ReactComponent as LockIcon } from "../icons/lock.svg";
 import { verifyEmail, createPassword } from "../utils/api";
 import PasswordStrengthBar from 'react-password-strength-bar';
@@ -47,7 +47,7 @@ function CreateAccountPassword() {
         const res = await verifyEmail({
           "password_token": localStorage.getItem("password_token")
         })
-        if(res.data && res.data?.user.email_verified) {
+        if (res.data && res.data?.user.email_verified) {
           setUserName(res.data?.user.user_name)
           localStorage.setItem("username", res.data?.user.user_name)
           localStorage.setItem("email", res.data?.user.email)
@@ -74,7 +74,7 @@ function CreateAccountPassword() {
     async (data) => {
       try {
         const res = await createPassword(data)
-        if(res.data && res.data.token) {
+        if (res.data && res.data.token) {
           localStorage.setItem("token", res.data.token)
           localStorage.setItem('loggedin', true);
           navigate("/dashboard/app");
@@ -87,7 +87,7 @@ function CreateAccountPassword() {
   );
 
   const handlePasswordInputChange = (event) => {
-    if(password === event.target.value) {
+    if (password === event.target.value) {
       setShowError(false);
     } else {
       setShowError(true);
@@ -96,7 +96,7 @@ function CreateAccountPassword() {
   };
 
   const handleConfirmPasswordInputChange = (event) => {
-    if(password === event.target.value) {
+    if (password === event.target.value) {
       setShowError(false);
     } else {
       setShowError(true);
@@ -107,10 +107,10 @@ function CreateAccountPassword() {
   return (
     <EntryPage>
       <EntryCard>
-        <h2>Add a password to your account</h2>
+        <h2 style={{ fontFamily: 'Halyard' }}>CREATE ACCOUNT PASSWORD</h2>
         <UserInfoWrapper>
           <UserIcon />
-          <p>{ userName }</p>
+          <p>{userName}</p>
         </UserInfoWrapper>
         <form onSubmit={handleSubmit} style={{ marginTop: 30 }}>
           <InputGroup>
@@ -124,12 +124,11 @@ function CreateAccountPassword() {
               onChange={handlePasswordInputChange}
             />
           </InputGroup>
-          <PasswordStrengthBar password={password} />
-          {showError && (
+          {showError && <><PasswordStrengthBar password={password} />
             <p style={{ marginBottom: '10px', color: 'red' }}>
               Password doesn't match!
-            </p>
-          )}
+            </p></>
+          }
           <InputGroup>
             <LockIcon />
             <Input
@@ -142,7 +141,7 @@ function CreateAccountPassword() {
             />
           </InputGroup>
           <Button type="submit" full>
-            Confirm your password and sign in to StrongNode
+            CONFIRM / SIGN IN
           </Button>
         </form>
       </EntryCard>

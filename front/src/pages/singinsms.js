@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import styled from 'styled-components'
+import { Box } from "@material-ui/system";
+import { ReactComponent as DownIcon } from "../icons/down.svg";
 import { EntryPage } from "./style";
 import Button from "../components/Button";
 import EntryCard from "../components/EntryCard";
@@ -14,41 +17,41 @@ function SigninSMS() {
   const navigate = useNavigate();
 
   const [smscode, setSmscode] = useState("");
-	const [disabled, setDisabled] = useState(true);
-	const [cdisable, setCdisable] = useState(true);
+  const [disabled, setDisabled] = useState(true);
+  const [cdisable, setCdisable] = useState(true);
   const [email, setEmail] = useState("");
-	const [showError, setShowError] = useState(false);
+  const [showError, setShowError] = useState(false);
   const [value, setValue] = useState("");
-	const [btnLabel, setBtnLabel] = useState("Send");
+  const [btnLabel, setBtnLabel] = useState("SEND");
 
   const handleSubmit = (event) => {
     event.preventDefault();
-		checkSMS(email).then(r => {
-			if(smscode === r.data[0].smscode) {
-				navigate("/dashboard/app");
-			} else {
-				setShowError(true);
-			}
-		});
+    checkSMS(email).then(r => {
+      if (smscode === r.data[0].smscode) {
+        navigate("/dashboard/app");
+      } else {
+        setShowError(true);
+      }
+    });
   };
 
-	const sendMessage = () => {
+  const sendMessage = () => {
     let count = 30;
     setDisabled(true);
     setShowError(false);
     sendSMS(value.substring(1), email).then(r => console.log(r));
     const counter = setInterval(() => {
       setBtnLabel(`${count}s`)
-      count --;
+      count--;
       if (count === -1) {
-          clearInterval(counter);
-          setBtnLabel("Send");
-          setDisabled(false)
+        clearInterval(counter);
+        setBtnLabel("SEND");
+        setDisabled(false)
       }
     }, 1000);
   }
 
-	const handle2FA = (val) => {
+  const handle2FA = (val) => {
     if (val.length > 4) {
       val = val.slice(0, 4);
       setSmscode(val);
@@ -61,7 +64,7 @@ function SigninSMS() {
     setShowError(false);
   }
 
-	useEffect(() => {
+  useEffect(() => {
     if (value !== "") setDisabled(false);
     if (!value) setDisabled(true);
     const user_email = localStorage.getItem("email")
@@ -71,38 +74,45 @@ function SigninSMS() {
   return (
     <EntryPage>
       <EntryCard>
-        <h2>2-Step Verification</h2>
-        <div style={{display: 'flex'}}>
+        <Box padding='0px 20px'>
+          <h2 style={{ fontFamily: 'Halyard' }}>2-STEP VERIFICATION</h2>
+          <div style={{ display: 'flex', marginTop: '50px' }}>
             <PhoneInput
-							defaultCountry="US"
-							placeholder="Enter phone number"
-							value={value}
-							onChange={setValue}
+              defaultCountry="US"
+              placeholder="Enter phone number"
+              value={value}
+              onChange={setValue}
             />
-            <Button type="text" style={{ marginLeft: '10px', height:'auto', flex: '1' }} onClick={ sendMessage } disabled={ disabled }>
-							{btnLabel}
+            <Button type="text" style={{ marginLeft: '10px', height: 'auto', flex: '1' }} onClick={sendMessage} disabled={disabled}>
+              {btnLabel}
             </Button>
-        </div>
-        <form onSubmit={handleSubmit} style={{ marginTop: 30 }}>
-          <InputGroup>
-            <LockIcon />
-            <Input
-              type="number"
-              placeholder="Enter your SMS code"
-              id="smsConfirm"
-              value={smscode}
-              style={{ padding: "16px 20px 16px 40px" }}
-              onChange={(e) => handle2FA(e.target.value)}
-            />
-          </InputGroup>
-					{showError && <p style={{marginBottom: "10px", color: "red"}}>Invalid code please try again</p>}
-          <Button type="submit" full disabled={cdisable}>
-            Confirm
-          </Button>
-        </form>
+          </div>
+          <form onSubmit={handleSubmit} style={{ marginTop: 30 }}>
+            <InputGroup>
+              <LockIcon />
+              <SBInput
+                type="number"
+                placeholder="Enter your SMS code"
+                id="smsConfirm"
+                value={smscode}
+                style={{ padding: "16px 20px 16px 40px" }}
+                onChange={(e) => handle2FA(e.target.value)}
+              />
+            </InputGroup>
+            {showError && <p style={{ marginBottom: "10px", color: "red" }}>Invalid code please try again</p>}
+            <Button type="submit" full disabled={cdisable}>
+              CONFIRM
+            </Button>
+          </form>
+        </Box>
       </EntryCard>
     </EntryPage>
   );
 }
-
+const SBInput = styled(Input)`
+  &::placeholder {
+  color: rgba(255,255,255, 0.5);
+  font-size: 18px;
+}
+`
 export default SigninSMS;

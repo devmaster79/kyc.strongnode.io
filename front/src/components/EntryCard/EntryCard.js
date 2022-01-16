@@ -3,6 +3,7 @@ import { StyledEntryCard } from './style';
 
 function EntryCard({ children, ...props }) {
   return (
+
     <StyledEntryCard {...props}>
       {children}
     </StyledEntryCard>

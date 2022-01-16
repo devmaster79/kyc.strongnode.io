@@ -23,20 +23,47 @@ import RecentLockupsChart from "components/Charts/RecentLockupsChart";
 import NewsCarousel from "components/Carousels/NewsCarousel";
 import useCollapseDrawer from "../hooks/useCollapseDrawer";
 import { lte } from "lodash";
-import { useTokenList,useToken,useEthers, useEtherBalance, useTokenBalance } from "@usedapp/core";
+import { useTokenList, useToken, useEthers, useEtherBalance, useTokenBalance } from "@usedapp/core";
 import { ethers } from "ethers";
 
-const SneAddress="0x32934CB16DA43fd661116468c1B225Fc26CF9A8c";
+const SneAddress = "0x32934CB16DA43fd661116468c1B225Fc26CF9A8c";
 
 const CardStyle = styled(Box)(({ theme }) => ({
-  background:
-    "linear-gradient(180deg, rgba(248, 255, 255, 0.15) 0%, rgba(156, 255, 249, 0.15) 100%)",
-  border: "5px solid #964CFA",
-  boxSizing: "border-box",
-  borderRadius: "16px",
+  background: 'rgba(255, 255, 255, 0.1)',
+  border: '1px solid #1DF4F6',
+  boxSizing: 'border-box',
+  backdropFilter: 'blur(3px)',
+  /* Note: backdrop-filter has minimal browser support */
+
+  borderRadius: '30px',
   padding: theme.spacing(4),
 }));
 
+const SBLinearProgress = styled(LinearProgress)`
+
+  background-color: #B300FE!important;
+  >span{
+    background-color : #31F7F9!important;
+  }
+
+`
+
+const SBButton = styled(Button)`
+  background: #AA1FEC;
+  box-shadow: 4px 12px 10px rgba(0, 0, 0, 0.5);
+  border-radius: 30px;
+  border : none;
+  font-size : 19px;
+  font-family : 'Halyard-Book';
+  width : 192px;
+  height : 58px;
+`;
+
+const SB2Button = styled(SBButton)`
+  color: #1DF4F6;
+  background : transparent;
+  box-shadow : none;
+`
 export default function Dashboard() {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [historyOpen, setHistoryOpen] = useState();
@@ -78,12 +105,14 @@ export default function Dashboard() {
     async function fetch() {
       if (!refresh) return;
       const token = localStorage.getItem("token");
+      console.log(token);
       const url =
         process.env.REACT_APP_BASE_URL +
-        "/api/history/findAllVested/?user_name=" + localStorage.getItem("username");
+        "/api/history/findAllVested?user_name=" + localStorage.getItem("username");
       const result = await axios.get(url, {
         headers: { Authorization: `Bearer ${token}` },
       });
+      console.log(result);
       if (typeof history === "string") {
         enqueueSnackbar("History data is not array!", { variant: "error" });
       } else {
@@ -146,48 +175,44 @@ export default function Dashboard() {
   }, []);
   return (
     <Container ref={dash} maxWidth="xl">
-      <Box
+      <CardStyle
         sx={{
           height: { xs: "max-content", md: 120 },
           width: 1,
-          background: "linear-gradient(180deg, #7C1EFB 0%, #AF56B8 98.44%)",
           borderRadius: "16px",
-          py: 1.5,
+          py: 1,
           px: "30px",
         }}
       >
         <Stack direction={{ xs: "column", md: "row" }} alignItems="center">
-          <Box component="img" src="/images/logo.png" alt="pair" />
+          <Box component="img" src="/images/SNE disorted edited shadow 1.png" alt="pair" />
           <Stack justifyContent="space-between" sx={{ pl: 4, py: 1 }}>
-            <Typography color="white" sx={{ fontSize: 20 }}>
-              Stake SNE on StrongNode
-            </Typography>
-            <Typography color="white" sx={{ fontSize: 12 }}>
-              Stake your SNE on StrongNode, COMING SOON!
+            <Typography color="white" sx={{ fontSize: 24, fontFamily: 'Halyard-Book', fontWeight: 600 }}>
+              STAKE SNE ON STRONGNODE.IO
             </Typography>
           </Stack>
           <Box sx={{ flexGrow: 1 }} />
-          <Button variant="contained" size="large">
+          <SBButton variant="contained" size="large">
             Earn SNE
-          </Button>
+          </SBButton>
         </Stack>
-      </Box>
+      </CardStyle>
 
       <Grid container spacing={4} sx={{ mt: 1 }}>
         <Grid item xs={12} md={4}>
-          <CardStyle sx={{ height: { md: "275px" } }}>
-            <Typography variant="h5" color="text.primary">
-              My Vested Tokens
+          <CardStyle sx={{ height: { md: "250px" } }}>
+            <Typography variant="h5" color="white" fontFamily='Halyard-Book' >
+              MY VESTED TOKENS
             </Typography>
             <Stack direction="row" justifyContent="space-between">
               <Box sx={{ mt: 2 }}>
                 <Box>
-                  <Typography color="error" variant="h2">
-                    Available
+                  <Typography color="#1DF4F6" variant="h2">
+                    AVAILABLE
                   </Typography>
                   <Stack direction="row" alignItems="center">
                     <Typography
-                      color="text.primary"
+                      color="white"
                       sx={{
                         fontSize: { lg: isCollapse ? 32 : 25, md: 19 },
                         fontWeight: 700,
@@ -197,7 +222,7 @@ export default function Dashboard() {
                       {SneBalance}
                     </Typography>
                     <Typography
-                      color="text.secondary"
+                      color="white"
                       variant="h2"
                       sx={{ fontSize: 14, fontWeight: 600, ml: 1, mt: "2px" }}
                     >
@@ -206,12 +231,12 @@ export default function Dashboard() {
                   </Stack>
                 </Box>
                 <Box sx={{ mt: 2 }}>
-                  <Typography color="primary" variant="h5">
-                    Locked Bonus Tokens
+                  <Typography color="#AA1FEC" variant="h5" fontSize='18px'>
+                    LOCKED BONUS TOKENS
                   </Typography>
                   <Stack direction="row" alignItems="center">
                     <Typography
-                      color="text.primary"
+                      color="white"
                       sx={{
                         fontSize: { lg: isCollapse ? 32 : 25, md: 19 },
                         fontWeight: 700,
@@ -220,7 +245,7 @@ export default function Dashboard() {
                       {lockedToken}
                     </Typography>
                     <Typography
-                      color="text.secondary"
+                      color="white"
                       variant="h2"
                       sx={{ fontSize: 14, fontWeight: 600, ml: 1, mt: "2px" }}
                     >
@@ -235,9 +260,9 @@ export default function Dashboard() {
         </Grid>
 
         <Grid item xs={12} md={4}>
-          <CardStyle sx={{ height: { md: "275px" } }}>
-            <Typography variant="h5" color="text.primary">
-              Bonus Tokens
+          <CardStyle sx={{ height: { md: "250px" } }}>
+            <Typography variant="h5" color="white">
+              BONUS TOKENS
             </Typography>
             <Stack sx={{}}>
               <Stack
@@ -251,14 +276,14 @@ export default function Dashboard() {
               >
                 <Box sx={{ mr: 1 }}>
                   <Typography
-                    color="warning.main"
+                    color="#F6EE2E"
                     sx={{ fontSize: { lg: 25, md: 21 }, fontWeight: 700 }}
                   >
-                    Earned
+                    EARNED
                   </Typography>
                   <Stack direction="row" alignItems="center">
                     <Typography
-                      color="text.primary"
+                      color="white"
                       sx={{
                         fontSize: { lg: isCollapse ? 28 : 24, md: 19 },
                         fontWeight: 700,
@@ -267,7 +292,7 @@ export default function Dashboard() {
                       0
                     </Typography>
                     <Typography
-                      color="text.secondary"
+                      color="white"
                       sx={{
                         fontSize: isCollapse ? 25 : 22,
                         fontWeight: 600,
@@ -281,14 +306,14 @@ export default function Dashboard() {
                 </Box>
                 <Box sx={{ ml: 1 }}>
                   <Typography
-                    color="primary"
-                    sx={{ fontSize: { lg: 25, md: 21 }, fontWeight: 700 }}
+                    color="#FC2CF4"
+                    sx={{ fontSize: { lg: 25, md: 21 }, fontWeight: 700, }}
                   >
-                    Locked Up
+                    LOCKED UP
                   </Typography>
                   <Stack direction="row" alignItems="center">
                     <Typography
-                      color="text.primary"
+                      color="white"
                       sx={{
                         fontSize: { lg: isCollapse ? 28 : 24, md: 19 },
                         fontWeight: 700,
@@ -297,7 +322,7 @@ export default function Dashboard() {
                       0
                     </Typography>
                     <Typography
-                      color="text.secondary"
+                      color="white"
                       sx={{
                         fontSize: isCollapse ? 25 : 22,
                         fontWeight: 600,
@@ -317,17 +342,16 @@ export default function Dashboard() {
         </Grid>
 
         <Grid item xs={12} md={4}>
-          <CardStyle sx={{ height: { md: "275px", px: 0 } }}>
+          <CardStyle sx={{ height: { md: "250px", px: 0 } }}>
             <Typography
               variant="h5"
-              sx={{ textAlign: "center" }}
-              color="text.primary"
+              color="white"
             >
-              Recent Lockups
+              RECENT LOCKUPS
             </Typography>
             <RecentLockupsChart />
             <Stack>
-              <Button
+              <SB2Button
                 endIcon={
                   <SvgIconStyle
                     src="/icons/arrow-right.svg"
@@ -336,16 +360,16 @@ export default function Dashboard() {
                 }
                 sx={{ margin: "auto" }}
               >
-                Details
-              </Button>
+                DETAILS
+              </SB2Button>
             </Stack>
           </CardStyle>
         </Grid>
 
         <Grid item xs={12} md={6}>
           <CardStyle>
-            <Typography variant="h4" color="text.primary">
-              Vesting Progress.
+            <Typography variant="h4" color="white">
+              VESTING PROGRESS
             </Typography>
 
             <Stack sx={{ mt: 3 }}>
@@ -375,7 +399,7 @@ export default function Dashboard() {
                   sx={{ height: 5, borderRight: "2px solid #C0C6CE" }}
                 />
               </Stack>
-              <LinearProgress
+              <SBLinearProgress
                 variant="determinate"
                 value={0}
                 color="secondary"
@@ -413,19 +437,19 @@ export default function Dashboard() {
                 justifyContent="space-between"
                 sx={{ marginBottom: "2px" }}
               >
-                <Typography color="typography.50" sx={{ fontSize: 10 }}>
+                <Typography color="white" sx={{ fontSize: 10 }}>
                   0.0
                 </Typography>
-                <Typography color="typography.50" sx={{ fontSize: 10 }}>
+                <Typography color="white" sx={{ fontSize: 10 }}>
                   {(availableToken + lockedToken) * 0.25}m
                 </Typography>
-                <Typography color="typography.50" sx={{ fontSize: 10 }}>
+                <Typography color="white" sx={{ fontSize: 10 }}>
                   {(availableToken + lockedToken) * 0.5}m
                 </Typography>
-                <Typography color="typography.50" sx={{ fontSize: 10 }}>
+                <Typography color="white" sx={{ fontSize: 10 }}>
                   {(availableToken + lockedToken) * 0.75}m
                 </Typography>
-                <Typography color="typography.50" sx={{ fontSize: 10 }}>
+                <Typography color="white" sx={{ fontSize: 10 }}>
                   {availableToken + lockedToken}m
                 </Typography>
               </Stack>
@@ -434,24 +458,24 @@ export default function Dashboard() {
             <Stack>
               <Stack direction="row" spacing={5} sx={{ mt: 2 }}>
                 <Stack direction="row" alignItems="center">
-                  <Status color="secondary.main" />
-                  <Typography color="text.secondary" variant="h6">
-                    0 SNE vested
+                  <Status color="#1DF4F6" />
+                  <Typography color="white" variant="h6">
+                    0 SNE Vested
                   </Typography>
                 </Stack>
 
                 <Stack direction="row" alignItems="center">
-                  <Status color="secondary.30" />
-                  <Typography color="text.secondary" variant="h6">
-                    0 SNE unvested
+                  <Status color="#AA1FEC" />
+                  <Typography color="white" variant="h6">
+                    0 SNE Unvested
                   </Typography>
                 </Stack>
               </Stack>
             </Stack>
-            <Divider sx={{ my: 3 }} />
+            <Divider sx={{ my: 3, background: '#1DF4F6' }} />
 
-            <Typography variant="h4" color="text.primary">
-              Vesting Progress
+            <Typography variant="h4" color="white">
+              VESTING PROGRESS
             </Typography>
             <VestTable history={history} setRefresh={setRefresh} />
           </CardStyle>
@@ -459,21 +483,21 @@ export default function Dashboard() {
 
         <Grid item xs={12} md={6}>
           <CardStyle>
-            <Typography variant="h4" color="text.primary">
-              Withdrawals
+            <Typography variant="h4" color="white">
+              WITHDRAWALS
             </Typography>
 
-            <Divider sx={{ my: 3 }} />
+            <Divider sx={{ my: 3, background: '#1DF4F6' }} />
 
             <Stack>
               <Stack spacing={2}>
                 <Stack direction="row" justifyContent="space-between">
                   <Stack direction="row" alignItems="center">
-                    <Typography color="text.secondary" variant="h6">
-                      Vested to data
+                    <Typography color="white" variant="h6">
+                      VESTED TO DATA
                     </Typography>
                   </Stack>
-                  <Typography color="text.secondary" variant="h6">
+                  <Typography color="white" variant="h6">
                     0 SNE
                   </Typography>
                 </Stack>
@@ -481,11 +505,11 @@ export default function Dashboard() {
                 <Stack direction="row" justifyContent="space-between">
                   <Stack direction="row" alignItems="center">
                     <Status color="error.main" />
-                    <Typography color="text.secondary" variant="h6">
-                      Total Withdrawn
+                    <Typography color="white" variant="h6">
+                      TOTAL WITHDRAWN
                     </Typography>
                   </Stack>
-                  <Typography color="text.secondary" variant="h6">
+                  <Typography color="white" variant="h6">
                     0 SNE
                   </Typography>
                 </Stack>
@@ -493,26 +517,26 @@ export default function Dashboard() {
                 <Stack direction="row" justifyContent="space-between">
                   <Stack direction="row" alignItems="center">
                     <Status color="secondary.main" />
-                    <Typography color="text.secondary" variant="h6">
-                      Total Remaining
+                    <Typography color="white" variant="h6">
+                      TOTAL REMAINING
                     </Typography>
                   </Stack>
-                  <Typography color="text.secondary" variant="h6">
+                  <Typography color="white" variant="h6">
                     0 SNE
                   </Typography>
                 </Stack>
               </Stack>
             </Stack>
 
-            <Divider sx={{ my: 3 }} />
+            <Divider sx={{ my: 3, background: '#1DF4F6' }} />
 
-            <Stack direction="row" alignItems="center">
-              <Button variant="contained" size="large">
-                Withdraw
-              </Button>
-              <Button
+            <Stack direction="row" alignItems="center" justifyContent='space-between'>
+              <SBButton variant="contained" size="large">
+                WITHDRAW
+              </SBButton>
+              <SB2Button
                 onClick={handleViewHistory}
-                sx={{ fontSize: 16, color: "primary.main", ml: 2 }}
+                sx={{ fontSize: 16, ml: 2 }}
                 endIcon={
                   <SvgIconStyle
                     src="/icons/arrow-right.svg"
@@ -520,13 +544,13 @@ export default function Dashboard() {
                   />
                 }
               >
-                View History
-              </Button>
+                VIEW HISTORY
+              </SB2Button>
             </Stack>
             {historyOpen && (
               <Box sx={{ mt: 2 }}>
-                <Typography variant="h4" color="text.primary">
-                  Withdrawing Progress.
+                <Typography variant="h4" color="white">
+                  WITHDRAWING PROGRESS.
                 </Typography>
 
                 <Stack sx={{ mt: 3 }}>
@@ -556,7 +580,7 @@ export default function Dashboard() {
                       sx={{ height: 5, borderRight: "2px solid #C0C6CE" }}
                     />
                   </Stack>
-                  <LinearProgress
+                  <SBLinearProgress
                     variant="determinate"
                     value={0}
                     color="secondary"
@@ -594,19 +618,19 @@ export default function Dashboard() {
                     justifyContent="space-between"
                     sx={{ marginBottom: "2px" }}
                   >
-                    <Typography color="typography.50" sx={{ fontSize: 10 }}>
+                    <Typography color="white" sx={{ fontSize: 10 }}>
                       0.0
                     </Typography>
-                    <Typography color="typography.50" sx={{ fontSize: 10 }}>
+                    <Typography color="white" sx={{ fontSize: 10 }}>
                       {(availableToken + lockedToken) * 0.25}m
                     </Typography>
-                    <Typography color="typography.50" sx={{ fontSize: 10 }}>
+                    <Typography color="white" sx={{ fontSize: 10 }}>
                       {(availableToken + lockedToken) * 0.5}m
                     </Typography>
-                    <Typography color="typography.50" sx={{ fontSize: 10 }}>
+                    <Typography color="white" sx={{ fontSize: 10 }}>
                       {(availableToken + lockedToken) * 0.75}m
                     </Typography>
-                    <Typography color="typography.50" sx={{ fontSize: 10 }}>
+                    <Typography color="white" sx={{ fontSize: 10 }}>
                       {availableToken + lockedToken}m
                     </Typography>
                   </Stack>
@@ -616,25 +640,25 @@ export default function Dashboard() {
                   <Stack direction="row" spacing={5} sx={{ mt: 2 }}>
                     <Stack direction="row" alignItems="center">
                       <Status color="secondary.main" />
-                      <Typography color="text.secondary" variant="h6">
-                        0 SNE vested
+                      <Typography color="white" variant="h6">
+                        0 SNE VESTED
                       </Typography>
                     </Stack>
 
                     <Stack direction="row" alignItems="center">
                       <Status color="secondary.30" />
-                      <Typography color="text.secondary" variant="h6">
-                        0 SNE unvested
+                      <Typography color="white" variant="h6">
+                        0 SNE UNVESTED
                       </Typography>
                     </Stack>
                   </Stack>
                 </Stack>
-                <Divider sx={{ my: 3 }} />
+                <Divider sx={{ my: 3, background: '#1DF4F6' }} />
 
-                <Typography variant="h4" color="text.primary">
-                  Withdrawing Progress
+                <Typography variant="h4" color="white">
+                  WITHDRAWING PROGRESS
                 </Typography>
-                <WithdrawTable history={withdrawhistory} setRefresh={setRefresh}/>
+                <WithdrawTable history={withdrawhistory} setRefresh={setRefresh} />
               </Box>
             )}
           </CardStyle>
@@ -645,11 +669,11 @@ export default function Dashboard() {
               alignItems="center"
               justifyContent="space-between"
             >
-              <Typography variant="h4" color="text.primary">
-                News
+              <Typography variant="h4" color="white">
+                NEWS
               </Typography>
-              <Button
-                sx={{ fontSize: 16, color: "primary.main", ml: 2 }}
+              <SB2Button
+                sx={{ fontSize: 16, ml: 2 }}
                 endIcon={
                   <SvgIconStyle
                     src="/icons/arrow-right.svg"
@@ -657,73 +681,73 @@ export default function Dashboard() {
                   />
                 }
               >
-                Read All News
-              </Button>
+                READ ALL NEWS
+              </SB2Button>
             </Stack>
 
-            <Divider sx={{ my: 2 }} />
+            <Divider sx={{ my: 2, background: '#1DF4F6' }} />
 
             <NewsCarousel />
           </CardStyle>
 
           <CardStyle sx={{ mt: 4 }}>
-            <Typography variant="h4" color="text.primary">
-              Investment Details
+            <Typography variant="h4" color="white">
+              INVESTMENT DETAILS
             </Typography>
 
-            <Divider sx={{ mt: 2, mb: "12px" }} />
+            <Divider sx={{ mt: 2, mb: "12px", background: '#1DF4F6' }} />
 
             <Stack>
               <Stack spacing={2}>
                 <Stack direction="row" justifyContent="space-between">
-                  <Typography color="text.secondary" variant="h6">
-                    Investor
+                  <Typography color="white" variant="h6">
+                    INVESTOR
                   </Typography>
-                  <Typography variant="h6" color="text.primary">
+                  <Typography variant="h6" color="white">
                     Pull this out from the fucking database
                   </Typography>
                 </Stack>
 
-                <Divider sx={{ my: "12px" }} />
+                <Divider sx={{ my: "12px", background: "#1DF4F6" }} />
 
                 <Stack direction="row" justifyContent="space-between">
-                  <Typography color="text.secondary" variant="h6">
-                    Purchase Date
+                  <Typography color="white" variant="h6">
+                    PURCHASE DATE
                   </Typography>
-                  <Typography color="text.secondary" variant="h6">
+                  <Typography color="white" variant="h6">
                     Do not be static
                   </Typography>
                 </Stack>
 
-                <Divider sx={{ my: "12px" }} />
+                <Divider sx={{ my: "12px", background: "#1DF4F6" }} />
 
                 <Stack direction="row" justifyContent="space-between">
-                  <Typography color="text.secondary" variant="h6">
-                    Purchase Round
+                  <Typography color="white" variant="h6">
+                    PURCHASE ROUND
                   </Typography>
-                  <Typography color="text.secondary" variant="h6">
+                  <Typography color="white" variant="h6">
                     Strategic
                   </Typography>
                 </Stack>
 
-                <Divider sx={{ my: "12px" }} />
+                <Divider sx={{ my: "12px", background: "#1DF4F6" }} />
 
                 <Stack direction="row" justifyContent="space-between">
-                  <Typography color="text.secondary" variant="h6">
-                    Total Purchase
+                  <Typography color="white" variant="h6">
+                    TOTAL PURCHASE
                   </Typography>
-                  <Typography color="text.secondary" variant="h6">
+                  <Typography color="white" variant="h6">
                     0SNE
                   </Typography>
                 </Stack>
 
-                <Divider sx={{ my: "12px" }} />
+                <Divider sx={{ my: "12px", background: "#1DF4F6" }} />
 
                 <Stack direction="row" justifyContent="space-between">
-                  <Typography color="text.secondary" variant="h6">
-                    Investment Amount
+                  <Typography color="white" variant="h6">
+                    INVESTMENT AMOUNT
                   </Typography>
-                  <Typography color="text.secondary" variant="h6">
+                  <Typography color="white" variant="h6">
                     $0
                   </Typography>
                 </Stack>

@@ -65,10 +65,9 @@ export default function AccountPopover() {
           mr: { xs: 2, md: 0 },
           height: 54,
           width: { xs: 190, md: 270 },
-          border: "2px solid rgba(238, 238, 238, 0.5)",
-          background: "linear-gradient(180deg, #7C1EFB 0%, #AF56BB 100%)",
-          boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
-          borderRadius: "100px",
+          background: "linear-gradient(180deg, #27E8F6 0%, #AD1DED 99.99%, rgba(170, 31, 236, 0) 100%)",
+          filter: 'drop-shadow(4px 12px 10px rgba(0, 0, 0, 0.5))',
+          borderRadius: '30px',
           pl: 1,
           pr: 2,
         }}

@@ -18,11 +18,19 @@ export const GlobalStyle = createGlobalStyle`
     -moz-osx-font-smoothing: grayscale;
   }
   .PhoneInputInput, .PhoneInputCountrySelect {
-    font-size: 20px;
+    font-size: 18px;
   }
   .PhoneInputInput {
-    padding: 10px;
-    border: 1px solid #e0e6e8;
+    width : 220px;
+    padding: 16px 20px;
     border-radius: 6px;
+    background: rgba(238, 238, 238, 0.0001);
+    border: 1px solid #1DF4F6;
+    box-sizing: border-box;
+    box-shadow: inset 0px 10px 10px rgba(0, 0, 0, 0.25);
+    &::placeholder {
+      color: rgba(255,255,255, 0.5);
+      font-size: 18px;
+    }
   }
 `

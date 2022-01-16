@@ -13,7 +13,8 @@ const RootStyle = styled('div')(({ theme }) => ({
   display: 'flex',
   minHeight: '100%',
   overflow: 'hidden',
-  background: theme.palette.background.default,
+  background: `url(/images/background.png)`,
+  backgroundSize : '100% 100%'
 }))
 
 const MainStyle = styled('div')(({ theme }) => ({

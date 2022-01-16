@@ -10,6 +10,7 @@ export const StyledInputGroup = styled.div`
     color: #88888;
   }
   svg {
+    fill  : white;
     position: absolute;
     top: calc(50% - 1px);
     left: 15px;

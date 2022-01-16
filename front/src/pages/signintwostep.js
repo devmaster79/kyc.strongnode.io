@@ -20,9 +20,9 @@ function SigninTwoStep() {
   const handleSubmit = (event) => {
     event.preventDefault();
     verifyTOTP(email, totp).then(r => {
-      if(r.data.verified) {
+      if (r.data.verified) {
         checkSMS(email).then(r => {
-          if (r.data[0].enable_sms === true)  {
+          if (r.data[0].enable_sms === true) {
             navigate("/signinsms");
           } else {
             navigate('/dashboard/app');
@@ -31,7 +31,7 @@ function SigninTwoStep() {
       } else {
         setShowError(true);
       }
-		});
+    });
   };
 
   const handleTOTPInputChange = (event) => {
@@ -45,14 +45,14 @@ function SigninTwoStep() {
 
   useEffect(() => {
     const email = localStorage.getItem("email");
-    if(email !== "") {
+    if (email !== "") {
       setEmail(email);
     }
 
     async function fetchUser() {
       try {
         checkSMS(email).then(r => {
-          if(r.data[0].enable_totp) {
+          if (r.data[0].enable_totp) {
             setShowQR(false);
           } else {
             setShowQR(true);
@@ -71,33 +71,32 @@ function SigninTwoStep() {
 
   return (
     <EntryPage>
-      <EntryCard>
-        <h2>2-Step Verification</h2>
+      <EntryCard style={{ width: '454px', padding: '40px 25px' }}>
+        <h2 style={{ fontWeight: 'bold', fontFamily: 'Halyard' }}>2-STEP VERIFICATION</h2>
         {!showQR && <h5>Re-enter your OTP for Verification</h5>}
         {showQR &&
-          <div style={{marginTop: '20px'}}>
-            <img style={{margin: 'auto'}} src={qrURL} alt="qr" />
+          <div style={{ marginTop: '20px' }}>
+            <img style={{ margin: 'auto' }} src={qrURL} alt="qr" />
             <p>Please setup MFA on authenticator app</p>
           </div>}
-        <form onSubmit={handleSubmit} style={{ marginTop: 30 }}>
+        <form onSubmit={handleSubmit} style={{ marginTop: 30, marginLeft: '60px', marginRight: '60px' }}>
           <InputGroup>
-            <LockIcon />
             <Input
               type="input"
               placeholder="Enter your TOTP"
               id="totp"
               value={totp}
-              style={{ padding: "16px 20px 16px 40px" }}
+              style={{ padding: "16px 20px 16px 30px", color: 'rgba(255,255,255,0.5)' }}
               onChange={handleTOTPInputChange}
             />
           </InputGroup>
-          {showError && <p style={{marginBottom: "10px", color: "red"}}>Invalid code please try again</p>}
+          {showError && <p style={{ marginBottom: "10px", color: "red" }}>Invalid code please try again</p>}
           <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
             <input name="twoStep" type="checkbox" value="false" style={{ width: 'auto' }} />
-            <p style={{ paddingLeft: '12px' }}>Do you want sms login for 2 step verification?</p>
+            <p style={{ paddingLeft: '12px', fontSize: '12px', color: 'white', fontFamily: 'Halyard-Book' }}>Do you want sms login for 2 step verification?</p>
           </div>
           <Button type="submit" full>
-            Confirm
+            CONFIRM
           </Button>
         </form>
       </EntryCard>

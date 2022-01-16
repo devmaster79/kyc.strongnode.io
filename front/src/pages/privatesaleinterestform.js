@@ -7,6 +7,7 @@ import Input from "../components/Input";
 import Button from "../components/Button";
 import Navbar from "../components/Navar";
 import { createInvestor } from "../utils/api";
+import { EntryPage } from "pages/style";
 
 export const Container = styled.div`
   display: flex;
@@ -19,16 +20,20 @@ export const Container = styled.div`
 export const Wrapper = styled.div`
   width: 100%;
   max-width: 909px;
-  background-color: #ffffff;
   padding: 50px 40px 40px 40px;
   margin-bottom: 120px;
   display: flex;
   flex-direction: column;
   justify-contents: space-between;
-  border: 1px solid transparent;
-  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid #1DF4F6;
+  box-sizing: border-box;
+  box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(10px);
+  border-radius : 5px;
   h2 {
     margin-bottom: 10px;
+    color : white;
   }
   p {
     margin-top: 20px;
@@ -36,11 +41,11 @@ export const Wrapper = styled.div`
     font-style: normal;
     font-size: 18px;
     line-height: 30px;
-    color: #584a72;
+    color: white;
   }
   h5 {
-    margin-bottom: 12px;
-    color: #584a72;
+    margin-bottom: 5px;
+    color: white;
     font-size: 14px;
     line-height: 18px;
     font-weight: 500;
@@ -68,6 +73,9 @@ const InputCol = styled.div`
 const SubmitButtonWrapper = styled.div`
   margin-top: 10px;
   text-align: right;
+  >button{
+    width : calc(50% - 16px);
+  }
 `;
 
 function PrivateSaleInterestForm() {
@@ -142,20 +150,15 @@ function PrivateSaleInterestForm() {
   };
 
   return (
-    <Container>
-      <Navbar privatesale />
+    <EntryPage>
       <Wrapper>
-        <h2>StongNode Private Sale Interest Form</h2>
-
+        <h2 style={{ fontFamily: 'Halyard' }}>StrongNode Private Sale Interest Form</h2>
         <p>
-          This form is for investors interested in participating in the private
-          sale round for the StrongNode token. Your responses will be kept
-          private and will not be distributed without prior consent.
+          This form is for investors interested in participating in the private sale round for the StrongNode token. Your responses
+          will be kept private and will not be distributed without prior consent.
         </p>
         <p>
-          A representative from StrongNode will reach out to you after your
-          submission is reviewed. KYC will be required for all StrongNood
-          private sale participants.
+          A representative from  StrongNode will reach out to you after your submittion is reviewed. KYC will be required for all StrongNode private sale participants.
         </p>
 
         <Line full />
@@ -276,7 +279,7 @@ function PrivateSaleInterestForm() {
           </SubmitButtonWrapper>
         </form>
       </Wrapper>
-    </Container>
+    </EntryPage>
   );
 }
 
