@@ -141,7 +141,7 @@ export default function GroupingFixedHeader({ history, setRefresh }) {
                     {column.label}
                   </TableCell>
                 ))}
-                <TableCell style={{ background: 'transparent', color: 'white', borderColor: '#1DF4F6' }}>Action</TableCell>
+                {/* <TableCell style={{ background: 'transparent', color: 'white', borderColor: '#1DF4F6' }}>Action</TableCell> */}
               </TableRow>
             </TableHead>
 
@@ -161,7 +161,7 @@ export default function GroupingFixedHeader({ history, setRefresh }) {
                             {row.token_amount} SNE
                           </Typography>
                           }
-                          {editflag == true && curdata === row.id && <TextField style={{ width: "70px", color : 'white' }} value={tokenamount} onChange={(event) => setTokenAmount(event.target.value / 1)} />}
+                          {editflag == true && curdata === row.id && <TextField style={{ width: "70px", color: 'white' }} value={tokenamount} onChange={(event) => setTokenAmount(event.target.value / 1)} />}
                         </Stack>
                       </TableCell>
                       <TableCell>
@@ -174,21 +174,12 @@ export default function GroupingFixedHeader({ history, setRefresh }) {
                           {fDate(row.date)}
                         </Typography>
                       </TableCell>
-                      {localStorage.getItem('username') === row.user_name && <TableCell>
+                      {/* {localStorage.getItem('username') === row.user_name && <TableCell>
                         {(!editflag || curdata !== row.id) && <Button onClick={() => { setCurData(row.id); setEditFlag(true); setTokenAmount(row.token_amount) }}>Edit</Button>}
                         {(editflag && curdata === row.id) && <Button onClick={() => { setCurData(-1); setEditFlag(false); onSave(row) }}>Save</Button>}
                         {(!editflag || curdata !== row.id) && <Button onClick={() => onDel(row)}>Del</Button>}
                         {(editflag && curdata === row.id) && <Button onClick={() => { setCurData(-1); setEditFlag(false) }}>Cancel</Button>}
-                      </TableCell>
-                      /* {COLUMNS.map((colu
-                      }mn) => {
-                    const value = row[column.id];
-                    return (
-                      <TableCell key={column.id} align={column.align}>
-                        {column.format && typeof value === 'number' ? column.format(value) : value}
-                      </TableCell>
-                    );
-                  })} */}
+                      </TableCell>} */}
                     </TableRow>
                   ))}
             </TableBody>
@@ -197,7 +188,7 @@ export default function GroupingFixedHeader({ history, setRefresh }) {
       </Scrollbar>
       <Stack direction="row" justifyContent="flex-end">
         <Pagination
-          color= 'primary'
+          color='primary'
           page={page}
           count={Math.ceil(history && history.length / 10)}
           rowsPerPage={rowsPerPage}
