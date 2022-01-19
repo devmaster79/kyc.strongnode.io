@@ -23,7 +23,7 @@ import DateTimePicker from '@mui/lab/DateTimePicker';
 
 const CardStyle = styled(Box)(({ theme }) => ({
   background:
-    "linear-gradient(180deg, rgba(248, 255, 255, 0.15) 0%, rgba(156, 255, 249, 0.15) 100%)",
+    "rgba(255, 255, 255, 0.1)",
   border: "5px solid #964CFA",
   boxSizing: "border-box",
   borderRadius: "16px",
@@ -116,7 +116,7 @@ export default function Dashboard() {
   } = formik;
 
   return (
-    <Container maxWidth="xl">
+    <Container maxWidth="xl" style={{ height: '100vh' }}>
       <CardStyle>
         <FormikProvider value={formik}>
           <form onSubmit={formik.handleSubmit} enctype="multipart/form-data">
@@ -133,6 +133,7 @@ export default function Dashboard() {
 
               <MyStack spacing={3} sx={{ width: "100%" }}>
                 <TextField
+                  InputProps={{ style: { color: 'white' } }}
                   fullWidth
                   placeholder="User Name"
                   value={user ? user.user_name : ""}
@@ -140,6 +141,7 @@ export default function Dashboard() {
                 />
 
                 <TextField
+                  InputProps={{ style: { color: 'white' } }}
                   fullWidth
                   placeholder="Token Amount"
                   type="Number"
@@ -149,6 +151,7 @@ export default function Dashboard() {
                   onChange={(event) => setValue(event.target.value)}
                 />
                 <Select
+                  SelectDisplayProps={{ style: { color: 'white' } }}
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
                   value={type}
@@ -162,6 +165,8 @@ export default function Dashboard() {
                 </Select>
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                   <DateTimePicker
+                    InputProps={{ style: { color: 'white' } }}
+
                     renderInput={(params) => <TextField {...params} />}
                     label="Ignore date and time"
                     value={date}
