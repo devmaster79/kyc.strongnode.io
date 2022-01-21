@@ -142,7 +142,7 @@ function Signup() {
                   width: '9px!important'
                 }}
               />
-              {showError && <p style={{ marginBottom: "10px", color: "red" }}>There is a user with same email.</p>}
+              {showError && <p style={{ marginBottom: "10px", color: "red" }}>You have previously used this email address. Try another address or sign in via magic link.</p>}
               <Button disabled={isSubmitting} type="submit" full>
                 SIGN UP
               </Button>
