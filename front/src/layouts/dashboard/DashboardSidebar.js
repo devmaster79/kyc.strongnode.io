@@ -46,6 +46,8 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
           height: '100%',
           display: 'flex',
           flexDirection: 'column',
+          backgroundColor : '#2a274e',
+          transition : 'width 15s'
         },
       }}
     >
@@ -67,6 +69,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
   return (
     <RootStyle
       sx={{
+        transition : 'width 2s',
         width: {
           lg: isCollapse ? COLLAPSE_WIDTH : DRAWER_WIDTH,
         },
@@ -83,6 +86,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
             sx: {
               borderRadius: '0px 30px 30px 0px',
               width: DRAWER_WIDTH,
+              transition : 'width .2s',
               background:
                 'rgba(255, 255, 255, 0.1)',
               ...(isCollapse && {
@@ -109,6 +113,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
             sx: {
               borderRadius: '0px 30px 30px 0px',
               width: DRAWER_WIDTH,
+              transition : 'width .2s',
               background:
                 'rgba(255, 255, 255, 0.1)',
               ...(isCollapse && {

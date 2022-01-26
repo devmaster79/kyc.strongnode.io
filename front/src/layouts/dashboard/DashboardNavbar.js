@@ -103,6 +103,7 @@ export default function DashboardNavbar({ onOpenSidebar }) {
       sx={{
         ...(isCollapse && {
           width: { lg: `calc(100% - ${COLLAPSE_WIDTH}px + 30px)` },
+          transition : {lg : 'width .2s'},
         }),
       }}
     >

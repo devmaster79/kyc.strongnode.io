@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { Avatar, Stack, Typography } from "@material-ui/core";
+import { Avatar, Box, Stack, Typography } from "@material-ui/core";
 import SvgIconStyle from "components/SvgIconStyle";
 import ConnectButton, { SneBalance } from "components/ConnectButton";
 import * as React from "react";
@@ -65,7 +65,7 @@ export default function AccountPopover() {
           mr: { xs: 2, md: 0 },
           height: 54,
           width: { xs: 190, md: 270 },
-          background: "linear-gradient(180deg, #27E8F6 0%, #AD1DED 99.99%, rgba(170, 31, 236, 0) 100%)",
+          background: "linear-gradient(180deg, #d969ff 0%, #AD1DED 99.99%, rgba(170, 31, 236, 0) 100%)",
           filter: 'drop-shadow(4px 12px 10px rgba(0, 0, 0, 0.5))',
           borderRadius: '30px',
           pl: 1,
@@ -126,17 +126,17 @@ export default function AccountPopover() {
           }}
         >
           <Stack alignItems="center">
-            <Avatar sx={{ mt: 2 }} src="/images/avatar.png" alt="avatar" />
+            <Avatar sx={{ mt: 2 }} src={avatar} alt="avatar" />
             <Typography color="white" sx={{ fontSize: 18 }}>
               {userName}
             </Typography>
-            <Typography color="white" sx={{ fontSize: 12 }}>
+            <Typography color="white" sx={{ fontSize: 15 }}>
               {email}
             </Typography>
             <Divider light color="white" sx={{ width: 200 }} />
           </Stack>
           <ConnectButton />
-          <Typography color="white" sx={{ fontSize: 18, ml: 3 }}>
+          <Typography color="white" sx={{ fontSize: 18, ml: 3, mt : 1 }}>
             SNE Balance: {SneBalance()}
           </Typography>
           <Typography
