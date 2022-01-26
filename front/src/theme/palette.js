@@ -70,7 +70,7 @@ const TYPOGRAPHY = {
 }
 
 const GRADIENTS = {
-  button: 'linear-gradient(180deg, #AF56B8 0%, #7C1EFB 100%)',
+  button: 'linear-gradient(180deg, #AF56B8 0%, #a91ed1 100%)',
   info: createGradient(INFO.light, INFO.main),
   success: createGradient(SUCCESS.light, SUCCESS.main),
   warning: createGradient(WARNING.light, WARNING.main),

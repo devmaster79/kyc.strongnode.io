@@ -337,7 +337,7 @@ export default function Dashboard() {
   useEffect(() => {
     async function fetch() {
       const url =
-        process.env.REACT_APP_BASE_URL +
+        process.env.REACT_APP_BASE_URL?process.env.REACT_APP_BASE_URL:"" +
         `/api/users/profile/get?email=${useremail}`;
       console.log("server url: ", url);
       const result = await axios.get(url, {
@@ -592,7 +592,7 @@ export default function Dashboard() {
                     xs={6}
                     sm={6}
                     md={6}
-                    sx={{ textAlign: "center" }}
+                    sx={{ textAlign: "end", color : 'white' }}
                   >
                     <FormControlLabel
                       value="start"
@@ -612,7 +612,7 @@ export default function Dashboard() {
                     xs={6}
                     sm={6}
                     md={6}
-                    sx={{ textAlign: "center" }}
+                    sx={{ textAlign: "end", color : 'white'  }}
                   >
                     <FormControlLabel
                       value="start"
