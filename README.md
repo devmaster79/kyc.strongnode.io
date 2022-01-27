@@ -14,6 +14,7 @@ First of all, **clone this repository**.
 
 ## 🌐 Localstack (AWS emulator for local development)
 
+For faking AWS on localhost you shoud run localstack locally on your machine. This can be done via composing a docker-compose file located in docker/localstack.docker-compose.yaml.
 
 Example of creating localstack instance via Docker
 ```
