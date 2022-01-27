@@ -3,3 +3,8 @@
 .idea/kyc.strongnode.io.iml
 .idea/modules.xml
 .idea/vcs.xml
+
+.DS_Store
+docker/.localstack/*
+back/package-lock.json
+front/package.json
