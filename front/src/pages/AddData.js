@@ -1,5 +1,4 @@
 import { useSnackbar } from "notistack5";
-import { useNavigate } from "react-router-dom";
 import {
   Container,
   Box,
@@ -10,20 +9,17 @@ import {
   MenuItem,
 } from "@material-ui/core";
 import { styled } from "@material-ui/core/styles";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import axios from "utils/axios";
-import {
-  historyAction,
-} from "../utils/api";
+import { historyAction } from "../utils/api";
 import * as Yup from "yup";
 import { useFormik, FormikProvider } from "formik";
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import DateTimePicker from '@mui/lab/DateTimePicker';
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import DateTimePicker from "@mui/lab/DateTimePicker";
 
 const CardStyle = styled(Box)(({ theme }) => ({
-  background:
-    "rgba(255, 255, 255, 0.1)",
+  background: "rgba(255, 255, 255, 0.1)",
   border: "5px solid #964CFA",
   boxSizing: "border-box",
   borderRadius: "16px",
@@ -37,16 +33,14 @@ const MyStack = styled(Stack)`
   }
 `;
 export default function Dashboard() {
-
   const types = ["earned", "unlocked", "vested", "withdrawn"];
-
 
   const [user, setUser] = useState();
   const [value, setValue] = useState(0);
   const [type, setType] = useState(0);
   const [date, setDate] = useState(new Date());
 
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
 
   //Fetch value from local storage
   const token = localStorage.getItem("token");
@@ -60,20 +54,19 @@ export default function Dashboard() {
   const formik = useFormik({
     initialValues: {
       value: 0,
-      type: 0
+      type: 0,
     },
     validationSchema: ProfileSchema,
     onSubmit: async (values, { setErrors, setSubmitting, resetForm }) => {
       try {
-        const url =
-          process.env.REACT_APP_BASE_URL + `/api/history/`;
+        const url = process.env.REACT_APP_BASE_URL + `/api/history/`;
         console.log("server url: ", url);
 
         const data = {
           user_name: user.user_name,
           token_amount: value / 1,
           action_type: types[type],
-          date: date
+          date: date,
         };
         console.log(data);
         historyAction(url, data).then((r) => {
@@ -93,7 +86,6 @@ export default function Dashboard() {
     },
   });
 
-
   useEffect(() => {
     async function fetch() {
       const url =
@@ -109,14 +101,10 @@ export default function Dashboard() {
     }
 
     fetch();
-  }, [value]);
-
-  const {
-    handleSubmit,
-  } = formik;
+  }, [token, useremail, value]);
 
   return (
-    <Container maxWidth="xl" style={{ height: '100vh' }}>
+    <Container maxWidth="xl" style={{ height: "100vh" }}>
       <CardStyle>
         <FormikProvider value={formik}>
           <form onSubmit={formik.handleSubmit} enctype="multipart/form-data">
@@ -130,10 +118,9 @@ export default function Dashboard() {
                 flexWrap: { xs: "wrap", md: "nowrap" },
               }}
             >
-
               <MyStack spacing={3} sx={{ width: "100%" }}>
                 <TextField
-                  InputProps={{ style: { color: 'white' } }}
+                  InputProps={{ style: { color: "white" } }}
                   fullWidth
                   placeholder="User Name"
                   value={user ? user.user_name : ""}
@@ -141,7 +128,7 @@ export default function Dashboard() {
                 />
 
                 <TextField
-                  InputProps={{ style: { color: 'white' } }}
+                  InputProps={{ style: { color: "white" } }}
                   fullWidth
                   placeholder="Token Amount"
                   type="Number"
@@ -151,22 +138,23 @@ export default function Dashboard() {
                   onChange={(event) => setValue(event.target.value)}
                 />
                 <Select
-                  SelectDisplayProps={{ style: { color: 'white' } }}
+                  SelectDisplayProps={{ style: { color: "white" } }}
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
                   value={type}
                   onChange={(event) => setType(event.target.value)}
                 >
-                  {
-                    types.map((data, i) => {
-                      return <MenuItem value={i} key={i}>{data}</MenuItem>
-                    })
-                  }
+                  {types.map((data, i) => {
+                    return (
+                      <MenuItem value={i} key={i}>
+                        {data}
+                      </MenuItem>
+                    );
+                  })}
                 </Select>
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                   <DateTimePicker
-                    InputProps={{ style: { color: 'white' } }}
-
+                    InputProps={{ style: { color: "white" } }}
                     renderInput={(params) => <TextField {...params} />}
                     label="Ignore date and time"
                     value={date}
