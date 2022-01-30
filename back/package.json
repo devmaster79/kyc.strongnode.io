@@ -38,5 +38,6 @@
     "sequelize-cli": "^6.3.0",
     "speakeasy": "^2.0.0",
     "validator": "13.7.0"
-  }
+  },
+  "devDependencies": {}
 }
