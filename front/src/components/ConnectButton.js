@@ -29,10 +29,21 @@ export default function ConnectButton() {
   
   const { name, logoURI, tokens } = useTokenList(UNISWAP_DEFAULT_TOKEN_LIST_URI) || {}
   const accountBalance = balance ? ethers.utils.formatEther(balance) : 0;
+
+
+  const activateBrowserWalletUser = async () => {
+    let res = await activateBrowserWallet();
+    window.location.reload();
+  }
+
+  const deactivateUser = async () => {
+    let res = await activateBrowserWallet();
+    window.location.reload();
+  }
   return (
     <>
       {account ? (
-        <Button variant="contained" onClick={deactivate}>
+        <Button variant="contained" onClick={() => deactivateUser} >
           {`${account.slice(0, 6)}...${account.slice(-6)}`}
           {
             console.log(account),
@@ -41,7 +52,7 @@ export default function ConnectButton() {
           }
         </Button>
       ) : (
-        <Button variant="contained" onClick={activateBrowserWallet}>
+        <Button variant="contained" onClick={activateBrowserWalletUser}>
           Connect Wallet
         </Button>
       )}

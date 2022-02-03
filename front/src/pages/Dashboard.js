@@ -23,48 +23,55 @@ import RecentLockupsChart from "components/Charts/RecentLockupsChart";
 import NewsCarousel from "components/Carousels/NewsCarousel";
 import useCollapseDrawer from "../hooks/useCollapseDrawer";
 import { lte } from "lodash";
-import { useTokenList, useToken, useEthers, useEtherBalance, useTokenBalance } from "@usedapp/core";
+import {
+  useTokenList,
+  useToken,
+  useEthers,
+  useEtherBalance,
+  useTokenBalance,
+} from "@usedapp/core";
 import { ethers } from "ethers";
+import WithdrawTimer from "../components/dashboard/WithdrawTimer";
+import { historyAction } from "../utils/api";
 
 const SneAddress = "0x32934CB16DA43fd661116468c1B225Fc26CF9A8c";
 
 const CardStyle = styled(Box)(({ theme }) => ({
-  background: 'rgba(255, 255, 255, 0.1)',
-  border: '1px solid #1DF4F6',
-  boxSizing: 'border-box',
-  backdropFilter: 'blur(3px)',
+  background: "rgba(255, 255, 255, 0.1)",
+  border: "1px solid #1DF4F6",
+  boxSizing: "border-box",
+  backdropFilter: "blur(3px)",
   /* Note: backdrop-filter has minimal browser support */
 
-  borderRadius: '30px',
+  borderRadius: "30px",
   padding: theme.spacing(4),
 }));
 
 const SBLinearProgress = styled(LinearProgress)`
-
-  background-color: #B300FE!important;
-  >span{
-    background-color : #31F7F9!important;
+  background-color: #b300fe !important;
+  > span {
+    background-color: #31f7f9 !important;
   }
-
-`
+`;
 
 const SBButton = styled(Button)`
-  background: #AA1FEC;
+  background: #aa1fec;
   box-shadow: 4px 12px 10px rgba(0, 0, 0, 0.5);
   border-radius: 30px;
-  border : none;
-  font-size : 19px;
-  font-family : 'Halyard-Book';
-  width : 192px;
-  height : 58px;
+  border: none;
+  font-size: 19px;
+  font-family: "Halyard-Book";
+  width: 192px;
+  height: 58px;
 `;
 
 const SB2Button = styled(SBButton)`
-  color: #1DF4F6;
-  background : transparent;
-  box-shadow : none;
-`
+  color: #1df4f6;
+  background: transparent;
+  box-shadow: none;
+`;
 export default function Dashboard() {
+  const [withdrawable, setWithdrawable] = useState(false);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [historyOpen, setHistoryOpen] = useState();
   const [newsOpen, setNewsOpen] = useState();
@@ -74,12 +81,12 @@ export default function Dashboard() {
   const accountBalance = balance ? ethers.utils.formatEther(balance) : 0;
   const SneBalanceBigNumber = useTokenBalance(SneAddress, account);
   const SneBalance =
-    SneBalanceBigNumber &&
-    ethers.utils.formatUnits(SneBalanceBigNumber, 18);
+    SneBalanceBigNumber && ethers.utils.formatUnits(SneBalanceBigNumber, 18);
 
   // const [vestedTokens, setVestedTokens] = useState(0);
   const [availableToken, setAvailableToken] = useState(6);
   const [lockedToken, setLockedToken] = useState(6);
+  const [withdrawTime, setWithdrawTime] = useState();
 
   const handleViewHistory = () => {
     setHistoryOpen(!historyOpen);
@@ -99,16 +106,63 @@ export default function Dashboard() {
   const [vestedprogress, setVestedProgress] = useState(0);
   const [withdrawhistory, setWithdrawHistory] = useState();
   const [withdrawprogress, setWithdrawProgress] = useState(0);
+  const [totalVested, setTotalVested] = useState(0);
+  const [totalWithdrawn, setTotalWithdrawn] = useState(0);
   const [refresh, setRefresh] = useState(true);
+  const token = localStorage.getItem("token");
+  const useremail = localStorage.getItem("email");
+  const [user, setUser] = useState();
+
+  useEffect(() => {
+    async function fetch() {
+      const url =
+        process.env.REACT_APP_BASE_URL +
+        `/api/users/profile/get?email=${useremail}`;
+      console.log("server url: ", url);
+      const result = await axios.get(url, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setUser(result.data[0]);
+    }
+
+    fetch();
+  }, [token, useremail]);
+
+  const withdraw = () => {
+    try {
+      const url = process.env.REACT_APP_BASE_URL + `/api/history/`;
+      console.log("server url: ", url);
+
+      const data = {
+        user_name: user.user_name,
+        token_amount: 100,
+        action_type: "withdrawn",
+        date: new Date(),
+      };
+      historyAction(url, data).then((r) => {
+        if (r.status === 200) {
+          enqueueSnackbar("Withdraw successfully1", {
+            variant: "success",
+          });
+        } else {
+          enqueueSnackbar("Failed to Withdraw", { variant: "fail" });
+        }
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
     async function fetch() {
       if (!refresh) return;
       const token = localStorage.getItem("token");
-      console.log(token);
+      // console.log(token);
       const url =
         process.env.REACT_APP_BASE_URL +
-        "/api/history/findAllVested?user_name=" + localStorage.getItem("username");
+        "/api/history/findAllVested?user_name=" +
+        localStorage.getItem("username");
+      console.log("====================", url);
       const result = await axios.get(url, {
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -117,22 +171,29 @@ export default function Dashboard() {
         enqueueSnackbar("History data is not array!", { variant: "error" });
       } else {
         setHistory(result.data);
+        const expTime = new Date(result.data[0].date);
+        expTime.setFullYear(expTime.getFullYear() + 1);
+        // expTime.setSeconds(expTime.getSeconds() + 10);
+        setWithdrawTime(expTime);
         let min = 1000000000000;
+        let sumVested = 0;
         for (let i = 0; i < result.data.length; i++) {
+          sumVested += parseInt(result.data[i].token_amount);
           const temp = new Date(result.data[i].date);
           let date = new Date();
           console.log(date.getTime() - temp.getTime());
           if (min > date.getTime() - temp.getTime())
             min = date.getTime() - temp.getTime();
         }
-        console.log(min);
-        setVestedProgress(Math.min(min / 1000 / 60, 100))
+        setTotalVested(sumVested);
+        setVestedProgress(Math.min(min / 1000 / 60, 100));
       }
 
       const token1 = localStorage.getItem("token");
       const url1 =
         process.env.REACT_APP_BASE_URL +
-        "/api/history/findAllWithdrawn/?user_name=" + localStorage.getItem("username");
+        "/api/history/findAllWithdrawn/?user_name=" +
+        localStorage.getItem("username");
       const result1 = await axios.get(url1, {
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -141,15 +202,18 @@ export default function Dashboard() {
       } else {
         setWithdrawHistory(result1.data);
         let min = 1000000000000;
+        let sumWithdrawn = 0;
         for (let i = 0; i < result1.data.length; i++) {
+          sumWithdrawn += parseInt(result1.data[i].token_amount);
           const temp = new Date(result1.data[i].date);
           let date = new Date();
           console.log(date.getTime() - temp.getTime());
           if (min > date.getTime() - temp.getTime())
             min = date.getTime() - temp.getTime();
         }
+        setTotalWithdrawn(sumWithdrawn);
         console.log(min);
-        setWithdrawProgress(Math.min(min / 1000 / 60, 100))
+        setWithdrawProgress(Math.min(min / 1000 / 60, 100));
       }
       console.log(refresh);
       setRefresh(false);
@@ -185,9 +249,16 @@ export default function Dashboard() {
         }}
       >
         <Stack direction={{ xs: "column", md: "row" }} alignItems="center">
-          <Box component="img" src="/images/SNE disorted edited shadow 1.png" alt="pair" />
+          <Box
+            component="img"
+            src="/images/SNE disorted edited shadow 1.png"
+            alt="pair"
+          />
           <Stack justifyContent="space-between" sx={{ pl: 4, py: 1 }}>
-            <Typography color="white" sx={{ fontSize: 24, fontFamily: 'Halyard-Book', fontWeight: 600 }}>
+            <Typography
+              color="white"
+              sx={{ fontSize: 24, fontFamily: "Halyard-Book", fontWeight: 600 }}
+            >
               STAKE SNE ON STRONGNODE.IO
             </Typography>
           </Stack>
@@ -201,7 +272,7 @@ export default function Dashboard() {
       <Grid container spacing={4} sx={{ mt: 1 }}>
         <Grid item xs={12} md={4}>
           <CardStyle sx={{ height: { md: "250px" } }}>
-            <Typography variant="h5" color="white" fontFamily='Halyard-Book' >
+            <Typography variant="h5" color="white" fontFamily="Halyard-Book">
               MY VESTED TOKENS
             </Typography>
             <Stack direction="row" justifyContent="space-between">
@@ -231,7 +302,7 @@ export default function Dashboard() {
                   </Stack>
                 </Box>
                 <Box sx={{ mt: 2 }}>
-                  <Typography color="#AA1FEC" variant="h5" fontSize='18px'>
+                  <Typography color="#AA1FEC" variant="h5" fontSize="18px">
                     LOCKED BONUS TOKENS
                   </Typography>
                   <Stack direction="row" alignItems="center">
@@ -307,7 +378,7 @@ export default function Dashboard() {
                 <Box sx={{ ml: 1 }}>
                   <Typography
                     color="#FC2CF4"
-                    sx={{ fontSize: { lg: 25, md: 21 }, fontWeight: 700, }}
+                    sx={{ fontSize: { lg: 25, md: 21 }, fontWeight: 700 }}
                   >
                     LOCKED UP
                   </Typography>
@@ -343,10 +414,7 @@ export default function Dashboard() {
 
         <Grid item xs={12} md={4}>
           <CardStyle sx={{ height: { md: "250px", px: 0 } }}>
-            <Typography
-              variant="h5"
-              color="white"
-            >
+            <Typography variant="h5" color="white">
               RECENT LOCKUPS
             </Typography>
             <RecentLockupsChart />
@@ -401,7 +469,6 @@ export default function Dashboard() {
               </Stack>
               <SBLinearProgress
                 variant="determinate"
-                value={0}
                 color="secondary"
                 sx={{ height: 8, borderRadius: "6px" }}
                 value={vestedprogress}
@@ -438,19 +505,19 @@ export default function Dashboard() {
                 sx={{ marginBottom: "2px" }}
               >
                 <Typography color="white" sx={{ fontSize: 10 }}>
-                  0.0
+                  0%
                 </Typography>
                 <Typography color="white" sx={{ fontSize: 10 }}>
-                  {(availableToken + lockedToken) * 0.25}m
+                  25%
                 </Typography>
                 <Typography color="white" sx={{ fontSize: 10 }}>
-                  {(availableToken + lockedToken) * 0.5}m
+                  50%
                 </Typography>
                 <Typography color="white" sx={{ fontSize: 10 }}>
-                  {(availableToken + lockedToken) * 0.75}m
+                  75%
                 </Typography>
                 <Typography color="white" sx={{ fontSize: 10 }}>
-                  {availableToken + lockedToken}m
+                  100%
                 </Typography>
               </Stack>
             </Stack>
@@ -472,7 +539,7 @@ export default function Dashboard() {
                 </Stack>
               </Stack>
             </Stack>
-            <Divider sx={{ my: 3, background: '#1DF4F6' }} />
+            <Divider sx={{ my: 3, background: "#1DF4F6" }} />
 
             <Typography variant="h4" color="white">
               VESTING PROGRESS
@@ -487,7 +554,7 @@ export default function Dashboard() {
               WITHDRAWALS
             </Typography>
 
-            <Divider sx={{ my: 3, background: '#1DF4F6' }} />
+            <Divider sx={{ my: 3, background: "#1DF4F6" }} />
 
             <Stack>
               <Stack spacing={2}>
@@ -498,7 +565,7 @@ export default function Dashboard() {
                     </Typography>
                   </Stack>
                   <Typography color="white" variant="h6">
-                    0 SNE
+                    {totalVested} SNE
                   </Typography>
                 </Stack>
 
@@ -510,7 +577,7 @@ export default function Dashboard() {
                     </Typography>
                   </Stack>
                   <Typography color="white" variant="h6">
-                    0 SNE
+                    {totalWithdrawn} SNE
                   </Typography>
                 </Stack>
 
@@ -522,18 +589,37 @@ export default function Dashboard() {
                     </Typography>
                   </Stack>
                   <Typography color="white" variant="h6">
-                    0 SNE
+                    {totalVested - totalWithdrawn} SNE
                   </Typography>
                 </Stack>
               </Stack>
             </Stack>
 
-            <Divider sx={{ my: 3, background: '#1DF4F6' }} />
+            <Divider sx={{ my: 3, background: "#1DF4F6" }} />
 
-            <Stack direction="row" alignItems="center" justifyContent='space-between'>
-              <SBButton variant="contained" size="large">
-                WITHDRAW
-              </SBButton>
+            <Stack
+              direction="row"
+              alignItems="center"
+              justifyContent="space-between"
+            >
+              {withdrawable && (
+                <SBButton variant="contained" size="large" onClick={withdraw}>
+                  WITHDRAW
+                </SBButton>
+              )}
+              {!withdrawable && (
+                <SBButton variant="disabled" size="large">
+                  {withdrawTime ? (
+                    <WithdrawTimer
+                      expiryTimestamp={withdrawTime}
+                      setWithdrawable={setWithdrawable}
+                    />
+                  ) : (
+                    "Calculating..."
+                  )}
+                </SBButton>
+              )}
+
               <SB2Button
                 onClick={handleViewHistory}
                 sx={{ fontSize: 16, ml: 2 }}
@@ -653,12 +739,15 @@ export default function Dashboard() {
                     </Stack>
                   </Stack>
                 </Stack>
-                <Divider sx={{ my: 3, background: '#1DF4F6' }} />
+                <Divider sx={{ my: 3, background: "#1DF4F6" }} />
 
                 <Typography variant="h4" color="white">
                   WITHDRAWING PROGRESS
                 </Typography>
-                <WithdrawTable history={withdrawhistory} setRefresh={setRefresh} />
+                <WithdrawTable
+                  history={withdrawhistory}
+                  setRefresh={setRefresh}
+                />
               </Box>
             )}
           </CardStyle>
@@ -685,7 +774,7 @@ export default function Dashboard() {
               </SB2Button>
             </Stack>
 
-            <Divider sx={{ my: 2, background: '#1DF4F6' }} />
+            <Divider sx={{ my: 2, background: "#1DF4F6" }} />
 
             <NewsCarousel />
           </CardStyle>
@@ -695,7 +784,7 @@ export default function Dashboard() {
               INVESTMENT DETAILS
             </Typography>
 
-            <Divider sx={{ mt: 2, mb: "12px", background: '#1DF4F6' }} />
+            <Divider sx={{ mt: 2, mb: "12px", background: "#1DF4F6" }} />
 
             <Stack>
               <Stack spacing={2}>
