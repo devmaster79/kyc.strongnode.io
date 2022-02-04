@@ -2,11 +2,11 @@ import styled from 'styled-components';
 
 export const StyledEntryCard = styled.div`
   width: 100%;
-  max-width: ${props => props.emailsent ? '449px' : '482px'}; 
+  max-width: ${(props) => (props.emailsent ? '449px' : '482px')};
   padding: 40px;
   margin-bottom: 40px;
   background: rgba(255, 255, 255, 0.1);
-  border: 1px solid #1DF4F6;
+  border: 1px solid #1df4f6;
   box-sizing: border-box;
   box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.25);
   backdrop-filter: blur(10px);
@@ -40,4 +40,4 @@ export const StyledEntryCard = styled.div`
     color: white;
     margin-top: 20px;
   }
-`
+`;

@@ -1,7 +1,7 @@
-import React from 'react'
-import Routes from './routers'
-import ThemeConfig from './theme'
-import { SnackbarProvider } from 'notistack5'
+import React from 'react';
+import Routes from './routers';
+import ThemeConfig from './theme';
+import { SnackbarProvider } from 'notistack5';
 
 function App() {
   return (
@@ -9,16 +9,15 @@ function App() {
       <SnackbarProvider
         anchorOrigin={{
           vertical: 'top',
-          horizontal: 'right',
+          horizontal: 'right'
         }}
-        maxSnack={2}
-      >
+        maxSnack={2}>
         <div className="App">
           <Routes />
         </div>
       </SnackbarProvider>
     </ThemeConfig>
-  )
+  );
 }
 
-export default App
+export default App;

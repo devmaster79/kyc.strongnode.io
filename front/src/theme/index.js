@@ -9,7 +9,6 @@ import GlobalStyles from './globalStyles';
 import componentsOverride from './overrides';
 import shadows, { customShadows } from './shadows';
 
-
 export default function ThemeConfig({ children }) {
   const { themeMode, themeDirection } = useSettings();
   const isLight = themeMode === 'light';

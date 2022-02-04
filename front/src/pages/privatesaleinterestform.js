@@ -1,13 +1,12 @@
-import React, { useState, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import InputGroup from "../components/InputGroup";
-import Line from "../components/Line";
-import Input from "../components/Input";
-import Button from "../components/Button";
-import Navbar from "../components/Navar";
-import { createInvestor } from "../utils/api";
-import { EntryPage } from "pages/style";
+import React, { useState, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import InputGroup from '../components/InputGroup';
+import Line from '../components/Line';
+import Input from '../components/Input';
+import Button from '../components/Button';
+import { createInvestor } from '../utils/api';
+import { EntryPage } from 'pages/style';
 
 export const Container = styled.div`
   display: flex;
@@ -26,14 +25,14 @@ export const Wrapper = styled.div`
   flex-direction: column;
   justify-contents: space-between;
   background: rgba(255, 255, 255, 0.1);
-  border: 1px solid #1DF4F6;
+  border: 1px solid #1df4f6;
   box-sizing: border-box;
   box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.25);
   backdrop-filter: blur(10px);
-  border-radius : 5px;
+  border-radius: 5px;
   h2 {
     margin-bottom: 10px;
-    color : white;
+    color: white;
   }
   p {
     margin-top: 20px;
@@ -73,22 +72,22 @@ const InputCol = styled.div`
 const SubmitButtonWrapper = styled.div`
   margin-top: 10px;
   text-align: right;
-  >button{
-    width : calc(50% - 16px);
+  > button {
+    width: calc(50% - 16px);
   }
 `;
 
 function PrivateSaleInterestForm() {
   const navigate = useNavigate();
 
-  const [investorName, setInvestorName] = useState("");
-  const [investorTelegramId, setInvestorTelegramId] = useState("");
-  const [investorCountry, setInvestorCountry] = useState("");
-  const [investorCommitmentAmount, setInvestorCommitmentAmount] = useState("");
-  const [investorWalletAddress, setInvestorWalletAddress] = useState("");
-  const [investorEmail, setInvestorEmail] = useState("");
-  const [investorFundName, setInvestorFundName] = useState("");
-  const [investorFundWebsite, setInvestorFundWebsite] = useState("");
+  const [investorName, setInvestorName] = useState('');
+  const [investorTelegramId, setInvestorTelegramId] = useState('');
+  const [investorCountry, setInvestorCountry] = useState('');
+  const [investorCommitmentAmount, setInvestorCommitmentAmount] = useState('');
+  const [investorWalletAddress, setInvestorWalletAddress] = useState('');
+  const [investorEmail, setInvestorEmail] = useState('');
+  const [investorFundName, setInvestorFundName] = useState('');
+  const [investorFundWebsite, setInvestorFundWebsite] = useState('');
 
   const handleInvestorNameInputChange = (event) => {
     setInvestorName(event.target.value);
@@ -126,10 +125,10 @@ function PrivateSaleInterestForm() {
     try {
       const res = await createInvestor(data);
       if (res.data) {
-        navigate("/dashboard");
+        navigate('/dashboard');
       }
     } catch (err) {
-      console.log("Error for create password", err);
+      console.log('Error for create password', err);
     }
   }, []);
 
@@ -144,7 +143,7 @@ function PrivateSaleInterestForm() {
       investor_wallet_address: investorWalletAddress,
       investor_email: investorEmail,
       investor_fund_name: investorFundName,
-      investor_fund_website: investorFundWebsite,
+      investor_fund_website: investorFundWebsite
     };
     handleCreateInvestor(data);
   };
@@ -154,11 +153,13 @@ function PrivateSaleInterestForm() {
       <Wrapper>
         <h2 style={{ fontFamily: 'Halyard' }}>StrongNode Private Sale Interest Form</h2>
         <p>
-          This form is for investors interested in participating in the private sale round for the StrongNode token. Your responses
-          will be kept private and will not be distributed without prior consent.
+          This form is for investors interested in participating in the private sale round for the
+          StrongNode token. Your responses will be kept private and will not be distributed without
+          prior consent.
         </p>
         <p>
-          A representative from  StrongNode will reach out to you after your submittion is reviewed. KYC will be required for all StrongNode private sale participants.
+          A representative from StrongNode will reach out to you after your submittion is reviewed.
+          KYC will be required for all StrongNode private sale participants.
         </p>
 
         <Line full />

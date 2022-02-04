@@ -1,6 +1,6 @@
-import * as React from "react";
-import { useSnackbar } from "notistack5";
-import axios from "axios";
+import * as React from 'react';
+import { useSnackbar } from 'notistack5';
+import axios from 'axios';
 import {
   Container,
   Typography,
@@ -9,42 +9,35 @@ import {
   Button,
   Grid,
   Divider,
-  LinearProgress,
-} from "@material-ui/core";
-import { styled } from "@material-ui/core/styles";
-import { useState, useEffect, useCallback, useRef } from "react";
-import Status from "components/Status";
-import VestTable from "components/dashboard/VestTable";
-import WithdrawTable from "components/dashboard/WithdrawTable";
-import SvgIconStyle from "components/SvgIconStyle";
-import MyVestedTokensChart from "components/Charts/MyVestedTokensChart";
-import BonusTokensChart from "components/Charts/BonusTokensChart";
-import RecentLockupsChart from "components/Charts/RecentLockupsChart";
-import NewsCarousel from "components/Carousels/NewsCarousel";
-import useCollapseDrawer from "../hooks/useCollapseDrawer";
-import { lte } from "lodash";
-import {
-  useTokenList,
-  useToken,
-  useEthers,
-  useEtherBalance,
-  useTokenBalance,
-} from "@usedapp/core";
-import { ethers } from "ethers";
-import WithdrawTimer from "../components/dashboard/WithdrawTimer";
-import { historyAction } from "../utils/api";
+  LinearProgress
+} from '@material-ui/core';
+import { styled } from '@material-ui/core/styles';
+import { useState, useEffect, useCallback, useRef } from 'react';
+import Status from 'components/Status';
+import VestTable from 'components/dashboard/VestTable';
+import WithdrawTable from 'components/dashboard/WithdrawTable';
+import SvgIconStyle from 'components/SvgIconStyle';
+import MyVestedTokensChart from 'components/Charts/MyVestedTokensChart';
+import BonusTokensChart from 'components/Charts/BonusTokensChart';
+import RecentLockupsChart from 'components/Charts/RecentLockupsChart';
+import NewsCarousel from 'components/Carousels/NewsCarousel';
+import useCollapseDrawer from '../hooks/useCollapseDrawer';
+import { useToken, useEthers, useEtherBalance, useTokenBalance } from '@usedapp/core';
+import { ethers } from 'ethers';
+import WithdrawTimer from '../components/dashboard/WithdrawTimer';
+import { historyAction } from '../utils/api';
 
-const SneAddress = "0x32934CB16DA43fd661116468c1B225Fc26CF9A8c";
+const SneAddress = '0x32934CB16DA43fd661116468c1B225Fc26CF9A8c';
 
 const CardStyle = styled(Box)(({ theme }) => ({
-  background: "rgba(255, 255, 255, 0.1)",
-  border: "1px solid #1DF4F6",
-  boxSizing: "border-box",
-  backdropFilter: "blur(3px)",
+  background: 'rgba(255, 255, 255, 0.1)',
+  border: '1px solid #1DF4F6',
+  boxSizing: 'border-box',
+  backdropFilter: 'blur(3px)',
   /* Note: backdrop-filter has minimal browser support */
 
-  borderRadius: "30px",
-  padding: theme.spacing(4),
+  borderRadius: '30px',
+  padding: theme.spacing(4)
 }));
 
 const SBLinearProgress = styled(LinearProgress)`
@@ -60,7 +53,7 @@ const SBButton = styled(Button)`
   border-radius: 30px;
   border: none;
   font-size: 19px;
-  font-family: "Halyard-Book";
+  font-family: 'Halyard-Book';
   width: 192px;
   height: 58px;
 `;
@@ -80,8 +73,7 @@ export default function Dashboard() {
   const balance = useEtherBalance(account);
   const accountBalance = balance ? ethers.utils.formatEther(balance) : 0;
   const SneBalanceBigNumber = useTokenBalance(SneAddress, account);
-  const SneBalance =
-    SneBalanceBigNumber && ethers.utils.formatUnits(SneBalanceBigNumber, 18);
+  const SneBalance = SneBalanceBigNumber && ethers.utils.formatUnits(SneBalanceBigNumber, 18);
 
   // const [vestedTokens, setVestedTokens] = useState(0);
   const [availableToken, setAvailableToken] = useState(6);
@@ -99,7 +91,7 @@ export default function Dashboard() {
   };
   useEffect(() => {
     handleDashboard();
-    console.log("width", dash.current ? dash.current.offsetWidth : 0);
+    console.log('width', dash.current ? dash.current.offsetWidth : 0);
   }, [dash]);
 
   const [history, setHistory] = useState();
@@ -109,18 +101,16 @@ export default function Dashboard() {
   const [totalVested, setTotalVested] = useState(0);
   const [totalWithdrawn, setTotalWithdrawn] = useState(0);
   const [refresh, setRefresh] = useState(true);
-  const token = localStorage.getItem("token");
-  const useremail = localStorage.getItem("email");
+  const token = localStorage.getItem('token');
+  const useremail = localStorage.getItem('email');
   const [user, setUser] = useState();
 
   useEffect(() => {
     async function fetch() {
-      const url =
-        process.env.REACT_APP_BASE_URL +
-        `/api/users/profile/get?email=${useremail}`;
-      console.log("server url: ", url);
+      const url = process.env.REACT_APP_BASE_URL + `/api/users/profile/get?email=${useremail}`;
+      console.log('server url: ', url);
       const result = await axios.get(url, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${token}` }
       });
       setUser(result.data[0]);
     }
@@ -131,21 +121,21 @@ export default function Dashboard() {
   const withdraw = () => {
     try {
       const url = process.env.REACT_APP_BASE_URL + `/api/history/`;
-      console.log("server url: ", url);
+      console.log('server url: ', url);
 
       const data = {
         user_name: user.user_name,
         token_amount: 100,
-        action_type: "withdrawn",
-        date: new Date(),
+        action_type: 'withdrawn',
+        date: new Date()
       };
       historyAction(url, data).then((r) => {
         if (r.status === 200) {
-          enqueueSnackbar("Withdraw successfully1", {
-            variant: "success",
+          enqueueSnackbar('Withdraw successfully1', {
+            variant: 'success'
           });
         } else {
-          enqueueSnackbar("Failed to Withdraw", { variant: "fail" });
+          enqueueSnackbar('Failed to Withdraw', { variant: 'fail' });
         }
       });
     } catch (error) {
@@ -156,19 +146,19 @@ export default function Dashboard() {
   useEffect(() => {
     async function fetch() {
       if (!refresh) return;
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem('token');
       // console.log(token);
       const url =
         process.env.REACT_APP_BASE_URL +
-        "/api/history/findAllVested?user_name=" +
-        localStorage.getItem("username");
-      console.log("====================", url);
+        '/api/history/findAllVested?user_name=' +
+        localStorage.getItem('username');
+      console.log('====================', url);
       const result = await axios.get(url, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${token}` }
       });
       console.log(result);
-      if (typeof history === "string") {
-        enqueueSnackbar("History data is not array!", { variant: "error" });
+      if (typeof history === 'string') {
+        enqueueSnackbar('History data is not array!', { variant: 'error' });
       } else {
         setHistory(result.data);
         const expTime = new Date(result.data[0].date);
@@ -182,23 +172,22 @@ export default function Dashboard() {
           const temp = new Date(result.data[i].date);
           let date = new Date();
           console.log(date.getTime() - temp.getTime());
-          if (min > date.getTime() - temp.getTime())
-            min = date.getTime() - temp.getTime();
+          if (min > date.getTime() - temp.getTime()) min = date.getTime() - temp.getTime();
         }
         setTotalVested(sumVested);
         setVestedProgress(Math.min(min / 1000 / 60, 100));
       }
 
-      const token1 = localStorage.getItem("token");
+      const token1 = localStorage.getItem('token');
       const url1 =
         process.env.REACT_APP_BASE_URL +
-        "/api/history/findAllWithdrawn/?user_name=" +
-        localStorage.getItem("username");
+        '/api/history/findAllWithdrawn/?user_name=' +
+        localStorage.getItem('username');
       const result1 = await axios.get(url1, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${token}` }
       });
-      if (typeof history === "string") {
-        enqueueSnackbar("History data is not array!", { variant: "error" });
+      if (typeof history === 'string') {
+        enqueueSnackbar('History data is not array!', { variant: 'error' });
       } else {
         setWithdrawHistory(result1.data);
         let min = 1000000000000;
@@ -208,8 +197,7 @@ export default function Dashboard() {
           const temp = new Date(result1.data[i].date);
           let date = new Date();
           console.log(date.getTime() - temp.getTime());
-          if (min > date.getTime() - temp.getTime())
-            min = date.getTime() - temp.getTime();
+          if (min > date.getTime() - temp.getTime()) min = date.getTime() - temp.getTime();
         }
         setTotalWithdrawn(sumWithdrawn);
         console.log(min);
@@ -222,43 +210,37 @@ export default function Dashboard() {
   }, [refresh]);
   const handleDashboard = useCallback(async () => {
     try {
-      if (localStorage.getItem("username") && localStorage.getItem("email")) {
-        if (localStorage.getItem("visit") !== "true") {
-          enqueueSnackbar("Welcome to the StrongNodeID dashboard", {
-            variant: "success",
+      if (localStorage.getItem('username') && localStorage.getItem('email')) {
+        if (localStorage.getItem('visit') !== 'true') {
+          enqueueSnackbar('Welcome to the StrongNodeID dashboard', {
+            variant: 'success'
           });
-          localStorage.setItem("visit", "true");
+          localStorage.setItem('visit', 'true');
         }
       } else {
-        enqueueSnackbar("You must sign in!", { variant: "error" });
+        enqueueSnackbar('You must sign in!', { variant: 'error' });
       }
     } catch (err) {
-      enqueueSnackbar("You must sign in!", { variant: "error" });
-      console.log("Error for getting user info", err);
+      enqueueSnackbar('You must sign in!', { variant: 'error' });
+      console.log('Error for getting user info', err);
     }
   }, []);
   return (
     <Container ref={dash} maxWidth="xl">
       <CardStyle
         sx={{
-          height: { xs: "max-content", md: 120 },
+          height: { xs: 'max-content', md: 120 },
           width: 1,
-          borderRadius: "16px",
+          borderRadius: '16px',
           py: 1,
-          px: "30px",
-        }}
-      >
-        <Stack direction={{ xs: "column", md: "row" }} alignItems="center">
-          <Box
-            component="img"
-            src="/images/SNE disorted edited shadow 1.png"
-            alt="pair"
-          />
+          px: '30px'
+        }}>
+        <Stack direction={{ xs: 'column', md: 'row' }} alignItems="center">
+          <Box component="img" src="/images/SNE disorted edited shadow 1.png" alt="pair" />
           <Stack justifyContent="space-between" sx={{ pl: 4, py: 1 }}>
             <Typography
               color="white"
-              sx={{ fontSize: 24, fontFamily: "Halyard-Book", fontWeight: 600 }}
-            >
+              sx={{ fontSize: 24, fontFamily: 'Halyard-Book', fontWeight: 600 }}>
               STAKE SNE ON STRONGNODE.IO
             </Typography>
           </Stack>
@@ -271,7 +253,7 @@ export default function Dashboard() {
 
       <Grid container spacing={4} sx={{ mt: 1 }}>
         <Grid item xs={12} md={4}>
-          <CardStyle sx={{ height: { md: "250px" } }}>
+          <CardStyle sx={{ height: { md: '250px' } }}>
             <Typography variant="h5" color="white" fontFamily="Halyard-Book">
               MY VESTED TOKENS
             </Typography>
@@ -286,17 +268,15 @@ export default function Dashboard() {
                       color="white"
                       sx={{
                         fontSize: { lg: isCollapse ? 32 : 25, md: 19 },
-                        fontWeight: 700,
+                        fontWeight: 700
                       }}
-                      style={{ fontSize: "5bw" }}
-                    >
+                      style={{ fontSize: '5bw' }}>
                       {SneBalance}
                     </Typography>
                     <Typography
                       color="white"
                       variant="h2"
-                      sx={{ fontSize: 14, fontWeight: 600, ml: 1, mt: "2px" }}
-                    >
+                      sx={{ fontSize: 14, fontWeight: 600, ml: 1, mt: '2px' }}>
                       SNE
                     </Typography>
                   </Stack>
@@ -310,16 +290,14 @@ export default function Dashboard() {
                       color="white"
                       sx={{
                         fontSize: { lg: isCollapse ? 32 : 25, md: 19 },
-                        fontWeight: 700,
-                      }}
-                    >
+                        fontWeight: 700
+                      }}>
                       {lockedToken}
                     </Typography>
                     <Typography
                       color="white"
                       variant="h2"
-                      sx={{ fontSize: 14, fontWeight: 600, ml: 1, mt: "2px" }}
-                    >
+                      sx={{ fontSize: 14, fontWeight: 600, ml: 1, mt: '2px' }}>
                       SNE
                     </Typography>
                   </Stack>
@@ -331,7 +309,7 @@ export default function Dashboard() {
         </Grid>
 
         <Grid item xs={12} md={4}>
-          <CardStyle sx={{ height: { md: "250px" } }}>
+          <CardStyle sx={{ height: { md: '250px' } }}>
             <Typography variant="h5" color="white">
               BONUS TOKENS
             </Typography>
@@ -342,14 +320,12 @@ export default function Dashboard() {
                 sx={{
                   mt: 2,
                   mr: 1,
-                  marginLeft: { lg: isCollapse ? "0px" : "-10px", md: "0px" },
-                }}
-              >
+                  marginLeft: { lg: isCollapse ? '0px' : '-10px', md: '0px' }
+                }}>
                 <Box sx={{ mr: 1 }}>
                   <Typography
                     color="#F6EE2E"
-                    sx={{ fontSize: { lg: 25, md: 21 }, fontWeight: 700 }}
-                  >
+                    sx={{ fontSize: { lg: 25, md: 21 }, fontWeight: 700 }}>
                     EARNED
                   </Typography>
                   <Stack direction="row" alignItems="center">
@@ -357,9 +333,8 @@ export default function Dashboard() {
                       color="white"
                       sx={{
                         fontSize: { lg: isCollapse ? 28 : 24, md: 19 },
-                        fontWeight: 700,
-                      }}
-                    >
+                        fontWeight: 700
+                      }}>
                       0
                     </Typography>
                     <Typography
@@ -368,9 +343,8 @@ export default function Dashboard() {
                         fontSize: isCollapse ? 25 : 22,
                         fontWeight: 600,
                         ml: 0.5,
-                        mt: "2px",
-                      }}
-                    >
+                        mt: '2px'
+                      }}>
                       SNE
                     </Typography>
                   </Stack>
@@ -378,8 +352,7 @@ export default function Dashboard() {
                 <Box sx={{ ml: 1 }}>
                   <Typography
                     color="#FC2CF4"
-                    sx={{ fontSize: { lg: 25, md: 21 }, fontWeight: 700 }}
-                  >
+                    sx={{ fontSize: { lg: 25, md: 21 }, fontWeight: 700 }}>
                     LOCKED UP
                   </Typography>
                   <Stack direction="row" alignItems="center">
@@ -387,9 +360,8 @@ export default function Dashboard() {
                       color="white"
                       sx={{
                         fontSize: { lg: isCollapse ? 28 : 24, md: 19 },
-                        fontWeight: 700,
-                      }}
-                    >
+                        fontWeight: 700
+                      }}>
                       0
                     </Typography>
                     <Typography
@@ -398,9 +370,8 @@ export default function Dashboard() {
                         fontSize: isCollapse ? 25 : 22,
                         fontWeight: 600,
                         ml: 0.5,
-                        mt: "2px",
-                      }}
-                    >
+                        mt: '2px'
+                      }}>
                       SNE
                     </Typography>
                   </Stack>
@@ -413,7 +384,7 @@ export default function Dashboard() {
         </Grid>
 
         <Grid item xs={12} md={4}>
-          <CardStyle sx={{ height: { md: "250px", px: 0 } }}>
+          <CardStyle sx={{ height: { md: '250px', px: 0 } }}>
             <Typography variant="h5" color="white">
               RECENT LOCKUPS
             </Typography>
@@ -421,13 +392,9 @@ export default function Dashboard() {
             <Stack>
               <SB2Button
                 endIcon={
-                  <SvgIconStyle
-                    src="/icons/arrow-right.svg"
-                    sx={{ width: 12, height: 16 }}
-                  />
+                  <SvgIconStyle src="/icons/arrow-right.svg" sx={{ width: 12, height: 16 }} />
                 }
-                sx={{ margin: "auto" }}
-              >
+                sx={{ margin: 'auto' }}>
                 DETAILS
               </SB2Button>
             </Stack>
@@ -441,69 +408,60 @@ export default function Dashboard() {
             </Typography>
 
             <Stack sx={{ mt: 3 }}>
-              <Stack
-                direction="row"
-                justifyContent="space-between"
-                sx={{ marginBottom: "2px" }}
-              >
+              <Stack direction="row" justifyContent="space-between" sx={{ marginBottom: '2px' }}>
                 <Divider
                   orientation="vertical"
-                  sx={{ height: 5, borderRight: "2px solid #C0C6CE" }}
+                  sx={{ height: 5, borderRight: '2px solid #C0C6CE' }}
                 />
                 <Divider
                   orientation="vertical"
-                  sx={{ height: 5, borderRight: "2px solid #C0C6CE" }}
+                  sx={{ height: 5, borderRight: '2px solid #C0C6CE' }}
                 />
                 <Divider
                   orientation="vertical"
-                  sx={{ height: 5, borderRight: "2px solid #C0C6CE" }}
+                  sx={{ height: 5, borderRight: '2px solid #C0C6CE' }}
                 />
                 <Divider
                   orientation="vertical"
-                  sx={{ height: 5, borderRight: "2px solid #C0C6CE" }}
+                  sx={{ height: 5, borderRight: '2px solid #C0C6CE' }}
                 />
                 <Divider
                   orientation="vertical"
-                  sx={{ height: 5, borderRight: "2px solid #C0C6CE" }}
+                  sx={{ height: 5, borderRight: '2px solid #C0C6CE' }}
                 />
               </Stack>
               <SBLinearProgress
                 variant="determinate"
                 color="secondary"
-                sx={{ height: 8, borderRadius: "6px" }}
+                sx={{ height: 8, borderRadius: '6px' }}
                 value={vestedprogress}
               />
               <Stack
                 direction="row"
                 justifyContent="space-between"
-                sx={{ marginBottom: "2px", marginTop: "2px" }}
-              >
+                sx={{ marginBottom: '2px', marginTop: '2px' }}>
                 <Divider
                   orientation="vertical"
-                  sx={{ height: 8, borderRight: "2px solid #C0C6CE" }}
+                  sx={{ height: 8, borderRight: '2px solid #C0C6CE' }}
                 />
                 <Divider
                   orientation="vertical"
-                  sx={{ height: 8, borderRight: "2px solid #C0C6CE" }}
+                  sx={{ height: 8, borderRight: '2px solid #C0C6CE' }}
                 />
                 <Divider
                   orientation="vertical"
-                  sx={{ height: 8, borderRight: "2px solid #C0C6CE" }}
+                  sx={{ height: 8, borderRight: '2px solid #C0C6CE' }}
                 />
                 <Divider
                   orientation="vertical"
-                  sx={{ height: 8, borderRight: "2px solid #C0C6CE" }}
+                  sx={{ height: 8, borderRight: '2px solid #C0C6CE' }}
                 />
                 <Divider
                   orientation="vertical"
-                  sx={{ height: 8, borderRight: "2px solid #C0C6CE" }}
+                  sx={{ height: 8, borderRight: '2px solid #C0C6CE' }}
                 />
               </Stack>
-              <Stack
-                direction="row"
-                justifyContent="space-between"
-                sx={{ marginBottom: "2px" }}
-              >
+              <Stack direction="row" justifyContent="space-between" sx={{ marginBottom: '2px' }}>
                 <Typography color="white" sx={{ fontSize: 10 }}>
                   0%
                 </Typography>
@@ -539,7 +497,7 @@ export default function Dashboard() {
                 </Stack>
               </Stack>
             </Stack>
-            <Divider sx={{ my: 3, background: "#1DF4F6" }} />
+            <Divider sx={{ my: 3, background: '#1DF4F6' }} />
 
             <Typography variant="h4" color="white">
               VESTING PROGRESS
@@ -554,7 +512,7 @@ export default function Dashboard() {
               WITHDRAWALS
             </Typography>
 
-            <Divider sx={{ my: 3, background: "#1DF4F6" }} />
+            <Divider sx={{ my: 3, background: '#1DF4F6' }} />
 
             <Stack>
               <Stack spacing={2}>
@@ -595,13 +553,9 @@ export default function Dashboard() {
               </Stack>
             </Stack>
 
-            <Divider sx={{ my: 3, background: "#1DF4F6" }} />
+            <Divider sx={{ my: 3, background: '#1DF4F6' }} />
 
-            <Stack
-              direction="row"
-              alignItems="center"
-              justifyContent="space-between"
-            >
+            <Stack direction="row" alignItems="center" justifyContent="space-between">
               {withdrawable && (
                 <SBButton variant="contained" size="large" onClick={withdraw}>
                   WITHDRAW
@@ -615,7 +569,7 @@ export default function Dashboard() {
                       setWithdrawable={setWithdrawable}
                     />
                   ) : (
-                    "Calculating..."
+                    'Calculating...'
                   )}
                 </SBButton>
               )}
@@ -626,10 +580,9 @@ export default function Dashboard() {
                 endIcon={
                   <SvgIconStyle
                     src="/icons/arrow-right.svg"
-                    sx={{ width: 6, height: 12, background: "primary.main" }}
+                    sx={{ width: 6, height: 12, background: 'primary.main' }}
                   />
-                }
-              >
+                }>
                 VIEW HISTORY
               </SB2Button>
             </Stack>
@@ -643,67 +596,63 @@ export default function Dashboard() {
                   <Stack
                     direction="row"
                     justifyContent="space-between"
-                    sx={{ marginBottom: "2px" }}
-                  >
+                    sx={{ marginBottom: '2px' }}>
                     <Divider
                       orientation="vertical"
-                      sx={{ height: 5, borderRight: "2px solid #C0C6CE" }}
+                      sx={{ height: 5, borderRight: '2px solid #C0C6CE' }}
                     />
                     <Divider
                       orientation="vertical"
-                      sx={{ height: 5, borderRight: "2px solid #C0C6CE" }}
+                      sx={{ height: 5, borderRight: '2px solid #C0C6CE' }}
                     />
                     <Divider
                       orientation="vertical"
-                      sx={{ height: 5, borderRight: "2px solid #C0C6CE" }}
+                      sx={{ height: 5, borderRight: '2px solid #C0C6CE' }}
                     />
                     <Divider
                       orientation="vertical"
-                      sx={{ height: 5, borderRight: "2px solid #C0C6CE" }}
+                      sx={{ height: 5, borderRight: '2px solid #C0C6CE' }}
                     />
                     <Divider
                       orientation="vertical"
-                      sx={{ height: 5, borderRight: "2px solid #C0C6CE" }}
+                      sx={{ height: 5, borderRight: '2px solid #C0C6CE' }}
                     />
                   </Stack>
                   <SBLinearProgress
                     variant="determinate"
-                    value={0}
                     color="secondary"
-                    sx={{ height: 8, borderRadius: "6px" }}
+                    sx={{ height: 8, borderRadius: '6px' }}
                     value={withdrawprogress}
                   />
                   <Stack
                     direction="row"
                     justifyContent="space-between"
-                    sx={{ marginBottom: "2px", marginTop: "2px" }}
-                  >
+                    sx={{ marginBottom: '2px', marginTop: '2px' }}>
                     <Divider
                       orientation="vertical"
-                      sx={{ height: 8, borderRight: "2px solid #C0C6CE" }}
+                      sx={{ height: 8, borderRight: '2px solid #C0C6CE' }}
                     />
                     <Divider
                       orientation="vertical"
-                      sx={{ height: 8, borderRight: "2px solid #C0C6CE" }}
+                      sx={{ height: 8, borderRight: '2px solid #C0C6CE' }}
                     />
                     <Divider
                       orientation="vertical"
-                      sx={{ height: 8, borderRight: "2px solid #C0C6CE" }}
+                      sx={{ height: 8, borderRight: '2px solid #C0C6CE' }}
                     />
                     <Divider
                       orientation="vertical"
-                      sx={{ height: 8, borderRight: "2px solid #C0C6CE" }}
+                      sx={{ height: 8, borderRight: '2px solid #C0C6CE' }}
                     />
                     <Divider
                       orientation="vertical"
-                      sx={{ height: 8, borderRight: "2px solid #C0C6CE" }}
+                      sx={{ height: 8, borderRight: '2px solid #C0C6CE' }}
                     />
                   </Stack>
                   <Stack
                     direction="row"
                     justifyContent="space-between"
-                    sx={{ marginBottom: "2px" }}
-                  >
+                    sx={{ marginBottom: '2px' }}>
                     <Typography color="white" sx={{ fontSize: 10 }}>
                       0.0
                     </Typography>
@@ -739,25 +688,18 @@ export default function Dashboard() {
                     </Stack>
                   </Stack>
                 </Stack>
-                <Divider sx={{ my: 3, background: "#1DF4F6" }} />
+                <Divider sx={{ my: 3, background: '#1DF4F6' }} />
 
                 <Typography variant="h4" color="white">
                   WITHDRAWING PROGRESS
                 </Typography>
-                <WithdrawTable
-                  history={withdrawhistory}
-                  setRefresh={setRefresh}
-                />
+                <WithdrawTable history={withdrawhistory} setRefresh={setRefresh} />
               </Box>
             )}
           </CardStyle>
 
           <CardStyle sx={{ mt: 4 }}>
-            <Stack
-              direction="row"
-              alignItems="center"
-              justifyContent="space-between"
-            >
+            <Stack direction="row" alignItems="center" justifyContent="space-between">
               <Typography variant="h4" color="white">
                 NEWS
               </Typography>
@@ -766,15 +708,14 @@ export default function Dashboard() {
                 endIcon={
                   <SvgIconStyle
                     src="/icons/arrow-right.svg"
-                    sx={{ width: 6, height: 12, background: "primary.main" }}
+                    sx={{ width: 6, height: 12, background: 'primary.main' }}
                   />
-                }
-              >
+                }>
                 READ ALL NEWS
               </SB2Button>
             </Stack>
 
-            <Divider sx={{ my: 2, background: "#1DF4F6" }} />
+            <Divider sx={{ my: 2, background: '#1DF4F6' }} />
 
             <NewsCarousel />
           </CardStyle>
@@ -784,7 +725,7 @@ export default function Dashboard() {
               INVESTMENT DETAILS
             </Typography>
 
-            <Divider sx={{ mt: 2, mb: "12px", background: "#1DF4F6" }} />
+            <Divider sx={{ mt: 2, mb: '12px', background: '#1DF4F6' }} />
 
             <Stack>
               <Stack spacing={2}>
@@ -797,7 +738,7 @@ export default function Dashboard() {
                   </Typography>
                 </Stack>
 
-                <Divider sx={{ my: "12px", background: "#1DF4F6" }} />
+                <Divider sx={{ my: '12px', background: '#1DF4F6' }} />
 
                 <Stack direction="row" justifyContent="space-between">
                   <Typography color="white" variant="h6">
@@ -808,7 +749,7 @@ export default function Dashboard() {
                   </Typography>
                 </Stack>
 
-                <Divider sx={{ my: "12px", background: "#1DF4F6" }} />
+                <Divider sx={{ my: '12px', background: '#1DF4F6' }} />
 
                 <Stack direction="row" justifyContent="space-between">
                   <Typography color="white" variant="h6">
@@ -819,7 +760,7 @@ export default function Dashboard() {
                   </Typography>
                 </Stack>
 
-                <Divider sx={{ my: "12px", background: "#1DF4F6" }} />
+                <Divider sx={{ my: '12px', background: '#1DF4F6' }} />
 
                 <Stack direction="row" justifyContent="space-between">
                   <Typography color="white" variant="h6">
@@ -830,7 +771,7 @@ export default function Dashboard() {
                   </Typography>
                 </Stack>
 
-                <Divider sx={{ my: "12px", background: "#1DF4F6" }} />
+                <Divider sx={{ my: '12px', background: '#1DF4F6' }} />
 
                 <Stack direction="row" justifyContent="space-between">
                   <Typography color="white" variant="h6">

@@ -1,7 +1,7 @@
-import { Switch, Stack } from '@material-ui/core'
-import { styled } from '@material-ui/styles'
-import SvgIconStyle from 'components/SvgIconStyle'
-import useSettings from 'hooks/useSettings'
+import { Switch, Stack } from '@material-ui/core';
+import { styled } from '@material-ui/styles';
+import SvgIconStyle from 'components/SvgIconStyle';
+import useSettings from 'hooks/useSettings';
 
 const IOSSwitch = styled((props) => (
   <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
@@ -20,56 +20,47 @@ const IOSSwitch = styled((props) => (
       '& + .MuiSwitch-track': {
         backgroundColor: theme.palette.mode === 'dark' ? '#1DF4F6' : '#1DF4F6',
         opacity: 1,
-        border: 0,
+        border: 0
       },
       '&.Mui-disabled + .MuiSwitch-track': {
-        opacity: 0.5,
-      },
+        opacity: 0.5
+      }
     },
     '&.Mui-focusVisible .MuiSwitch-thumb': {
       color: '#33cf4d',
-      border: '6px solid #fff',
+      border: '6px solid #fff'
     },
     '&.Mui-disabled .MuiSwitch-thumb': {
-      color:
-        theme.palette.mode === 'light'
-          ? theme.palette.grey[100]
-          : theme.palette.grey[600],
+      color: theme.palette.mode === 'light' ? theme.palette.grey[100] : theme.palette.grey[600]
     },
     '&.Mui-disabled + .MuiSwitch-track': {
-      opacity: theme.palette.mode === 'light' ? 0.7 : 0.3,
-    },
+      opacity: theme.palette.mode === 'light' ? 0.7 : 0.3
+    }
   },
   '& .MuiSwitch-thumb': {
     boxSizing: 'border-box',
     width: 30,
-    height: 30,
+    height: 30
   },
   '& .MuiSwitch-track': {
     borderRadius: 34 / 2,
     backgroundColor: theme.palette.mode === 'light' ? '#E9E9EA' : '#39393D',
     opacity: 1,
     transition: theme.transitions.create(['background-color'], {
-      duration: 500,
-    }),
-  },
-}))
-export default function ThemeSwitch({ sx, color }) {
-  const { themeMode, onChangeMode } = useSettings()
-  const handleChange = (event) => {
-    onChangeMode(event.target.checked ? 'dark' : 'light')
+      duration: 500
+    })
   }
+}));
+export default function ThemeSwitch({ sx, color }) {
+  const { themeMode, onChangeMode } = useSettings();
+  const handleChange = (event) => {
+    onChangeMode(event.target.checked ? 'dark' : 'light');
+  };
   return (
     <Stack direction="row" alignItems="center">
-      <SvgIconStyle
-        src="/icons/sun.svg"
-        sx={{ width: 24, height: 24, background: 'white' }}
-      />
+      <SvgIconStyle src="/icons/sun.svg" sx={{ width: 24, height: 24, background: 'white' }} />
       <IOSSwitch onChange={handleChange} checked={themeMode === 'dark'} />
-      <SvgIconStyle
-        src="/icons/moon.svg"
-        sx={{ width: 24, height: 24, background: 'white' }}
-      />
+      <SvgIconStyle src="/icons/moon.svg" sx={{ width: 24, height: 24, background: 'white' }} />
     </Stack>
-  )
+  );
 }

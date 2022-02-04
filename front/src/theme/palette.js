@@ -1,7 +1,7 @@
-import { alpha } from '@material-ui/core/styles'
+import { alpha } from '@material-ui/core/styles';
 
 function createGradient(color1, color2) {
-  return `linear-gradient(to bottom, ${color1}, ${color2})`
+  return `linear-gradient(to bottom, ${color1}, ${color2})`;
 }
 const GREY = {
   0: '#FFFFFF',
@@ -21,8 +21,8 @@ const GREY = {
   500_32: alpha('#919EAB', 0.32),
   500_48: alpha('#919EAB', 0.48),
   500_56: alpha('#919EAB', 0.56),
-  500_80: alpha('#919EAB', 0.8),
-}
+  500_80: alpha('#919EAB', 0.8)
+};
 
 const PRIMARY = {
   main: '#964CFA',
@@ -30,44 +30,44 @@ const PRIMARY = {
   50: alpha('#964CFA', 0.5),
   30: alpha('#964CFA', 0.3),
   10: alpha('#964CFA', 0.1),
-  contrastText: '#fff',
-}
+  contrastText: '#fff'
+};
 const SECONDARY = {
   main: '#33D69F',
   75: alpha('#33D69F', 0.75),
   50: alpha('#33D69F', 0.5),
   30: alpha('#33D69F', 0.3),
   10: alpha('#33D69F', 0.1),
-  contrastText: '#fff',
-}
+  contrastText: '#fff'
+};
 const INFO = {
   main: '#556BE0',
   light: alpha('#556BE0', 0.1),
-  contrastText: '#fff',
-}
+  contrastText: '#fff'
+};
 const SUCCESS = {
   main: '#34C759',
   light: alpha('#34C759', 0.1),
-  contrastText: GREY[800],
-}
+  contrastText: GREY[800]
+};
 const WARNING = {
   main: '#E7B32E',
   light: alpha('#E7B32E', 0.1),
-  contrastText: GREY[800],
-}
+  contrastText: GREY[800]
+};
 const ERROR = {
   main: '#DF53BB',
   light: alpha('#DF53BB', 0.1),
-  contrastText: '#fff',
-}
+  contrastText: '#fff'
+};
 
 const TYPOGRAPHY = {
   main: '#2D405A',
   75: alpha('#2D405A', 0.75),
   50: alpha('#2D405A', 0.5),
   30: alpha('#2D405A', 0.3),
-  10: alpha('#2D405A', 0.1),
-}
+  10: alpha('#2D405A', 0.1)
+};
 
 const GRADIENTS = {
   button: 'linear-gradient(180deg, #AF56B8 0%, #a91ed1 100%)',
@@ -96,23 +96,23 @@ const COMMON = {
     disabledBackground: GREY[500_24],
     focus: GREY[500_24],
     hoverOpacity: 0.08,
-    disabledOpacity: 0.48,
-  },
-}
+    disabledOpacity: 0.48
+  }
+};
 
 const palette = {
   light: {
     ...COMMON,
     text: { primary: GREY[800], secondary: GREY[600], disabled: GREY[500] },
     background: { paper: '#fff', default: '#f3f5f9', neutral: GREY[200] },
-    action: { active: GREY[600], ...COMMON.action },
+    action: { active: GREY[600], ...COMMON.action }
   },
   dark: {
     ...COMMON,
     text: { primary: '#fff', secondary: GREY[500], disabled: GREY[600] },
     background: { paper: GREY[800], default: GREY[900], neutral: GREY[500_16] },
-    action: { active: GREY[500], ...COMMON.action },
-  },
-}
+    action: { active: GREY[500], ...COMMON.action }
+  }
+};
 
-export default palette
+export default palette;

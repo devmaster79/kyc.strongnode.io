@@ -1,15 +1,14 @@
-import React, { useState, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import EntryCard from "../components/EntryCard";
-import InputGroup from "../components/InputGroup";
-import Input from "../components/Input";
-import Button from "../components/Button";
-import Navbar from "../components/Navar";
-import { ReactComponent as TelegramIcon } from "../icons/telegram.svg";
-import { ReactComponent as TwitterIcon } from "../icons/twitter.svg";
-import { createProfile } from "../utils/api";
-import { EntryPage } from "pages/style";
+import React, { useState, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import EntryCard from '../components/EntryCard';
+import InputGroup from '../components/InputGroup';
+import Input from '../components/Input';
+import Button from '../components/Button';
+import { ReactComponent as TelegramIcon } from '../icons/telegram.svg';
+import { ReactComponent as TwitterIcon } from '../icons/twitter.svg';
+import { createProfile } from '../utils/api';
+import { EntryPage } from 'pages/style';
 
 export const Container = styled.div`
   display: flex;
@@ -34,18 +33,18 @@ const ProgressBarWrapper = styled.div`
   }
   progress {
     background: rgba(238, 238, 238, 0.0001);
-    border: 2px solid #1DF4F6;
+    border: 2px solid #1df4f6;
     box-sizing: border-box;
     box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 50.5px;
-    height : 20px;
-    margin-top : 20px;
-    width : 100%;
-    &::-webkit-progress-value { 
+    height: 20px;
+    margin-top: 20px;
+    width: 100%;
+    &::-webkit-progress-value {
       background: rgba(29, 244, 246, 0.51);
       box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
       border-radius: 50.5px;
-     }
+    }
     &[value]::-webkit-progress-bar {
       background: transparent;
     }
@@ -56,26 +55,26 @@ const InputWrapper = styled.div`
   text-align: left;
   p {
     margin-bottom: 3px;
-    color : white;
-    font-size : 12px;
+    color: white;
+    font-size: 12px;
   }
 `;
 
 function Profile() {
   const navigate = useNavigate();
 
-  const [telegramUserName, setTelegramUserName] = useState("");
-  const [twitterUserName, setTwitterUserName] = useState("");
-  const [walletAddress, setWalletAddress] = useState("");
+  const [telegramUserName, setTelegramUserName] = useState('');
+  const [twitterUserName, setTwitterUserName] = useState('');
+  const [walletAddress, setWalletAddress] = useState('');
 
   const handleCreateProfile = useCallback(async (data) => {
     try {
       const res = await createProfile(data);
       if (res.data) {
-        navigate("/private-sale-interest-form");
+        navigate('/private-sale-interest-form');
       }
     } catch (err) {
-      console.log("Error for create password", err);
+      console.log('Error for create password', err);
     }
   }, []);
 
@@ -96,7 +95,7 @@ function Profile() {
     const data = {
       telegram_id: telegramUserName,
       twitter_id: twitterUserName,
-      wallet_address: walletAddress,
+      wallet_address: walletAddress
     };
     handleCreateProfile(data);
   };
@@ -118,7 +117,7 @@ function Profile() {
                 type="text"
                 placeholder="@username"
                 id="telegram-username"
-                style={{ padding: "16px 20px 16px 50px" }}
+                style={{ padding: '16px 20px 16px 50px' }}
                 value={telegramUserName}
                 onChange={handleTGUserNameInputChange}
               />
@@ -133,7 +132,7 @@ function Profile() {
                 type="text"
                 placeholder="@username"
                 id="twitter-username"
-                style={{ padding: "16px 20px 16px 50px" }}
+                style={{ padding: '16px 20px 16px 50px' }}
                 value={twitterUserName}
                 onChange={handleTwitterUserNameInputChange}
               />

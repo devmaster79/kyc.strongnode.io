@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 import {
   Table,
   TableRow,
@@ -12,16 +12,14 @@ import {
   Pagination,
   Button,
   TextField
-} from "@material-ui/core";
-import Scrollbar from "components/Scrollbar";
-import Status from "components/Status";
+} from '@material-ui/core';
+import Scrollbar from 'components/Scrollbar';
+import Status from 'components/Status';
 
-import { fDate } from "utils/formatTime";
-import { useSnackbar } from "notistack5";
+import { fDate } from 'utils/formatTime';
+import { useSnackbar } from 'notistack5';
 
-import {
-  historyAction,
-} from "../../utils/api";
+import { historyAction } from '../../utils/api';
 
 function createData(token, stock, date) {
   return { token, stock, date };
@@ -30,32 +28,32 @@ function createData(token, stock, date) {
 const GROUPING_TABLE = () => {
   let datas = [];
   for (let i = 0; i < 50; i++) {
-    datas.push(createData(169040 + i, "Withdrawed", "10/05/2021"));
+    datas.push(createData(169040 + i, 'Withdrawed', '10/05/2021'));
   }
   return datas;
 };
 
 const COLUMNS = [
   {
-    id: "token",
-    label: "SNE Token",
+    id: 'token',
+    label: 'SNE Token',
     // minWidth: 170,
-    align: "left",
-    format: (value) => `${value.toLocaleString("en-US")} SNE`,
+    align: 'left',
+    format: (value) => `${value.toLocaleString('en-US')} SNE`
   },
   {
-    id: "stock",
-    label: "Stock",
+    id: 'stock',
+    label: 'Stock',
     // minWidth: 170,
-    align: "left",
+    align: 'left'
   },
   {
-    id: "date",
-    label: "Date",
+    id: 'date',
+    label: 'Date',
     // minWidth: 170,
-    align: "left",
-    format: (value) => value.toFixed(2),
-  },
+    align: 'left',
+    format: (value) => value.toFixed(2)
+  }
 ];
 
 // ----------------------------------------------------------------------
@@ -81,12 +79,11 @@ export default function GroupingFixedHeader({ history, setRefresh }) {
 
   const onSave = async (row) => {
     if (tokenamount <= 0) {
-      alert("Input Correct Amount");
+      alert('Input Correct Amount');
       return;
     }
-    const url =
-      process.env.REACT_APP_BASE_URL + `/api/history/update`;
-    console.log("server url: ", url);
+    const url = process.env.REACT_APP_BASE_URL + `/api/history/update`;
+    console.log('server url: ', url);
     const data = {
       _id: row.id,
       token_amount: tokenamount,
@@ -96,35 +93,34 @@ export default function GroupingFixedHeader({ history, setRefresh }) {
       console.log(r);
 
       if (r.status === 200) {
-        enqueueSnackbar("History updated successfully", {
-          variant: "success",
+        enqueueSnackbar('History updated successfully', {
+          variant: 'success'
         });
         setRefresh(true);
       } else {
-        enqueueSnackbar("Failed to Update Data", { variant: "fail" });
+        enqueueSnackbar('Failed to Update Data', { variant: 'fail' });
       }
     });
-  }
+  };
 
   const onDel = (row) => {
-    const url =
-      process.env.REACT_APP_BASE_URL + `/api/history/delete`;
-    console.log("server url: ", url);
+    const url = process.env.REACT_APP_BASE_URL + `/api/history/delete`;
+    console.log('server url: ', url);
     const data = {
-      _id: row.id,
+      _id: row.id
     };
     historyAction(url, data).then((r) => {
       console.log(r);
       if (r.status === 200) {
-        enqueueSnackbar("History deleted successfully", {
-          variant: "success",
+        enqueueSnackbar('History deleted successfully', {
+          variant: 'success'
         });
         setRefresh(true);
       } else {
-        enqueueSnackbar("Failed to Delete Data", { variant: "fail" });
+        enqueueSnackbar('Failed to Delete Data', { variant: 'fail' });
       }
     });
-  }
+  };
   return (
     <>
       <Scrollbar>
@@ -136,8 +132,12 @@ export default function GroupingFixedHeader({ history, setRefresh }) {
                   <TableCell
                     key={column.id}
                     align={column.align}
-                    style={{ minWidth: column.minWidth, background: 'transparent', color: 'white', borderColor: '#1DF4F6' }}
-                  >
+                    style={{
+                      minWidth: column.minWidth,
+                      background: 'transparent',
+                      color: 'white',
+                      borderColor: '#1DF4F6'
+                    }}>
                     {column.label}
                   </TableCell>
                 ))}
@@ -147,20 +147,24 @@ export default function GroupingFixedHeader({ history, setRefresh }) {
             <TableBody>
               {history &&
                 history
-                  .slice(
-                    (page - 1) * rowsPerPage,
-                    (page - 1) * rowsPerPage + rowsPerPage
-                  )
+                  .slice((page - 1) * rowsPerPage, (page - 1) * rowsPerPage + rowsPerPage)
                   .map((row) => (
                     <TableRow tabIndex={-1} key={row.code}>
                       <TableCell>
                         <Stack direction="row" alignItems="center">
                           <Status color="#1DF4F6" />
-                          {(editflag === false || curdata !== row.id) && <Typography variant="h5" color='white'>
-                            {row.token_amount} SNE
-                          </Typography>
-                          }
-                          {editflag == true && curdata === row.id && <TextField style={{ width: "70px" }} value={tokenamount} onChange={(event) => setTokenAmount(event.target.value / 1)} />}
+                          {(editflag === false || curdata !== row.id) && (
+                            <Typography variant="h5" color="white">
+                              {row.token_amount} SNE
+                            </Typography>
+                          )}
+                          {editflag == true && curdata === row.id && (
+                            <TextField
+                              style={{ width: '70px' }}
+                              value={tokenamount}
+                              onChange={(event) => setTokenAmount(event.target.value / 1)}
+                            />
+                          )}
                         </Stack>
                       </TableCell>
                       <TableCell>

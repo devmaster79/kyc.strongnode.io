@@ -55,8 +55,7 @@ export default function CarouselControlsPaging2({ color, ...other }) {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center'
-        }}
-      >
+        }}>
         <DotStyle
           className="dotActive"
           sx={{

@@ -71,7 +71,7 @@ export default function BaseOptionChart() {
       theme.palette.primary.main,
       theme.palette.secondary.main,
       theme.palette.warning.main,
-      theme.palette.error.main,
+      theme.palette.error.main
     ],
 
     // Chart

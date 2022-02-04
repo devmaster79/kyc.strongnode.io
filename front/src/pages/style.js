@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { Link } from "react-router-dom";
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 export const EntryPage = styled.div`
   display: flex;
@@ -8,10 +8,10 @@ export const EntryPage = styled.div`
   flex-direction: column;
   min-height: 100vh;
   background: url('/images/background.png');
-  background-size : 100% 100%;
-  &:before{
-   content : url('/images/signlogo.png');
-   margin : 50px 0px;
+  background-size: 100% 100%;
+  &:before {
+    content: url('/images/signlogo.png');
+    margin: 50px 0px;
   }
 `;
 

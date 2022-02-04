@@ -7,7 +7,7 @@ export default function Lists(theme) {
         root: {
           color: 'inherit',
           minWidth: 'auto',
-          marginRight: theme.spacing(0),
+          marginRight: theme.spacing(0)
         }
       }
     },
