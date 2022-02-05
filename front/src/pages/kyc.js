@@ -1,9 +1,8 @@
-import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import { EntryPage } from "./style";
-import EntryCard from "../components/EntryCard";
-import Button from "../components/Button";
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { EntryPage } from './style';
+import EntryCard from '../components/EntryCard';
+import Button from '../components/Button';
 
 // const P = styled.p`
 //   font-style: normal;
@@ -18,35 +17,34 @@ import Button from "../components/Button";
 function KYC() {
   const navigate = useNavigate();
 
-  const loadBlockpassWidget = async (event) => {
-    const blockpass =  new window.BlockpassKYCConnect('strongnode_596cc',
-      {
-        env: 'prod',
-        refId: '1632811259976',
-      })
+  const loadBlockpassWidget = async () => {
+    const blockpass = new window.BlockpassKYCConnect('strongnode_596cc', {
+      env: 'prod',
+      refId: '1632811259976'
+    });
 
-    blockpass.startKYCConnect()
+    blockpass.startKYCConnect();
     blockpass.on('KYCConnectSuccess', () => {
       //add code that will trigger when data have been sent
-      navigate("/dashboard");
-    })
+      navigate('/dashboard');
+    });
 
-    blockpass.on('KYCConnectClose', () =>{
+    blockpass.on('KYCConnectClose', () => {
       //add code that will trigger when the workflow is finished. ex:
       //alert('Finished!')
-      navigate("/dashboard");
-    })
+      navigate('/dashboard');
+    });
 
     blockpass.on('KYCConnectCancel', () => {
       //add code that will trigger when the workflow is aborted. ex:
       //alert('Cancelled!')
-      navigate("/dashboard");
-    })
-  }
+      navigate('/dashboard');
+    });
+  };
 
   useEffect(() => {
-    loadBlockpassWidget()
-  }, [])
+    loadBlockpassWidget();
+  }, []);
 
   return (
     <EntryPage>

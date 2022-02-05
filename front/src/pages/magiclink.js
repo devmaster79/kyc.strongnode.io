@@ -1,10 +1,10 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import { EntryPage } from "./style";
-import EntryCard from "../components/EntryCard";
-import Button from "../components/Button";
-import { ReactComponent as MagicImg } from "../assets/images/magic.svg";
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import { EntryPage } from './style';
+import EntryCard from '../components/EntryCard';
+import Button from '../components/Button';
+import { ReactComponent as MagicImg } from '../assets/images/magic.svg';
 
 const P = styled.p`
   font-style: normal;
@@ -26,10 +26,8 @@ function MagicLink() {
       <EntryCard emailsent>
         <MagicImg />
         <h2 style={{ marginTop: 25, marginBottom: 20 }}>Check your email</h2>
-        <P>
-            We've sent a magic login link. Please check your email to login to StrongNodeID.
-        </P>
-        <Button style={{ width: '30%' }} full onClick={() => navigate("/signin")}>
+        <P>We&apos;ve sent a magic login link. Please check your email to login to StrongNodeID.</P>
+        <Button style={{ width: '30%' }} full onClick={() => navigate('/signin')}>
           OK
         </Button>
       </EntryCard>

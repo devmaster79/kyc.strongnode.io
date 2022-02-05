@@ -1,16 +1,16 @@
-import { merge } from 'lodash'
-import ReactApexChart from 'react-apexcharts'
-import { Stack } from '@material-ui/core'
-import { useTheme, styled } from '@material-ui/core/styles'
+import { merge } from 'lodash';
+import ReactApexChart from 'react-apexcharts';
+import { Stack } from '@material-ui/core';
+import { useTheme, styled } from '@material-ui/core/styles';
 // import { fNumber } from '../../../utils/formatNumber';
 //
-import BaseOptionChart from './BaseOptionChart'
+import BaseOptionChart from './BaseOptionChart';
 
-const Lockup1 = [80]
-const Lockup2 = [65]
+const Lockup1 = [80];
+const Lockup2 = [65];
 
 export default function AppCurrentDownload() {
-  const theme = useTheme()
+  const theme = useTheme();
 
   const chartOptions1 = merge(BaseOptionChart(), {
     colors: ['#26A5C0'],
@@ -23,11 +23,11 @@ export default function AppCurrentDownload() {
         gradientToColors: ['#2EF3C0'],
         opacityFrom: 1,
         opacityTo: 1,
-        stops: [0, 100],
-      },
+        stops: [0, 100]
+      }
     },
     stroke: {
-      lineCap: 'straight',
+      lineCap: 'straight'
     },
     plotOptions: {
       radialBar: {
@@ -37,14 +37,14 @@ export default function AppCurrentDownload() {
           imageWidth: 20,
           imageHeight: 20,
           margin: 5,
-          imageClipped: false,
+          imageClipped: false
         },
         dataLabels: {
-          value: { offsetY: 16 },
-        },
-      },
-    },
-  })
+          value: { offsetY: 16 }
+        }
+      }
+    }
+  });
 
   const chartOptions2 = merge(BaseOptionChart(), {
     colors: ['#5137FA'],
@@ -57,11 +57,11 @@ export default function AppCurrentDownload() {
         gradientToColors: ['#7BDAD0'],
         opacityFrom: 1,
         opacityTo: 1,
-        stops: [0, 100],
-      },
+        stops: [0, 100]
+      }
     },
     stroke: {
-      lineCap: 'straight',
+      lineCap: 'straight'
     },
     plotOptions: {
       radialBar: {
@@ -71,14 +71,14 @@ export default function AppCurrentDownload() {
           imageWidth: 20,
           imageHeight: 20,
           margin: 5,
-          imageClipped: false,
+          imageClipped: false
         },
         dataLabels: {
-          value: { offsetY: 16 },
-        },
-      },
-    },
-  })
+          value: { offsetY: 16 }
+        }
+      }
+    }
+  });
 
   const chartOptions3 = merge(BaseOptionChart(), {
     colors: ['#604BE8'],
@@ -91,11 +91,11 @@ export default function AppCurrentDownload() {
         gradientToColors: ['#B74BE8'],
         opacityFrom: 1,
         opacityTo: 1,
-        stops: [0, 100],
-      },
+        stops: [0, 100]
+      }
     },
     stroke: {
-      lineCap: 'straight',
+      lineCap: 'straight'
     },
     plotOptions: {
       radialBar: {
@@ -105,14 +105,14 @@ export default function AppCurrentDownload() {
           imageWidth: 20,
           imageHeight: 20,
           margin: 5,
-          imageClipped: false,
+          imageClipped: false
         },
         dataLabels: {
-          value: { offsetY: 16 },
-        },
-      },
-    },
-  })
+          value: { offsetY: 16 }
+        }
+      }
+    }
+  });
 
   return (
     <Stack direction="row" justifyContent="space-around">
@@ -138,5 +138,5 @@ export default function AppCurrentDownload() {
         height={140}
       />
     </Stack>
-  )
+  );
 }

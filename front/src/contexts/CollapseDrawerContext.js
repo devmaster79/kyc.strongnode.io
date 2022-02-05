@@ -12,7 +12,6 @@ const initialState = {
 
 const CollapseDrawerContext = createContext(initialState);
 
-
 function CollapseDrawerProvider({ children }) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('lg'));
@@ -53,8 +52,7 @@ function CollapseDrawerProvider({ children }) {
         onToggleCollapse: handleToggleCollapse,
         onHoverEnter: handleHoverEnter,
         onHoverLeave: handleHoverLeave
-      }}
-    >
+      }}>
       {children}
     </CollapseDrawerContext.Provider>
   );

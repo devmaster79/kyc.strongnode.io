@@ -1,5 +1,5 @@
-import SvgIconStyle from 'components/SvgIconStyle'
-import { styled } from '@material-ui/core/styles'
+import SvgIconStyle from 'components/SvgIconStyle';
+import { styled } from '@material-ui/core/styles';
 import {
   Box,
   Stack,
@@ -8,30 +8,29 @@ import {
   IconButton,
   Typography,
   Badge,
-  Hidden,
-} from '@material-ui/core'
-import useCollapseDrawer from '../../hooks/useCollapseDrawer'
-import AccountPopover from './AccountPopover'
-import { useState, useEffect } from 'react'
+  Hidden
+} from '@material-ui/core';
+import useCollapseDrawer from '../../hooks/useCollapseDrawer';
+import AccountPopover from './AccountPopover';
+import { useState, useEffect } from 'react';
 import Snackbar from '@mui/material/Snackbar';
 
 import CloseIcon from '@mui/icons-material/Close';
 import MuiAlert from '@mui/material/Alert';
 
-const DRAWER_WIDTH = 280
-const COLLAPSE_WIDTH = 130
+const DRAWER_WIDTH = 280;
+const COLLAPSE_WIDTH = 130;
 
-const APPBAR_MOBILE = 64
-const APPBAR_DESKTOP = 80
+const APPBAR_MOBILE = 64;
+const APPBAR_DESKTOP = 80;
 
 const RootStyle = styled(AppBar)(({ theme }) => ({
-  boxShadow: 'none',
   backgroundColor: '#15123D',
   boxShadow: '0px 2px 2px rgba(0, 0, 0, 0.03)',
   [theme.breakpoints.up('lg')]: {
-    width: `calc(100% - ${DRAWER_WIDTH}px + 30px)`,
-  },
-}))
+    width: `calc(100% - ${DRAWER_WIDTH}px + 30px)`
+  }
+}));
 
 const ToolbarStyle = styled(Toolbar)(({ theme }) => ({
   minHeight: APPBAR_MOBILE,
@@ -40,60 +39,47 @@ const ToolbarStyle = styled(Toolbar)(({ theme }) => ({
   [theme.breakpoints.up('lg')]: {
     minHeight: APPBAR_DESKTOP,
     paddingLeft: theme.spacing(9),
-    paddingRight: theme.spacing(5),
-  },
-}))
+    paddingRight: theme.spacing(5)
+  }
+}));
 
 export default function DashboardNavbar({ onOpenSidebar }) {
-  const { isCollapse, onToggleCollapse } = useCollapseDrawer()
+  const { isCollapse, onToggleCollapse } = useCollapseDrawer();
   const [open, setOpen] = useState([false, false]);
 
-  useEffect(() => {
-
-  }, []);
+  useEffect(() => {}, []);
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
     }
-    let tmp = [...open]
-    tmp[0] = false
-    setOpen(tmp)
+    let tmp = [...open];
+    tmp[0] = false;
+    setOpen(tmp);
   };
   const handleSmsClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
     }
-    let tmp = [...open]
-    tmp[1] = false
-    setOpen(tmp)
+    let tmp = [...open];
+    tmp[1] = false;
+    setOpen(tmp);
   };
   const showNotification = () => {
-    let tmp = [...open]
-    tmp[0] = true
-    tmp[1] = true
-    setOpen(tmp)
-
-  }
+    let tmp = [...open];
+    tmp[0] = true;
+    tmp[1] = true;
+    setOpen(tmp);
+  };
   const action = (
     <Box>
-      <IconButton
-        size="small"
-        aria-label="close"
-        color="inherit"
-        onClick={handleClose}
-      >
+      <IconButton size="small" aria-label="close" color="inherit" onClick={handleClose}>
         <CloseIcon fontSize="small" />
       </IconButton>
     </Box>
   );
   const smsAction = (
     <Box>
-      <IconButton
-        size="small"
-        aria-label="close"
-        color="inherit"
-        onClick={handleSmsClose}
-      >
+      <IconButton size="small" aria-label="close" color="inherit" onClick={handleSmsClose}>
         <CloseIcon fontSize="small" />
       </IconButton>
     </Box>
@@ -103,10 +89,9 @@ export default function DashboardNavbar({ onOpenSidebar }) {
       sx={{
         ...(isCollapse && {
           width: { lg: `calc(100% - ${COLLAPSE_WIDTH}px + 30px)` },
-          transition : {lg : 'width .2s'},
-        }),
-      }}
-    >
+          transition: { lg: 'width .2s' }
+        })
+      }}>
       <Box>
         <Snackbar
           anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
@@ -114,9 +99,13 @@ export default function DashboardNavbar({ onOpenSidebar }) {
           autoHideDuration={6000}
           //onClose={handleClose}
           message="Please complete your KYC registration"
-          action={action}
-        >
-          <MuiAlert variant="filled" elevation={6} onClose={handleClose} severity="warning" sx={{ width: '100%' }}>
+          action={action}>
+          <MuiAlert
+            variant="filled"
+            elevation={6}
+            onClose={handleClose}
+            severity="warning"
+            sx={{ width: '100%' }}>
             Please complete your KYC registration
           </MuiAlert>
         </Snackbar>
@@ -129,20 +118,20 @@ export default function DashboardNavbar({ onOpenSidebar }) {
           //onClose={handleClose}
           message="Please complete your SMS registration"
           action={smsAction}
-          sx={{ marginTop: open[0] ? '60px' : '10px' }}
-
-        >
-          <MuiAlert variant="filled" elevation={6} onClose={handleSmsClose} severity="warning" sx={{ width: '100%' }}>
+          sx={{ marginTop: open[0] ? '60px' : '10px' }}>
+          <MuiAlert
+            variant="filled"
+            elevation={6}
+            onClose={handleSmsClose}
+            severity="warning"
+            sx={{ width: '100%' }}>
             Please complete your SMS registration
           </MuiAlert>
         </Snackbar>
       </Box>
       <ToolbarStyle>
         <Hidden lgUp>
-          <IconButton
-            onClick={onOpenSidebar}
-            sx={{ mr: 1, color: 'text.primary' }}
-          >
+          <IconButton onClick={onOpenSidebar} sx={{ mr: 1, color: 'text.primary' }}>
             <SvgIconStyle
               src="/icons/hamburger.svg"
               color="action"
@@ -163,27 +152,19 @@ export default function DashboardNavbar({ onOpenSidebar }) {
           variant="body2"
           sx={{ ml: 4, display: { xs: 'none', md: 'block' } }}
           color="rgba(255,255,255,0.5)"
-          fontFamily='Halyard-Book'
-        >
+          fontFamily="Halyard-Book">
           Check out the latest SNE token metrics 300+ investors have locked up 20m+ tokens
         </Typography>
         <Box sx={{ flexGrow: 1 }} />
-        <Stack
-          direction="row"
-          alignItems="center"
-          spacing={{ xs: 0.5, sm: 1.5 }}
-        >
+        <Stack direction="row" alignItems="center" spacing={{ xs: 0.5, sm: 1.5 }}>
           <IconButton onClick={showNotification}>
-            <Badge badgeContent={open.filter(e => e === false).length} color="error">
-              <SvgIconStyle
-                src="/icons/bell.svg"
-                sx={{ width: 20, height: 24 }}
-              />
+            <Badge badgeContent={open.filter((e) => e === false).length} color="error">
+              <SvgIconStyle src="/icons/bell.svg" sx={{ width: 20, height: 24 }} />
             </Badge>
           </IconButton>
           <AccountPopover />
         </Stack>
       </ToolbarStyle>
     </RootStyle>
-  )
+  );
 }

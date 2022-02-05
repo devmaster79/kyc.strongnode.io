@@ -1,54 +1,56 @@
-import React, { useState, useCallback } from "react";
-import { Form, Formik } from "formik";
-import { useNavigate } from "react-router-dom";
-import { EntryPage } from "./style";
-import Button from "../components/Button";
-import EntryCard from "../components/EntryCard";
-import Input from "../components/Input";
-import ValidatedField from "../components/ValidatedField";
+import React, { useState, useCallback } from 'react';
+import { Form, Formik } from 'formik';
+import { useNavigate } from 'react-router-dom';
+import { EntryPage } from './style';
+import Button from '../components/Button';
+import EntryCard from '../components/EntryCard';
+import Input from '../components/Input';
+import ValidatedField from '../components/ValidatedField';
 import { magic } from '../utils/index';
-import { singinSchema } from "../static/formSchemas";
-import { checkSMS } from "../utils/api";
+import { singinSchema } from '../static/formSchemas';
+import { checkSMS } from '../utils/api';
 
 function Signin() {
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState('');
   const [showError, setShowError] = useState(false);
 
   const initFormState = {
-    email: ""
-  }
+    email: ''
+  };
 
   const handleFormSubmit = (data, { setSubmitting }) => {
     setSubmitting(true);
     // make async call to submit registration data here
     data.email = data.email.toLowerCase();
-    const t_email = data.email
-    checkSMS(t_email).then(r => {
-			if(r.data.length !== 0 && r.data[0].email === t_email) {
-				magicLogin(data);
-			} else {
-				setShowError(true);
-			}
-		});
+    const t_email = data.email;
+    checkSMS(t_email).then((r) => {
+      if (r.data.length !== 0 && r.data[0].email === t_email) {
+        magicLogin(data);
+      } else {
+        setShowError(true);
+      }
+    });
     setSubmitting(false);
-  }
+  };
 
-  const magicLogin = useCallback( async (data) => {
+  const magicLogin = useCallback(
+    async (data) => {
       const email = data.email;
       try {
         localStorage.setItem('email', email);
-        navigate("/magiclink");
+        navigate('/magiclink');
         await magic.auth.loginWithMagicLink({
           email: email,
-          redirectURI: new URL("/signinpass", window.location.origin).href,
+          redirectURI: new URL('/signinpass', window.location.origin).href,
           showUI: false
         });
-      } catch(err) {
-        console.log("Error for sending magic link", err);
+      } catch (err) {
+        console.log('Error for sending magic link', err);
       }
-    }, [email]
+    },
+    [email]
   );
 
   return (
@@ -59,8 +61,7 @@ function Signin() {
         <Formik
           initialValues={initFormState}
           onSubmit={handleFormSubmit}
-          validationSchema={singinSchema}
-        >
+          validationSchema={singinSchema}>
           {({ handleBlur, isSubmitting, validateField }) => (
             <Form style={{ marginTop: 30 }}>
               <ValidatedField
@@ -68,16 +69,16 @@ function Signin() {
                 name="email"
                 onBlur={handleBlur}
                 placeholder="Email"
-                style={{ padding: "16px 20px 16px 40px" }}
+                style={{ padding: '16px 20px 16px 40px' }}
                 type="email"
                 validateField={validateField}
-            />
-              {showError && <p style={{marginBottom: "10px", color: "red"}}>Not registered, please signup first!</p>}
-              <Button
-                disabled={isSubmitting}
-                type="submit"
-                full
-              >
+              />
+              {showError && (
+                <p style={{ marginBottom: '10px', color: 'red' }}>
+                  Not registered, please signup first!
+                </p>
+              )}
+              <Button disabled={isSubmitting} type="submit" full>
                 Confirm
               </Button>
             </Form>

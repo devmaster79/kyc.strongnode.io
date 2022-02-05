@@ -1,28 +1,25 @@
-import { merge } from 'lodash'
-import ReactApexChart from 'react-apexcharts'
-import { useTheme, styled } from '@material-ui/core/styles'
+import { merge } from 'lodash';
+import ReactApexChart from 'react-apexcharts';
+import { useTheme, styled } from '@material-ui/core/styles';
 // import { fNumber } from '../../../utils/formatNumber';
 //
-import BaseOptionChart from './BaseOptionChart'
+import BaseOptionChart from './BaseOptionChart';
 
-const CHART_DATA = [10, 10]
+const CHART_DATA = [10, 10];
 
 export default function AppCurrentDownload(props) {
-  const theme = useTheme()
+  const theme = useTheme();
 
   const chartOptions = merge(BaseOptionChart(), {
-    colors: [
-      '#604BE8',
-      '#DA50CA',
-    ],
+    colors: ['#604BE8', '#DA50CA'],
     stroke: { colors: [theme.palette.background.paper] },
     tooltip: {
       fillSeriesColor: false,
       y: {
         title: {
-          formatter: (seriesName) => `${seriesName}`,
-        },
-      },
+          formatter: (seriesName) => `${seriesName}`
+        }
+      }
     },
     fill: {
       type: ['gradient', 'gradient'],
@@ -34,17 +31,17 @@ export default function AppCurrentDownload(props) {
         inverseColors: false,
         opacityFrom: 1,
         opacityTo: 1,
-        stops: [0, 100],
+        stops: [0, 100]
       }
     },
     plotOptions: {
       pie: {
         donut: {
-          size: '40%',
-        },
-      },
-    },
-  })
+          size: '40%'
+        }
+      }
+    }
+  });
 
   return (
     <ReactApexChart
@@ -54,5 +51,5 @@ export default function AppCurrentDownload(props) {
       width={140}
       height={140}
     />
-  )
+  );
 }
