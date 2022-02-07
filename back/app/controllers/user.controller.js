@@ -3,6 +3,7 @@ const crypto = require("crypto");
 const User = db.users;
 const History = db.history;
 const Op = db.Sequelize.Op;
+const PasswordResets = db.passwordreset;
 const jwt = require("jsonwebtoken");
 const speakeasy = require("speakeasy");
 const QRCode = require("qrcode");
@@ -121,6 +122,138 @@ exports.create = async (req, res) => {
   })();
 };
 
+/**
+ * Method that creates a token for password reset.
+ * @param req
+ * @param res
+ * @returns {Promise<void>}
+ */
+exports.requestPasswordReset = async (req, res) => {
+  // check if email is present
+  if (typeof req.query.email !== 'undefined') {
+
+    const user = await User.findOne({
+      where: { email: req.query.email }
+    })
+
+    if (!user)
+      res.send({ message: 'Cannot find User with given email.' })
+
+    const token = crypto.randomBytes(20).toString("hex")
+
+    const alreadyRequested = await PasswordResets.findOne({ userEmail: user.email, status: 'active' })
+
+    if (alreadyRequested)
+      await PasswordResets.update({ status: 'inactive' }, { where: { userEmail: user.email, status: 'active' } })
+
+    // create password reset record
+    const resetRequest = await PasswordResets.create({
+      userEmail: user.email,
+      token: token,
+      status: 'active'
+    })
+
+    if (resetRequest) {
+      // todo, sending emails should be wrapped in some own function, so it won't code-spam other functions...
+      link = "https://" + process.env.HOSTNAME + "/create-new-password?token=" + token;
+
+      let sesOptions = {
+        region: "us-west-2",
+      }
+
+      if (process.env.AWS_LOCALSTACK_URL != '')
+        sesOptions.endpoint = process.env.AWS_LOCALSTACK_URL
+
+      const ses = new AWS.SES(sesOptions);
+
+      const templateData = JSON.stringify({
+        link: link,
+      });
+
+      if (process.env.AWS_LOCALSTACK_URL != '')
+        console.info('Reset password link is here: ' + link)
+
+      const params = {
+        Destination: {
+          ToAddresses: [req.query.email],
+        },
+        TemplateData: templateData ? templateData : '{ "link":"unknown"}',
+        Source: "Notifications <no-reply@strongnode.io>",
+        Template: "ResetPasswordTemplate"
+      };
+
+      const response = await ses.sendTemplatedEmail(params).promise();
+      if (response) {
+        res.send({
+          message: 'Successfully requested a new password!',
+          status: 'generated'
+        })
+      } else {
+        res.send({ message: 'Some error occurred.' })
+      }
+    } else {
+      res.send({ message: 'While updating token, some error occured.' })
+    }
+  } else {
+    res.status(400).send({
+      message: 'E-mail query parameter is requested.'
+    })
+  }
+}
+
+/**
+ * Method that resets user's password.
+ */
+exports.resetPassword = async (req, res) => {
+  // Validate request
+  if (!req.body.password || !req.body.token || req.body.token === '' || req.body.password === '') {
+    res.status(400).send({
+      message: "Required properties are not present in the request.",
+    });
+    return;
+  }
+
+  const passwordResetRequest = await PasswordResets.findOne({ token: req.body.token })
+
+  if (passwordResetRequest) {
+    const user = await User.findOne({ email: passwordResetRequest?.dataValues.userEmail })
+
+    if (user) {
+      const token = jwt.sign(
+          { user_name: user?.dataValues.user_name, email: user?.dataValues.email },
+          process.env.TOKEN_SECRET,
+          {
+            expiresIn: "168h",
+          }
+      )
+
+      const data = {
+        password: req.body.password,
+        token: token
+      }
+
+      // update the user
+      const userUpdate = await User.update(data, {
+        where: { email: passwordResetRequest?.dataValues.userEmail }
+      })
+
+      if (userUpdate) {
+
+        await PasswordResets.update({ status: 'inactive' }, { where: { userEmail: passwordResetRequest?.dataValues.userEmail, status: 'active' } })
+
+        res.send({ message: 'Successfully changed a password.', status: 'success', token: token, username: user?.dataValues.user_name })
+      } else {
+        res.send({message: 'Some error occurred during the update of user.', status: 'failed'})
+      }
+
+    } else {
+      res.send({ message: 'User does not exist.', email: passwordResetRequest?.dataValues.userEmail })
+    }
+  } else {
+    res.send({ message: 'Token is not valid, please request a new password reset request and try again.' })
+  }
+}
+
 // Create and Save a new User password
 exports.createPassword = async (req, res) => {
   // Validate request
@@ -148,7 +281,6 @@ exports.createPassword = async (req, res) => {
         expiresIn: "168h",
       }
     );
-
     // Create a User password
     const data = {
       password: req.body.password,
@@ -768,7 +900,7 @@ exports.uploadImg = async (req, res) => {
   });
 
   if (image_data !== undefined) {
-    
+
     const base64Data = new Buffer.from(
       image_data.replace(/^data:image\/\w+;base64,/, ""),
       "base64"
@@ -861,7 +993,7 @@ exports.addData = async (req, res) => {
     createdAt : Date.now(),
     updatedAt : Date.now(),
   };
-  
+
   const history = new History(data);
   history.save().then(()=>{
     console.log("success");

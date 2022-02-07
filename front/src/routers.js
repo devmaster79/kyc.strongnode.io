@@ -16,6 +16,8 @@ import CreateAccountPassword from "./pages/createaccountpassword";
 import PrivateSaleInterestForm from "./pages/privatesaleinterestform";
 import KYC from "./pages/kyc";
 import AddData from "./pages/AddData";
+import ForgottenPassword from "./pages/forgottenPassword";
+import CreateNewPassword from "./pages/createNewPassword";
 
 export default function Router() {
   return useRoutes([
@@ -44,6 +46,8 @@ export default function Router() {
         { path: "signintwostep", element: <SigninTwoStep /> },
         { path: "signinsms", element: <SigninSMS /> },
         { path: "profile", element: <Profile /> },
+        { path: "forgotten-password", element: <ForgottenPassword /> },
+        { path: "create-new-password", element: <CreateNewPassword /> },
         { path: "sent-email", element: <SentEmail /> },
         { path: "verifyEmail", element: <CreateAccountPassword /> },
         {
