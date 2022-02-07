@@ -20,6 +20,10 @@ function Signin() {
     email: ''
   };
 
+  const forgottenPassword = () => {
+    navigate('/forgotten-password')
+  }
+
   const handleFormSubmit = (data, { setSubmitting }) => {
     setSubmitting(true);
     // make async call to submit registration data here
@@ -53,6 +57,12 @@ function Signin() {
     [email]
   );
 
+  const resetPassStyle = {
+    color: '#1DF4F6',
+    marginTop: '16px',
+    cursor: 'pointer'
+  };
+
   return (
     <EntryPage>
       <EntryCard>
@@ -84,6 +94,7 @@ function Signin() {
             </Form>
           )}
         </Formik>
+        <p onClick={forgottenPassword} style={resetPassStyle}>Did you forget your password?</p>
       </EntryCard>
     </EntryPage>
   );
