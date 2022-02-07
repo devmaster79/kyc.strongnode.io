@@ -1,11 +1,11 @@
 const AWS = require("aws-sdk");
 
 let sesOptions = {
-  region: "us-west-2",
+    region: 'us-west-2'
 }
 
-if (process.env.AWS_LOCALSTACK_URL != '')
-  sesOptions.endpoint = process.env.AWS_LOCALSTACK_URL
+if (process.env.AWS_LOCALSTACK_URL !== '')
+    sesOptions.endpoint = process.env.AWS_LOCALSTACK_URL
 
 const ses = new AWS.SES(sesOptions);
 /**
@@ -21,3 +21,5 @@ mainFunction().then(() => {
   console.log('Error in template creation.');
   console.dir(ex.message);
 });
+
+exports.createTemplate = mainFunction
