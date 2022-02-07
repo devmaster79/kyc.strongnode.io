@@ -85,29 +85,33 @@ exports.create = async (req, res) => {
             result: resp,
           });
         link = "https://stage.strongnode.io/verifyEmail?id=" + rand;
-        const ses = new AWS.SES({
+
+        let sesOptions = {
           region: "us-west-2",
-        });
+        }
+
+        if (process.env.AWS_LOCALSTACK_URL != '')
+          sesOptions.endpoint = process.env.AWS_LOCALSTACK_URL
+
+        const ses = new AWS.SES(sesOptions);
+
         const templateData = JSON.stringify({
           link: link,
         });
 
+        if (process.env.AWS_LOCALSTACK_URL != '')
+          console.info('User can be verified via link: ' + link)
+
         const params = {
-          Destinations: [
-            {
-              Destination: {
-                ToAddresses: [req.body.email],
-              },
-              ReplacementTemplateData: templateData,
-            },
-            /* more items */
-          ],
+          Destination: {
+            ToAddresses: [req.body.email],
+          },
+          TemplateData: templateData ? templateData : '{ "link":"unknown"}',
           Source: "Notifications <no-reply@strongnode.io>",
-          Template: "EmailTemplate",
-          DefaultTemplateData: '{ "link":"unknown"}',
+          Template: "EmailTemplate"
         };
 
-        const response = await ses.sendBulkTemplatedEmail(params).promise();
+        const response = await ses.sendTemplatedEmail(params).promise();
         res.send({
           result: response,
           data: resp,
@@ -768,7 +772,7 @@ exports.uploadImg = async (req, res) => {
   });
 
   if (image_data !== undefined) {
-    
+
     const base64Data = new Buffer.from(
       image_data.replace(/^data:image\/\w+;base64,/, ""),
       "base64"
@@ -861,7 +865,7 @@ exports.addData = async (req, res) => {
     createdAt : Date.now(),
     updatedAt : Date.now(),
   };
-  
+
   const history = new History(data);
   history.save().then(()=>{
     console.log("success");

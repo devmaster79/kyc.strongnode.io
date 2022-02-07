@@ -1,7 +1,14 @@
 const AWS = require("aws-sdk");
-const ses = new AWS.SES({
-   region: 'us-west-2'
-});
+
+let sesOptions = {
+   region: "us-west-2",
+ }
+
+if (process.env.AWS_LOCALSTACK_URL != '')
+   sesOptions.endpoint = process.env.AWS_LOCALSTACK_URL
+
+const ses = new AWS.SES(sesOptions);
+
 /**
  * @fileOverview update-template.js Update existing email template
  * */
