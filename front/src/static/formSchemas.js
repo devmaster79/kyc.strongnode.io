@@ -11,3 +11,10 @@ export const signupSchema = yup.object({
 export const singinSchema = yup.object({
   email: yup.string().email().required()
 });
+
+export const forgottenPassword = yup.object({
+  email: yup.string().email().required(),
+})
+
+export const createNewPassword = yup.object({
+})

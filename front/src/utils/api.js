@@ -9,9 +9,16 @@ import {
   check_sms_url,
   qr_url,
   verify_qr_url,
-  signin_url
-} from './config';
-import { get_news, get_profile, update_profile, upload_profile_img } from './config';
+  signin_url,
+  password_reset_url,
+  password_reset_submit_url
+} from "./config";
+import {
+  get_news,
+  get_profile,
+  update_profile,
+  upload_profile_img,
+} from "./config";
 
 const token = localStorage.getItem('token');
 
@@ -23,6 +30,29 @@ const signup = async (data) => {
   };
   return axios(config);
 };
+
+const requestPasswordReset = async (email) => {
+  const config = {
+    url: password_reset_url,
+    method: "GET",
+    params: {
+      email: email
+    }
+  }
+  return axios(config)
+}
+
+const passwordResetSubmit = async (password, token) => {
+  const config = {
+    url: password_reset_submit_url,
+    method: "POST",
+    data: {
+      password: password,
+      token: token,
+    },
+  };
+  return axios(config);
+}
 
 const verifyEmail = async (data) => {
   const config = {
@@ -183,6 +213,8 @@ export {
   checkSMS,
   createQR,
   verifyTOTP,
-  historyAction
+  historyAction,
+  requestPasswordReset,
+  passwordResetSubmit
 };
 export { getNews, getProfile, updateProfile, uploadProfileImage };
