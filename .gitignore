@@ -8,3 +8,14 @@
 docker/.localstack/*
 back/package-lock.json
 front/package.json
+
+docker/.localstack
+.DS_Store
+.idea/codeStyles/codeStyleConfig.xml
+.idea/kyc.strongnode.io.iml
+.idea/misc.xml
+.idea/modules.xml
+.idea/vcs.xml
+.idea/workspace.xml
+.idea/shelf/Uncommitted_changes_before_rebase_[Default_Changelist]/shelved.patch
+.idea/shelf/Uncommitted_changes_before_rebase__Default_Changelist_.xml
