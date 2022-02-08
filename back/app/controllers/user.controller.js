@@ -12,6 +12,7 @@ const gravatar = require("gravatar");
 const axios = require("axios");
 const md5 = require("md5");
 const fs = require("fs");
+const communicationService = require('./../services/communication.services')
 
 dotenv.config();
 
