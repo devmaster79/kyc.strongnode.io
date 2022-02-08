@@ -86,34 +86,15 @@ exports.create = async (req, res) => {
           res.send({
             result: resp,
           });
-        link = "https://stage.strongnode.io/verifyEmail?id=" + rand;
 
-        let sesOptions = {
-          region: "us-west-2",
-        }
-
-        if (process.env.AWS_LOCALSTACK_URL != '')
-          sesOptions.endpoint = process.env.AWS_LOCALSTACK_URL
-
-        const ses = new AWS.SES(sesOptions);
+        link = "https://" + process.env.HOSTNAME + "/verifyEmail?id=" + rand
 
         const templateData = JSON.stringify({
-          link: link,
+          link: link
         });
 
-        if (process.env.AWS_LOCALSTACK_URL != '')
-          console.info('User can be verified via link: ' + link)
-
-        const params = {
-          Destination: {
-            ToAddresses: [req.body.email],
-          },
-          TemplateData: templateData ? templateData : '{ "link":"unknown"}',
-          Source: "Notifications <no-reply@strongnode.io>",
-          Template: "EmailTemplate"
-        };
-
-        const response = await ses.sendTemplatedEmail(params).promise();
+        // refactored AWS.SES in communicationService
+        const response = await communicationService.sendTemplatedEmail(req.body.email, templateData)
         res.send({
           result: response,
           data: resp,
@@ -159,35 +140,15 @@ exports.requestPasswordReset = async (req, res) => {
     })
 
     if (resetRequest) {
-      // todo, sending emails should be wrapped in some own function, so it won't code-spam other functions...
       link = "https://" + process.env.HOSTNAME + "/create-new-password?token=" + token;
-
-      let sesOptions = {
-        region: "us-west-2",
-      }
-
-      if (process.env.AWS_LOCALSTACK_URL != '')
-        sesOptions.endpoint = process.env.AWS_LOCALSTACK_URL
-
-      const ses = new AWS.SES(sesOptions);
 
       const templateData = JSON.stringify({
         link: link,
       });
 
-      if (process.env.AWS_LOCALSTACK_URL != '')
-        console.info('Reset password link is here: ' + link)
+      // refactored AWS.SES in communicationService
+      const response = await communicationService.sendTemplatedEmail(req.query.email, templateData, communicationService.emailTemplatesNames.resetPassword)
 
-      const params = {
-        Destination: {
-          ToAddresses: [req.query.email],
-        },
-        TemplateData: templateData ? templateData : '{ "link":"unknown"}',
-        Source: "Notifications <no-reply@strongnode.io>",
-        Template: "ResetPasswordTemplate"
-      };
-
-      const response = await ses.sendTemplatedEmail(params).promise();
       if (response) {
         res.send({
           message: 'Successfully requested a new password!',
