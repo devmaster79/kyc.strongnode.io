@@ -33,10 +33,11 @@ const UserInfoWrapper = styled.div`
 function CreateNewPassword () {
     const navigate = useNavigate()
     const userEmail = localStorage.getItem('email')
-    const [password, setPassword] = useState("");
+    const [password, setPassword] = useState("")
     const [showError, setShowError] = useState(false)
-    const [confirmPassword, setConfirmPassword] = useState("");
-    const [searchParams, setSearchParams] = useSearchParams()
+    const [confirmPassword, setConfirmPassword] = useState("")
+    const [searchParams] = useSearchParams()
+    const [userName, setUserName] = useState('')
 
     const passwordToken = searchParams.get('token')
 
@@ -69,8 +70,9 @@ function CreateNewPassword () {
             await passwordResetSubmit(password, passwordToken).then(res => {
                 if (res.data.length !== 0 && typeof res.data.status !== 'undefined') {
                     if (res.data.status === 'success') {
+                        setUserName(res.data.username)
                         localStorage.setItem("token", res.data.token)
-                        localStorage.setItem('username', res.data.usernam)
+                        localStorage.setItem('username', res.data.username)
                         localStorage.setItem('loggedin', true)
                         navigate('/dashboard')
                     } else {
@@ -105,7 +107,7 @@ function CreateNewPassword () {
                     <Form style={{ marginTop: 30 }}>
                         {showError && <>
                             <p style={{ marginBottom: '10px', color: 'red' }}>
-                                Password doesn't match!
+                                Password doesn&apos;t match!
                             </p></>
                         }
                         <InputGroup>
