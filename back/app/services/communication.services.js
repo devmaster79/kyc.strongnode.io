@@ -20,7 +20,7 @@ exports.emailTemplatesNames = {
 
 /**
  * Method that is used for sending !ONE! templated email.
- * By default, this method uses emailTemplate for email verification.
+ * By default, this method uses emailTemplate used for email verification.
  * @param options
  * @returns {Promise<boolean>}
  */
@@ -54,5 +54,5 @@ exports.sendTemplatedEmail = async (to, templateData = '{ "link":"unknown"}', te
     return await ses.sendTemplatedEmail(defaultEmailOptions).promise()
 }
 
-// todo add the send bulk emails
-// todo add the pinpoint AWS stuff here
+// todo add the send bulk emails - not sure if we would need this?
+// todo add the pinpoint AWS stuff here - I'll get to this soon (gotta take a look how pinpoint works)
