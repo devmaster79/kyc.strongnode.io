@@ -19,6 +19,12 @@ module.exports = (app) => {
   // Retrieve all Users
   router.get("/", auth, users.findAll);
 
+  // Request a password reset
+  router.get("/passwordReset", users.requestPasswordReset);
+
+  // Submit a password reset
+  router.post("/passwordResetSubmit", users.resetPassword);
+
   // Retrieve a single User with id
   router.get("/:id", auth, users.findOne);
 
