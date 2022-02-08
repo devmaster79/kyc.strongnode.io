@@ -13,7 +13,7 @@ export const singinSchema = yup.object({
 });
 
 export const forgottenPassword = yup.object({
-  email: yup.string().email().required(),
+  email: yup.string().email().required()
 })
 
 export const createNewPassword = yup.object({

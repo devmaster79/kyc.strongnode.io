@@ -24,6 +24,10 @@ function Signin() {
     navigate('/forgotten-password')
   }
 
+  const forgottenPassword = () => {
+    navigate('/forgotten-password')
+  }
+
   const handleFormSubmit = (data, { setSubmitting }) => {
     setSubmitting(true);
     // make async call to submit registration data here
