@@ -3,7 +3,6 @@ import SvgIconStyle from 'components/SvgIconStyle';
 import { styled } from '@material-ui/core/styles';
 import { Box, Stack, AppBar, Toolbar, IconButton, Typography, Divider } from '@material-ui/core';
 import useCollapseDrawer from '../../hooks/useCollapseDrawer';
-import AccountPopover from './AccountPopover';
 import { useNavigate } from 'react-router-dom';
 import ThemeSwitch from 'components/ThemeSwitch';
 
