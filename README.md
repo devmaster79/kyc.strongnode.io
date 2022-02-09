@@ -105,7 +105,7 @@ Then we need change URL address in front/.env file to point it on our local BE.<
 **Example of front/.env file:**
 
 ```
-# REACT_APP_BASE_URL=http://localhost:8080
+# REACT_APP_BASE_URL=http://localhost:8080 # this is what local backend will use by default
 REACT_APP_BASE_URL=http://localhost:8000
 ```
 # 🔫 Trouble shooting
