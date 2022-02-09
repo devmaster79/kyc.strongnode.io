@@ -13,6 +13,7 @@ const axios = require("axios");
 const md5 = require("md5");
 const fs = require("fs");
 const communicationService = require('./../services/communication.services')
+const passwordService = require('./../services/password.services')
 
 dotenv.config();
 
@@ -193,8 +194,9 @@ exports.resetPassword = async (req, res) => {
           }
       )
 
+      console.log('creating a hash')
       const data = {
-        password: req.body.password,
+        password: await passwordService.generateHashBcrypt(req.body.password),
         token: token
       }
 
@@ -249,7 +251,7 @@ exports.createPassword = async (req, res) => {
     );
     // Create a User password
     const data = {
-      password: req.body.password,
+      password: await passwordService.generateHashBcrypt(req.body.password),
       token: token,
     };
 
@@ -286,7 +288,10 @@ exports.signin = async (req, res) => {
 
   try {
     const user = await User.findOne({ where: { email: req.body.email } });
-    if (req.body.password !== user.dataValues.password) {
+
+    const comparePassword = await passwordService.verifyPasswordHash(user.dataValues.password, req.body.password)
+
+    if (!comparePassword) {
       res.status(401).send({
         message: `Wrong password.`,
       });

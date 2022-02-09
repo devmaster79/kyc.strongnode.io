@@ -2,18 +2,24 @@ const dotenv = require("dotenv")
 const bcrypt = require("bcryptjs");
 dotenv.config()
 
-const saltRounds = 1000
+/**
+ * const for salting password hashes, more than 10 makes it really slow on localhost
+ * @type {number}
+ */
+const saltRounds = 10
 
 /**
  * Method that generates hash for specific password using bcrypt
- * @returns {Promise<void>}
+ * @returns {Promise<boolean>}
  */
 exports.generateHashBcrypt = async (password) => {
-    // generates hash, with a random selected salt
-    let hash = await bcrypt.genSalt(saltRounds).then(async (salt) => {
-        return await bcrypt.hash(password, salt).then((hash) => {
-            return hash
-        })
+    // return empty strings
+    if (password === '')
+        return false
+
+    const salt = await bcrypt.genSalt(saltRounds)
+    const hash = await bcrypt.hash(password, salt).then((hash) => {
+        return hash
     })
 
     return hash
