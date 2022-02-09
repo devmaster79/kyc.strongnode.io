@@ -9,11 +9,13 @@ if (process.env.AWS_LOCALSTACK_URL !== '')
 
 const ses = new AWS.SES(sesOptions);
 /**
- * @fileOverview create-template.js Create an email template
+ * @fileOverview create-template.js Create email templates
  * */
 const mainFunction =  async () => {
-  const params =  require("../jsons/email-template.json");
-  return await ses.createTemplate(params).promise();
+  const templates = require("../jsons/email-template.json").templates;
+  return await Promise.all(templates.map(template => ses.createTemplate({
+    Template: template
+  }).promise()))
 }
 mainFunction().then(() => {
    console.log('template created successfully.');
