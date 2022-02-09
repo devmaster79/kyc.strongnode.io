@@ -105,9 +105,18 @@ Then we need change URL address in front/.env file to point it on our local BE.<
 **Example of front/.env file:**
 
 ```
-# REACT_APP_BASE_URL=http://localhost:8080
+# REACT_APP_BASE_URL=http://localhost:8080 # this is what local backend will use by default
 REACT_APP_BASE_URL=http://localhost:8000
 ```
+
+
+## 📀 Database seed (for new databases only)
+
+ - Run backend with `node server.js`
+ - Open this URL: http://localhost:8080/api/utils/refreshEmailTemplates
+ 	(replace http://localhost:8080 with your current backend URL)
+
+
 # 🔫 Trouble shooting
 List of issues I've faced on my MB Pro (15 inch).
 
