@@ -32,7 +32,7 @@ exports.generateHashBcrypt = async (password) => {
  * @returns {Promise<void>}
  */
 exports.verifyPasswordHash = async (hash, password) => {
-    return await bcrypt.compare(password, hash).then((err, res) => {
+    return await bcrypt.compare(password, hash).then((res) => {
         return res
     })
 }

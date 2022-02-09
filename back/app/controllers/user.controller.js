@@ -279,7 +279,7 @@ exports.createPassword = async (req, res) => {
 // Signin and Save a new token
 exports.signin = async (req, res) => {
   // Validate request
-  if (!req.body.email && !req.body.password) {
+  if (!req.body.email && !req.body.password || req.body.password === '') {
     res.status(400).send({
       message: "Content can not be empty!",
     });
