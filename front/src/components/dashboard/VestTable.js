@@ -194,7 +194,7 @@ export default function GroupingFixedHeader({ history, setRefresh }) {
         <Pagination
           color="primary"
           page={page}
-          count={Math.ceil(history && history.length / 10)}
+          count={history && Math.ceil(history.length / 10) || 0}
           rowsPerPage={rowsPerPage}
           onChange={handleChangePage}
           sx={{ mt: 3 }}

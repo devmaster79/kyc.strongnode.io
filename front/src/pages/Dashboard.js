@@ -161,10 +161,14 @@ export default function Dashboard() {
         enqueueSnackbar('History data is not array!', { variant: 'error' });
       } else {
         setHistory(result.data);
-        const expTime = new Date(result.data[0].date);
-        expTime.setFullYear(expTime.getFullYear() + 1);
-        // expTime.setSeconds(expTime.getSeconds() + 10);
-        setWithdrawTime(expTime);
+        if (result.data.length > 0) {
+          console.assert(result.data[0].date !== undefined, "No date provided");
+          const expTime = new Date(result.data[0].date);
+          expTime.setFullYear(expTime.getFullYear() + 1);
+          // expTime.setSeconds(expTime.getSeconds() + 10);
+          setWithdrawTime(expTime);
+        }
+
         let min = 1000000000000;
         let sumVested = 0;
         for (let i = 0; i < result.data.length; i++) {
