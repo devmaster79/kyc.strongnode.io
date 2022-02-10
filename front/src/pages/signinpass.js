@@ -48,15 +48,13 @@ function SigninPass() {
             localStorage.setItem('token', r.data.token);
             localStorage.setItem('username', r.data.user_name);
             localStorage.setItem('loggedin', true);
-            checkSMS(email).then((r) => {
-              if (r.data[0].enable_totp === true) {
-                navigate('/signintwostep');
-              } else if (r.data[0].enable_sms === true) {
-                navigate('/signinsms');
-              } else {
-                navigate('/dashboard/app');
-              }
-            });
+            if (r.enable_totp === true) {
+              navigate('/signintwostep');
+            } else if (r.enable_sms === true) {
+              navigate('/signinsms');
+            } else {
+              navigate('/dashboard/app');
+            }
           } else if (r.status === 401) {
             setPassWrong(true);
             setPassword('');
