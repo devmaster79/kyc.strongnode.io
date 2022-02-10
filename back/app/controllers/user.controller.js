@@ -102,6 +102,7 @@ exports.create = async (req, res) => {
         });
       } catch (err) {
         res.status(500).send({
+          // TODO: error message may reveal security holes
           message: err.message || "Some error occurred while creating the User.",
         });
       }
@@ -271,6 +272,7 @@ exports.createPassword = async (req, res) => {
     }
   } catch (err) {
     res.status(500).send({
+      // TODO: error message may reveal security holes
       message: err.message,
     });
   }
@@ -442,6 +444,7 @@ exports.findAll = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
+        // TODO: error message may reveal security holes
         message: err.message || "Some error occurred while retrieving users.",
       });
     });
@@ -555,6 +558,7 @@ exports.deleteAll = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
+        // TODO: error message may reveal security holes
         message: err.message || "Some error occurred while removing all users.",
       });
     });
@@ -796,6 +800,7 @@ exports.verifyEmail = async (req, res) => {
     }
   } catch (err) {
     res.status(500).send({
+      // TODO: error message may reveal security holes
       message: err.message,
     });
   }
@@ -807,10 +812,15 @@ exports.getProfile = (req, res) => {
 
   User.findAll({ where: { email: para_email } })
     .then((data) => {
+      // TODO: possible data leak, it would be good to show only the required fields
+      // Also /profile/get should return only 1 user not a list of users
+      // Also GET /profile and PATCH or PUT /profile would be enough
+      // There is no need for additional ../get and ../update routes
       res.send(data);
     })
     .catch((err) => {
       res.status(500).send({
+        // TODO: error message may reveal security holes
         message: err.message || "Some error occurred while retrieving users.",
       });
     });
