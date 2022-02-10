@@ -631,15 +631,27 @@ exports.sendSMS = (req, res) => {
 };
 
 //Get Userinfo from DB by email
-exports.getUser = (req, res) => {
+exports.checkSMS = (req, res) => {
   const para_email = req.query.email;
+  const para_smscode = req.query.smscode;
 
   User.findAll({ where: { email: para_email } })
     .then((data) => {
-      res.send(data);
+      if (data.length === 1 && data[0].smscode === para_smscode) {
+        res.send({
+          success: true,
+          message: "SMS validated successfully"
+        });
+      } else {
+        res.send({
+          success: false,
+          message: "Wrong SMS code",
+        });
+      }
     })
     .catch((err) => {
       res.status(500).send({
+        // TODO: error message may reveal security holes
         message: err.message || "Some error occurred while retrieving users.",
       });
     });

@@ -41,7 +41,7 @@ module.exports = (app) => {
   router.post("/sms/send", users.sendSMS);
 
   //Get User code by email
-  router.get("/sms/check", users.getUser);
+  router.get("/sms/check", users.checkSMS);
 
   //Generate QR code
   router.put("/totp/qrcode", users.qrcode);
