@@ -676,8 +676,8 @@ exports.verifyTOTP = async (req, res) => {
   const { email, token } = req.body;
 
   User.findAll({ where: { email: email } })
-    .then((data) => {
-      const secret = data[0].qr_secret;
+    .then((users) => {
+      const secret = users[0].qr_secret;
       const verified = speakeasy.totp.verify({
         secret,
         encoding: "base32",
@@ -694,18 +694,20 @@ exports.verifyTOTP = async (req, res) => {
         })
           .then((num) => {
             if (num == 1) {
-              res.json({ verified: true });
+              res.json({
+                verified: true,
+                enable_sms: users[0].dataValues.enable_sms,
+              });
             } else {
               res.send({
-                result: num,
-                message: `Cannot update QR sercret code with email=${email}. Maybe User email was not found!`,
+                verified: false
               });
             }
           })
           .catch((err) => {
+            console.err(err);
             res.status(500).send({
-              result: 3,
-              message: err,
+              message: "Some error occurred while retrieving users.",
             });
           });
       } else {
@@ -715,8 +717,9 @@ exports.verifyTOTP = async (req, res) => {
       }
     })
     .catch((err) => {
+      console.error(err);
       res.status(500).send({
-        message: err.message || "Some error occurred while retrieving users.",
+        message: "Some error occurred while retrieving users.",
       });
     });
 };
