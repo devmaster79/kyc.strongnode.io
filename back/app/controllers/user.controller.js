@@ -661,23 +661,13 @@ exports.qrcode = async (req, res) => {
     where: { email: email },
   })
     .then((num) => {
-      if (num == 1) {
-        res.send({
-          secret: temp_secret.base32,
-          url: totp_qrcode,
-        });
-      } else {
-        res.send({
-          result: num,
-          message: `Cannot generate QR code with email=${email}. Maybe User email was not found!`,
-        });
-      }
+      res.send({
+        url: totp_qrcode,
+      });
     })
     .catch((err) => {
-      res.status(500).send({
-        result: 3,
-        message: err,
-      });
+      console.error(err);
+      res.status(500).send({});
     });
 };
 
