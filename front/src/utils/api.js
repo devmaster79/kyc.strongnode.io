@@ -117,12 +117,13 @@ const sendSMS = async (number, email) => {
   return axios(config);
 };
 
-const checkSMS = async (email) => {
+const checkSMS = async (email, smscode) => {
   const config = {
     url: check_sms_url,
     method: 'GET',
     params: {
-      email: email
+      email,
+      smscode
     }
   };
   return axios(config);
