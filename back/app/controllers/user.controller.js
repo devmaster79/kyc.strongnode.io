@@ -287,6 +287,10 @@ exports.signin = async (req, res) => {
   }
 
   try {
+    // TODO: security holes:
+    // 1. when email is found, the request is slower
+    // without limiting the maximum trials a hacker could retrieve the registered emails.
+    // 2. with enough trials a hacker could sign in
     const user = await User.findOne({ where: { email: req.body.email } });
 
     const comparePassword = await passwordService.verifyPasswordHash(user.dataValues.password, req.body.password)
@@ -305,30 +309,32 @@ exports.signin = async (req, res) => {
         expiresIn: "168h",
       }
     );
-    // Create a User password
+
     const data = {
       token: token,
     };
 
-    const ret = await User.update(data, {
+    const numberOfUpdatedUsers = await User.update(data, {
       where: { email: req.body.email },
     });
 
-    if (ret == 1) {
+    if (numberOfUpdatedUsers === 1) {
       res.send({
         message: "Logged in successfully",
         token: token,
         user_name: user.dataValues.user_name,
+        enable_totp: user.dataValues.enable_totp,
+        enable_sms: user.dataValues.enable_sms,
+        // todo add stuff here
       });
     } else {
-      res.send({
-        message: `Cannot update token with user email=${req.body.email}.`,
-      });
-      return;
+      throw `Cannot update token with user email=${req.body.email}.`
     }
   } catch (err) {
+    console.error(err);
     res.status(500).send({
-      message: err.message,
+      // TODO: error message may reveal security holes
+      message: "Something went wrong",
     });
   }
 };
