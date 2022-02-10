@@ -14,6 +14,7 @@ const md5 = require("md5");
 const fs = require("fs");
 const communicationService = require('./../services/communication.services')
 const passwordService = require('./../services/password.services')
+const userService = require('./../services/user.services')
 
 dotenv.config();
 
@@ -634,15 +635,14 @@ exports.sendSMS = (req, res) => {
 exports.getUser = (req, res) => {
   const para_email = req.query.email;
 
-  User.findAll({ where: { email: para_email } })
-    .then((data) => {
-      res.send(data);
+  userService.getUsersPublicData({ email: para_email }).then((data) => {
+    res.send(data)
+  })
+  .catch((err) => {
+    res.status(500).send({
+      message: err.message || "Some error occurred while retrieving users."
     })
-    .catch((err) => {
-      res.status(500).send({
-        message: err.message || "Some error occurred while retrieving users.",
-      });
-    });
+  })
 };
 
 //Generate QR code for TOTP
