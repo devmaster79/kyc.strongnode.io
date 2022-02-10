@@ -25,8 +25,8 @@ function SigninSMS() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    checkSMS(email).then((r) => {
-      if (smscode === r.data[0].smscode) {
+    checkSMS(email, smscode).then((r) => {
+      if (r.success) {
         navigate('/dashboard/app');
       } else {
         setShowError(true);
