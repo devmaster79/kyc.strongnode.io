@@ -11,7 +11,7 @@ import SentEmail from './pages/sentemail';
 import MagicLink from './pages/magiclink';
 import SigninPass from './pages/signinpass';
 import SigninTwoStep from './pages/signintwostep';
-import SigninSMS from './pages/singinsms';
+import SigninSMS from './pages/signinsms';
 import CreateAccountPassword from './pages/createaccountpassword';
 import PrivateSaleInterestForm from './pages/privatesaleinterestform';
 import KYC from './pages/kyc';
