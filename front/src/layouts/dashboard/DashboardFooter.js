@@ -1,7 +1,9 @@
 import { useState, useEffect, useCallback } from 'react';
-import SvgIconStyle from 'components/SvgIconStyle';
-import { styled } from '@material-ui/core/styles';
-import { Box, Stack, AppBar, Toolbar, IconButton, Typography, Divider } from '@material-ui/core';
+import styled from '@material-ui/core/styles/styled';
+import Stack from '@material-ui/core/Stack';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
 import useCollapseDrawer from '../../hooks/useCollapseDrawer';
 import { useNavigate } from 'react-router-dom';
 import ThemeSwitch from 'components/ThemeSwitch';

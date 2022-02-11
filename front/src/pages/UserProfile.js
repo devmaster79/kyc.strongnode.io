@@ -1,18 +1,16 @@
 import { useSnackbar } from 'notistack5';
 import { useNavigate } from 'react-router-dom';
-import {
-  Container,
-  Box,
-  Stack,
-  Button,
-  Grid,
-  Modal,
-  TextField,
-  MenuItem,
-  Switch,
-  FormControlLabel
-} from '@material-ui/core';
-import { styled } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
+import Box from '@material-ui/core/Box';
+import Stack from '@material-ui/core/Stack';
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+import Modal from '@material-ui/core/Modal';
+import TextField from '@material-ui/core/TextField';
+import MenuItem from '@material-ui/core/MenuItem';
+import Switch from '@material-ui/core/Switch';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import styled from '@material-ui/core/styles/styled';
 import { useState, useEffect, useCallback } from 'react';
 import axios from 'utils/axios';
 import {

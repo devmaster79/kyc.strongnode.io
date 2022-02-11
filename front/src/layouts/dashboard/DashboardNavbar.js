@@ -1,15 +1,13 @@
 import SvgIconStyle from 'components/SvgIconStyle';
-import { styled } from '@material-ui/core/styles';
-import {
-  Box,
-  Stack,
-  AppBar,
-  Toolbar,
-  IconButton,
-  Typography,
-  Badge,
-  Hidden
-} from '@material-ui/core';
+import styled from '@material-ui/core/styles/styled';
+import Box from '@material-ui/core/Box';
+import Stack from '@material-ui/core/Stack';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import IconButton from '@material-ui/core/IconButton';
+import Typography from '@material-ui/core/Typography';
+import Badge from '@material-ui/core/Badge';
+import Hidden from '@material-ui/core/Hidden';
 import useCollapseDrawer from '../../hooks/useCollapseDrawer';
 import AccountPopover from './AccountPopover';
 import { useState, useEffect } from 'react';

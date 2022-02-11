@@ -1,7 +1,7 @@
-import { merge } from 'lodash';
+import merge from 'lodash/merge';
 import ReactApexChart from 'react-apexcharts';
-import { Stack } from '@material-ui/core';
-import { useTheme, styled } from '@material-ui/core/styles';
+import Stack from '@material-ui/core/Stack';
+import { useTheme } from '@material-ui/core/styles';
 // import { fNumber } from '../../../utils/formatNumber';
 //
 import BaseOptionChart from './BaseOptionChart';

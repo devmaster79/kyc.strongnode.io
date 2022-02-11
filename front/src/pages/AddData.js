@@ -1,6 +1,6 @@
 import { useSnackbar } from 'notistack5';
 import { Container, Box, Stack, Button, Select, TextField, MenuItem } from '@material-ui/core';
-import { styled } from '@material-ui/core/styles';
+import styled from '@material-ui/core/styles/styled';
 import { useState, useEffect } from 'react';
 import axios from 'utils/axios';
 import { historyAction } from '../utils/api';
