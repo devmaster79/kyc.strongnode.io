@@ -5,7 +5,7 @@ import Button from '../components/Button';
 import EntryCard from '../components/EntryCard';
 import Input from '../components/Input';
 import InputGroup from '../components/InputGroup';
-import { checkSMS, createQR, verifyTOTP } from '../utils/api';
+import { createQR, verifyTOTP } from '../utils/api';
 import useLocalStorage from 'hooks/useLocalStorage';
 
 function SigninTwoStep() {
