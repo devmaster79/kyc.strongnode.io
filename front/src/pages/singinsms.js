@@ -26,6 +26,8 @@ function SigninSMS() {
   const handleSubmit = (event) => {
     event.preventDefault();
     checkSMS(email).then((r) => {
+      // todo, major issue.
+      // todo when user enters wrong SMS code, he can just lookup in the network tab to see the sms code from DB. 🙈
       if (smscode === r.data[0].smscode) {
         navigate('/dashboard/app');
       } else {
