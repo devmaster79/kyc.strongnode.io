@@ -12,9 +12,25 @@ import { checkSMS } from '../utils/api';
 
 function Signin() {
   const navigate = useNavigate();
-
   const [email, setEmail] = useState('');
   const [showError, setShowError] = useState(false);
+  const magicLogin = useCallback(
+    async (data) => {
+      const email = data.email;
+      try {
+        localStorage.setItem('email', email);
+        navigate('/magiclink');
+        await magic.auth.loginWithMagicLink({
+          email: email,
+          redirectURI: new URL('/signinpass', window.location.origin).href,
+          showUI: false
+        });
+      } catch (err) {
+        console.log('Error for sending magic link', err);
+      }
+    },
+    [email]
+  );
 
   const initFormState = {
     email: ''
@@ -38,24 +54,6 @@ function Signin() {
     });
     setSubmitting(false);
   };
-
-  const magicLogin = useCallback(
-    async (data) => {
-      const email = data.email;
-      try {
-        localStorage.setItem('email', email);
-        navigate('/magiclink');
-        await magic.auth.loginWithMagicLink({
-          email: email,
-          redirectURI: new URL('/signinpass', window.location.origin).href,
-          showUI: false
-        });
-      } catch (err) {
-        console.log('Error for sending magic link', err);
-      }
-    },
-    [email]
-  );
 
   const resetPassStyle = {
     color: '#1DF4F6',
