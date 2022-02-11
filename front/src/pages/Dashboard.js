@@ -1,17 +1,15 @@
 import * as React from 'react';
 import { useSnackbar } from 'notistack5';
 import axios from 'axios';
-import {
-  Container,
-  Typography,
-  Box,
-  Stack,
-  Button,
-  Grid,
-  Divider,
-  LinearProgress
-} from '@material-ui/core';
-import { styled } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
+import Typography from '@material-ui/core/Typography';
+import Box from '@material-ui/core/Box';
+import Stack from '@material-ui/core/Stack';
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+import Divider from '@material-ui/core/Divider';
+import LinearProgress from '@material-ui/core/LinearProgress';
+import styled from '@material-ui/core/styles/styled';
 import { useState, useEffect, useCallback, useRef } from 'react';
 import Status from 'components/Status';
 import VestTable from 'components/dashboard/VestTable';

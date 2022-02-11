@@ -1,9 +1,13 @@
 import Slider from 'react-slick';
 import { useRef, useEffect, useState } from 'react';
-import axios from 'utils/axios';
 // material
-import { useTheme, styled } from '@material-ui/core/styles';
-import { Box, Stack, Typography, Button } from '@material-ui/core';
+import useTheme from '@material-ui/core/styles/useTheme';
+import styled from '@material-ui/core/styles/styled';
+import Box from '@material-ui/core/Box';
+import Stack from '@material-ui/core/Stack';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+
 import SvgIconStyle from 'components/SvgIconStyle';
 //
 import { CarouselControlsPaging2 } from './controls';
