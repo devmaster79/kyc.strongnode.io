@@ -8,29 +8,25 @@ import Input from '../components/Input';
 import ValidatedField from '../components/ValidatedField';
 import { magic } from '../utils/index';
 import { singinSchema } from '../static/formSchemas';
-import { checkSMS } from '../utils/api';
 
 function Signin() {
   const navigate = useNavigate();
-  const [email, setEmail] = useState('');
   const [showError, setShowError] = useState(false);
-  const magicLogin = useCallback(
-    async (data) => {
-      const email = data.email;
-      try {
-        localStorage.setItem('email', email);
-        navigate('/magiclink');
-        await magic.auth.loginWithMagicLink({
-          email: email,
-          redirectURI: new URL('/signinpass', window.location.origin).href,
-          showUI: false
-        });
-      } catch (err) {
-        console.log('Error for sending magic link', err);
-      }
-    },
-    [email]
-  );
+  const magicLogin = async ({ email }) => {
+    setShowError(false);
+    try {
+      localStorage.setItem('email', email);
+      navigate('/magiclink');
+      await magic.auth.loginWithMagicLink({
+        email: email,
+        redirectURI: new URL('/signinpass', window.location.origin).href,
+        showUI: false
+      });
+    } catch (err) {
+      console.log('Error for sending magic link', err);
+      setShowError(true);
+    }
+  };
 
   const initFormState = {
     email: ''
@@ -42,15 +38,8 @@ function Signin() {
 
   const handleFormSubmit = (data, { setSubmitting }) => {
     setSubmitting(true);
-    // make async call to submit registration data here
-    data.email = data.email.toLowerCase();
-    const t_email = data.email;
-    checkSMS(t_email).then((r) => {
-      if (r.data.length !== 0 && r.data[0].email === t_email) {
-        magicLogin(data);
-      } else {
-        setShowError(true);
-      }
+    await magicLogin({
+      email: data.email.toLowerCase()
     });
     setSubmitting(false);
   };
