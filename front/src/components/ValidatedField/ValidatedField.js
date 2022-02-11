@@ -48,6 +48,27 @@ const ValidatedField = (props) => {
   const { error, touched } = meta;
   const errorText = error && touched ? error : '';
 
+  const _inValidMsg = " can't be Emtpy.";
+  let _errorText;
+  switch (field.name) {
+    case 'email':
+      _errorText = 'Email';
+      break;
+    case 'first_name':
+      _errorText = 'First Name';
+      break;
+    case 'last_name':
+      _errorText = 'Last Name';
+      break;
+    case 'user_name':
+      _errorText = 'User Name';
+      break;
+  }
+  _errorText = _errorText + _inValidMsg;
+  if (field.name === 'termsAgreement') {
+    _errorText = 'You should agree terms and condition for sign up.';
+  }
+
   return (
     <>
       <InputGroup>
@@ -73,10 +94,10 @@ const ValidatedField = (props) => {
           {field.name === 'termsAgreement' && <TermsText />}
         </div>
       </InputGroup>
-      {touched && field.name !== 'termsAgreement' && (
+      {touched && (
         <ErrorWrapper show={error}>
           <ErrorIcon width={12} />
-          <p>{errorText}</p>
+          <p>{_errorText}</p>
         </ErrorWrapper>
       )}
     </>
