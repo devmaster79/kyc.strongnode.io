@@ -230,8 +230,8 @@ export default function Dashboard() {
   };
 
   const check2faCode = () => {
-    checkSMS(useremail).then((r) => {
-      if (smscode === r.data[0].smscode) {
+    checkSMS(useremail, smscode).then((r) => {
+      if (r.success) {
         setFieldValue('enable_sms', true);
         const { enable_sms } = values;
         const data = {
