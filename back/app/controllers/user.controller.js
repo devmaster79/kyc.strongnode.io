@@ -571,7 +571,12 @@ exports.sendSMS = (req, res) => {
   // AWS.config.credentials = credentials;
   AWS.config.update({ region: aws_region });
 
-  var pinpoint = new AWS.Pinpoint();
+  var pinpointOptions = {}
+  if (process.env.AWS_LOCALSTACK_URL != '') {
+    pinpointOptions.endpoint = process.env.AWS_LOCALSTACK_URL
+  }
+
+  var pinpoint = new AWS.Pinpoint(pinpointOptions);
 
   var params = {
     ApplicationId: applicationId,
