@@ -1,6 +1,7 @@
 module.exports = (app) => {
   const users = require("../controllers/user.controller.js");
-  const auth, { MODE_FULL, MODE_QR, MODE_SMS } = require("../middleware/auth");
+  const auth = require("../middleware/auth");
+  const { MODE_FULL, MODE_QR, MODE_SMS } = auth;
   const multer = require('multer')
   const upload = multer({ dest: 'uploads/' })
   const router = require("express").Router();
