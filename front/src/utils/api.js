@@ -117,7 +117,26 @@ const sendSMS = async (number, email) => {
   return axios(config);
 };
 
-const checkSMS = async (email, smscode) => {
+/**
+ * Check SMS code validity but doesn't do anything else.
+ * useful for profile SMS auth setup.
+ */
+const testAuthSMS = async (email, smscode) => {
+  const config = {
+    url: check_sms_url,
+    method: 'GET',
+    params: {
+      email,
+      smscode
+    }
+  };
+  return axios(config);
+};
+
+/**
+ * Check SMS code validity and progress the auth flow in case of valid sms.
+ */
+const authSMS = async (email, smscode) => {
   const config = {
     url: check_sms_url,
     method: 'GET',
@@ -211,7 +230,8 @@ export {
   createInvestor,
   signin,
   sendSMS,
-  checkSMS,
+  testAuthSMS,
+  authSMS,
   createQR,
   verifyTOTP,
   historyAction,

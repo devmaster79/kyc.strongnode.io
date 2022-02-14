@@ -19,6 +19,7 @@ function SigninTwoStep() {
     event.preventDefault();
     verifyTOTP(email, totp).then((r) => {
       if (r.data.verified) {
+        localStorage.setItem('token', r.data.token);
         if (r.data.enable_sms === true) {
           navigate('/signinsms');
         } else {

@@ -20,7 +20,7 @@ import {
   createQR,
   verifyTOTP,
   sendSMS,
-  checkSMS,
+  testAuthSMS,
   uploadProfileImage
 } from '../utils/api';
 import * as Yup from 'yup';
@@ -230,8 +230,8 @@ export default function Dashboard() {
   };
 
   const check2faCode = () => {
-    checkSMS(useremail, smscode).then((r) => {
-      if (r.success) {
+    testAuthSMS(useremail, smscode).then((r) => {
+      if (r.data.success) {
         setFieldValue('enable_sms', true);
         const { enable_sms } = values;
         const data = {

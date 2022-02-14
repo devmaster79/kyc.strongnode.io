@@ -18,6 +18,7 @@ const passwordService = require('./../services/password.services')
 dotenv.config();
 
 var AWS = require("aws-sdk");
+const { MODE_QR, MODE_SMS, MODE_FULL, getTokenSecret, MODE_QR_EXPIRES_IN, MODE_SMS_EXPIRES_IN, MODE_FULL_EXPIRES_IN } = require("../middleware/auth");
 var rand, host, link;
 
 // Create and Save a new User
@@ -68,6 +69,7 @@ exports.create = async (req, res) => {
       }
 
       try {
+        // TODO: add limit of maximum trials
         const user = await User.findOne({
           where: {
             [Op.or]: [{ user_name: req.body.user_name }, { email: req.body.email }],
@@ -188,11 +190,11 @@ exports.resetPassword = async (req, res) => {
 
     if (user) {
       const token = jwt.sign(
-          { user_name: user?.dataValues.user_name, email: user?.dataValues.email },
-          process.env.TOKEN_SECRET,
-          {
-            expiresIn: "168h",
-          }
+        { user_name: user?.dataValues.user_name, email: user?.dataValues.email },
+        getTokenSecret(MODE_FULL), // after reset password he will be logged in fully but maybe we should init 2fa...
+        {
+          expiresIn: "168h",
+        }
       )
 
       console.log('creating a hash')
@@ -212,7 +214,7 @@ exports.resetPassword = async (req, res) => {
 
         res.send({ message: 'Successfully changed a password.', status: 'success', token: token, username: user?.dataValues.user_name })
       } else {
-        res.send({message: 'Some error occurred during the update of user.', status: 'failed'})
+        res.send({ message: 'Some error occurred during the update of user.', status: 'failed' })
       }
 
     } else {
@@ -234,6 +236,7 @@ exports.createPassword = async (req, res) => {
   }
 
   try {
+    // TODO: limit maximum trials.
     const user = await User.findOne({
       where: { password_token: req.body.password_token },
     });
@@ -245,7 +248,8 @@ exports.createPassword = async (req, res) => {
 
     const token = jwt.sign(
       { user_name: user?.dataValues.user_name, email: user?.dataValues.email },
-      process.env.TOKEN_SECRET,
+      // New users should be logged in fully
+      getTokenSecret(MODE_FULL),
       {
         expiresIn: "168h",
       }
@@ -293,10 +297,9 @@ exports.signin = async (req, res) => {
     // 1. when email is found, the request is slower
     // without limiting the maximum trials a hacker could retrieve the registered emails.
     // 2. with enough trials a hacker could sign in
+
     const user = await User.findOne({ where: { email: req.body.email } });
-
     const comparePassword = await passwordService.verifyPasswordHash(user.dataValues.password, req.body.password)
-
     if (!comparePassword) {
       res.status(401).send({
         message: `Wrong password.`,
@@ -304,22 +307,34 @@ exports.signin = async (req, res) => {
       return;
     }
 
+    let token_secret_mode;
+    let token_expiration;
+    if (user.dataValues.enable_totp) {
+      token_secret_mode = MODE_QR;
+      token_expiration = MODE_QR_EXPIRES_IN;
+    } else if (user.dataValues.enable_sms) {
+      token_secret_mode = MODE_SMS;
+      token_expiration = MODE_SMS_EXPIRES_IN;
+    } else {
+      token_secret_mode = MODE_FULL;
+      token_expiration = MODE_FULL_EXPIRES_IN;
+    }
+
     const token = jwt.sign(
       { user_name: user.dataValues.user_name, email: user.dataValues.email },
-      process.env.TOKEN_SECRET,
+      getTokenSecret(token_secret_mode),
       {
-        expiresIn: "168h",
+        expiresIn: token_expiration,
       }
     );
 
+    // Update token
     const data = {
       token: token,
     };
-
     const numberOfUpdatedUsers = await User.update(data, {
       where: { email: req.body.email },
     });
-
     if (numberOfUpdatedUsers === 1) {
       res.send({
         message: "Logged in successfully",
@@ -327,7 +342,6 @@ exports.signin = async (req, res) => {
         user_name: user.dataValues.user_name,
         enable_totp: user.dataValues.enable_totp,
         enable_sms: user.dataValues.enable_sms,
-        // todo add stuff here
       });
     } else {
       throw `Cannot update token with user email=${req.body.email}.`
@@ -335,7 +349,6 @@ exports.signin = async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).send({
-      // TODO: error message may reveal security holes
       message: "Something went wrong",
     });
   }
@@ -419,33 +432,6 @@ exports.createInvestor = (req, res) => {
     .catch((err) => {
       res.status(500).send({
         message: "Error creating Investor with username=" + req.user.user_name,
-      });
-    });
-};
-
-// Retrieve all Users from the database.
-exports.findAll = (req, res) => {
-  // Validate request
-  if (!req.user) {
-    res.status(400).send({
-      message: "Content can not be empty!",
-    });
-    return;
-  }
-
-  const first_name = req.query.first_name;
-  const condition = first_name
-    ? { first_name: { [Op.like]: `%${first_name}%` } }
-    : null;
-
-  User.findAll({ where: condition })
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      res.status(500).send({
-        // TODO: error message may reveal security holes
-        message: err.message || "Some error occurred while retrieving users.",
       });
     });
 };
@@ -615,54 +601,94 @@ exports.sendSMS = (req, res) => {
         smscode: OTP,
       };
       User.update(user_sms, {
-        where: { email: req.body.email },
+        where: { email: req.user.email },
       })
         .then((num) => {
-          if (num == 1) {
-            res.send({
-              result: 1,
-              message: "Sent SMS Code successfully.",
-            });
-          } else {
-            res.send({
-              result: 2,
-              message: `Cannot send SMS code with email=${req.body.email}. Maybe User email was not found or req.body is empty!`,
-            });
+          if (num === 0) {
+            console.error(`user with email ${req.user.email} was not found during sending sms`)
           }
+          res.send({
+            message: "Sent SMS Code successfully.",
+          });
         })
-        .catch((err) => {
+        .catch((_err) => {
           res.status(500).send({
-            result: 3,
-            message: err,
+            message: "Something went wrong.",
           });
         });
     }
   });
 };
 
-//Get Userinfo from DB by email
-exports.checkSMS = (req, res) => {
-  const para_email = req.query.email;
+// When user sets SMS 2FA method, we have to test it first
+exports.testAuthSMS = (req, res) => {
+  const email = req.user.email;
   const para_smscode = req.query.smscode;
 
-  User.findAll({ where: { email: para_email } })
+  User.findAll({ where: { email } })
     .then((data) => {
       if (data.length === 1 && data[0].smscode === para_smscode) {
         res.send({
-          success: true,
-          message: "SMS validated successfully"
+          success: true
         });
       } else {
         res.send({
-          success: false,
-          message: "Wrong SMS code",
+          success: false
         });
       }
     })
     .catch((err) => {
+      console.error(err);
       res.status(500).send({
-        // TODO: error message may reveal security holes
-        message: err.message || "Some error occurred while retrieving users.",
+        message: "Something went wrong.",
+      });
+    });
+};
+
+// When user signs in with SMS 2FA method
+exports.authSMS = (req, res) => {
+  const { email } = req.user;
+  const para_smscode = req.query.smscode;
+
+  User.findAll({ where: { email } })
+    .then((data) => {
+      if (data.length === 1 && data[0].smscode === para_smscode) {
+
+
+        // determine the next stage of user auth flow
+        let token_secret_mode;
+        let token_expiration;
+        if (user.dataValues.enable_sms) {
+          token_secret_mode = MODE_SMS;
+          token_expiration = MODE_SMS_EXPIRES_IN;
+        } else {
+          token_secret_mode = MODE_FULL;
+          token_expiration = MODE_FULL_EXPIRES_IN;
+        }
+        // generate token for the next stage
+        const next_token = jwt.sign(
+          { user_name: user.dataValues.user_name, email: user.dataValues.email },
+          getTokenSecret(token_secret_mode),
+          {
+            expiresIn: token_expiration,
+          }
+        );
+        // update token and send to the user
+        User.update({ token: next_token }, { where: { email } })
+        res.send({
+          success: true,
+          token: next_token,
+        });
+      } else {
+        res.send({
+          success: false
+        });
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send({
+        message: "Something went wrong.",
       });
     });
 };
@@ -680,7 +706,7 @@ exports.qrcode = async (req, res) => {
   };
 
   User.update(db_qr, {
-    where: { email: email },
+    where: { email: email, user_name: req.user.user_name },
   })
     .then((num) => {
       res.send({
@@ -707,7 +733,30 @@ exports.verifyTOTP = async (req, res) => {
       });
 
       if (verified) {
+
+
+        // determine the next stage of user auth flow
+        let token_secret_mode;
+        let token_expiration;
+        if (user.dataValues.enable_sms) {
+          token_secret_mode = MODE_SMS;
+          token_expiration = MODE_SMS_EXPIRES_IN;
+        } else {
+          token_secret_mode = MODE_FULL;
+          token_expiration = MODE_FULL_EXPIRES_IN;
+        }
+        // generate token for the next stage
+        const next_token = jwt.sign(
+          { user_name: user.dataValues.user_name, email: user.dataValues.email },
+          getTokenSecret(token_secret_mode),
+          {
+            expiresIn: token_expiration,
+          }
+        );
+
         const db_secret = {
+          token: next_token,
+          // TODO: review these fields, it seems unnecessary
           qr_secret: secret,
           enable_totp: true,
         };
@@ -717,6 +766,7 @@ exports.verifyTOTP = async (req, res) => {
           .then((num) => {
             if (num == 1) {
               res.json({
+                token: next_token,
                 verified: true,
                 enable_sms: users[0].dataValues.enable_sms,
               });
@@ -749,7 +799,7 @@ exports.verifyTOTP = async (req, res) => {
 //Verify Email
 exports.verifyEmail = async (req, res) => {
   // Validate request
-  if (!req.body.password_token && req.body.password_token === rand) {
+  if (!req.body.password_token) {
     res.status(400).send({
       message: "Content can not be empty or Bad Request",
     });
@@ -808,9 +858,7 @@ exports.verifyEmail = async (req, res) => {
 
 //Get profile
 exports.getProfile = (req, res) => {
-  const para_email = req.query.email;
-
-  User.findAll({ where: { email: para_email } })
+  User.findAll({ where: { email: req.user.email } })
     .then((data) => {
       // TODO: possible data leak, it would be good to show only the required fields
       // Also /profile/get should return only 1 user not a list of users
@@ -828,7 +876,7 @@ exports.getProfile = (req, res) => {
 
 //Update profile
 exports.updateProfile = async (req, res) => {
-  const { email } = req.body;
+  const { email } = req.user;
   const { first_name, last_name, user_name, twitter_id, telegram_id, wallet_address, enable_totp, enable_sms } = req.body;
 
   if (!email) {
@@ -873,7 +921,8 @@ exports.updateProfile = async (req, res) => {
 
 //Upload profile Image
 exports.uploadImg = async (req, res) => {
-  const { email, user_name, image_data } = req.body;
+  const { email } = req.user;
+  const { user_name, image_data } = req.body;
 
   if (!email) {
     res.status(400).send({
@@ -955,22 +1004,22 @@ exports.uploadImg = async (req, res) => {
     User.update(data, {
       where: { email: email },
     })
-    .then((num) => {
-      if (num == 1) {
-        res.send({
-          message: "User profile image was uploaded successfully.",
-        });
-      } else {
-        res.send({
+      .then((num) => {
+        if (num == 1) {
+          res.send({
+            message: "User profile image was uploaded successfully.",
+          });
+        } else {
+          res.send({
             message: "Cannot upload User profile image with username=" + user_name,
+          });
+        }
+      })
+      .catch((err) => {
+        res.status(500).send({
+          message: err,
         });
-      }
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: err,
       });
-    });
   };
 
 };
@@ -982,12 +1031,12 @@ exports.addData = async (req, res) => {
     token_amount: req.body.value,
     action_type: req.body.type,
     date: Date.now(),
-    createdAt : Date.now(),
-    updatedAt : Date.now(),
+    createdAt: Date.now(),
+    updatedAt: Date.now(),
   };
 
   const history = new History(data);
-  history.save().then(()=>{
+  history.save().then(() => {
     console.log("success");
     res.send("success");
   })

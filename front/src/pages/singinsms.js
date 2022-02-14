@@ -9,7 +9,7 @@ import Input from '../components/Input';
 import InputGroup from '../components/InputGroup';
 import { ReactComponent as LockIcon } from '../icons/lock.svg';
 import PhoneInput from 'react-phone-number-input';
-import { sendSMS, checkSMS } from '../utils/api';
+import { sendSMS, authSMS } from '../utils/api';
 import 'react-phone-number-input/style.css';
 import useLocalStorage from 'hooks/useLocalStorage';
 
@@ -26,8 +26,9 @@ function SigninSMS() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    checkSMS(email, smsCode).then((r) => {
-      if (r.success) {
+    authSMS(email, smsCode).then((r) => {
+      if (r.data.success) {
+        localStorage.setItem('token', r.data.token);
         navigate('/dashboard/app');
       } else {
         setShowError(true);
@@ -95,8 +96,9 @@ function SigninSMS() {
               type="submit"
               full
               disabled={smsCode.length < LENGTH_OF_SMS_CODE || loading}
-              children={"CONFIRM"}
-            />
+            >
+              CONFIRM
+            </Button>
           </form>
         </Box>
       </EntryCard>
