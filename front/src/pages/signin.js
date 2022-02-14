@@ -38,10 +38,13 @@ function Signin() {
 
   const handleFormSubmit = (data, { setSubmitting }) => {
     setSubmitting(true);
-    await magicLogin({
+    magicLogin({
       email: data.email.toLowerCase()
-    });
-    setSubmitting(false);
+    })
+      .then(() => {
+        setSubmitting(false);
+      })
+      .catch(err => console.error(err))
   };
 
   const resetPassStyle = {
