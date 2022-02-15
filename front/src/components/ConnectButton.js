@@ -40,7 +40,6 @@ export default function ConnectButton() {
       {account ? (
         <Button variant="contained" onClick={() => deactivateUser}>
           {`${account.slice(0, 6)}...${account.slice(-6)}`}
-          {(console.log(account), console.log(tokens), console.log(SneBalance))}
         </Button>
       ) : (
         <Button variant="contained" onClick={activateBrowserWalletUser}>

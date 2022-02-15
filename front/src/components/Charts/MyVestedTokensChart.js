@@ -49,7 +49,7 @@ export default function AppCurrentDownload(props) {
       series={props.chartData}
       options={chartOptions}
       width={140}
-      height={140}
+      height={140 + Math.random()}
     />
   );
 }

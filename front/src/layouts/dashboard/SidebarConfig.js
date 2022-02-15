@@ -20,7 +20,8 @@ const sidebarConfig = [
       // { title: 'Growth', path: '/dashboard/growth', icon: getIcon('growth') },
       // { title: 'Sync', path: '/dashboard/sync', icon: getIcon('sync') },
       // { title: 'Shield', path: '/dashboard/shield', icon: getIcon('shield') },
-    ]
+    ],
+    subheader:'dashboard'
   }
 ];
 

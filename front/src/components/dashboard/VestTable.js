@@ -62,10 +62,8 @@ export default function GroupingFixedHeader({ history, setRefresh }) {
   const [editflag, setEditFlag] = useState(false);
   const [curdata, setCurData] = useState(-1);
   const [tokenamount, setTokenAmount] = useState();
-  console.log(history);
 
   const handleChangePage = (event, newPage) => {
-    console.log(newPage);
     setPage(newPage);
   };
 
@@ -80,15 +78,12 @@ export default function GroupingFixedHeader({ history, setRefresh }) {
       return;
     }
     const url = process.env.REACT_APP_BASE_URL + `/api/history/update`;
-    console.log('server url: ', url);
     const data = {
       _id: row.id,
       token_amount: tokenamount,
       date: Date.now()
     };
     historyAction(url, data).then((r) => {
-      console.log(r);
-
       if (r.status === 200) {
         enqueueSnackbar('History updated successfully', {
           variant: 'success'
@@ -102,12 +97,10 @@ export default function GroupingFixedHeader({ history, setRefresh }) {
 
   const onDel = (row) => {
     const url = process.env.REACT_APP_BASE_URL + `/api/history/delete`;
-    console.log('server url: ', url);
     const data = {
       _id: row.id
     };
     historyAction(url, data).then((r) => {
-      console.log(r);
       if (r.status === 200) {
         enqueueSnackbar('History deleted successfully', {
           variant: 'success'
