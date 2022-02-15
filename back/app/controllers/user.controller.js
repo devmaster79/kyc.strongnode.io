@@ -104,9 +104,9 @@ exports.create = async (req, res) => {
         });
       } catch (err) {
         res.status(500).send({
-          // TODO: error message may reveal security holes
-          message: err.message || "Some error occurred while creating the User.",
+          message: "Something went wrong.",
         });
+        console.error(err);
       }
     }
   })();
@@ -347,10 +347,10 @@ exports.signin = async (req, res) => {
       throw `Cannot update token with user email=${req.body.email}.`
     }
   } catch (err) {
-    console.error(err);
     res.status(500).send({
       message: "Something went wrong",
     });
+    console.error(`Possible login trial to an unregistered account, because of error: ${err}`);
   }
 };
 
