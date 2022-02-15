@@ -599,6 +599,13 @@ exports.sendSMS = (req, res) => {
   };
 
   pinpoint.sendMessages(params, function (err, data) {
+    // TODO: add automated integrated tests for SMS auth.
+    // To test SMSes locally, use these:
+    // ```
+    // console.log(OTP);
+    // err = false
+    // ```
+    // this will bypass pinpoint error and logs OTP to the server logs.
     if (err) {
       res.end(JSON.stringify({ Error: err }));
     } else {
@@ -656,14 +663,13 @@ exports.authSMS = (req, res) => {
   const para_smscode = req.query.smscode;
 
   User.findAll({ where: { email } })
-    .then((data) => {
-      if (data.length === 1 && data[0].smscode === para_smscode) {
-
+    .then((users) => {
+      if (users.length === 1 && users[0].smscode === para_smscode) {
 
         // determine the next stage of user auth flow
         let token_secret_mode;
         let token_expiration;
-        if (user.dataValues.enable_sms) {
+        if (users[0].enable_sms) {
           token_secret_mode = MODE_SMS;
           token_expiration = MODE_SMS_EXPIRES_IN;
         } else {
@@ -672,7 +678,7 @@ exports.authSMS = (req, res) => {
         }
         // generate token for the next stage
         const next_token = jwt.sign(
-          { user_name: user.dataValues.user_name, email: user.dataValues.email },
+          { user_name: users[0].user_name, email: users[0].email },
           getTokenSecret(token_secret_mode),
           {
             expiresIn: token_expiration,
@@ -908,11 +914,11 @@ exports.updateProfile = async (req, res) => {
     .then((num) => {
       if (num == 1) {
         res.send({
-          message: "User profile was created successfully.",
+          message: "User profile was updated successfully.",
         });
       } else {
         res.send({
-          message: `Cannot create User profile with username=${req.user.user_name}. Maybe User profile info was not found or req.body is empty!`,
+          message: `Cannot update User profile with username=${req.user.user_name}. Maybe User profile info was not found or req.body is empty!`,
         });
       }
     })

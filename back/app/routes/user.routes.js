@@ -46,7 +46,7 @@ module.exports = (app) => {
   // SMS authentication
   router.post("/sms/send", auth(MODE_SMS, MODE_FULL), users.sendSMS);
   router.get("/sms/auth", auth(MODE_SMS), users.authSMS);
-  router.get("/sms/testAuth", auth(MODE_FULL), users.authSMS);
+  router.get("/sms/testAuth", auth(MODE_FULL), users.testAuthSMS);
 
   //Generate QR code
   router.put("/totp/qrcode", auth(MODE_QR), users.qrcode);

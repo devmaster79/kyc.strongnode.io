@@ -151,13 +151,6 @@ export default function Dashboard() {
           telegram_id,
           twitter_id
         } = values;
-        console.log(values);
-        // const formData = new FormData();
-        // formData.append("image", cover);
-        // formData.append("name", name);
-        // formData.append("description", description);
-        const url = process.env.REACT_APP_BASE_URL + `/api/users/profile/update`;
-        console.log('server url: ', url);
 
         const data = {
           email,
@@ -233,9 +226,8 @@ export default function Dashboard() {
     testAuthSMS(useremail, smscode).then((r) => {
       if (r.data.success) {
         setFieldValue('enable_sms', true);
-        const { enable_sms } = values;
         const data = {
-          enable_sms
+          enable_sms: true
         };
         updateProfile(data).then((r) => {
           if (r.status === 200) {

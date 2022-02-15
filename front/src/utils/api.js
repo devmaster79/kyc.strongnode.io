@@ -6,12 +6,13 @@ import {
   profile_url,
   investor_url,
   sms_url,
-  check_sms_url,
   qr_url,
   verify_qr_url,
   signin_url,
   password_reset_url,
-  password_reset_submit_url
+  password_reset_submit_url,
+  test_auth_sms_url,
+  auth_sms_url
 } from "./config";
 import {
   get_news,
@@ -112,7 +113,8 @@ const sendSMS = async (number, email) => {
     data: {
       number: number,
       email: email
-    }
+    },
+    headers: { Authorization: `Bearer ${token}` }
   };
   return axios(config);
 };
@@ -123,12 +125,13 @@ const sendSMS = async (number, email) => {
  */
 const testAuthSMS = async (email, smscode) => {
   const config = {
-    url: check_sms_url,
+    url: test_auth_sms_url,
     method: 'GET',
     params: {
       email,
       smscode
-    }
+    },
+    headers: { Authorization: `Bearer ${token}` }
   };
   return axios(config);
 };
@@ -138,12 +141,13 @@ const testAuthSMS = async (email, smscode) => {
  */
 const authSMS = async (email, smscode) => {
   const config = {
-    url: check_sms_url,
+    url: auth_sms_url,
     method: 'GET',
     params: {
       email,
       smscode
-    }
+    },
+    headers: { Authorization: `Bearer ${token}` }
   };
   return axios(config);
 };
@@ -154,7 +158,8 @@ const createQR = async (email) => {
     method: 'PUT',
     data: {
       email: email
-    }
+    },
+    headers: { Authorization: `Bearer ${token}` }
   };
   return axios(config);
 };
@@ -166,7 +171,8 @@ const verifyTOTP = async (email, token) => {
     data: {
       email: email,
       token: token
-    }
+    },
+    headers: { Authorization: `Bearer ${token}` }
   };
   return axios(config);
 };
@@ -185,16 +191,19 @@ const getProfile = async (email) => {
     method: 'GET',
     params: {
       email: email
-    }
+    },
+    headers: { Authorization: `Bearer ${token}` }
   };
   return axios(config);
 };
 
 const updateProfile = async (data) => {
+  console.log(data);
   const config = {
     url: update_profile,
     method: 'PUT',
-    data: data
+    data: data,
+    headers: { Authorization: `Bearer ${token}` },
   };
   return axios(config);
 };
@@ -207,7 +216,8 @@ const uploadProfileImage = async (email, user_name, img_data) => {
       email: email,
       user_name: user_name,
       image_data: img_data
-    }
+    },
+    headers: { Authorization: `Bearer ${token}` },
   };
   return axios(config);
 };
