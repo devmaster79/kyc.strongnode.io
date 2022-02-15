@@ -7,6 +7,7 @@ import { EntryPage } from './style';
 import Button from '../components/Button';
 import EntryCard from '../components/EntryCard';
 import Input from '../components/Input';
+import Line from '../components/Line';
 import ValidatedField from '../components/ValidatedField';
 import { signupSchema } from '../static/formSchemas';
 import signup from '../utils/api';
@@ -135,6 +136,7 @@ function Signup() {
                   height: '9px!important',
                   width: '9px!important'
                 }}
+                validateField={validateField}
               />
               {showError && (
                 <p style={{ marginBottom: '10px', color: 'red' }}>
