@@ -16,13 +16,14 @@ const ErrorWrapper = styled.div`
   margin-bottom: 25px;
   flex-direction: row;
   justify-content: flex-start;
+  align-items: center;
   p {
     margin-left: 8px;
-    color: white;
+    color: red;
     font-size: 12px;
   }
   > svg {
-    margin-top: 3px;
+    
   }
   > svg > path {
     fill: white;
@@ -52,19 +53,19 @@ const ValidatedField = (props) => {
   let _errorText = "";
   switch (field.name) {
     case 'email':
-      _errorText = 'Email';
+      _errorText = 'email';
       break;
     case 'first_name':
-      _errorText = 'First Name';
+      _errorText = 'first name';
       break;
     case 'last_name':
-      _errorText = 'Last Name';
+      _errorText = 'last name';
       break;
     case 'user_name':
-      _errorText = 'User Name';
+      _errorText = 'user name';
       break;
   }
-  _errorText = _inValidMsg + _errorText.toLowerCase() + ".";
+  _errorText = _inValidMsg + _errorText + ".";
   if (field.name === 'termsAgreement') {
     _errorText = 'You should agree terms and condition for sign up.';
   }
