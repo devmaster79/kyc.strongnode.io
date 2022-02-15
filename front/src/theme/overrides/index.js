@@ -1,4 +1,4 @@
-import { merge } from 'lodash';
+import merge from 'lodash/merge';
 import Lists from './Lists';
 import Button from './Button';
 
