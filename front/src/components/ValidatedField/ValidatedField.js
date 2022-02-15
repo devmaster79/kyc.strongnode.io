@@ -48,8 +48,8 @@ const ValidatedField = (props) => {
   const { error, touched } = meta;
   const errorText = error && touched ? error : '';
 
-  const _inValidMsg = " can't be Emtpy.";
-  let _errorText;
+  const _inValidMsg = "Please enter ";
+  let _errorText = "";
   switch (field.name) {
     case 'email':
       _errorText = 'Email';
@@ -64,7 +64,7 @@ const ValidatedField = (props) => {
       _errorText = 'User Name';
       break;
   }
-  _errorText = _errorText + _inValidMsg;
+  _errorText = _inValidMsg + _errorText.toLowerCase() + ".";
   if (field.name === 'termsAgreement') {
     _errorText = 'You should agree terms and condition for sign up.';
   }
