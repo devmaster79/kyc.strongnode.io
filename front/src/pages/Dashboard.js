@@ -108,8 +108,8 @@ export default function Dashboard() {
       const result = await axios.get(url, {
       });
       setUser(result.data[0]);
-      setAvailableToken(result.data[0].remaining_total_amount);
-      setLockedToken(result.data[0].locked_bonus_amount);
+      setAvailableToken(result.data[0]?.remaining_total_amount);
+      setLockedToken(result.data[0]?.locked_bonus_amount);
     }
 
     fetch();
