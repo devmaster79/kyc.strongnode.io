@@ -19,7 +19,7 @@ const verifyToken = (...token_secret_modes) => (req, res, next) => {
       req.user = decoded;
       valid_token_found = true;
       break;
-    } finally {
+    } catch(_error) {
       // do_nothing
     }
   }
