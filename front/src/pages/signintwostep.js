@@ -21,7 +21,7 @@ function SigninTwoStep() {
     verifyTOTP(email, totp).then((r) => {
       if (r.data.verified) {
         checkSMS(email).then((r) => {
-          if (r.data[0].enable_sms === true) {
+          if (r.data.enable_sms === true) {
             navigate('/signinsms');
           } else {
             navigate('/dashboard/app');
@@ -51,7 +51,7 @@ function SigninTwoStep() {
     async function fetchUser() {
       try {
         checkSMS(email).then((r) => {
-          if (r.data[0].enable_totp) {
+          if (r.data.enable_totp) {
             setShowQR(false);
           } else {
             setShowQR(true);

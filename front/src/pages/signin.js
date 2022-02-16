@@ -30,7 +30,7 @@ function Signin() {
     data.email = data.email.toLowerCase();
     const t_email = data.email;
     checkSMS(t_email).then((r) => {
-      if (r.data.length !== 0 && r.data[0].email === t_email) {
+      if (r.data.length !== 0 && r.data.email === t_email) {
         magicLogin(data);
       } else {
         setShowError(true);
