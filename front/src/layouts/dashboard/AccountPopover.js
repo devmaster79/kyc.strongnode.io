@@ -1,15 +1,16 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Avatar, Box, Stack, Typography } from '@material-ui/core';
+import Avatar from '@material-ui/core/Avatar';
+import Stack from '@material-ui/core/Stack';
+import Typography from '@material-ui/core/Typography';
 import SvgIconStyle from 'components/SvgIconStyle';
 import ConnectButton, { SneBalance } from 'components/ConnectButton';
 import * as React from 'react';
 import Popover from '@mui/material/Popover';
 import Divider from '@mui/material/Divider';
 import Button from '@mui/material/Button';
-import { styled } from '@material-ui/core/styles';
+import styled from '@material-ui/core/styles/styled';
 import { useNavigate } from 'react-router-dom';
 import { getProfile } from '../../utils/api';
-import { Link } from 'react-router-dom';
 
 const MyPopover = styled(Popover)`
   > div {

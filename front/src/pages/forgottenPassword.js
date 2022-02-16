@@ -25,18 +25,7 @@ function ForgottenPassword () {
         // sends password reset request to the BE
         await requestPasswordReset(data.email).then(async res => {
             if (res.data.length !== 0 && typeof res.data.status !== 'undefined') {
-                // debug
-                // console.log(data.email)
-
-                const magicLink = await magic.auth.loginWithMagicLink({
-                    email: data.email,
-                    redirectURI: new URL("/create-new-password", window.location.origin).href,
-                    showUI: false
-                })
                 navigate("/magiclink");
-
-                // debug
-                // console.log(magicLink)
             } else {
                 showError = true
             }

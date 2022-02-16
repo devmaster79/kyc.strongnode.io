@@ -1,4 +1,4 @@
-import { Button } from '@mui/material';
+import Button from '@mui/material/Button';
 import { useTokenList, useToken, useEthers, useEtherBalance, useTokenBalance } from '@usedapp/core';
 import { ethers } from 'ethers';
 

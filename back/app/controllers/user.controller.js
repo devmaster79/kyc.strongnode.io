@@ -14,6 +14,7 @@ const md5 = require("md5");
 const fs = require("fs");
 const communicationService = require('./../services/communication.services')
 const passwordService = require('./../services/password.services')
+const userService = require('./../services/user.services')
 
 dotenv.config();
 
