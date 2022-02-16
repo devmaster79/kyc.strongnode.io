@@ -74,8 +74,8 @@ export default function Dashboard() {
   const SneBalance = SneBalanceBigNumber && ethers.utils.formatUnits(SneBalanceBigNumber, 18);
 
   // const [vestedTokens, setVestedTokens] = useState(0);
-  const [availableToken, setAvailableToken] = useState(6);
-  const [lockedToken, setLockedToken] = useState(6);
+  const [availableToken, setAvailableToken] = useState(0);
+  const [lockedToken, setLockedToken] = useState(0);
   const [withdrawTime, setWithdrawTime] = useState();
 
   const handleViewHistory = () => {
@@ -89,7 +89,6 @@ export default function Dashboard() {
   };
   useEffect(() => {
     handleDashboard();
-    console.log('width', dash.current ? dash.current.offsetWidth : 0);
   }, [dash]);
 
   const [history, setHistory] = useState();
@@ -106,11 +105,11 @@ export default function Dashboard() {
   useEffect(() => {
     async function fetch() {
       const url = process.env.REACT_APP_BASE_URL + `/api/users/profile/get?email=${useremail}`;
-      console.log('server url: ', url);
       const result = await axios.get(url, {
-        headers: { Authorization: `Bearer ${token}` }
       });
       setUser(result.data[0]);
+      setAvailableToken(result.data[0]?.remaining_total_amount);
+      setLockedToken(result.data[0]?.locked_bonus_amount);
     }
 
     fetch();
@@ -119,8 +118,6 @@ export default function Dashboard() {
   const withdraw = () => {
     try {
       const url = process.env.REACT_APP_BASE_URL + `/api/history/`;
-      console.log('server url: ', url);
-
       const data = {
         user_name: user.user_name,
         token_amount: 100,
@@ -129,7 +126,7 @@ export default function Dashboard() {
       };
       historyAction(url, data).then((r) => {
         if (r.status === 200) {
-          enqueueSnackbar('Withdraw successfully1', {
+          enqueueSnackbar('Withdraw successfully.', {
             variant: 'success'
           });
         } else {
@@ -145,16 +142,13 @@ export default function Dashboard() {
     async function fetch() {
       if (!refresh) return;
       const token = localStorage.getItem('token');
-      // console.log(token);
       const url =
         process.env.REACT_APP_BASE_URL +
         '/api/history/findAllVested?user_name=' +
         localStorage.getItem('username');
-      console.log('====================', url);
       const result = await axios.get(url, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      console.log(result);
       if (typeof history === 'string') {
         enqueueSnackbar('History data is not array!', { variant: 'error' });
       } else {
@@ -173,7 +167,6 @@ export default function Dashboard() {
           sumVested += parseInt(result.data[i].token_amount);
           const temp = new Date(result.data[i].date);
           let date = new Date();
-          console.log(date.getTime() - temp.getTime());
           if (min > date.getTime() - temp.getTime()) min = date.getTime() - temp.getTime();
         }
         setTotalVested(sumVested);
@@ -198,14 +191,11 @@ export default function Dashboard() {
           sumWithdrawn += parseInt(result1.data[i].token_amount);
           const temp = new Date(result1.data[i].date);
           let date = new Date();
-          console.log(date.getTime() - temp.getTime());
           if (min > date.getTime() - temp.getTime()) min = date.getTime() - temp.getTime();
         }
         setTotalWithdrawn(sumWithdrawn);
-        console.log(min);
         setWithdrawProgress(Math.min(min / 1000 / 60, 100));
       }
-      console.log(refresh);
       setRefresh(false);
     }
     fetch();
@@ -224,7 +214,6 @@ export default function Dashboard() {
       }
     } catch (err) {
       enqueueSnackbar('You must sign in!', { variant: 'error' });
-      console.log('Error for getting user info', err);
     }
   }, []);
   return (
@@ -736,7 +725,7 @@ export default function Dashboard() {
                     INVESTOR
                   </Typography>
                   <Typography variant="h6" color="white">
-                    Pull this out from the fucking database
+                    { user?.investor_name || '-' }
                   </Typography>
                 </Stack>
 
@@ -747,7 +736,7 @@ export default function Dashboard() {
                     PURCHASE DATE
                   </Typography>
                   <Typography color="white" variant="h6">
-                    Do not be static
+                    { user?.purchased_date || '-' }
                   </Typography>
                 </Stack>
 
@@ -758,7 +747,7 @@ export default function Dashboard() {
                     PURCHASE ROUND
                   </Typography>
                   <Typography color="white" variant="h6">
-                    Strategic
+                    { user?.purchased_round || '-'}
                   </Typography>
                 </Stack>
 
@@ -769,7 +758,7 @@ export default function Dashboard() {
                     TOTAL PURCHASE
                   </Typography>
                   <Typography color="white" variant="h6">
-                    0SNE
+                    { user?.purchased_total || 0 }SNE
                   </Typography>
                 </Stack>
 
@@ -780,7 +769,7 @@ export default function Dashboard() {
                     INVESTMENT AMOUNT
                   </Typography>
                   <Typography color="white" variant="h6">
-                    $0
+                    ${ user?.investment_amount || 0 }
                   </Typography>
                 </Stack>
               </Stack>

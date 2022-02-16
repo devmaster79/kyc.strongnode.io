@@ -149,13 +149,7 @@ export default function Dashboard() {
           telegram_id,
           twitter_id
         } = values;
-        console.log(values);
-        // const formData = new FormData();
-        // formData.append("image", cover);
-        // formData.append("name", name);
-        // formData.append("description", description);
         const url = process.env.REACT_APP_BASE_URL + `/api/users/profile/update`;
-        console.log('server url: ', url);
 
         const data = {
           email,
@@ -335,11 +329,9 @@ export default function Dashboard() {
       const url = process.env.REACT_APP_BASE_URL
         ? process.env.REACT_APP_BASE_URL
         : '' + `/api/users/profile/get?email=${useremail}`;
-      console.log('server url: ', url);
       const result = await axios.get(url, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      console.log(result.data);
       if (!result.data[0].enable_totp || result.data[0].enable_totp == null) {
         setShowQR(true);
         createQR(useremail).then((rq) => {
@@ -350,8 +342,6 @@ export default function Dashboard() {
       formik.setValues(result.data[0]);
       // setUser(result.data[0]);
     }
-
-    console.log(value);
     if (value !== '') setDisabled(false);
     if (!value) setDisabled(true);
     fetch();
@@ -375,11 +365,9 @@ export default function Dashboard() {
       // on reader load somthing...
       reader.onload = () => {
         // Make a fileInfo Object
-        console.log('Called', reader);
         baseURL = reader.result;
         resolve(baseURL);
       };
-      console.log('fileInfo: ', fileInfo);
     });
   };
 
@@ -395,11 +383,9 @@ export default function Dashboard() {
     [setFieldValue]
   );
   const upload = () => {
-    console.log('1111111111', values);
     uploadProfileImage(values.email, values.user_name, values.cover)
       .then((res) => {
         if (res.status === 200) {
-          console.log(res);
           enqueueSnackbar('Uploaded successfully!', {
             variant: 'success'
           });
