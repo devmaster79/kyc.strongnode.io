@@ -13,11 +13,6 @@ module.exports = (app) => {
   router.put("/createProfile", auth(MODE_FULL), users.createProfile);
   router.put("/createInvestor", auth(MODE_FULL), users.createInvestor);
 
-  // TODO: review this
-  // why was it accessible for guests?
-  // also unsued
-  // router.put("/addData", users.addData);
-
   // signin with user email and password
   router.put("/signin", users.signin);
 
@@ -26,22 +21,6 @@ module.exports = (app) => {
 
   // Submit a password reset
   router.post("/passwordResetSubmit", users.resetPassword);
-
-  // TODO: review these, users were admins...
-  // SECURITY HOLE
-  // also unused
-  //
-  // Retrieve a single User with id
-  // router.get("/:id", auth(MODE_FULL), users.findOne);
-  //
-  // Update a User with id
-  // router.put("/:id", auth(MODE_FULL), users.update);
-  //
-  // Delete a User with id
-  // router.delete("/:id", auth(MODE_FULL), users.delete);
-  //
-  // Delete all Users
-  // router.delete("/", auth(MODE_FULL), users.deleteAll);
 
   // SMS authentication
   router.post("/sms/send", auth(MODE_SMS, MODE_FULL), users.sendSMS);

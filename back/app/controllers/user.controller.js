@@ -750,10 +750,7 @@ exports.authQR = async (req, res) => {
 
       // update user
       const data = {
-        token: next_token,
-        // TODO: review these fields, it seems unnecessary
-        qr_secret: users[0].qr_secret,
-        enable_totp: true,
+        token: next_token
       };
       const numberOfUpdatedUsers = (await User.update(data, { where: { email }, }))[0];
       if (numberOfUpdatedUsers == 1) {
