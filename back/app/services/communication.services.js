@@ -5,8 +5,12 @@ dotenv.config()
 const emailRegExp = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()\.,;\s@\"]+\.{0,1})+([^<>()\.,;:\s@\"]{2,}|[\d\.]+))$/
 
 const AWS = require('aws-sdk');
+const defaultRegion = "us-west-2"
 
-const defaultEmailSource = "Notifications <no-reply@strongnode.io>"
+const defaultEmailSource = "StrongNode Notifications <no-reply@strongnode.io>"
+const defaultSmsOrigin = "+18555460621"
+const defaultSmsSenderId = "MySenderID"
+const defaultSmsRegisteredKeyword = "strongnode"
 
 /**
  * Object that holds template names from jsons/email-template.json.
@@ -26,7 +30,7 @@ exports.emailTemplatesNames = {
  */
 exports.sendTemplatedEmail = async (to, templateData = '{ "link":"unknown"}', templateName = 'EmailTemplate', source = defaultEmailSource) => {
     let sesOptions = {
-        region: "us-west-2",
+        region: defaultRegion,
     }
 
     // check if parameter is email
@@ -54,5 +58,47 @@ exports.sendTemplatedEmail = async (to, templateData = '{ "link":"unknown"}', te
     return await ses.sendTemplatedEmail(defaultEmailOptions).promise()
 }
 
+/**
+ * Method that takes care of sending SMS to a phone number.
+ * @returns {Promise<void>}
+ */
+exports.sendSms = (destinationNumber, message, messageType = 'TRANSACTIONAL') => {
+    let pinpointOptions = {
+        region: defaultRegion,
+    }
+
+    // todo, add handling for localstack!
+
+    if (process.env.AWS_LOCALSTACK_URL != '') {
+        pinpointOptions.endpoint = process.env.AWS_LOCALSTACK_URL
+    }
+
+    var pinpoint = new AWS.Pinpoint(pinpointOptions);
+
+    // default pinpoint options
+    var params = {
+        ApplicationId: process.env.ApplicationId ? process.env.ApplicationId : 'fakeAppIDLocalstack',
+        MessageRequest: {
+            Addresses: {
+                [destinationNumber]: {
+                    ChannelType: 'SMS'
+                }
+            },
+            MessageConfiguration: {
+                SMSMessage: {
+                    Body: message,
+                    Keyword: defaultSmsRegisteredKeyword,
+                    MessageType: messageType,
+                    OriginationNumber: defaultSmsOrigin,
+                    SenderId: defaultSmsSenderId,
+                }
+            }
+        }
+    };
+
+    return pinpoint.sendMessages(params, function (err, data) {
+        return data ? { status: true, data: data } : { status: false, err: err }
+    });
+}
+
 // todo add the send bulk emails - not sure if we would need this?
-// todo add the pinpoint AWS stuff here - I'll get to this soon (gotta take a look how pinpoint works)
