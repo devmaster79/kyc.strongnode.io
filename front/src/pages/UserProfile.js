@@ -17,11 +17,11 @@ import { useState, useEffect, useCallback } from 'react';
 import axios from 'utils/axios';
 import {
   updateProfile,
-  createQR,
-  verifyTOTP,
   sendSMS,
   testAuthSMS,
-  uploadProfileImage
+  uploadProfileImage,
+  generateQR,
+  testAuthQR
 } from '../utils/api';
 import * as Yup from 'yup';
 import { useFormik, FormikProvider } from 'formik';
@@ -191,12 +191,11 @@ export default function Dashboard() {
   };
 
   const checkMFACode = () => {
-    verifyTOTP(useremail, totp).then((r) => {
+    testAuthQR(totp).then((r) => {
       if (r.data.verified) {
         setFieldValue('enable_totp', true);
-        const { enable_totp } = values;
         const data = {
-          enable_totp
+          enable_totp: true
         };
         updateProfile(data).then((r) => {
           if (r.status === 200) {
@@ -223,7 +222,7 @@ export default function Dashboard() {
   };
 
   const check2faCode = () => {
-    testAuthSMS(useremail, smscode).then((r) => {
+    testAuthSMS(smscode).then((r) => {
       if (r.data.success) {
         setFieldValue('enable_sms', true);
         const data = {
@@ -274,7 +273,7 @@ export default function Dashboard() {
     let count = 30;
     setDisabled(true);
     setSMSshowError(false);
-    sendSMS(value.substring(1), useremail).then((r) => console.log(r));
+    sendSMS(value.substring(1));
     const counter = setInterval(() => {
       setBtnLabel(`${count}s`);
       count--;
@@ -326,17 +325,16 @@ export default function Dashboard() {
 
   useEffect(() => {
     async function fetch() {
-      const url = process.env.REACT_APP_BASE_URL
+      const url = (process.env.REACT_APP_BASE_URL
         ? process.env.REACT_APP_BASE_URL
-        : '' + `/api/users/profile/get?email=${useremail}`;
-      console.log('server url: ', url);
+        : '') + `/api/users/profile/get`;
       const result = await axios.get(url, {
         headers: { Authorization: `Bearer ${token}` }
       });
       console.log(result.data);
       if (!result.data[0].enable_totp || result.data[0].enable_totp == null) {
         setShowQR(true);
-        createQR(useremail).then((rq) => {
+        generateQR().then((rq) => {
           setQRURL(rq.data.url);
         });
       }

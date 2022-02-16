@@ -11,24 +11,22 @@ import { ReactComponent as LockIcon } from '../icons/lock.svg';
 import PhoneInput from 'react-phone-number-input';
 import { sendSMS, authSMS } from '../utils/api';
 import 'react-phone-number-input/style.css';
-import useLocalStorage from 'hooks/useLocalStorage';
 
 const LENGTH_OF_SMS_CODE = 4;
 function SigninSMS() {
   const navigate = useNavigate();
-
   const [smsCode, setSmsCode] = useState('');
   const [loading, setLoading] = useState(false);
-  const [email, _] = useLocalStorage('email');
   const [showError, setShowError] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState('');
   const [btnLabel, setBtnLabel] = useState('SEND');
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    authSMS(email, smsCode).then((r) => {
+    authSMS(smsCode).then((r) => {
       if (r.data.success) {
         localStorage.setItem('token', r.data.token);
+        localStorage.setItem('loggedin', true);
         navigate('/dashboard/app');
       } else {
         setShowError(true);
@@ -40,7 +38,7 @@ function SigninSMS() {
     let count = 30;
     setLoading(true);
     setShowError(false);
-    sendSMS(phoneNumber.substring(1), email).then((r) => console.log(r));
+    sendSMS(phoneNumber.substring(1)).then((r) => console.log(r));
     const counter = setInterval(() => {
       setBtnLabel(`${count}s`);
       count--;
@@ -95,7 +93,7 @@ function SigninSMS() {
             <Button
               type="submit"
               full
-              disabled={smsCode.length < LENGTH_OF_SMS_CODE || loading}
+              disabled={smsCode.length < LENGTH_OF_SMS_CODE}
             >
               CONFIRM
             </Button>

@@ -5,14 +5,15 @@ import {
   password_url,
   profile_url,
   investor_url,
-  sms_url,
-  qr_url,
-  verify_qr_url,
   signin_url,
   password_reset_url,
   password_reset_submit_url,
   test_auth_sms_url,
-  auth_sms_url
+  auth_sms_url,
+  generate_qr_url,
+  auth_qr_url,
+  test_auth_qr_url,
+  send_sms_url
 } from "./config";
 import {
   get_news,
@@ -21,7 +22,7 @@ import {
   upload_profile_img,
 } from "./config";
 
-const token = localStorage.getItem('token');
+const getToken = () => localStorage.getItem('token');
 
 const signup = async (data) => {
   const config = {
@@ -74,10 +75,9 @@ const createPassword = async (data) => {
 };
 
 const createProfile = async (data) => {
-  console.log('token?', token);
   const config = {
     url: profile_url,
-    headers: { Authorization: `Bearer ${token}` },
+    headers: { Authorization: `Bearer ${getToken()}` },
     method: 'PUT',
     data: data
   };
@@ -87,7 +87,7 @@ const createProfile = async (data) => {
 const createInvestor = async (data) => {
   const config = {
     url: investor_url,
-    headers: { Authorization: `Bearer ${token}` },
+    headers: { Authorization: `Bearer ${getToken()}` },
     method: 'PUT',
     data: data
   };
@@ -106,15 +106,14 @@ const signin = async (email, password) => {
   return axios(config);
 };
 
-const sendSMS = async (number, email) => {
+const sendSMS = async (number) => {
   const config = {
-    url: sms_url,
+    url: send_sms_url,
     method: 'POST',
     data: {
-      number: number,
-      email: email
+      number: number
     },
-    headers: { Authorization: `Bearer ${token}` }
+    headers: { Authorization: `Bearer ${getToken()}` }
   };
   return axios(config);
 };
@@ -123,15 +122,14 @@ const sendSMS = async (number, email) => {
  * Check SMS code validity but doesn't do anything else.
  * useful for profile SMS auth setup.
  */
-const testAuthSMS = async (email, smscode) => {
+const testAuthSMS = async (smscode) => {
   const config = {
     url: test_auth_sms_url,
     method: 'GET',
     params: {
-      email,
       smscode
     },
-    headers: { Authorization: `Bearer ${token}` }
+    headers: { Authorization: `Bearer ${getToken()}` }
   };
   return axios(config);
 };
@@ -139,40 +137,47 @@ const testAuthSMS = async (email, smscode) => {
 /**
  * Check SMS code validity and progress the auth flow in case of valid sms.
  */
-const authSMS = async (email, smscode) => {
+const authSMS = async (smscode) => {
   const config = {
     url: auth_sms_url,
     method: 'GET',
     params: {
-      email,
       smscode
     },
-    headers: { Authorization: `Bearer ${token}` }
+    headers: { Authorization: `Bearer ${getToken()}` }
   };
   return axios(config);
 };
 
-const createQR = async (email) => {
+const generateQR = async () => {
   const config = {
-    url: qr_url,
+    url: generate_qr_url,
     method: 'PUT',
-    data: {
-      email: email
-    },
-    headers: { Authorization: `Bearer ${token}` }
+    headers: { Authorization: `Bearer ${getToken()}` }
   };
   return axios(config);
 };
 
-const verifyTOTP = async (email, token) => {
+const authQR = async (otp) => {
   const config = {
-    url: verify_qr_url,
+    url: auth_qr_url,
     method: 'POST',
     data: {
-      email: email,
-      token: token
+      token: otp
     },
-    headers: { Authorization: `Bearer ${token}` }
+    headers: { Authorization: `Bearer ${getToken()}` }
+  };
+  return axios(config);
+};
+
+const testAuthQR = async (otp) => {
+  const config = {
+    url: test_auth_qr_url,
+    method: 'POST',
+    data: {
+      token: otp
+    },
+    headers: { Authorization: `Bearer ${getToken()}` }
   };
   return axios(config);
 };
@@ -180,7 +185,7 @@ const verifyTOTP = async (email, token) => {
 const getNews = async () => {
   const config = {
     url: get_news,
-    headers: { Authorization: `Bearer ${token}` }
+    headers: { Authorization: `Bearer ${getToken()}` }
   };
   return axios(config);
 };
@@ -192,7 +197,7 @@ const getProfile = async (email) => {
     params: {
       email: email
     },
-    headers: { Authorization: `Bearer ${token}` }
+    headers: { Authorization: `Bearer ${getToken()}` }
   };
   return axios(config);
 };
@@ -203,7 +208,7 @@ const updateProfile = async (data) => {
     url: update_profile,
     method: 'PUT',
     data: data,
-    headers: { Authorization: `Bearer ${token}` },
+    headers: { Authorization: `Bearer ${getToken()}` },
   };
   return axios(config);
 };
@@ -217,7 +222,7 @@ const uploadProfileImage = async (email, user_name, img_data) => {
       user_name: user_name,
       image_data: img_data
     },
-    headers: { Authorization: `Bearer ${token}` },
+    headers: { Authorization: `Bearer ${getToken()}` },
   };
   return axios(config);
 };
@@ -225,7 +230,7 @@ const uploadProfileImage = async (email, user_name, img_data) => {
 const historyAction = async (url, data) => {
   const config = {
     url: url,
-    headers: { Authorization: `Bearer ${token}` },
+    headers: { Authorization: `Bearer ${getToken()}` },
     method: 'POST',
     data: data
   };
@@ -242,8 +247,9 @@ export {
   sendSMS,
   testAuthSMS,
   authSMS,
-  createQR,
-  verifyTOTP,
+  generateQR,
+  authQR,
+  testAuthQR,
   historyAction,
   requestPasswordReset,
   passwordResetSubmit

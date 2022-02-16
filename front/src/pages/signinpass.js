@@ -45,14 +45,14 @@ function SigninPass() {
       signin(email, password)
         .then((r) => {
           if (r.status === 200) {
-            localStorage.setItem('token', r.data.token);
             localStorage.setItem('username', r.data.user_name);
-            localStorage.setItem('loggedin', true);
-            if (r.enable_totp === true) {
+            localStorage.setItem('token', r.data.token);
+            if (r.data.enable_totp === true) {
               navigate('/signintwostep');
-            } else if (r.enable_sms === true) {
+            } else if (r.data.enable_sms === true) {
               navigate('/signinsms');
             } else {
+              localStorage.setItem('loggedin', true);
               navigate('/dashboard/app');
             }
           } else if (r.status === 401) {

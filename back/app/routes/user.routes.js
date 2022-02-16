@@ -48,11 +48,10 @@ module.exports = (app) => {
   router.get("/sms/auth", auth(MODE_SMS), users.authSMS);
   router.get("/sms/testAuth", auth(MODE_FULL), users.testAuthSMS);
 
-  //Generate QR code
-  router.put("/totp/qrcode", auth(MODE_QR), users.qrcode);
-
-  //Verify TOTP
-  router.post("/totp/verify", auth(MODE_QR), users.verifyTOTP);
+  // QR authentication
+  router.put("/qr/generate", auth(MODE_FULL), users.generateQR);
+  router.post("/qr/auth", auth(MODE_QR), users.authQR);
+  router.post("/qr/testAuth", auth(MODE_FULL), users.testAuthQR);
 
   //get profile
   router.get("/profile/get", auth(MODE_FULL), users.getProfile);

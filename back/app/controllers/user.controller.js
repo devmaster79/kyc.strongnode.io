@@ -204,11 +204,11 @@ exports.resetPassword = async (req, res) => {
       }
 
       // update the user
-      const userUpdate = await User.update(data, {
+      const numberOfUpdatedUsers = (await User.update(data, {
         where: { email: passwordResetRequest?.dataValues.userEmail }
-      })
+      }))[0];
 
-      if (userUpdate) {
+      if (numberOfUpdatedUsers) {
 
         await PasswordResets.update({ status: 'inactive' }, { where: { userEmail: passwordResetRequest?.dataValues.userEmail, status: 'active' } })
 
@@ -332,9 +332,9 @@ exports.signin = async (req, res) => {
     const data = {
       token: token,
     };
-    const numberOfUpdatedUsers = await User.update(data, {
+    const numberOfUpdatedUsers = (await User.update(data, {
       where: { email: req.body.email },
-    });
+    }))[0];
     if (numberOfUpdatedUsers === 1) {
       res.send({
         message: "Logged in successfully",
@@ -665,25 +665,15 @@ exports.authSMS = (req, res) => {
   User.findAll({ where: { email } })
     .then((users) => {
       if (users.length === 1 && users[0].smscode === para_smscode) {
-
-        // determine the next stage of user auth flow
-        let token_secret_mode;
-        let token_expiration;
-        if (users[0].enable_sms) {
-          token_secret_mode = MODE_SMS;
-          token_expiration = MODE_SMS_EXPIRES_IN;
-        } else {
-          token_secret_mode = MODE_FULL;
-          token_expiration = MODE_FULL_EXPIRES_IN;
-        }
         // generate token for the next stage
         const next_token = jwt.sign(
           { user_name: users[0].user_name, email: users[0].email },
-          getTokenSecret(token_secret_mode),
+          getTokenSecret(MODE_FULL),
           {
-            expiresIn: token_expiration,
+            expiresIn: MODE_FULL_EXPIRES_IN,
           }
         );
+
         // update token and send to the user
         User.update({ token: next_token }, { where: { email } })
         res.send({
@@ -704,107 +694,104 @@ exports.authSMS = (req, res) => {
     });
 };
 
-//Generate QR code for TOTP
-exports.qrcode = async (req, res) => {
-  const email = req.body.email;
+exports.generateQR = async (req, res) => {
+  try {
+    const email = req.user.email;
+    const temp_secret = speakeasy.generateSecret({ name: "StrongNode" });
+    const totp_qrcode = await QRCode.toDataURL(temp_secret.otpauth_url);
 
-  var temp_secret = speakeasy.generateSecret({ name: "StrongNode" });
-  const totp_qrcode = await QRCode.toDataURL(temp_secret.otpauth_url);
+    const db_qr = {
+      qrcode: totp_qrcode,
+      qr_secret: temp_secret.base32,
+    };
+    await User.update(db_qr, { where: { email } });
 
-  const db_qr = {
-    qrcode: totp_qrcode,
-    qr_secret: temp_secret.base32,
-  };
-
-  User.update(db_qr, {
-    where: { email: email, user_name: req.user.user_name },
-  })
-    .then((num) => {
-      res.send({
-        url: totp_qrcode,
-      });
-    })
-    .catch((err) => {
-      console.error(err);
-      res.status(500).send({});
+    return res.send({
+      url: totp_qrcode,
     });
+  } catch(err) {
+    return res.status(500).send({});
+  }
 };
 
 // Verify TOTP
-exports.verifyTOTP = async (req, res) => {
-  const { email, token } = req.body;
+exports.authQR = async (req, res) => {
+  const { email } = req.user;
+  const { token } = req.body;
 
-  User.findAll({ where: { email: email } })
-    .then((users) => {
-      const secret = users[0].qr_secret;
-      const verified = speakeasy.totp.verify({
-        secret,
-        encoding: "base32",
-        token,
-      });
+  try {
+    let users = await User.findAll({ where: { email: email } });
+    const verified = speakeasy.totp.verify({
+      secret: users[0].qr_secret,
+      encoding: "base32",
+      token,
+    });
 
-      if (verified) {
-
-
-        // determine the next stage of user auth flow
-        let token_secret_mode;
-        let token_expiration;
-        if (user.dataValues.enable_sms) {
-          token_secret_mode = MODE_SMS;
-          token_expiration = MODE_SMS_EXPIRES_IN;
-        } else {
-          token_secret_mode = MODE_FULL;
-          token_expiration = MODE_FULL_EXPIRES_IN;
-        }
-        // generate token for the next stage
-        const next_token = jwt.sign(
-          { user_name: user.dataValues.user_name, email: user.dataValues.email },
-          getTokenSecret(token_secret_mode),
-          {
-            expiresIn: token_expiration,
-          }
-        );
-
-        const db_secret = {
-          token: next_token,
-          // TODO: review these fields, it seems unnecessary
-          qr_secret: secret,
-          enable_totp: true,
-        };
-        User.update(db_secret, {
-          where: { email: email },
-        })
-          .then((num) => {
-            if (num == 1) {
-              res.json({
-                token: next_token,
-                verified: true,
-                enable_sms: users[0].dataValues.enable_sms,
-              });
-            } else {
-              res.send({
-                verified: false
-              });
-            }
-          })
-          .catch((err) => {
-            console.err(err);
-            res.status(500).send({
-              message: "Some error occurred while retrieving users.",
-            });
-          });
+    if (verified) {
+      // determine the next stage of user auth flow
+      let token_secret_mode;
+      let token_expiration;
+      if (users[0].enable_sms) {
+        token_secret_mode = MODE_SMS;
+        token_expiration = MODE_SMS_EXPIRES_IN;
       } else {
-        res.send({
-          verified: false,
+        token_secret_mode = MODE_FULL;
+        token_expiration = MODE_FULL_EXPIRES_IN;
+      }
+      // generate token for the next stage
+      const next_token = jwt.sign(
+        { user_name: users[0].user_name, email: users[0].email },
+        getTokenSecret(token_secret_mode),
+        {
+          expiresIn: token_expiration,
+        }
+      );
+
+      // update user
+      const data = {
+        token: next_token,
+        // TODO: review these fields, it seems unnecessary
+        qr_secret: users[0].qr_secret,
+        enable_totp: true,
+      };
+      const numberOfUpdatedUsers = (await User.update(data, { where: { email }, }))[0];
+      if (numberOfUpdatedUsers == 1) {
+        return res.json({
+          token: next_token,
+          verified: true,
+          enable_sms: users[0].dataValues.enable_sms,
         });
       }
-    })
-    .catch((err) => {
-      console.error(err);
-      res.status(500).send({
-        message: "Some error occurred while retrieving users.",
-      });
+    }
+    return res.send({
+      verified: false,
     });
+  } catch(err) {
+    res.status(500).send({
+      message: "Something went wrong",
+    });
+    console.error(err);
+  }
+};
+
+exports.testAuthQR = async (req, res) => {
+  const { email } = req.user;
+  const { token } = req.body;
+
+  try {
+    let users = await User.findAll({ where: { email: email } });
+    const verified = speakeasy.totp.verify({
+      secret: users[0].qr_secret,
+      encoding: "base32",
+      token,
+    });
+    res.send({ verified });
+  } catch(err) {
+    res.status(500).send({
+      message: "Something went wrong",
+    });
+    console.error(err);
+  }
 };
 
 //Verify Email
