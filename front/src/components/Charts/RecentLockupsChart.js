@@ -2,8 +2,6 @@ import merge from 'lodash/merge';
 import ReactApexChart from 'react-apexcharts';
 import Stack from '@material-ui/core/Stack';
 import { useTheme } from '@material-ui/core/styles';
-// import { fNumber } from '../../../utils/formatNumber';
-//
 import BaseOptionChart from './BaseOptionChart';
 
 const Lockup1 = [80];

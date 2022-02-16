@@ -1,8 +1,6 @@
 import merge from 'lodash/merge';
 import ReactApexChart from 'react-apexcharts';
 import { useTheme } from '@material-ui/core/styles';
-// import { fNumber } from '../../../utils/formatNumber';
-//
 import useCollapseDrawer from '../../hooks/useCollapseDrawer';
 import BaseOptionChart from './BaseOptionChart';
 
@@ -16,7 +14,6 @@ export default function AppCurrentDownload() {
     tooltip: {
       x: { show: false },
       y: {
-        // formatter: (seriesName) => fNumber(seriesName),
         title: {
           formatter: () => ''
         }

@@ -61,7 +61,7 @@ function SigninTwoStep() {
           }
         });
       } catch (e) {
-        console.log(e);
+        console.error(e);
       }
     }
     fetchUser();

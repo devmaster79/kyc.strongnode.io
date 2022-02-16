@@ -73,7 +73,6 @@ export default function Dashboard() {
   const SneBalanceBigNumber = useTokenBalance(SneAddress, account);
   const SneBalance = SneBalanceBigNumber && ethers.utils.formatUnits(SneBalanceBigNumber, 18);
 
-  // const [vestedTokens, setVestedTokens] = useState(0);
   const [availableToken, setAvailableToken] = useState(0);
   const [lockedToken, setLockedToken] = useState(0);
   const [withdrawTime, setWithdrawTime] = useState();
@@ -157,7 +156,6 @@ export default function Dashboard() {
           console.assert(result.data[0].date !== undefined, "No date provided");
           const expTime = new Date(result.data[0].date);
           expTime.setFullYear(expTime.getFullYear() + 1);
-          // expTime.setSeconds(expTime.getSeconds() + 10);
           setWithdrawTime(expTime);
         }
 

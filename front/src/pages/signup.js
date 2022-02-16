@@ -67,7 +67,7 @@ function Signup() {
       if (err == 'Error: Request failed with status code 409') {
         setShowError(true);
       } else {
-        console.log(err);
+        console.error(err);
       }
     }
   }, []);
