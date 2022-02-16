@@ -77,6 +77,7 @@ Then we need to **create our .env file from .env.sample** (eg.: below)
     AWS_REGION =
     AWS_LOCALSTACK_URL = http://localhost:4566          // used for localhost development
     HOST = localhost
+	HOSTNAME_KYC = localhost:8000        // this var is being used for creating links that are beign sent via emails
     DB_USER =
     DB_PASSWORD =
     DB_NAME = kyc_db
