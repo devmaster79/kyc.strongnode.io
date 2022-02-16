@@ -559,55 +559,28 @@ function generateRandomNumber(min, max) {
   return Math.floor(Math.random() * (max - min) + min);
 }
 
-//Send SMS and save password
-exports.sendSMS = (req, res) => {
+/**
+ * Method that is being used for requesting SMS OTP.
+ * @param req
+ * @param res
+ * @returns {Promise<void>}
+ */
+exports.sendSMS = async (req, res) => {
+  // check the required parameters
+  if (typeof req.body.email === 'undefined')
+    res.send({message: 'Required parameters are not present.'})
+
   var OTP = generateRandomNumber(1000, 9999);
-  var aws_region = "us-west-2";
-  var originationNumber = "+18555460621";
+
   var destinationNumber = req.body.number;
   var message = "Here is your SMS 2-factor authentication code for StrongNode : " + OTP;
-  var applicationId = process.env.ApplicationId;
-  var messageType = "TRANSACTIONAL";
-  var registeredKeyword = "strongnode";
-  var senderId = "MySenderID";
 
-  // var credentials = new AWS.SharedIniFileCredentials({profile: 'default'});
+  const sentSms = communicationService.sendSms(destinationNumber, message)
 
-  // AWS.config.credentials = credentials;
-  AWS.config.update({ region: aws_region });
-
-  var pinpoint = new AWS.Pinpoint();
-
-  var params = {
-    ApplicationId: applicationId,
-    MessageRequest: {
-      Addresses: {
-        [destinationNumber]: {
-          ChannelType: 'SMS'
-        }
-      },
-      MessageConfiguration: {
-        SMSMessage: {
-          Body: message,
-          Keyword: registeredKeyword,
-          MessageType: messageType,
-          OriginationNumber: originationNumber,
-          SenderId: senderId,
-        }
-      }
-    }
-  };
-
-  pinpoint.sendMessages(params, function (err, data) {
-    if (err) {
-      res.end(JSON.stringify({ Error: err }));
-    } else {
-      const user_sms = {
-        smscode: OTP,
-      };
-      User.update(user_sms, {
-        where: { email: req.body.email },
-      })
+  if (sentSms.status) {
+    User.update({ smscode: OTP }, {
+      where: { email: req.body.email },
+    })
         .then((num) => {
           if (num == 1) {
             res.send({
@@ -617,7 +590,7 @@ exports.sendSMS = (req, res) => {
           } else {
             res.send({
               result: 2,
-              message: `Cannot send SMS code with email=${req.body.email}. Maybe User email was not found or req.body is empty!`,
+              message: `Cannot send SMS code with email=${req.body.email}. Users does not exist.`,
             });
           }
         })
@@ -627,8 +600,10 @@ exports.sendSMS = (req, res) => {
             message: err,
           });
         });
-    }
-  });
+  } else {
+    console.log(sentSms.err)
+    res.send({ message: 'An error occurred with AWS pinpoint. Please, check servers console to see the error.' })
+  }
 };
 
 //Get Userinfo from DB by email
