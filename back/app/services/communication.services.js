@@ -60,14 +60,12 @@ exports.sendTemplatedEmail = async (to, templateData = '{ "link":"unknown"}', te
 
 /**
  * Method that takes care of sending SMS to a phone number.
- * @returns {Promise<void>}
+ * @returns {Request<Pinpoint.SendMessagesResponse, AWSError>}
  */
 exports.sendSms = (destinationNumber, message, messageType = 'TRANSACTIONAL') => {
     let pinpointOptions = {
         region: defaultRegion,
     }
-
-    // todo, add handling for localstack!
 
     if (process.env.AWS_LOCALSTACK_URL != '') {
         pinpointOptions.endpoint = process.env.AWS_LOCALSTACK_URL
@@ -95,6 +93,10 @@ exports.sendSms = (destinationNumber, message, messageType = 'TRANSACTIONAL') =>
             }
         }
     };
+
+    // returns sent for localhost purposes
+    if (process.env.AWS_LOCALSTACK_URL != '')
+        return { status: true, data: 'sample data' }
 
     return pinpoint.sendMessages(params, function (err, data) {
         return data ? { status: true, data: data } : { status: false, err: err }
