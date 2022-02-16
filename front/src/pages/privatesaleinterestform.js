@@ -128,7 +128,7 @@ function PrivateSaleInterestForm() {
         navigate('/dashboard');
       }
     } catch (err) {
-      console.log('Error for create password', err);
+      console.error('Error for create password', err);
     }
   }, []);
 

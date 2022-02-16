@@ -74,7 +74,7 @@ function Profile() {
         navigate('/private-sale-interest-form');
       }
     } catch (err) {
-      console.log('Error for create password', err);
+      console.error('Error for create password', err);
     }
   }, []);
 

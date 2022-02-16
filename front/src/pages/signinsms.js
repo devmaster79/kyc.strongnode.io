@@ -40,7 +40,7 @@ function SigninSMS() {
     let count = 30;
     setDisabled(true);
     setShowError(false);
-    sendSMS(value.substring(1), email).then((r) => console.log(r));
+    sendSMS(value.substring(1), email).then((r) => console.error(r));
     const counter = setInterval(() => {
       setBtnLabel(`${count}s`);
       count--;

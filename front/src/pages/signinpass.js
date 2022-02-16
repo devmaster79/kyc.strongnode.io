@@ -81,7 +81,6 @@ function SigninPass() {
 
   useEffect(() => {
     const email = localStorage.getItem('email');
-    // const { email } = await magic.user.getMetadata();
     if (email !== '') {
       setEmail(email);
     }

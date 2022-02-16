@@ -81,8 +81,6 @@ export default function Dashboard() {
   const [value, setValue] = useState('');
   const [btnLabel, setBtnLabel] = useState('Send');
   const [smscode, setSmscode] = useState('');
-  // const [uploaded, setUploaded] = useState(false);
-
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   //Fetch value from local storage
@@ -171,11 +169,8 @@ export default function Dashboard() {
             enqueueSnackbar('Failed to update profile2', { variant: 'fail' });
           }
         });
-        // enqueueSnackbar("User updated successfully", { variant: "success" });
-        // resetForm();
       } catch (error) {
         console.error(error);
-        // enqueueSnackbar("Oops! An error occured", { variant: "success" });
         setSubmitting(false);
       }
     }
@@ -245,36 +240,11 @@ export default function Dashboard() {
     });
   };
 
-  // const saveData = () => {
-  //   const data = {
-  //     first_name: values.first_name,
-  //     last_name: values.last_name,
-  //     user_name: values.user_name,
-  //     password: values.password,
-  //     telegram_id: values.telegram_id,
-  //     twitter_id: values.twitter_id,
-  //     email: values.email,
-  //     wallet_address: values.wallet_address,
-  //     KYC_Completed: values.KYC_Completed,
-  //     enable_totp: values.enable_totp,
-  //     enable_sms: values.enable_sms
-  //   };
-  //   updateProfile(data).then((r) => {
-  //     if (r.status === 200) {
-  //       enqueueSnackbar('User updated successfully!', {
-  //         variant: 'success'
-  //       });
-  //     } else {
-  //       enqueueSnackbar('Failed to update profile2', { variant: 'fail' });
-  //     }
-  //   });
-  // };
-
   const sendMessage = () => {
     let count = 30;
     setDisabled(true);
     setSMSshowError(false);
-    sendSMS(value.substring(1), useremail).then((r) => console.log(r));
+    sendSMS(value.substring(1), useremail).then((r) => console.error(r));
     const counter = setInterval(() => {
       setBtnLabel(`${count}s`);
       count--;
@@ -340,7 +310,6 @@ export default function Dashboard() {
       }
 
       formik.setValues(result.data[0]);
-      // setUser(result.data[0]);
     }
     if (value !== '') setDisabled(false);
     if (!value) setDisabled(true);
@@ -349,8 +318,6 @@ export default function Dashboard() {
   }, [value]);
 
   const { values, errors, touched, getFieldProps, setFieldValue } = formik;
-
-  // const formStyle = {};
 
   const getBase64 = (file) => {
     return new Promise((resolve) => {
@@ -374,7 +341,6 @@ export default function Dashboard() {
   const handleDrop = useCallback(
     (acceptedFiles) => {
       const file = acceptedFiles[0];
-      // let base64;
       getBase64(file).then((result) => setFieldValue('cover', result));
       if (file) {
         setFieldValue('file', file);
@@ -396,10 +362,10 @@ export default function Dashboard() {
       })
       .catch((err) => {
         if (err.request) {
-          console.log(err.request);
+          console.error(err.request);
         }
         if (err.response) {
-          console.log(err.response);
+          console.error(err.response);
         }
       });
   };
@@ -456,7 +422,6 @@ export default function Dashboard() {
                   SelectProps={{ value: formik.values.KYC_Completed }}
                   sx={{ flexGrow: 1, width: '100%' }}
                   {...getFieldProps('KYC_Completed')}
-                  // onChange={handleChange}
                 >
                   {levels.map((option) => (
                     <MenuItem key={option} value={option}>
@@ -473,7 +438,6 @@ export default function Dashboard() {
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     fullWidth
-                    // label="First Name"
                     placeholder="First Name"
                     {...getFieldProps('first_name')}
                     error={Boolean(touched.first_name && errors.first_name)}

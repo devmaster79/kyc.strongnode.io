@@ -51,7 +51,7 @@ function Signin() {
           showUI: false
         });
       } catch (err) {
-        console.log('Error for sending magic link', err);
+        console.error('Error for sending magic link', err);
       }
     },
     [email]

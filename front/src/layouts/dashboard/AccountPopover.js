@@ -47,7 +47,7 @@ export default function AccountPopover() {
         });
       }
     } catch (err) {
-      console.log('Error for email verification', err);
+      console.error('Error for email verification', err);
     }
   }, []);
   const signOut = () => {

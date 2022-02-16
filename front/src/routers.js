@@ -36,7 +36,6 @@ export default function Router() {
     },
     {
       path: '*',
-      // element: <LogoOnlyLayout />,
       children: [
         { path: '/*', element: <Navigate to="/signup" replace /> },
         { path: 'signup', element: <Signup /> },
@@ -55,14 +54,7 @@ export default function Router() {
           element: <PrivateSaleInterestForm />
         },
         { path: 'kyc', element: <KYC /> }
-        // { path: '*', element: <Navigate to="/404" replace /> }
       ]
     }
-    // {
-    //   path: '/',
-    //   element: <MainLayout />,
-    //   children: [{ path: '/', element: <Frontend /> }]
-    // },
-    // { path: '*', element: <Navigate to="/404" replace /> }
   ]);
 }

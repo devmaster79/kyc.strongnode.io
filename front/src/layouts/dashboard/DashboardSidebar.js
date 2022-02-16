@@ -95,8 +95,6 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
         <Drawer
           open
           variant="persistent"
-          // onMouseEnter={onHoverEnter}
-          // onMouseLeave={onHoverLeave}
           PaperProps={{
             sx: {
               borderRadius: '0px 30px 30px 0px',

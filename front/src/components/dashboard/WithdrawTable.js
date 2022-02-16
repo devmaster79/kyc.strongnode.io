@@ -35,20 +35,17 @@ const COLUMNS = [
   {
     id: 'token',
     label: 'SNE Token',
-    // minWidth: 170,
     align: 'left',
     format: (value) => `${value.toLocaleString('en-US')} SNE`
   },
   {
     id: 'stock',
     label: 'Stock',
-    // minWidth: 170,
     align: 'left'
   },
   {
     id: 'date',
     label: 'Date',
-    // minWidth: 170,
     align: 'left',
     format: (value) => value.toFixed(2)
   }
