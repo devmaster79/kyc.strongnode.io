@@ -1,4 +1,3 @@
-// import { isString } from 'lodash';
 import { useDropzone } from 'react-dropzone';
 // material
 import { alpha, experimentalStyled as styled } from '@mui/material/styles';
@@ -79,8 +78,6 @@ export default function UploadSingleFile({ error = false, file, sx, ...other }) 
         }}>
         <input {...getInputProps()} />
 
-        {/* <UploadIllustration sx={{ width: 220 }} /> */}
-
         {!file && (
           <Box sx={{ p: 3, ml: { md: 2 } }}>
             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
@@ -93,7 +90,6 @@ export default function UploadSingleFile({ error = false, file, sx, ...other }) 
           <Box
             component="img"
             alt="file preview"
-            // src={isString(file) ? file : file.preview}
             src={file && file.preview}
             sx={{
               top: 8,

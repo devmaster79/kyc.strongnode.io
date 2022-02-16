@@ -52,7 +52,7 @@ function CreateAccountPassword() {
         localStorage.setItem('email', res.data?.user.email);
       }
     } catch (err) {
-      console.log('Error for email verification', err);
+      console.error('Error for email verification', err);
     }
   }, []);
 
@@ -76,7 +76,7 @@ function CreateAccountPassword() {
         navigate('/dashboard/app');
       }
     } catch (err) {
-      console.log('Error for create password', err);
+      console.error('Error for create password', err);
     }
   }, []);
 

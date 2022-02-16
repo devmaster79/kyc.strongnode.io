@@ -37,7 +37,6 @@ const RootStyle = styled('div')(({ theme }) => ({
 }));
 
 function CarouselItem({ item }) {
-  console.log(item);
   const [open, setOpen] = useState(false);
   return (
     <>
@@ -82,7 +81,6 @@ export default function NewsCarousel() {
     const res = await fetch(`https://api.allorigins.win/get?url=${'https://strongnode.io/feed/'}`);
     const { contents } = await res.json();
     const feed = new window.DOMParser().parseFromString(contents, 'text/xml');
-    console.log(feed);
     const items = feed.querySelectorAll('image');
     const descriptions = feed.querySelectorAll('description');
     const lastbuild = feed.querySelectorAll('lastBuildDate');
@@ -104,7 +102,6 @@ export default function NewsCarousel() {
       });
     });
 
-    console.log(feedItems);
     setNews(feedItems);
   };
   useEffect(() => {

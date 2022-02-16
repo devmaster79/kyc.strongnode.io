@@ -38,7 +38,7 @@ function SigninSMS() {
     let count = 30;
     setLoading(true);
     setShowError(false);
-    sendSMS(phoneNumber.substring(1)).then((r) => console.log(r));
+    sendSMS(phoneNumber.substring(1));
     const counter = setInterval(() => {
       setBtnLabel(`${count}s`);
       count--;

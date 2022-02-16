@@ -11,9 +11,6 @@ export function SneBalance() {
   const SneBalanceBigNumber = useTokenBalance(SneAddress, account);
   const SneBalance = SneBalanceBigNumber && ethers.utils.formatUnits(SneBalanceBigNumber, 18);
   return SneBalance;
-  // const balance = useEtherBalance(account);
-  // const accountBalance = balance ? ethers.utils.formatEther(balance) : 0;
-  // return accountBalance;
 }
 
 export default function ConnectButton() {
@@ -40,7 +37,6 @@ export default function ConnectButton() {
       {account ? (
         <Button variant="contained" onClick={() => deactivateUser}>
           {`${account.slice(0, 6)}...${account.slice(-6)}`}
-          {(console.log(account), console.log(tokens), console.log(SneBalance))}
         </Button>
       ) : (
         <Button variant="contained" onClick={activateBrowserWalletUser}>

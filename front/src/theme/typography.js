@@ -18,9 +18,6 @@ function responsiveFontSizes({ sm, md, lg }) {
   };
 }
 
-// const FONT_PRIMARY = 'All Round Gothic'; // Google Font
-// const FONT_SECONDARY = 'All Round Gothic'; // Local Font
-
 const typography = {
   fontFamily: 'Halyard-Book',
   fontWeightRegular: 400,

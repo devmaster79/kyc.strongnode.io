@@ -76,7 +76,7 @@ function CreateNewPassword () {
                         localStorage.setItem('loggedin', true)
                         navigate('/dashboard')
                     } else {
-                        console.log(res.data.message)
+                        console.error(res.data.message)
                     }
                 }
             })

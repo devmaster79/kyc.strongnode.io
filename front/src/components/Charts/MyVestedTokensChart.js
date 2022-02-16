@@ -1,8 +1,6 @@
 import merge from 'lodash/merge';
 import ReactApexChart from 'react-apexcharts';
 import { useTheme, styled } from '@material-ui/core/styles';
-// import { fNumber } from '../../../utils/formatNumber';
-//
 import BaseOptionChart from './BaseOptionChart';
 
 const CHART_DATA = [10, 10];
@@ -49,7 +47,7 @@ export default function AppCurrentDownload(props) {
       series={props.chartData}
       options={chartOptions}
       width={140}
-      height={140}
+      height={140 + Math.random()}
     />
   );
 }

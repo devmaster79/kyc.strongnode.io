@@ -16,12 +16,12 @@ function Signin() {
     setShowError(false);
     try {
       localStorage.setItem('email', email);
+      navigate('/magiclink');
       await magic.auth.loginWithMagicLink({
         email: email,
         redirectURI: new URL('/signinpass', window.location.origin).href,
         showUI: false
       });
-      navigate('/magiclink');
     } catch (err) {
       console.log('Error for sending magic link', err);
       setShowError(true);

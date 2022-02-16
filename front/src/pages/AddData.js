@@ -52,15 +52,12 @@ export default function Dashboard() {
     onSubmit: async (values, { setErrors, setSubmitting, resetForm }) => {
       try {
         const url = process.env.REACT_APP_BASE_URL + `/api/history/`;
-        console.log('server url: ', url);
-
         const data = {
           user_name: user.user_name,
           token_amount: value / 1,
           action_type: types[type],
           date: date
         };
-        console.log(data);
         historyAction(url, data).then((r) => {
           if (r.status === 200) {
             enqueueSnackbar('Data added successfully1', {
@@ -81,12 +78,9 @@ export default function Dashboard() {
   useEffect(() => {
     async function fetch() {
       const url = process.env.REACT_APP_BASE_URL + `/api/users/profile/get?email=${useremail}`;
-      console.log('server url: ', url);
       const result = await axios.get(url, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      console.log(result.data);
-
       setUser(result.data[0]);
     }
 
