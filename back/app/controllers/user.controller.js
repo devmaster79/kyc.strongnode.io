@@ -91,7 +91,7 @@ exports.create = async (req, res) => {
             result: resp,
           });
 
-        link = "https://" + process.env.HOSTNAME + "/verifyEmail?id=" + rand
+        link = "https://" + process.env.HOSTNAME_KYC + "/verifyEmail?id=" + rand
 
         const templateData = JSON.stringify({
           link: link
@@ -145,7 +145,7 @@ exports.requestPasswordReset = async (req, res) => {
     })
 
     if (resetRequest) {
-      link = "https://" + process.env.HOSTNAME + "/create-new-password?token=" + token;
+      link = "https://" + process.env.HOSTNAME_KYC + "/create-new-password?token=" + token;
 
       const templateData = JSON.stringify({
         link: link,
