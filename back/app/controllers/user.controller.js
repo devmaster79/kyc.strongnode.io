@@ -280,6 +280,7 @@ exports.createPassword = async (req, res) => {
 // Signin and Save a new token
 exports.signin = async (req, res) => {
   // Validate request
+
   if (!req.body.email && !req.body.password || req.body.password === '') {
     res.status(400).send({
       message: "Content can not be empty!",
@@ -287,12 +288,15 @@ exports.signin = async (req, res) => {
     return;
   }
 
+  
+
   try {
     const user = await User.findOne({ where: { email: req.body.email } });
 
     const comparePassword = await passwordService.verifyPasswordHash(user.dataValues.password, req.body.password)
 
-    if (!comparePassword) {
+
+    if (comparePassword) {
       res.status(401).send({
         message: `Wrong password.`,
       });
@@ -796,7 +800,12 @@ exports.getProfile = (req, res) => {
 
   User.findAll({ where: { email: para_email } })
     .then((data) => {
-      res.send(data);
+      const _returnData = [{
+        remaining_total_amount : data[0].remaining_total_amount == null ? 0 : data[0].remaining_total_amount,
+        locked_bonus_amount : data[0].locked_bonus_amount == null ? 0 : data[0].locked_bonus_amount,
+        user_name : data[0].user_name,
+      }];
+      res.send(_returnData);
     })
     .catch((err) => {
       res.status(500).send({
