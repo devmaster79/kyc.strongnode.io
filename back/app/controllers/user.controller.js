@@ -105,7 +105,7 @@ exports.create = async (req, res) => {
         });
       } catch (err) {
         res.status(500).send({
-          message: "Something went wrong.",
+          message: "Some error occurred while creating the User.",
         });
         console.error(err);
       }
