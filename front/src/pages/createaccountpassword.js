@@ -8,8 +8,8 @@ import Input from '../components/Input';
 import Button from '../components/Button';
 import { ReactComponent as UserIcon } from '../icons/username.svg';
 import { ReactComponent as LockIcon } from '../icons/lock.svg';
-import { verifyEmail, createPassword } from '../utils/api';
 import PasswordStrengthBar from 'react-password-strength-bar';
+import userService from 'services/userService';
 
 const UserInfoWrapper = styled.div`
   display: flex;
@@ -43,7 +43,7 @@ function CreateAccountPassword() {
   const handleVerifyEmail = useCallback(async () => {
     try {
       localStorage.setItem('password_token', location.search.split('=')[1]);
-      const res = await verifyEmail({
+      const res = await userService.verifyEmail({
         password_token: localStorage.getItem('password_token')
       });
       if (res.data && res.data?.user.email_verified) {
@@ -69,7 +69,7 @@ function CreateAccountPassword() {
 
   const handleCreatePassword = useCallback(async (data) => {
     try {
-      const res = await createPassword(data);
+      const res = await userService.createPassword(data);
       if (res.data && res.data.token) {
         localStorage.setItem('token', res.data.token);
         localStorage.setItem('loggedin', true);

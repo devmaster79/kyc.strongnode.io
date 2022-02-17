@@ -10,7 +10,7 @@ import Divider from '@mui/material/Divider';
 import Button from '@mui/material/Button';
 import styled from '@material-ui/core/styles/styled';
 import { useNavigate } from 'react-router-dom';
-import { getProfile } from '../../utils/api';
+import userService from '../../services/userService';
 
 const MyPopover = styled(Popover)`
   > div {
@@ -42,7 +42,8 @@ export default function AccountPopover() {
       if (localStorage.getItem('username') && localStorage.getItem('email')) {
         setUserName(localStorage.getItem('username'));
         setEmail(localStorage.getItem('email'));
-        getProfile(localStorage.getItem('email')).then((r) => {
+
+        userService.getProfile(localStorage.getItem('email')).then((r) => {
           setAvatar(r.data[0].profile_img_url);
         });
       }

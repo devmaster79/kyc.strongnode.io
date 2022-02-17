@@ -11,7 +11,7 @@ import PasswordStrengthBar from "react-password-strength-bar"
 import Button from "../components/Button"
 import {useSearchParams, useNavigate} from "react-router-dom"
 import {createNewPassword} from "../static/formSchemas"
-import {passwordResetSubmit} from "../utils/api"
+import userService from "services/userService";
 
 
 const UserInfoWrapper = styled.div`
@@ -67,7 +67,7 @@ function CreateNewPassword () {
 
     const handleFormSubmit = async (data) => {
         if (password === confirmPassword && password !== '') {
-            await passwordResetSubmit(password, passwordToken).then(res => {
+            await userService.passwordResetSubmit(password, passwordToken).then(res => {
                 if (res.data.length !== 0 && typeof res.data.status !== 'undefined') {
                     if (res.data.status === 'success') {
                         setUserName(res.data.username)

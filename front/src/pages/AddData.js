@@ -2,13 +2,13 @@ import { useSnackbar } from 'notistack5';
 import { Container, Box, Stack, Button, Select, TextField, MenuItem } from '@material-ui/core';
 import styled from '@material-ui/core/styles/styled';
 import { useState, useEffect } from 'react';
-import axios from 'utils/axios';
-import { historyAction } from '../utils/api';
 import * as Yup from 'yup';
 import { useFormik, FormikProvider } from 'formik';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DateTimePicker from '@mui/lab/DateTimePicker';
+import userService from 'services/userService';
+import historyService from 'services/historyService';
 
 const CardStyle = styled(Box)(({ theme }) => ({
   background: 'rgba(255, 255, 255, 0.1)',
@@ -51,14 +51,14 @@ export default function Dashboard() {
     validationSchema: ProfileSchema,
     onSubmit: async (values, { setErrors, setSubmitting, resetForm }) => {
       try {
-        const url = process.env.REACT_APP_BASE_URL + `/api/history/`;
         const data = {
           user_name: user.user_name,
           token_amount: value / 1,
           action_type: types[type],
           date: date
         };
-        historyAction(url, data).then((r) => {
+
+        historyService.createHistory(data).then((r) => {
           if (r.status === 200) {
             enqueueSnackbar('Data added successfully1', {
               variant: 'success'
@@ -77,10 +77,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     async function fetch() {
-      const url = process.env.REACT_APP_BASE_URL + `/api/users/profile/get?email=${useremail}`;
-      const result = await axios.get(url, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const result = await userService.getProfile(useremail);
       setUser(result.data[0]);
     }
 
