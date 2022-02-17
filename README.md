@@ -61,6 +61,56 @@ If you don't want to run MySQL in Docker, you can use a whole server distributio
 
 Create MySQL database that we will add to .env later on. (default DB name: kyc_db)
 
+## 💽 Migrations (database updates)
+In order to have our DB "versioned" we are using Sequelize migrations.
+
+Migrations folder is located at `back/app/migrations`, every database change is stored in a separate .js file.
+
+**Migrations are being run at every application start**, you can see the code in `back/app/models/index.js:19`.
+
+###
+**New migration can be created by typing** ⬇️ (or by manually creating file in migrations folder)
+
+```
+cd back/app/migrations
+npx sequelize-cli migration:create --name modify_users_add_new_fields
+```
+
+Unfortunately, the content file it generates we need to override, because we are using Umzug library for handling migrations.
+We need to have the following migration content ⬇️
+
+```
+const { Sequelize } = require('sequelize');
+
+async function up({ context: queryInterface }) {
+	await queryInterface.createTable('users', {
+		id: {
+			type: Sequelize.INTEGER,
+			allowNull: false,
+			primaryKey: true
+		},
+		name: {
+			type: Sequelize.STRING,
+			allowNull: false
+		},
+		createdAt: {
+			type: Sequelize.DATE,
+			allowNull: false
+		},
+		updatedAt: {
+			type: Sequelize.DATE,
+			allowNull: false
+		}
+	});
+}
+
+async function down({ context: queryInterface }) {
+	await queryInterface.dropTable('users');
+}
+
+module.exports = { up, down };
+```
+
 ## 💿 Backend
 Backend is built with Node.JS along with Express.JS.
 
