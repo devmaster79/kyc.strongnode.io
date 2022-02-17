@@ -36,7 +36,7 @@ const signup = async (data) => {
 const requestPasswordReset = async (email) => {
   const config = {
     url: password_reset_url,
-    method: "GET",
+    method: "POST",
     params: {
       email: email
     }
@@ -140,7 +140,7 @@ const testAuthSMS = async (smscode) => {
 const authSMS = async (smscode) => {
   const config = {
     url: auth_sms_url,
-    method: 'GET',
+    method: 'POST',
     params: {
       smscode
     },
@@ -152,7 +152,7 @@ const authSMS = async (smscode) => {
 const generateQR = async () => {
   const config = {
     url: generate_qr_url,
-    method: 'PUT',
+    method: 'POST',
     headers: { Authorization: `Bearer ${getToken()}` }
   };
   return axios(config);
@@ -173,7 +173,7 @@ const authQR = async (otp) => {
 const testAuthQR = async (otp) => {
   const config = {
     url: test_auth_qr_url,
-    method: 'POST',
+    method: 'GET',
     data: {
       token: otp
     },

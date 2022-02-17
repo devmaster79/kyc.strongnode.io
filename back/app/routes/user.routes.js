@@ -13,24 +13,24 @@ module.exports = (app) => {
   router.put("/createProfile", auth(MODE_FULL), users.createProfile);
   router.put("/createInvestor", auth(MODE_FULL), users.createInvestor);
 
-  // signin with user email and password
-  router.put("/signin", users.signin);
-
   // Request a password reset
-  router.get("/passwordReset", users.requestPasswordReset);
+  router.post("/passwordReset", users.requestPasswordReset);
 
   // Submit a password reset
   router.post("/passwordResetSubmit", users.resetPassword);
 
+  // Password authentication
+  router.put("/signin", users.signin);
+
   // SMS authentication
   router.post("/sms/send", auth(MODE_SMS, MODE_FULL), users.sendSMS);
-  router.get("/sms/auth", auth(MODE_SMS), users.authSMS);
+  router.post("/sms/auth", auth(MODE_SMS), users.authSMS);
   router.get("/sms/testAuth", auth(MODE_FULL), users.testAuthSMS);
 
   // QR authentication
-  router.put("/qr/generate", auth(MODE_FULL), users.generateQR);
+  router.post("/qr/generate", auth(MODE_FULL), users.generateQR);
   router.post("/qr/auth", auth(MODE_QR), users.authQR);
-  router.post("/qr/testAuth", auth(MODE_FULL), users.testAuthQR);
+  router.get("/qr/testAuth", auth(MODE_FULL), users.testAuthQR);
 
   //get profile
   router.get("/profile/get", auth(MODE_FULL), users.getProfile);
