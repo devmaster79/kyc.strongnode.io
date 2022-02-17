@@ -47,7 +47,7 @@ function SigninPass() {
           if (r.status === 200) {
             localStorage.setItem('username', r.data.user_name);
             localStorage.setItem('token', r.data.token);
-            if (r.data.enable_totp === true) {
+            if (r.data.enable_qr === true) {
               navigate('/signintwostep');
             } else if (r.data.enable_sms === true) {
               navigate('/signinsms');

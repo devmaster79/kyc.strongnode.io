@@ -127,9 +127,9 @@ export default function Dashboard() {
       email: '',
       wallet_address: '',
       KYC_Completed: 'level1',
-      enable_totp: user?.enable_totp,
+      enable_qr: user?.enable_qr,
       enable_sms: user?.enable_sms,
-      MFA: user?.enable_totp,
+      MFA: user?.enable_qr,
       cover: '',
       file: ''
     },
@@ -175,8 +175,8 @@ export default function Dashboard() {
   });
 
   const doMFA = () => {
-    if (values.enable_totp === true) {
-      setFieldValue('enable_totp', !values.enable_totp);
+    if (values.enable_qr === true) {
+      setFieldValue('enable_qr', !values.enable_qr);
     } else {
       handleOpenMfa();
     }
@@ -185,9 +185,9 @@ export default function Dashboard() {
   const checkMFACode = () => {
     testAuthQR(totp).then((r) => {
       if (r.data.verified) {
-        setFieldValue('enable_totp', true);
+        setFieldValue('enable_qr', true);
         const data = {
-          enable_totp: true
+          enable_qr: true
         };
         updateProfile(data).then((r) => {
           if (r.status === 200) {
@@ -298,7 +298,7 @@ export default function Dashboard() {
       const result = await axios.get(url, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      if (!result.data[0].enable_totp || result.data[0].enable_totp == null) {
+      if (!result.data[0].enable_qr || result.data[0].enable_qr == null) {
         setShowQR(true);
         generateQR().then((rq) => {
           setQRURL(rq.data.url);
@@ -514,7 +514,7 @@ export default function Dashboard() {
                       control={
                         <Switch
                           color="primary"
-                          checked={values.enable_totp === true}
+                          checked={values.enable_qr === true}
                           onClick={doMFA}
                         />
                       }

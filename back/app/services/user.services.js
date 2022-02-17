@@ -2,7 +2,7 @@ const db = require("../models");
 const User = db.users;
 
 const usersPublicData = [
-    'email', 'first_name', 'enable_totp', 'enable_sms', 'user_name'
+    'email', 'first_name', 'enable_qr', 'enable_sms', 'user_name'
 ]
 
 /**

@@ -310,7 +310,7 @@ exports.signin = async (req, res) => {
 
     let token_secret_mode;
     let token_expiration;
-    if (user.dataValues.enable_totp) {
+    if (user.dataValues.enable_qr) {
       token_secret_mode = MODE_QR;
       token_expiration = MODE_QR_EXPIRES_IN;
     } else if (user.dataValues.enable_sms) {
@@ -341,7 +341,7 @@ exports.signin = async (req, res) => {
         message: "Logged in successfully",
         token: token,
         user_name: user.dataValues.user_name,
-        enable_totp: user.dataValues.enable_totp,
+        enable_qr: user.dataValues.enable_qr,
         enable_sms: user.dataValues.enable_sms,
       });
     } else {
@@ -710,7 +710,7 @@ exports.generateQR = async (req, res) => {
     return res.send({
       url: totp_qrcode,
     });
-  } catch(err) {
+  } catch (err) {
     return res.status(500).send({});
   }
 };
@@ -764,7 +764,7 @@ exports.authQR = async (req, res) => {
     return res.send({
       verified: false,
     });
-  } catch(err) {
+  } catch (err) {
     res.status(500).send({
       message: "Something went wrong",
     });
@@ -784,7 +784,7 @@ exports.testAuthQR = async (req, res) => {
       token,
     });
     res.send({ verified });
-  } catch(err) {
+  } catch (err) {
     res.status(500).send({
       message: "Something went wrong",
     });
@@ -873,7 +873,7 @@ exports.getProfile = (req, res) => {
 //Update profile
 exports.updateProfile = async (req, res) => {
   const { email } = req.user;
-  const { first_name, last_name, user_name, twitter_id, telegram_id, wallet_address, enable_totp, enable_sms } = req.body;
+  const { first_name, last_name, user_name, twitter_id, telegram_id, wallet_address, enable_qr, enable_sms } = req.body;
 
   if (!email) {
     res.status(400).send({
@@ -889,7 +889,7 @@ exports.updateProfile = async (req, res) => {
     telegram_id: telegram_id,
     twitter_id: twitter_id,
     wallet_address: wallet_address,
-    enable_totp: enable_totp,
+    enable_qr: enable_qr,
     enable_sms: enable_sms
   };
 

@@ -45,8 +45,7 @@ module.exports = (sequelize, Sequelize) => {
     qrcode: {
       type: Sequelize.TEXT
     },
-    // TODO: rename to enable_qr. SMS is also totp based.
-    enable_totp: {
+    enable_qr: {
       type: Sequelize.BOOLEAN
     },
     enable_sms: {
