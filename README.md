@@ -111,6 +111,15 @@ async function down({ context: queryInterface }) {
 module.exports = { up, down };
 ```
 
+Besides auto-migration on app start we can use the `back/app/scripts/run-migration.js` script. It supports 2 type of arguments ⬇️
+
+```
+cd back/app/scripts
+node run-migrations.js up         // runs the migrations
+node run-migrations.js down       // reverts all migrations
+node run-migrations.js down --2   // reverts the last 2 migrations
+```
+
 ## 💿 Backend
 Backend is built with Node.JS along with Express.JS.
 

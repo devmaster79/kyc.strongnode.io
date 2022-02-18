@@ -38,7 +38,7 @@ const umzug = new Umzug({
 
 // run the exec loop
 (() => {
-    console.log('starting migrations')
+    console.log('Starting migrations')
     process.argv.forEach(async function (val, index, array) {
         if (val === 'up') {
             // run the migrations
