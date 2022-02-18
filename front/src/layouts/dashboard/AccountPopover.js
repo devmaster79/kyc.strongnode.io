@@ -11,6 +11,7 @@ import Button from '@mui/material/Button';
 import styled from '@material-ui/core/styles/styled';
 import { useNavigate } from 'react-router-dom';
 import { getProfile } from '../../utils/api';
+import { magic } from '../../utils/index';
 
 const MyPopover = styled(Popover)`
   > div {
@@ -51,6 +52,7 @@ export default function AccountPopover() {
     }
   }, []);
   const signOut = () => {
+    magic.user.logout();
     window.localStorage.clear();
     navigate('/signin');
   };
