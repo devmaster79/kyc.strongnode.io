@@ -1,13 +1,9 @@
 import axios from 'axios';
 import { findAllVested, findAllWithdrawn, updateHistory, deleteHistory, createHistory } from '../utils/config'
 
-const token = localStorage.getItem('token');
-
 export default {
   createHistory(data) {
-    return axios.post(createHistory, data, {
-      headers: { Authorization: `Bearer ${token}` }
-    });
+    return axios.post(createHistory, data);
   },
   updateHistory(data) {
     return axios.post(updateHistory, data);

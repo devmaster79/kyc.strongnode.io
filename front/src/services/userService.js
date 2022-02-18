@@ -3,8 +3,6 @@ import { get_profile, update_profile, upload_profile_img, signup_url,
   password_reset_url, password_reset_submit_url, verify_email_url, password_url,
   profile_url, investor_url, signin_url } from '../utils/config'
 
-const token = localStorage.getItem('token');
-
 export default {
   signin(email, password) {
     return axios.put(signin_url, {
@@ -26,10 +24,7 @@ export default {
       });
   },
   getProfile(email) {
-    return axios.get(`${get_profile}?email=${email}`,
-    {
-      headers: { Authorization: `Bearer ${token}` }
-    });
+    return axios.get(`${get_profile}?email=${email}`);
   },
   verifyEmail(data) {
     return axios.put(verify_email_url, data);
@@ -38,15 +33,10 @@ export default {
     return axios.put(password_url, data);
   },
   createProfile(data) {
-    return axios.put(profile_url, data,
-      {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+    return axios.put(profile_url, data);
   },
   createInvestor(data) {
-    return axios.put(investor_url, data, {
-      headers: { Authorization: `Bearer ${token}` }
-    });
+    return axios.put(investor_url, data);
   },
   updateProfile(data) {
     return axios.put(update_profile, data);
@@ -58,5 +48,9 @@ export default {
         user_name: user_name,
         image_data: img_data
       });
+  },
+  setToken(token) {
+    localStorage.setItem('token', token);
+    axios.defaults.headers.common['Authorization'] = token;
   }
 }

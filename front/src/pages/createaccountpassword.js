@@ -71,7 +71,7 @@ function CreateAccountPassword() {
     try {
       const res = await userService.createPassword(data);
       if (res.data && res.data.token) {
-        localStorage.setItem('token', res.data.token);
+        userService.setToken(res.data.token);
         localStorage.setItem('loggedin', true);
         navigate('/dashboard/app');
       }

@@ -46,7 +46,7 @@ function SigninPass() {
       userService.signin(email, password)
         .then((r) => {
           if (r.status === 200) {
-            localStorage.setItem('token', r.data.token);
+            userService.setToken(r.data.token);
             localStorage.setItem('username', r.data.user_name);
             localStorage.setItem('loggedin', true);
             checkSMS(email).then((r) => {

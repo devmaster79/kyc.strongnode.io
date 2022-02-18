@@ -71,7 +71,7 @@ function CreateNewPassword () {
                 if (res.data.length !== 0 && typeof res.data.status !== 'undefined') {
                     if (res.data.status === 'success') {
                         setUserName(res.data.username)
-                        localStorage.setItem("token", res.data.token)
+                        userService.setToken(res.data.token);
                         localStorage.setItem('username', res.data.username)
                         localStorage.setItem('loggedin', true)
                         navigate('/dashboard')

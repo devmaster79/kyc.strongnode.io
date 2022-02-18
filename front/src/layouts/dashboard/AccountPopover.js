@@ -53,6 +53,7 @@ export default function AccountPopover() {
   }, []);
   const signOut = () => {
     window.localStorage.clear();
+    userService.setToken(null);
     navigate('/signin');
   };
   const toProfile = () => {
