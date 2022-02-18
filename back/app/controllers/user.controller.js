@@ -801,8 +801,8 @@ exports.getProfile = (req, res) => {
   User.findAll({ where: { email: para_email } })
     .then((data) => {
       const _returnData = [{
-        remaining_total_amount : data[0].remaining_total_amount == null ? 0 : data[0].remaining_total_amount,
-        locked_bonus_amount : data[0].locked_bonus_amount == null ? 0 : data[0].locked_bonus_amount,
+        remaining_total_amount : data[0].remaining_total_amount || 0,
+        locked_bonus_amount : data[0].locked_bonus_amount || 0,
         user_name : data[0].user_name,
       }];
       res.send(_returnData);
