@@ -571,6 +571,8 @@ exports.sendSMS = async (req, res) => {
   var destinationNumber = req.body.number;
   var message = "Here is your SMS 2-factor authentication code for StrongNode : " + OTP;
 
+  // var credentials = new AWS.SharedIniFileCredentials({profile: 'default'});
+
   const sentSms = communicationService.sendSms(destinationNumber, message)
 
   if (sentSms.status) {
