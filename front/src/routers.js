@@ -5,6 +5,8 @@ import Dashboard from './pages/Dashboard';
 import UserProfile from './pages/UserProfile';
 
 import Profile from './pages/profile';
+import TermsOfUse from './pages/termsOfUse';
+import PrivacyPolicy from './pages/privacyPolicy';
 import Signup from './pages/signup';
 import Signin from './pages/signin';
 import SentEmail from './pages/sentemail';
@@ -39,6 +41,8 @@ export default function Router() {
       children: [
         { path: '/*', element: <Navigate to="/signup" replace /> },
         { path: 'signup', element: <Signup /> },
+        { path: 'terms-of-use', element: <TermsOfUse /> },
+        { path: 'privacy-policy', element: <PrivacyPolicy /> },
         { path: 'signin', element: <Signin /> },
         { path: 'magiclink', element: <MagicLink /> },
         { path: 'signinpass', element: <SigninPass /> },
