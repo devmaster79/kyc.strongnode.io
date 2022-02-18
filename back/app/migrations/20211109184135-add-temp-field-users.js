@@ -1,23 +1,11 @@
-'use strict';
+const { Sequelize } = require('sequelize');
 
-module.exports = {
-  up: async (queryInterface, Sequelize) => {
-    /**
-     * Add altering commands here.
-     *
-     * Example:
-     * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
-     */
-    await queryInterface.addColumn('users', 'temp', Sequelize.STRING );
-  },
+async function up({ context: queryInterface }) {
+  await queryInterface.addColumn('users', 'temp', Sequelize.STRING );
+}
 
-  down: async (queryInterface, Sequelize) => {
-    /**
-     * Add reverting commands here.
-     *
-     * Example:
-     * await queryInterface.dropTable('users');
-     */
-     await queryInterface.removeColumn('users', 'temp' );
-  }
-};
+async function down({ context: queryInterface }) {
+  await queryInterface.removeColumn('users', 'temp' );
+}
+
+module.exports = { up, down };

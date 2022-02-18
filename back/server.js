@@ -9,6 +9,9 @@ const path = require('path');
 //   origin: "http://localhost:8081"
 // };
 
+const dotenv = require('dotenv');
+dotenv.config();
+
 // app.use(cors(corsOptions));
 
 app.use(cors());
