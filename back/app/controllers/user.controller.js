@@ -19,6 +19,7 @@ const userService = require('./../services/user.services')
 dotenv.config();
 
 var AWS = require("aws-sdk");
+const { MODE_QR, MODE_SMS, MODE_FULL, getTokenSecret, MODE_QR_EXPIRES_IN, MODE_SMS_EXPIRES_IN, MODE_FULL_EXPIRES_IN } = require("../middleware/auth");
 var rand, host, link;
 
 // Create and Save a new User
@@ -69,6 +70,7 @@ exports.create = async (req, res) => {
       }
 
       try {
+        // TODO: add limit of maximum trials
         const user = await User.findOne({
           where: {
             [Op.or]: [{ user_name: req.body.user_name }, { email: req.body.email }],
@@ -103,8 +105,9 @@ exports.create = async (req, res) => {
         });
       } catch (err) {
         res.status(500).send({
-          message: err.message || "Some error occurred while creating the User.",
+          message: "Some error occurred while creating the User.",
         });
+        console.error(err);
       }
     }
   })();
@@ -188,11 +191,11 @@ exports.resetPassword = async (req, res) => {
 
     if (user) {
       const token = jwt.sign(
-          { user_name: user?.dataValues.user_name, email: user?.dataValues.email },
-          process.env.TOKEN_SECRET,
-          {
-            expiresIn: "168h",
-          }
+        { user_name: user?.dataValues.user_name, email: user?.dataValues.email },
+        getTokenSecret(MODE_FULL), // after reset password he will be logged in fully but maybe we should init 2fa...
+        {
+          expiresIn: "168h",
+        }
       )
 
       console.log('creating a hash')
@@ -202,17 +205,17 @@ exports.resetPassword = async (req, res) => {
       }
 
       // update the user
-      const userUpdate = await User.update(data, {
+      const numberOfUpdatedUsers = (await User.update(data, {
         where: { email: passwordResetRequest?.dataValues.userEmail }
-      })
+      }))[0];
 
-      if (userUpdate) {
+      if (numberOfUpdatedUsers) {
 
         await PasswordResets.update({ status: 'inactive' }, { where: { userEmail: passwordResetRequest?.dataValues.userEmail, status: 'active' } })
 
         res.send({ message: 'Successfully changed a password.', status: 'success', token: token, username: user?.dataValues.user_name })
       } else {
-        res.send({message: 'Some error occurred during the update of user.', status: 'failed'})
+        res.send({ message: 'Some error occurred during the update of user.', status: 'failed' })
       }
 
     } else {
@@ -234,6 +237,7 @@ exports.createPassword = async (req, res) => {
   }
 
   try {
+    // TODO: limit maximum trials.
     const user = await User.findOne({
       where: { password_token: req.body.password_token },
     });
@@ -245,7 +249,8 @@ exports.createPassword = async (req, res) => {
 
     const token = jwt.sign(
       { user_name: user?.dataValues.user_name, email: user?.dataValues.email },
-      process.env.TOKEN_SECRET,
+      // New users should be logged in fully
+      getTokenSecret(MODE_FULL),
       {
         expiresIn: "168h",
       }
@@ -272,6 +277,7 @@ exports.createPassword = async (req, res) => {
     }
   } catch (err) {
     res.status(500).send({
+      // TODO: error message may reveal security holes
       message: err.message,
     });
   }
@@ -288,10 +294,13 @@ exports.signin = async (req, res) => {
   }
 
   try {
+    // TODO: security holes:
+    // 1. when email is found, the request is slower
+    // without limiting the maximum trials a hacker could retrieve the registered emails.
+    // 2. with enough trials a hacker could sign in
+
     const user = await User.findOne({ where: { email: req.body.email } });
-
     const comparePassword = await passwordService.verifyPasswordHash(user.dataValues.password, req.body.password)
-
     if (!comparePassword) {
       res.status(401).send({
         message: `Wrong password.`,
@@ -299,38 +308,50 @@ exports.signin = async (req, res) => {
       return;
     }
 
+    let token_secret_mode;
+    let token_expiration;
+    if (user.dataValues.enable_totp) {
+      token_secret_mode = MODE_QR;
+      token_expiration = MODE_QR_EXPIRES_IN;
+    } else if (user.dataValues.enable_sms) {
+      token_secret_mode = MODE_SMS;
+      token_expiration = MODE_SMS_EXPIRES_IN;
+    } else {
+      token_secret_mode = MODE_FULL;
+      token_expiration = MODE_FULL_EXPIRES_IN;
+    }
+
     const token = jwt.sign(
       { user_name: user.dataValues.user_name, email: user.dataValues.email },
-      process.env.TOKEN_SECRET,
+      getTokenSecret(token_secret_mode),
       {
-        expiresIn: "168h",
+        expiresIn: token_expiration,
       }
     );
-    // Create a User password
+
+    // Update token
     const data = {
       token: token,
     };
-
-    const ret = await User.update(data, {
+    const numberOfUpdatedUsers = (await User.update(data, {
       where: { email: req.body.email },
-    });
-
-    if (ret == 1) {
+    }))[0];
+    if (numberOfUpdatedUsers === 1) {
       res.send({
         message: "Logged in successfully",
         token: token,
         user_name: user.dataValues.user_name,
+        enable_totp: user.dataValues.enable_totp,
+        enable_sms: user.dataValues.enable_sms,
       });
     } else {
-      res.send({
-        message: `Cannot update token with user email=${req.body.email}.`,
-      });
-      return;
+      throw `Cannot update token with user email=${req.body.email}.`
     }
   } catch (err) {
     res.status(500).send({
-      message: err.message,
+      message: "Something went wrong",
     });
+    console.error(`Possible login trial to an unregistered account, because of error: ${err}`);
   }
 };
 
@@ -412,32 +433,6 @@ exports.createInvestor = (req, res) => {
     .catch((err) => {
       res.status(500).send({
         message: "Error creating Investor with username=" + req.user.user_name,
-      });
-    });
-};
-
-// Retrieve all Users from the database.
-exports.findAll = (req, res) => {
-  // Validate request
-  if (!req.user) {
-    res.status(400).send({
-      message: "Content can not be empty!",
-    });
-    return;
-  }
-
-  const first_name = req.query.first_name;
-  const condition = first_name
-    ? { first_name: { [Op.like]: `%${first_name}%` } }
-    : null;
-
-  User.findAll({ where: condition })
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: err.message || "Some error occurred while retrieving users.",
       });
     });
 };
@@ -550,6 +545,7 @@ exports.deleteAll = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
+        // TODO: error message may reveal security holes
         message: err.message || "Some error occurred while removing all users.",
       });
     });
@@ -576,7 +572,12 @@ exports.sendSMS = (req, res) => {
   // AWS.config.credentials = credentials;
   AWS.config.update({ region: aws_region });
 
-  var pinpoint = new AWS.Pinpoint();
+  var pinpointOptions = {}
+  if (process.env.AWS_LOCALSTACK_URL != '') {
+    pinpointOptions.endpoint = process.env.AWS_LOCALSTACK_URL
+  }
+
+  var pinpoint = new AWS.Pinpoint(pinpointOptions);
 
   var params = {
     ApplicationId: applicationId,
@@ -599,6 +600,13 @@ exports.sendSMS = (req, res) => {
   };
 
   pinpoint.sendMessages(params, function (err, data) {
+    // TODO: add automated integrated tests for SMS auth.
+    // To test SMSes locally, use these:
+    // ```
+    // console.log(OTP);
+    // err = false
+    // ```
+    // this will bypass pinpoint error and logs OTP to the server logs.
     if (err) {
       res.end(JSON.stringify({ Error: err }));
     } else {
@@ -606,135 +614,188 @@ exports.sendSMS = (req, res) => {
         smscode: OTP,
       };
       User.update(user_sms, {
-        where: { email: req.body.email },
+        where: { email: req.user.email },
       })
         .then((num) => {
-          if (num == 1) {
-            res.send({
-              result: 1,
-              message: "Sent SMS Code successfully.",
-            });
-          } else {
-            res.send({
-              result: 2,
-              message: `Cannot send SMS code with email=${req.body.email}. Maybe User email was not found or req.body is empty!`,
-            });
+          if (num === 0) {
+            console.error(`user with email ${req.user.email} was not found during sending sms`)
           }
+          res.send({
+            message: "Sent SMS Code successfully.",
+          });
         })
-        .catch((err) => {
+        .catch((_err) => {
           res.status(500).send({
-            result: 3,
-            message: err,
+            message: "Something went wrong.",
           });
         });
     }
   });
 };
 
-//Get Userinfo from DB by email
-exports.getUser = (req, res) => {
-  const para_email = req.query.email;
+// When user sets SMS 2FA method, we have to test it first
+exports.testAuthSMS = (req, res) => {
+  const email = req.user.email;
+  const para_smscode = req.query.smscode;
 
-  userService.getUsersPublicData({ email: para_email }).then((data) => {
-    res.send(data)
-  })
-  .catch((err) => {
-    res.status(500).send({
-      message: err.message || "Some error occurred while retrieving users."
-    })
-  })
-};
-
-//Generate QR code for TOTP
-exports.qrcode = async (req, res) => {
-  const email = req.body.email;
-
-  var temp_secret = speakeasy.generateSecret({ name: "StrongNode" });
-  const totp_qrcode = await QRCode.toDataURL(temp_secret.otpauth_url);
-
-  const db_qr = {
-    qrcode: totp_qrcode,
-    qr_secret: temp_secret.base32,
-  };
-
-  User.update(db_qr, {
-    where: { email: email },
-  })
-    .then((num) => {
-      if (num == 1) {
+  User.findAll({ where: { email } })
+    .then((data) => {
+      if (data.length === 1 && data[0].smscode === para_smscode) {
         res.send({
-          secret: temp_secret.base32,
-          url: totp_qrcode,
+          success: true
         });
       } else {
         res.send({
-          result: num,
-          message: `Cannot generate QR code with email=${email}. Maybe User email was not found!`,
+          success: false
         });
       }
     })
     .catch((err) => {
+      console.error(err);
       res.status(500).send({
-        result: 3,
-        message: err,
+        message: "Something went wrong.",
       });
     });
+};
+
+// When user signs in with SMS 2FA method
+exports.authSMS = (req, res) => {
+  const { email } = req.user;
+  const para_smscode = req.query.smscode;
+
+  User.findAll({ where: { email } })
+    .then((users) => {
+      if (users.length === 1 && users[0].smscode === para_smscode) {
+        // generate token for the next stage
+        const next_token = jwt.sign(
+          { user_name: users[0].user_name, email: users[0].email },
+          getTokenSecret(MODE_FULL),
+          {
+            expiresIn: MODE_FULL_EXPIRES_IN,
+          }
+        );
+
+        // update token and send to the user
+        User.update({ token: next_token }, { where: { email } })
+        res.send({
+          success: true,
+          token: next_token,
+        });
+      } else {
+        res.send({
+          success: false
+        });
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send({
+        message: "Something went wrong.",
+      });
+    });
+};
+
+exports.generateQR = async (req, res) => {
+  try {
+    const email = req.user.email;
+    const temp_secret = speakeasy.generateSecret({ name: "StrongNode" });
+    const totp_qrcode = await QRCode.toDataURL(temp_secret.otpauth_url);
+
+    const db_qr = {
+      qrcode: totp_qrcode,
+      qr_secret: temp_secret.base32,
+    };
+    await User.update(db_qr, { where: { email } });
+
+    return res.send({
+      url: totp_qrcode,
+    });
+  } catch(err) {
+    return res.status(500).send({});
+  }
 };
 
 // Verify TOTP
-exports.verifyTOTP = async (req, res) => {
-  const { email, token } = req.body;
+exports.authQR = async (req, res) => {
+  const { email } = req.user;
+  const { token } = req.body;
 
-  User.findAll({ where: { email: email } })
-    .then((data) => {
-      const secret = data[0].qr_secret;
-      const verified = speakeasy.totp.verify({
-        secret,
-        encoding: "base32",
-        token,
-      });
+  try {
+    let users = await User.findAll({ where: { email: email } });
+    const verified = speakeasy.totp.verify({
+      secret: users[0].qr_secret,
+      encoding: "base32",
+      token,
+    });
 
-      if (verified) {
-        const db_secret = {
-          qr_secret: secret,
-          enable_totp: true,
-        };
-        User.update(db_secret, {
-          where: { email: email },
-        })
-          .then((num) => {
-            if (num == 1) {
-              res.json({ verified: true });
-            } else {
-              res.send({
-                result: num,
-                message: `Cannot update QR sercret code with email=${email}. Maybe User email was not found!`,
-              });
-            }
-          })
-          .catch((err) => {
-            res.status(500).send({
-              result: 3,
-              message: err,
-            });
-          });
+    if (verified) {
+      // determine the next stage of user auth flow
+      let token_secret_mode;
+      let token_expiration;
+      if (users[0].enable_sms) {
+        token_secret_mode = MODE_SMS;
+        token_expiration = MODE_SMS_EXPIRES_IN;
       } else {
-        res.send({
-          verified: false,
+        token_secret_mode = MODE_FULL;
+        token_expiration = MODE_FULL_EXPIRES_IN;
+      }
+      // generate token for the next stage
+      const next_token = jwt.sign(
+        { user_name: users[0].user_name, email: users[0].email },
+        getTokenSecret(token_secret_mode),
+        {
+          expiresIn: token_expiration,
+        }
+      );
+
+      // update user
+      const data = {
+        token: next_token
+      };
+      const numberOfUpdatedUsers = (await User.update(data, { where: { email }, }))[0];
+      if (numberOfUpdatedUsers == 1) {
+        return res.json({
+          token: next_token,
+          verified: true,
+          enable_sms: users[0].dataValues.enable_sms,
         });
       }
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: err.message || "Some error occurred while retrieving users.",
-      });
+    }
+    return res.send({
+      verified: false,
     });
+  } catch(err) {
+    res.status(500).send({
+      message: "Something went wrong",
+    });
+    console.error(err);
+  }
+};
+
+exports.testAuthQR = async (req, res) => {
+  const { email } = req.user;
+  const { token } = req.body;
+
+  try {
+    let users = await User.findAll({ where: { email: email } });
+    const verified = speakeasy.totp.verify({
+      secret: users[0].qr_secret,
+      encoding: "base32",
+      token,
+    });
+    res.send({ verified });
+  } catch(err) {
+    res.status(500).send({
+      message: "Something went wrong",
+    });
+    console.error(err);
+  }
 };
 
 //Verify Email
 exports.verifyEmail = async (req, res) => {
   // Validate request
-  if (!req.body.password_token && req.body.password_token === rand) {
+  if (!req.body.password_token) {
     res.status(400).send({
       message: "Content can not be empty or Bad Request",
     });
@@ -785,6 +846,7 @@ exports.verifyEmail = async (req, res) => {
     }
   } catch (err) {
     res.status(500).send({
+      // TODO: error message may reveal security holes
       message: err.message,
     });
   }
@@ -792,14 +854,17 @@ exports.verifyEmail = async (req, res) => {
 
 //Get profile
 exports.getProfile = (req, res) => {
-  const para_email = req.query.email;
-
-  User.findAll({ where: { email: para_email } })
+  User.findAll({ where: { email: req.user.email } })
     .then((data) => {
+      // TODO: possible data leak, it would be good to show only the required fields
+      // Also /profile/get should return only 1 user not a list of users
+      // Also GET /profile and PATCH or PUT /profile would be enough
+      // There is no need for additional ../get and ../update routes
       res.send(data);
     })
     .catch((err) => {
       res.status(500).send({
+        // TODO: error message may reveal security holes
         message: err.message || "Some error occurred while retrieving users.",
       });
     });
@@ -807,7 +872,7 @@ exports.getProfile = (req, res) => {
 
 //Update profile
 exports.updateProfile = async (req, res) => {
-  const { email } = req.body;
+  const { email } = req.user;
   const { first_name, last_name, user_name, twitter_id, telegram_id, wallet_address, enable_totp, enable_sms } = req.body;
 
   if (!email) {
@@ -834,11 +899,11 @@ exports.updateProfile = async (req, res) => {
     .then((num) => {
       if (num == 1) {
         res.send({
-          message: "User profile was created successfully.",
+          message: "User profile was updated successfully.",
         });
       } else {
         res.send({
-          message: `Cannot create User profile with username=${req.user.user_name}. Maybe User profile info was not found or req.body is empty!`,
+          message: `Cannot update User profile with username=${req.user.user_name}. Maybe User profile info was not found or req.body is empty!`,
         });
       }
     })
@@ -852,7 +917,8 @@ exports.updateProfile = async (req, res) => {
 
 //Upload profile Image
 exports.uploadImg = async (req, res) => {
-  const { email, user_name, image_data } = req.body;
+  const { email } = req.user;
+  const { user_name, image_data } = req.body;
 
   if (!email) {
     res.status(400).send({
@@ -934,22 +1000,22 @@ exports.uploadImg = async (req, res) => {
     User.update(data, {
       where: { email: email },
     })
-    .then((num) => {
-      if (num == 1) {
-        res.send({
-          message: "User profile image was uploaded successfully.",
-        });
-      } else {
-        res.send({
+      .then((num) => {
+        if (num == 1) {
+          res.send({
+            message: "User profile image was uploaded successfully.",
+          });
+        } else {
+          res.send({
             message: "Cannot upload User profile image with username=" + user_name,
+          });
+        }
+      })
+      .catch((err) => {
+        res.status(500).send({
+          message: err,
         });
-      }
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: err,
       });
-    });
   };
 
 };
@@ -961,12 +1027,12 @@ exports.addData = async (req, res) => {
     token_amount: req.body.value,
     action_type: req.body.type,
     date: Date.now(),
-    createdAt : Date.now(),
-    updatedAt : Date.now(),
+    createdAt: Date.now(),
+    updatedAt: Date.now(),
   };
 
   const history = new History(data);
-  history.save().then(()=>{
+  history.save().then(() => {
     console.log("success");
     res.send("success");
   })

@@ -9,26 +9,24 @@ import Input from '../components/Input';
 import InputGroup from '../components/InputGroup';
 import { ReactComponent as LockIcon } from '../icons/lock.svg';
 import PhoneInput from 'react-phone-number-input';
-import { sendSMS, checkSMS } from '../utils/api';
+import { sendSMS, authSMS } from '../utils/api';
 import 'react-phone-number-input/style.css';
 
+const LENGTH_OF_SMS_CODE = 4;
 function SigninSMS() {
   const navigate = useNavigate();
-
-  const [smscode, setSmscode] = useState('');
-  const [disabled, setDisabled] = useState(true);
-  const [cdisable, setCdisable] = useState(true);
-  const [email, setEmail] = useState('');
+  const [smsCode, setSmsCode] = useState('');
+  const [loading, setLoading] = useState(false);
   const [showError, setShowError] = useState(false);
-  const [value, setValue] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
   const [btnLabel, setBtnLabel] = useState('SEND');
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    checkSMS(email).then((r) => {
-      // todo, major issue.
-      // todo when user enters wrong SMS code, he can just lookup in the network tab to see the sms code from DB. 🙈
-      if (smscode === r.data[0].smscode) {
+    authSMS(smsCode).then((r) => {
+      if (r.data.success) {
+        localStorage.setItem('token', r.data.token);
+        localStorage.setItem('loggedin', true);
         navigate('/dashboard/app');
       } else {
         setShowError(true);
@@ -38,39 +36,24 @@ function SigninSMS() {
 
   const sendMessage = () => {
     let count = 30;
-    setDisabled(true);
+    setLoading(true);
     setShowError(false);
-    sendSMS(value.substring(1), email).then((r) => console.error(r));
+    sendSMS(phoneNumber.substring(1));
     const counter = setInterval(() => {
       setBtnLabel(`${count}s`);
       count--;
       if (count === -1) {
         clearInterval(counter);
         setBtnLabel('SEND');
-        setDisabled(false);
+        setLoading(false);
       }
     }, 1000);
   };
 
-  const handle2FA = (val) => {
-    if (val.length > 4) {
-      val = val.slice(0, 4);
-      setSmscode(val);
-    } else {
-      setSmscode(val);
-    }
-
-    if (val) setCdisable(false);
-    else setCdisable(true);
-    setShowError(false);
+  const handleSMSCodeChande = (val) => {
+    val = val.slice(0, 4);
+    setSmsCode(val);
   };
-
-  useEffect(() => {
-    if (value !== '') setDisabled(false);
-    if (!value) setDisabled(true);
-    const user_email = localStorage.getItem('email');
-    setEmail(user_email);
-  }, [value]);
 
   return (
     <EntryPage>
@@ -81,14 +64,14 @@ function SigninSMS() {
             <PhoneInput
               defaultCountry="US"
               placeholder="Enter phone number"
-              value={value}
-              onChange={setValue}
+              value={phoneNumber}
+              onChange={setPhoneNumber}
             />
             <Button
               type="text"
               style={{ marginLeft: '10px', height: 'auto', flex: '1' }}
               onClick={sendMessage}
-              disabled={disabled}>
+              disabled={!phoneNumber || loading}>
               {btnLabel}
             </Button>
           </div>
@@ -99,15 +82,19 @@ function SigninSMS() {
                 type="number"
                 placeholder="Enter your SMS code"
                 id="smsConfirm"
-                value={smscode}
+                value={smsCode}
                 style={{ padding: '16px 20px 16px 40px' }}
-                onChange={(e) => handle2FA(e.target.value)}
+                onChange={(e) => handleSMSCodeChande(e.target.value)}
               />
             </InputGroup>
             {showError && (
               <p style={{ marginBottom: '10px', color: 'red' }}>Invalid code please try again</p>
             )}
-            <Button type="submit" full disabled={cdisable}>
+            <Button
+              type="submit"
+              full
+              disabled={smsCode.length < LENGTH_OF_SMS_CODE}
+            >
               CONFIRM
             </Button>
           </form>

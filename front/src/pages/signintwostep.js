@@ -5,30 +5,26 @@ import Button from '../components/Button';
 import EntryCard from '../components/EntryCard';
 import Input from '../components/Input';
 import InputGroup from '../components/InputGroup';
-import { checkSMS, createQR, verifyTOTP } from '../utils/api';
+import { authQR } from '../utils/api';
 
 function SigninTwoStep() {
   const navigate = useNavigate();
-
-  const [email, setEmail] = useState('');
   const [totp, setTOTP] = useState('');
-  const [showError, setShowError] = useState(false);
-  const [showQR, setShowQR] = useState(false);
-  const [qrURL, setQRURL] = useState('');
+  const [error, setError] = useState();
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    verifyTOTP(email, totp).then((r) => {
+    authQR(totp).then((r) => {
       if (r.data.verified) {
-        checkSMS(email).then((r) => {
-          if (r.data.enable_sms === true) {
-            navigate('/signinsms');
-          } else {
-            navigate('/dashboard/app');
-          }
-        });
+        localStorage.setItem('token', r.data.token);
+        if (r.data.enable_sms === true) {
+          navigate('/signinsms');
+        } else {
+          localStorage.setItem('loggedin', true);
+          navigate('/dashboard/app');
+        }
       } else {
-        setShowError(true);
+        setError("Invalid code please try again");
       }
     });
   };
@@ -42,42 +38,10 @@ function SigninTwoStep() {
     }
   };
 
-  useEffect(() => {
-    const email = localStorage.getItem('email');
-    if (email !== '') {
-      setEmail(email);
-    }
-
-    async function fetchUser() {
-      try {
-        checkSMS(email).then((r) => {
-          if (r.data.enable_totp) {
-            setShowQR(false);
-          } else {
-            setShowQR(true);
-            createQR(email).then((rq) => {
-              setQRURL(rq.data.url);
-            });
-          }
-        });
-      } catch (e) {
-        console.error(e);
-      }
-    }
-    fetchUser();
-  }, []);
-
   return (
     <EntryPage>
       <EntryCard style={{ width: '454px', padding: '40px 25px' }}>
         <h2 style={{ fontWeight: 'bold', fontFamily: 'Halyard' }}>2-STEP VERIFICATION</h2>
-        {!showQR && <h5>Re-enter your OTP for Verification</h5>}
-        {showQR && (
-          <div style={{ marginTop: '20px' }}>
-            <img style={{ margin: 'auto' }} src={qrURL} alt="qr" />
-            <p>Please setup MFA on authenticator app</p>
-          </div>
-        )}
         <form
           onSubmit={handleSubmit}
           style={{ marginTop: 30, marginLeft: '60px', marginRight: '60px' }}>
@@ -91,9 +55,7 @@ function SigninTwoStep() {
               onChange={handleTOTPInputChange}
             />
           </InputGroup>
-          {showError && (
-            <p style={{ marginBottom: '10px', color: 'red' }}>Invalid code please try again</p>
-          )}
+          {error && <p style={{ marginBottom: '10px', color: 'red' }}>{error}</p>}
           <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
             <input name="twoStep" type="checkbox" value="false" style={{ width: 'auto' }} />
             <p
