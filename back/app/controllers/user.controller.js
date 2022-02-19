@@ -555,107 +555,53 @@ function generateRandomNumber(min, max) {
   return Math.floor(Math.random() * (max - min) + min);
 }
 
-//Send SMS and save password
-exports.sendSMS = (req, res) => {
+/**
+ * Method that is being used for requesting SMS OTP.
+ * @param req
+ * @param res
+ * @returns {Promise<void>}
+ */
+exports.sendSMS = async (req, res) => {
+// check the required parameters
+  if (typeof req.body.email === 'undefined')
+    res.send({message: 'Required parameters are not present.'})
+
   var OTP = generateRandomNumber(1000, 9999);
-  var aws_region = "us-west-2";
-  var originationNumber = "+18555460621";
+
   var destinationNumber = req.body.number;
   var message = "Here is your SMS 2-factor authentication code for StrongNode : " + OTP;
-  var applicationId = process.env.ApplicationId;
-  var messageType = "TRANSACTIONAL";
-  var registeredKeyword = "strongnode";
-  var senderId = "MySenderID";
 
   // var credentials = new AWS.SharedIniFileCredentials({profile: 'default'});
 
-  // AWS.config.credentials = credentials;
-  AWS.config.update({ region: aws_region });
+  const sentSms = communicationService.sendSms(destinationNumber, message)
 
-  var pinpointOptions = {}
-  if (process.env.AWS_LOCALSTACK_URL != '') {
-    pinpointOptions.endpoint = process.env.AWS_LOCALSTACK_URL
-  }
-
-  var pinpoint = new AWS.Pinpoint(pinpointOptions);
-
-  var params = {
-    ApplicationId: applicationId,
-    MessageRequest: {
-      Addresses: {
-        [destinationNumber]: {
-          ChannelType: 'SMS'
-        }
-      },
-      MessageConfiguration: {
-        SMSMessage: {
-          Body: message,
-          Keyword: registeredKeyword,
-          MessageType: messageType,
-          OriginationNumber: originationNumber,
-          SenderId: senderId,
-        }
-      }
-    }
-  };
-
-  pinpoint.sendMessages(params, function (err, data) {
-    // TODO: add automated integrated tests for SMS auth.
-    // To test SMSes locally, use these:
-    // ```
-    // console.log(OTP);
-    // err = false
-    // ```
-    // this will bypass pinpoint error and logs OTP to the server logs.
-    if (err) {
-      res.end(JSON.stringify({ Error: err }));
-    } else {
-      const user_sms = {
-        smscode: OTP,
-      };
-      User.update(user_sms, {
-        where: { email: req.user.email },
-      })
-        .then((num) => {
-          if (num === 0) {
-            console.error(`user with email ${req.user.email} was not found during sending sms`)
-          }
-          res.send({
-            message: "Sent SMS Code successfully.",
-          });
-        })
-        .catch((_err) => {
-          res.status(500).send({
-            message: "Something went wrong.",
-          });
-        });
-    }
-  });
-};
-
-// When user sets SMS 2FA method, we have to test it first
-exports.testAuthSMS = (req, res) => {
-  const email = req.user.email;
-  const para_smscode = req.query.smscode;
-
-  User.findAll({ where: { email } })
-    .then((data) => {
-      if (data.length === 1 && data[0].smscode === para_smscode) {
-        res.send({
-          success: true
-        });
-      } else {
-        res.send({
-          success: false
-        });
-      }
+  if (sentSms.status) {
+    User.update({ smscode: OTP }, {
+      where: { email: req.body.email },
     })
-    .catch((err) => {
-      console.error(err);
-      res.status(500).send({
-        message: "Something went wrong.",
-      });
-    });
+        .then((num) => {
+          if (num == 1) {
+            res.send({
+              result: 1,
+              message: "Sent SMS Code successfully.",
+            });
+          } else {
+            res.send({
+              result: 2,
+              message: `Cannot send SMS code with email=${req.body.email}. Users does not exist.`,
+            });
+          }
+        })
+        .catch((err) => {
+          res.status(500).send({
+            result: 3,
+            message: err,
+          });
+        });
+  } else {
+    console.log(sentSms.err)
+    res.send({ message: 'An error occurred with AWS pinpoint. Please, check servers console to see the error.' })
+  }
 };
 
 // When user signs in with SMS 2FA method
