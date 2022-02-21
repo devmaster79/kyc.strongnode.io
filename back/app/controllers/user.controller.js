@@ -286,12 +286,15 @@ exports.createPassword = async (req, res) => {
 // Signin and Save a new token
 exports.signin = async (req, res) => {
   // Validate request
+
   if (!req.body.email && !req.body.password || req.body.password === '') {
     res.status(400).send({
       message: "Content can not be empty!",
     });
     return;
   }
+
+  
 
   try {
     // TODO: security holes:
@@ -301,13 +304,14 @@ exports.signin = async (req, res) => {
 
     const user = await User.findOne({ where: { email: req.body.email } });
     const comparePassword = await passwordService.verifyPasswordHash(user.dataValues.password, req.body.password)
+
     if (!comparePassword) {
       res.status(401).send({
         message: `Wrong password.`,
       });
       return;
     }
-
+    
     let token_secret_mode;
     let token_expiration;
     if (user.dataValues.enable_totp) {
@@ -800,17 +804,19 @@ exports.verifyEmail = async (req, res) => {
 
 //Get profile
 exports.getProfile = (req, res) => {
-  User.findAll({ where: { email: req.user.email } })
+  const para_email = req.query.email;
+
+  User.findOne({ where: { email: para_email } })
     .then((data) => {
-      // TODO: possible data leak, it would be good to show only the required fields
-      // Also /profile/get should return only 1 user not a list of users
-      // Also GET /profile and PATCH or PUT /profile would be enough
-      // There is no need for additional ../get and ../update routes
-      res.send(data);
+      const _returnData = [{
+        remaining_total_amount : data.remaining_total_amount || 0,
+        locked_bonus_amount : data.locked_bonus_amount || 0,
+        user_name : data.user_name,
+      }];
+      res.send(_returnData);
     })
     .catch((err) => {
       res.status(500).send({
-        // TODO: error message may reveal security holes
         message: err.message || "Some error occurred while retrieving users.",
       });
     });
