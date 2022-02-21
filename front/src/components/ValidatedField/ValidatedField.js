@@ -38,7 +38,7 @@ const TermsText = () => (
       color: 'white',
       fontFamily: 'Halyard-Book'
     }}>
-    By continuing, you agree to <Link to="/#">Terms of Use</Link> Privacy Policy.
+    By continuing, you agree to <Link to="/terms-of-use" target="_blank">Terms of Use</Link> <Link to="/privacy-policy" target="_blank">Privacy Policy</Link>.
   </p>
 );
 

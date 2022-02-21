@@ -8,7 +8,6 @@ import Input from '../components/Input';
 import InputGroup from '../components/InputGroup';
 import { ReactComponent as LockIcon } from '../icons/lock.svg';
 import { ReactComponent as MailIcon } from '../icons/message.svg';
-import { checkSMS } from '../utils/api';
 import userService from 'services/userService';
 
 const UserInfoWrapper = styled.div`
@@ -48,16 +47,14 @@ function SigninPass() {
           if (r.status === 200) {
             userService.setToken(r.data.token);
             localStorage.setItem('username', r.data.user_name);
-            localStorage.setItem('loggedin', true);
-            checkSMS(email).then((r) => {
-              if (r.data.enable_totp === true) {
-                navigate('/signintwostep');
-              } else if (r.data.enable_sms === true) {
-                navigate('/signinsms');
-              } else {
-                navigate('/dashboard/app');
-              }
-            });
+            if (r.data.enable_totp === true) {
+              navigate('/signintwostep');
+            } else if (r.data.enable_sms === true) {
+              navigate('/signinsms');
+            } else {
+              localStorage.setItem('loggedin', true);
+              navigate('/dashboard/app');
+            }
           } else if (r.status === 401) {
             setPassWrong(true);
             setPassword('');

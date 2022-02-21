@@ -195,9 +195,12 @@ export default function Dashboard() {
         }
       } else {
         enqueueSnackbar('You must sign in!', { variant: 'error' });
+        window.document.location = "/signin"
       }
     } catch (err) {
       enqueueSnackbar('You must sign in!', { variant: 'error' });
+      window.document.location = "/signin"
+      
     }
   }, []);
   return (

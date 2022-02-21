@@ -83,7 +83,6 @@ export default function Dashboard() {
 
   //Fetch value from local storage
   const token = localStorage.getItem('token');
-  const useremail = localStorage.getItem('email');
 
   const handleOpenMfa = () => setOpenMfa(true);
   const handleCloseMfa = () => {
@@ -182,12 +181,11 @@ export default function Dashboard() {
   };
 
   const checkMFACode = () => {
-    verifyTOTP(useremail, totp).then((r) => {
+    testAuthQR(totp).then((r) => {
       if (r.data.verified) {
         setFieldValue('enable_totp', true);
-        const { enable_totp } = values;
         const data = {
-          enable_totp
+          enable_totp: true
         };
         userService.updateProfile(data).then((r) => {
           if (r.status === 200) {
@@ -214,12 +212,11 @@ export default function Dashboard() {
   };
 
   const check2faCode = () => {
-    checkSMS(useremail).then((r) => {
-      if (smscode === r.data[0].smscode) {
+    testAuthSMS(smscode).then((r) => {
+      if (r.data.success) {
         setFieldValue('enable_sms', true);
-        const { enable_sms } = values;
         const data = {
-          enable_sms
+          enable_sms: true
         };
         userService.updateProfile(data).then((r) => {
           if (r.status === 200) {
@@ -241,7 +238,7 @@ export default function Dashboard() {
     let count = 30;
     setDisabled(true);
     setSMSshowError(false);
-    sendSMS(value.substring(1), useremail).then((r) => console.error(r));
+    sendSMS(value.substring(1));
     const counter = setInterval(() => {
       setBtnLabel(`${count}s`);
       count--;
@@ -297,7 +294,7 @@ export default function Dashboard() {
 
       if (!result.data[0].enable_totp || result.data[0].enable_totp == null) {
         setShowQR(true);
-        createQR(useremail).then((rq) => {
+        generateQR().then((rq) => {
           setQRURL(rq.data.url);
         });
       }
