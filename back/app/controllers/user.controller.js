@@ -798,12 +798,12 @@ exports.verifyEmail = async (req, res) => {
 exports.getProfile = (req, res) => {
   const para_email = req.query.email;
 
-  User.findAll({ where: { email: para_email } })
+  User.findOne({ where: { email: para_email } })
     .then((data) => {
       const _returnData = [{
-        remaining_total_amount : data[0].remaining_total_amount || 0,
-        locked_bonus_amount : data[0].locked_bonus_amount || 0,
-        user_name : data[0].user_name,
+        remaining_total_amount : data.remaining_total_amount || 0,
+        locked_bonus_amount : data.locked_bonus_amount || 0,
+        user_name : data.user_name,
       }];
       res.send(_returnData);
     })
