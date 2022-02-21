@@ -294,7 +294,7 @@ exports.signin = async (req, res) => {
     return;
   }
 
-  
+
 
   try {
     // TODO: security holes:
@@ -311,7 +311,7 @@ exports.signin = async (req, res) => {
       });
       return;
     }
-    
+
     let token_secret_mode;
     let token_expiration;
     if (user.dataValues.enable_totp) {
@@ -607,6 +607,31 @@ exports.sendSMS = async (req, res) => {
     res.send({ message: 'An error occurred with AWS pinpoint. Please, check servers console to see the error.' })
   }
 };
+
+// When user sets SMS 2FA method, we have to test it first
+exports.testAuthSMS = (req, res) => {
+  const email = req.user.email;
+  const para_smscode = req.query.smscode;
+
+  User.findAll({where: {email}})
+      .then((data) => {
+        if (data.length === 1 && data[0].smscode === para_smscode) {
+          res.send({
+            success: true
+          });
+        } else {
+          res.send({
+            success: false
+          });
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(500).send({
+          message: "Something went wrong.",
+        });
+      });
+}
 
 // When user signs in with SMS 2FA method
 exports.authSMS = (req, res) => {
