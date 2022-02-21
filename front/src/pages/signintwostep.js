@@ -5,7 +5,7 @@ import Button from '../components/Button';
 import EntryCard from '../components/EntryCard';
 import Input from '../components/Input';
 import InputGroup from '../components/InputGroup';
-import { authQR } from '../utils/api';
+import userService from 'services/userService';
 
 function SigninTwoStep() {
   const navigate = useNavigate();
@@ -14,9 +14,9 @@ function SigninTwoStep() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    authQR(totp).then((r) => {
+    userService.authQR(totp).then((r) => {
       if (r.data.verified) {
-        localStorage.setItem('token', r.data.token);
+        userService.setToken(r.data.token);
         if (r.data.enable_sms === true) {
           navigate('/signinsms');
         } else {

@@ -641,6 +641,10 @@ exports.authSMS = (req, res) => {
     });
 };
 
+exports.testAuthSMS = () => {
+  return res.status(200);
+}
+
 exports.generateQR = async (req, res) => {
   try {
     const email = req.user.email;

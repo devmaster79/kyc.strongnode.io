@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { get_profile, update_profile, upload_profile_img, signup_url,
   password_reset_url, password_reset_submit_url, verify_email_url, password_url,
-  profile_url, investor_url, signin_url } from '../utils/config'
+  profile_url, investor_url, signin_url, send_sms_url, test_auth_sms_url, auth_sms_url, auth_qr_url,
+  generate_qr_url, test_auth_qr_url } from '../utils/config'
 
 export default {
   signin(email, password) {
@@ -23,8 +24,8 @@ export default {
         token: token,
       });
   },
-  getProfile(email) {
-    return axios.get(`${get_profile}?email=${email}`);
+  getProfile() {
+    return axios.get(get_profile);
   },
   verifyEmail(data) {
     return axios.put(verify_email_url, data);
@@ -51,6 +52,42 @@ export default {
   },
   setToken(token) {
     localStorage.setItem('token', token);
-    axios.defaults.headers.common['Authorization'] = token;
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+  },
+
+  sendSMS(number) {
+    return axios.post(send_sms_url, {
+      number: number
+    });
+  },
+
+  /**
+ * Check SMS code validity but doesn't do anything else.
+ * useful for profile SMS auth setup.
+ */
+
+  testAuthSMS(smscode) {
+    return axios.get(`${test_auth_sms_url}?smscode=${smscode}`)
+  },
+
+  /**
+ * Check SMS code validity and progress the auth flow in case of valid sms.
+ */
+  authSMS(smscode) {
+    return axios.get(`${auth_sms_url}?smscode=${smscode}`)
+  },
+
+  authQR(otp) {
+    return axios.post(auth_qr_url, {
+      token: otp
+    });
+  },
+  generateQR() {
+    return axios.put(generate_qr_url);
+  },
+  testAuthQR(otp) {
+    return axios.post(test_auth_qr_url, {
+      token: otp
+    });
   }
 }

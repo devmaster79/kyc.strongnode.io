@@ -77,7 +77,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     async function fetch() {
-      const result = await userService.getProfile(useremail);
+      const result = await userService.getProfile();
       setUser(result.data[0]);
     }
 

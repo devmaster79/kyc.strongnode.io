@@ -104,7 +104,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     async function fetch() {
-      const result = userService.getProfile(useremail);
+      const result = userService.getProfile();
       if(!result.data) return;
       setUser(result.data[0]);
       setAvailableToken(result.data[0]?.remaining_total_amount);
@@ -200,7 +200,7 @@ export default function Dashboard() {
     } catch (err) {
       enqueueSnackbar('You must sign in!', { variant: 'error' });
       window.document.location = "/signin"
-      
+
     }
   }, []);
   return (

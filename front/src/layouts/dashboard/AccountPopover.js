@@ -44,7 +44,7 @@ export default function AccountPopover() {
         setUserName(localStorage.getItem('username'));
         setEmail(localStorage.getItem('email'));
 
-        userService.getProfile(localStorage.getItem('email')).then((r) => {
+        userService.getProfile().then((r) => {
           setAvatar(r.data[0].profile_img_url);
         });
       }

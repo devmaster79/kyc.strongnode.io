@@ -12,12 +12,6 @@ import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import styled from '@material-ui/core/styles/styled';
 import { useState, useEffect, useCallback } from 'react';
-import {
-  createQR,
-  verifyTOTP,
-  sendSMS,
-  checkSMS,
-} from '../utils/api';
 import * as Yup from 'yup';
 import { useFormik, FormikProvider } from 'formik';
 import UploadSingleFile from 'components/UploadSingleFile';
@@ -181,7 +175,7 @@ export default function Dashboard() {
   };
 
   const checkMFACode = () => {
-    testAuthQR(totp).then((r) => {
+    userService.testAuthQR(totp).then((r) => {
       if (r.data.verified) {
         setFieldValue('enable_totp', true);
         const data = {
@@ -212,7 +206,7 @@ export default function Dashboard() {
   };
 
   const check2faCode = () => {
-    testAuthSMS(smscode).then((r) => {
+    userService.testAuthSMS(smscode).then((r) => {
       if (r.data.success) {
         setFieldValue('enable_sms', true);
         const data = {
@@ -238,7 +232,7 @@ export default function Dashboard() {
     let count = 30;
     setDisabled(true);
     setSMSshowError(false);
-    sendSMS(value.substring(1));
+    userService.sendSMS(value.substring(1));
     const counter = setInterval(() => {
       setBtnLabel(`${count}s`);
       count--;
@@ -290,11 +284,11 @@ export default function Dashboard() {
 
   useEffect(() => {
     async function fetch() {
-      const result = await userService.getProfile(useremail);
+      const result = await userService.getProfile();
 
       if (!result.data[0].enable_totp || result.data[0].enable_totp == null) {
         setShowQR(true);
-        generateQR().then((rq) => {
+        userService.generateQR().then((rq) => {
           setQRURL(rq.data.url);
         });
       }

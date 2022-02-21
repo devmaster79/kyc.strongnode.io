@@ -9,8 +9,8 @@ import Input from '../components/Input';
 import InputGroup from '../components/InputGroup';
 import { ReactComponent as LockIcon } from '../icons/lock.svg';
 import PhoneInput from 'react-phone-number-input';
-import { sendSMS, authSMS } from '../utils/api';
 import 'react-phone-number-input/style.css';
+import userService from 'services/userService';
 
 const LENGTH_OF_SMS_CODE = 4;
 function SigninSMS() {
@@ -23,9 +23,9 @@ function SigninSMS() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    authSMS(smsCode).then((r) => {
+    userService.authSMS(smsCode).then((r) => {
       if (r.data.success) {
-        localStorage.setItem('token', r.data.token);
+        userService.setToken(r.data.token);
         localStorage.setItem('loggedin', true);
         navigate('/dashboard/app');
       } else {
@@ -38,7 +38,7 @@ function SigninSMS() {
     let count = 30;
     setLoading(true);
     setShowError(false);
-    sendSMS(phoneNumber.substring(1));
+    userService.sendSMS(phoneNumber.substring(1));
     const counter = setInterval(() => {
       setBtnLabel(`${count}s`);
       count--;
