@@ -1,23 +1,24 @@
 module.exports = (app) => {
   const news = require("../controllers/news.controller.js");
   const auth = require("../middleware/auth");
+  const { MODE_FULL } = auth;
 
   const router = require("express").Router();
 
   // Create a News
-  router.post("/", auth, news.create);
+  router.post("/", auth(MODE_FULL), news.create);
 
   // Retrieve all News
-  router.get("/", auth, news.findAll);
+  router.get("/", auth(MODE_FULL), news.findAll);
 
   // Update a News with id
-  router.put("/:id", auth, news.update);
+  router.put("/:id", auth(MODE_FULL), news.update);
 
   // Delete a News with id
-  router.delete("/:id", auth, news.delete);
+  router.delete("/:id", auth(MODE_FULL), news.delete);
 
   // Delete all News
-  router.delete("/", auth, news.deleteAll);
+  router.delete("/", auth(MODE_FULL), news.deleteAll);
 
   app.use("/api/news", router);
 };

@@ -7,6 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import useCollapseDrawer from '../../hooks/useCollapseDrawer';
 import { useNavigate } from 'react-router-dom';
 import ThemeSwitch from 'components/ThemeSwitch';
+import { magic } from '../../utils/index';
 
 const DRAWER_WIDTH = 280;
 const COLLAPSE_WIDTH = 130;
@@ -47,6 +48,7 @@ export default function DashboardNavbar({ onOpenSidebar }) {
     setEmail(localStorage.getItem('email'));
   });
   const signOut = () => {
+    magic.user.logout();
     window.localStorage.clear();
     navigate('/signin');
   };

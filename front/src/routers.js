@@ -5,6 +5,8 @@ import Dashboard from './pages/Dashboard';
 import UserProfile from './pages/UserProfile';
 
 import Profile from './pages/profile';
+import TermsOfUse from './pages/termsOfUse';
+import PrivacyPolicy from './pages/privacyPolicy';
 import Signup from './pages/signup';
 import Signin from './pages/signin';
 import SentEmail from './pages/sentemail';
