@@ -7,8 +7,8 @@ module.exports = (app) => {
 
     // Create a new History
     router.post("/", auth(MODE_FULL), history.create);
-    router.post("/update", history.update);
-    router.post("/delete", history.delete);
+    router.put("/:id", auth(MODE_FULL), history.update);
+    router.delete("/:id", auth(MODE_FULL), history.delete);
 
     // Retrieve all vested History
     router.get("/findAllVested", history.findAllVested);

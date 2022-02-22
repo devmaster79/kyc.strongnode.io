@@ -96,12 +96,12 @@ exports.delete = async (req, res) => {
     });
     return;
   }
-  // console.log(req.body._id);
+  const id = req.params.id;
   try {
     const ret = await History.destroy({
-      where: { id: req.body._id },
+      where: { id: id },
     });
-    res.send({ message: "ok" });
+    res.send({ message: "History was deleted successfully!" });
   } catch (err) {
     console.log(err);
     res.status(500).send({
@@ -120,12 +120,13 @@ exports.update = async (req, res) => {
     });
     return;
   }
-  // console.log(req.body.token_amount, req.body._id, req.body.date)
+  const id = req.params.id;
+
   try {
     const ret = await History.update(
       { token_amount: req.body.token_amount, date: req.body.date },
       {
-        where: { id: req.body._id },
+        where: { id: id },
       }
     );
     res.send(ret);
