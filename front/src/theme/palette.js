@@ -103,9 +103,9 @@ const COMMON = {
 const palette = {
   light: {
     ...COMMON,
-    text: { primary: GREY[800], secondary: GREY[600], disabled: GREY[500] },
-    background: { paper: '#fff', default: '#f3f5f9', neutral: GREY[200] },
-    action: { active: GREY[600], ...COMMON.action }
+    text: { primary: '#fff', secondary: GREY[500], disabled: GREY[600] },
+    background: { paper: GREY[800], default: GREY[900], neutral: GREY[500_16] },
+    action: { active: GREY[500], ...COMMON.action }
   },
   dark: {
     ...COMMON,
