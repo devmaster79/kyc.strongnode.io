@@ -5,6 +5,7 @@ module.exports = (app) => {
   const multer = require('multer')
   const upload = multer({ dest: 'uploads/' })
   const router = require("express").Router();
+  const { sendSMSLimit, authSMSLimit } = require("../middleware/limits.js");
 
   // Create a new User
   router.post("/", users.create);
@@ -23,9 +24,26 @@ module.exports = (app) => {
   router.put("/signin", users.signin);
 
   // SMS authentication
-  router.post("/sms/send", auth(MODE_SMS), users.sendSMS);
-  router.post("/sms/auth", auth(MODE_SMS), users.authSMS);
-  router.post("/sms/testSend", auth(MODE_FULL), users.sendSMS);
+  router.post(
+    "/sms/send",
+    auth(MODE_SMS),
+    sendSMSLimit.limiter,
+    users.sendSMS
+  );
+  router.post(
+    "/sms/auth",
+    auth(MODE_SMS),
+    authSMSLimit.limiter,
+    authSMSLimit.resolver,
+    sendSMSLimit.resolver,
+    users.authSMS
+  );
+  router.post(
+    "/sms/testSend",
+    auth(MODE_FULL),
+    sendSMSLimit.limiter,
+    users.sendSMS
+  );
   router.get("/sms/testAuth", auth(MODE_FULL), users.testAuthSMS);
 
   // QR authentication

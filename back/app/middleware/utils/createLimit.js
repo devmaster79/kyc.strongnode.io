@@ -12,22 +12,44 @@ let trials = {};
  * after 1 trials -> B*M^2 min ban
  *
  * @param {string} name the limitation's name, used for separation
- * @param {(req: Object) => string} getIdentifier a function that returns the unique identifier of a user
+ * @param {(req: Object) => string} getIdentifier a function that returns
+ * the identifier of a user
  * It is useful to prefix the identifier with the route name,
  * because login trials are not the same as sms trials
  * @param {Object} config
  * @param {number} config.maxFreeTrials
  * @param {number} config.banMinutesBase
  * @param {number} config.multiplier
- * @returns {(req: Object, res: Object, next: () => any) => any}
+ * @returns {{
+ *  limiter: (req: Object, res: Object, next: () => any) => any,
+ *  resolver: (req: Object, res: Object, next: () => any) => any
+ * }}
  */
-exports.limitTrials = (
+exports.createLimit = (
     name,
     getIdentifier,
     config = { maxFreeTrials: 5, banMinutesBase: 5, multiplier: 3 }
-) => (req, res, next) => {
+) => {
+    return {
+        limiter: createLimiter(getIdentifier, name, config),
+        resolver: createResolver(getIdentifier, name),
+    }
+};
+
+/**
+ * A limiter middleware
+ * @param {(req: Object) => string} getIdentifier a function that returns
+ * the identifier of a user
+ * @param {string} name
+ * @param {Object} config
+ * @param {number} config.maxFreeTrials
+ * @param {number} config.banMinutesBase
+ * @param {number} config.multiplier
+ * @returns {(req: Object, res: Object, next: () => any) => any}
+ */
+const createLimiter = (getIdentifier, name, config) => (req, res, next) => {
+    const identifier = calculateUID(name, getIdentifier(req));
     const now = Date.now();
-    const identifier = name + '__' + getIdentifier(req);
     let lastTrial = trials[identifier];
     if (!lastTrial) {
         trials[identifier] = {
@@ -59,7 +81,20 @@ exports.limitTrials = (
         });
     }
 
-    // STEP 3: extend request for controllers
+    lastTrial.count += 1;
+    return next();
+}
+
+/**
+ * A middleware that extends request with a resolver function
+ * that controllers could call in case of a successful login
+ * @param {(req: Object) => string} getIdentifier a function that returns
+ * the identifier of a user
+ * @param {string} name
+ * @returns {(req: Object, res: Object, next: () => any) => any}
+ */
+const createResolver = (getIdentifier, name) => (req, res, next) => {
+    const identifier = calculateUID(name, getIdentifier(req));
     req.limits = {
         [name]: {
             registerSuccess() {
@@ -68,10 +103,8 @@ exports.limitTrials = (
         },
         ...req.limits
     }
-
-    lastTrial.count += 1;
     return next();
-};
+}
 
 /**
  * Get a unique identifier of the authorized user.
@@ -114,3 +147,11 @@ function calculateNextFreeTime(config, trials) {
     const newNextFreeTime = Date.now() + banMs;
     return newNextFreeTime;
 }
+
+/**
+ *
+ * @param {string} name
+ * @param {string} identifier
+ * @returns {string}
+ */
+ const calculateUID = (name, identifier) => name + '__' + identifier;
