@@ -20,6 +20,7 @@ dotenv.config();
 
 var AWS = require("aws-sdk");
 const { MODE_QR, MODE_SMS, MODE_FULL, getTokenSecret, MODE_QR_EXPIRES_IN, MODE_SMS_EXPIRES_IN, MODE_FULL_EXPIRES_IN } = require("../middleware/auth");
+const { sendSMSLimit, authSMSLimit } = require("../middleware/limits");
 var rand, host, link;
 
 // Create and Save a new User
@@ -642,6 +643,10 @@ exports.authSMS = (req, res) => {
   User.findAll({ where: { email } })
     .then((users) => {
       if (users.length === 1 && users[0].smscode === para_smscode) {
+        // free limits
+        sendSMSLimit.resolve(req);
+        authSMSLimit.resolve(req);
+
         // generate token for the next stage
         const next_token = jwt.sign(
           { user_name: users[0].user_name, email: users[0].email },
@@ -652,7 +657,7 @@ exports.authSMS = (req, res) => {
         );
 
         // update token and send to the user
-        User.update({ token: next_token }, { where: { email } })
+        User.update({ token: next_token }, { where: { email } });
         res.send({
           result: 'success',
           token: next_token,
@@ -697,6 +702,7 @@ exports.testAuthSMS = (req, res) => {
   User.findAll({ where: { email } })
     .then((data) => {
       if (data.length === 1 && data[0].smscode === para_smscode) {
+        sendSMSLimit.resolve(req);
         res.send({
           result: 'success'
         });
