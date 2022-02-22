@@ -23,7 +23,7 @@ const { MODE_QR, MODE_SMS, MODE_FULL, getTokenSecret, MODE_QR_EXPIRES_IN, MODE_S
 const { sendSMSLimit, authSMSLimit } = require("../middleware/limits");
 var rand, host, link;
 
-// Create and Save a new User
+/** Create and Save a new User */
 exports.create = async (req, res) => {
   // Validate request
   if (!req.body.first_name) {
@@ -227,7 +227,7 @@ exports.resetPassword = async (req, res) => {
   }
 }
 
-// Create and Save a new User password
+/** Create and Save a new User password */
 exports.createPassword = async (req, res) => {
   // Validate request
   if (!req.body.password) {
@@ -284,7 +284,7 @@ exports.createPassword = async (req, res) => {
   }
 };
 
-// Signin and Save a new token
+/** Signin and Save a new token */
 exports.signin = async (req, res) => {
   // Validate request
 
@@ -360,7 +360,7 @@ exports.signin = async (req, res) => {
   }
 };
 
-// Create and Save a User profile
+/** Create and Save a User profile */
 exports.createProfile = (req, res) => {
   // Validate request
   if (!req.user) {
@@ -399,7 +399,7 @@ exports.createProfile = (req, res) => {
     });
 };
 
-// Create and Save a User profile
+/** Create and Save a User profile */
 exports.createInvestor = (req, res) => {
   // Validate request
   if (!req.user) {
@@ -557,6 +557,7 @@ exports.testAuthSMS = (req, res) => {
     });
 };
 
+/** Create a new QR secret that user could use to register via Authenticators */
 exports.generateQR = async (req, res) => {
   try {
     const email = req.user.email;
@@ -577,7 +578,7 @@ exports.generateQR = async (req, res) => {
   }
 };
 
-// Verify TOTP
+/** Verify TOTP and progress auth flow */
 exports.authQR = async (req, res) => {
   const { email } = req.user;
   const { token } = req.body;
@@ -634,6 +635,7 @@ exports.authQR = async (req, res) => {
   }
 };
 
+/** Verify TOTP only */
 exports.testAuthQR = async (req, res) => {
   const { email } = req.user;
   const { token } = req.body;
@@ -654,7 +656,7 @@ exports.testAuthQR = async (req, res) => {
   }
 };
 
-//Verify Email
+/** Verify Email */
 exports.verifyEmail = async (req, res) => {
   // Validate request
   if (!req.body.password_token) {
@@ -714,7 +716,7 @@ exports.verifyEmail = async (req, res) => {
   }
 };
 
-//Get profile
+/** Get profile */
 exports.getProfile = (req, res) => {
   const { email } = req.user;
 
@@ -746,7 +748,7 @@ exports.getProfile = (req, res) => {
     });
 };
 
-//Update profile
+/** Update profile */
 exports.updateProfile = async (req, res) => {
   const { email } = req.user;
   const { first_name, last_name, user_name, twitter_id, telegram_id, wallet_address, enable_qr, enable_sms } = req.body;
@@ -791,7 +793,7 @@ exports.updateProfile = async (req, res) => {
     });
 };
 
-//Upload profile Image
+/** Upload profile Image */
 exports.uploadImg = async (req, res) => {
   const { email } = req.user;
   const { user_name, image_data } = req.body;
