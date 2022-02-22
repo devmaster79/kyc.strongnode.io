@@ -22,7 +22,8 @@ let trials = {};
  * @param {number} config.multiplier
  * @returns {{
  *  limiter: (req: Object, res: Object, next: () => any) => any,
- *  resolver: (req: Object, res: Object, next: () => any) => any
+ *  resolver: (req: Object, res: Object, next: () => any) => any,
+ *  resolve: (req: Object) => void
  * }}
  */
 exports.createLimit = (
@@ -33,6 +34,9 @@ exports.createLimit = (
     return {
         limiter: createLimiter(getIdentifier, name, config),
         resolver: createResolver(getIdentifier, name),
+        resolve(req) {
+            req.limits[name].registerSuccess();
+        }
     }
 };
 
