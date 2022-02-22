@@ -628,7 +628,7 @@ exports.sendSMS = async (req, res) => {
     });
   } catch (error) {
     res.status(500).send({
-      message: "unexpected-error",
+      result: "unexpected-error",
     });
     console.error(error);
   }
