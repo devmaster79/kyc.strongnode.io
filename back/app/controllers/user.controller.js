@@ -20,8 +20,8 @@ dotenv.config();
 
 var AWS = require("aws-sdk");
 const { MODE_QR, MODE_SMS, MODE_FULL, getTokenSecret, MODE_QR_EXPIRES_IN, MODE_SMS_EXPIRES_IN, MODE_FULL_EXPIRES_IN } = require("../middleware/auth");
-const { sendSMSLimit, authSMSLimit } = require("../middleware/limits");
-var rand, host, link;
+const { sendSMSLimit, authOTPLimit } = require("../middleware/limits");
+var rand, link;
 
 /** Create and Save a new User */
 exports.create = async (req, res) => {
@@ -482,7 +482,7 @@ exports.authSMS = (req, res) => {
       if (users.length === 1 && users[0].smscode === para_smscode) {
         // free limits
         sendSMSLimit.resolve(req);
-        authSMSLimit.resolve(req);
+        authOTPLimit.resolve(req);
 
         // generate token for the next stage
         const next_token = jwt.sign(
@@ -592,6 +592,9 @@ exports.authQR = async (req, res) => {
     });
 
     if (verified) {
+      // free user limit
+      authOTPLimit.resolve(req);
+
       // determine the next stage of user auth flow
       let token_secret_mode;
       let token_expiration;
@@ -602,6 +605,7 @@ exports.authQR = async (req, res) => {
         token_secret_mode = MODE_FULL;
         token_expiration = MODE_FULL_EXPIRES_IN;
       }
+
       // generate token for the next stage
       const next_token = jwt.sign(
         { user_name: users[0].user_name, email: users[0].email },
