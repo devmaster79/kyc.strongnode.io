@@ -44,7 +44,12 @@ module.exports = (app) => {
     sendSMSLimit.limiter,
     users.sendSMS
   );
-  router.get("/sms/testAuth", auth(MODE_FULL), users.testAuthSMS);
+  router.get(
+    "/sms/testAuth",
+    auth(MODE_FULL),
+    sendSMSLimit.resolver,
+    users.testAuthSMS
+  );
 
   // QR authentication
   router.post("/qr/generate", auth(MODE_FULL), users.generateQR);
