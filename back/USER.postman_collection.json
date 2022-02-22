@@ -33,12 +33,12 @@
 					"enabled": true
 				}
 			],
-			"url": "http://localhost:8080/api/users/createProfile",
+			"url": "http://localhost:8080/api/users/profile",
 			"queryParams": [],
 			"preRequestScript": null,
 			"pathVariables": {},
 			"pathVariableData": [],
-			"method": "PUT",
+			"method": "POST",
 			"data": [],
 			"dataMode": "raw",
 			"version": 2,
@@ -46,7 +46,7 @@
 			"currentHelper": "normal",
 			"helperAttributes": {},
 			"time": 1631021060203,
-			"name": "https://localhost:8080/api/users/createProfile",
+			"name": "https://localhost:8080/api/users/profile",
 			"description": "",
 			"collectionId": "5222e8f6-a3e7-aa7b-d607-94cde11316d4",
 			"responses": [],

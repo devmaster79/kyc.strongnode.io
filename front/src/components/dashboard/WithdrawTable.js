@@ -80,7 +80,7 @@ export default function GroupingFixedHeader({ history, setRefresh }) {
       token_amount: tokenamount,
       date: Date.now()
     };
-    historyService.updateHistory(data).then((r) => {
+    historyService.updateHistory(row.id, data).then((r) => {
       if (r.status === 200) {
         enqueueSnackbar('History updated successfully', {
           variant: 'success'
