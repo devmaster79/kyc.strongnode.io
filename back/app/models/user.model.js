@@ -45,6 +45,9 @@ module.exports = (sequelize, Sequelize) => {
     qrcode: {
       type: Sequelize.TEXT
     },
+    phone_number: {
+      type: Sequelize.STRING
+    },
     enable_qr: {
       type: Sequelize.BOOLEAN
     },

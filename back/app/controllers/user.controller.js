@@ -555,31 +555,28 @@ function generateRandomNumber(min, max) {
   return Math.floor(Math.random() * (max - min) + min);
 }
 
-//Send SMS and save password
-exports.sendSMS = (req, res) => {
-  var OTP = generateRandomNumber(1000, 9999);
-  var aws_region = "us-west-2";
-  var originationNumber = "+18555460621";
-  var destinationNumber = req.body.number;
-  var message = "Here is your SMS 2-factor authentication code for StrongNode : " + OTP;
-  var applicationId = process.env.ApplicationId;
-  var messageType = "TRANSACTIONAL";
-  var registeredKeyword = "strongnode";
-  var senderId = "MySenderID";
+/** Send OTP to the desired sms, and update user with the OTP */
+async function sendOneTimePasswordSMS(destinationNumber, email) {
+  const OTP = generateRandomNumber(1000, 9999);
+  const aws_region = "us-west-2";
+  const originationNumber = "+18555460621";
+  const message = "Here is your SMS 2-factor authentication code for StrongNode : " + OTP;
+  const applicationId = process.env.ApplicationId;
+  const messageType = "TRANSACTIONAL";
+  const registeredKeyword = "strongnode";
+  const senderId = "MySenderID";
 
-  // var credentials = new AWS.SharedIniFileCredentials({profile: 'default'});
-
+  // const credentials = new AWS.SharedIniFileCredentials({profile: 'default'});
   // AWS.config.credentials = credentials;
   AWS.config.update({ region: aws_region });
 
-  var pinpointOptions = {}
+  let pinpointOptions = {};
   if (process.env.AWS_LOCALSTACK_URL != '') {
-    pinpointOptions.endpoint = process.env.AWS_LOCALSTACK_URL
+    pinpointOptions.endpoint = process.env.AWS_LOCALSTACK_URL;
   }
 
-  var pinpoint = new AWS.Pinpoint(pinpointOptions);
-
-  var params = {
+  const pinpoint = new AWS.Pinpoint(pinpointOptions);
+  const params = {
     ApplicationId: applicationId,
     MessageRequest: {
       Addresses: {
@@ -599,66 +596,45 @@ exports.sendSMS = (req, res) => {
     }
   };
 
-  pinpoint.sendMessages(params, function (err, data) {
-    // TODO: add automated integrated tests for SMS auth.
-    // To test SMSes locally, use these:
-    // ```
-    // console.log(OTP);
-    // err = false
-    // ```
-    // this will bypass pinpoint error and logs OTP to the server logs.
-    if (err) {
-      res.end(JSON.stringify({ Error: err }));
-    } else {
-      const user_sms = {
-        smscode: OTP,
-      };
-      User.update(user_sms, {
-        where: { email: req.user.email },
-      })
-        .then((num) => {
-          if (num === 0) {
-            console.error(`user with email ${req.user.email} was not found during sending sms`)
-          }
-          res.send({
-            message: "Sent SMS Code successfully.",
-          });
-        })
-        .catch((_err) => {
-          res.status(500).send({
-            message: "Something went wrong.",
-          });
-        });
-    }
-  });
-};
-
-// When user sets SMS 2FA method, we have to test it first
-exports.testAuthSMS = (req, res) => {
-  const email = req.user.email;
-  const para_smscode = req.query.smscode;
-
-  User.findAll({ where: { email } })
-    .then((data) => {
-      if (data.length === 1 && data[0].smscode === para_smscode) {
-        res.send({
-          success: true
-        });
+  await new Promise((resolve, reject) => {
+    pinpoint.sendMessages(params, function (err, data) {
+      // TODO: add automated integrated tests for SMS auth.
+      // To test SMSes locally, use these:
+      // ```
+      // console.log(OTP);
+      // err = false
+      // ```
+      // this will bypass pinpoint error and logs OTP to the server logs.
+      if (err) {
+        reject(err);
       } else {
-        res.send({
-          success: false
-        });
+        resolve();
       }
-    })
-    .catch((err) => {
-      console.error(err);
-      res.status(500).send({
-        message: "Something went wrong.",
-      });
     });
+  });
+
+  await User.update({ smscode: OTP }, { where: { email } });
+}
+
+/** Send sms to the number stored in the user model */
+exports.sendSMS = async (req, res) => {
+  try {
+    const email = req.user.email;
+    const user = await User.findOne({ where: { email } });
+    const destinationNumber = user.phone_number;
+    await sendOneTimePasswordSMS(destinationNumber, user.email);
+    res.send({
+      result: "success"
+    });
+  } catch (error) {
+    res.status(500).send({
+      message: "unexpected-error",
+    });
+    console.error(error);
+  }
 };
 
-// When user signs in with SMS 2FA method
+/** Sign the user in by validating by SMS 2FA */
 exports.authSMS = (req, res) => {
   const { email } = req.user;
   const para_smscode = req.query.smscode;
@@ -678,20 +654,63 @@ exports.authSMS = (req, res) => {
         // update token and send to the user
         User.update({ token: next_token }, { where: { email } })
         res.send({
-          success: true,
+          result: 'success',
           token: next_token,
         });
       } else {
         res.send({
-          success: false
+          result: 'invalid-code-error'
         });
       }
     })
     .catch((err) => {
-      console.error(err);
       res.status(500).send({
-        message: "Something went wrong.",
+        result: "unexpected-error",
       });
+      console.error(err);
+    });
+};
+
+/** Send test SMS to the number in the request body */
+exports.testSendSMS = async (req, res) => {
+  try {
+    const email = req.user.email;
+    const phone_number = req.body.number;
+    await User.update({ phone_number }, { where: { email } });
+    await sendOneTimePasswordSMS(phone_number, user.email, res);
+    res.send({
+      result: 'success'
+    });
+  } catch (error) {
+    res.status(500).send({
+      result: "unexpected-error",
+    });
+    console.error(error);
+  }
+}
+
+/** Validate the SMS OTP without logging in the user */
+exports.testAuthSMS = (req, res) => {
+  const email = req.user.email;
+  const para_smscode = req.query.smscode;
+
+  User.findAll({ where: { email } })
+    .then((data) => {
+      if (data.length === 1 && data[0].smscode === para_smscode) {
+        res.send({
+          result: 'success'
+        });
+      } else {
+        res.send({
+          result: 'invalid-code-error'
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        result: "unexpected-error",
+      });
+      console.error(err);
     });
 };
 

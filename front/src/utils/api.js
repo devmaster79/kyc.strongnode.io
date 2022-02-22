@@ -106,7 +106,23 @@ const signin = async (email, password) => {
   return axios(config);
 };
 
-const sendSMS = async (number) => {
+/**
+ * Sends sms to the preauthenticated user's saved phone number
+ */
+const sendSMS = async () => {
+  const config = {
+    url: send_sms_url,
+    method: 'POST',
+    headers: { Authorization: `Bearer ${getToken()}` }
+  };
+  return axios(config);
+};
+
+/**
+ * Saves the users' phone number and sends sms.
+ * @param {string} number the phone number
+ */
+const testSendSMS = async (number) => {
   const config = {
     url: send_sms_url,
     method: 'POST',

@@ -23,8 +23,9 @@ module.exports = (app) => {
   router.put("/signin", users.signin);
 
   // SMS authentication
-  router.post("/sms/send", auth(MODE_SMS, MODE_FULL), users.sendSMS);
+  router.post("/sms/send", auth(MODE_SMS), users.sendSMS);
   router.post("/sms/auth", auth(MODE_SMS), users.authSMS);
+  router.post("/sms/testSend", auth(MODE_FULL), users.sendSMS);
   router.get("/sms/testAuth", auth(MODE_FULL), users.testAuthSMS);
 
   // QR authentication
