@@ -7,8 +7,8 @@ import { Form, Formik } from "formik"
 import ValidatedField from "../components/ValidatedField"
 import Input from "../components/Input"
 import {forgottenPassword} from "../static/formSchemas"
-import {requestPasswordReset} from "./../utils/api.js"
 import { magic } from '../utils/index'
+import userService from "services/userService"
 
 
 function ForgottenPassword () {
@@ -23,7 +23,7 @@ function ForgottenPassword () {
     const handleFormSubmit = async (data) => {
         localStorage.setItem('email', data.email)
         // sends password reset request to the BE
-        await requestPasswordReset(data.email).then(async res => {
+        await userService.requestPasswordReset(data.email).then(async res => {
             if (res.data.length !== 0 && typeof res.data.status !== 'undefined') {
                 navigate("/magiclink");
             } else {

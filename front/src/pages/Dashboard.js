@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { useSnackbar } from 'notistack5';
-import axios from 'axios';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
@@ -23,7 +22,9 @@ import useCollapseDrawer from '../hooks/useCollapseDrawer';
 import { useToken, useEthers, useEtherBalance, useTokenBalance } from '@usedapp/core';
 import { ethers } from 'ethers';
 import WithdrawTimer from '../components/dashboard/WithdrawTimer';
-import { historyAction } from '../utils/api';
+import userService from 'services/userService';
+import historyService from 'services/historyService';
+
 
 const SneAddress = '0x32934CB16DA43fd661116468c1B225Fc26CF9A8c';
 
@@ -103,9 +104,8 @@ export default function Dashboard() {
 
   useEffect(() => {
     async function fetch() {
-      const url = process.env.REACT_APP_BASE_URL + `/api/users/profile/get?email=${useremail}`;
-      const result = await axios.get(url, {
-      });
+      const result = userService.getProfile();
+      if(!result.data) return;
       setUser(result.data[0]);
       setAvailableToken(result.data[0]?.remaining_total_amount);
       setLockedToken(result.data[0]?.locked_bonus_amount);
@@ -116,14 +116,13 @@ export default function Dashboard() {
 
   const withdraw = () => {
     try {
-      const url = process.env.REACT_APP_BASE_URL + `/api/history/`;
       const data = {
         user_name: user.user_name,
         token_amount: 100,
         action_type: 'withdrawn',
         date: new Date()
       };
-      historyAction(url, data).then((r) => {
+      historyService.createHistory(data).then((r) => {
         if (r.status === 200) {
           enqueueSnackbar('Withdraw successfully.', {
             variant: 'success'
@@ -140,14 +139,8 @@ export default function Dashboard() {
   useEffect(() => {
     async function fetch() {
       if (!refresh) return;
-      const token = localStorage.getItem('token');
-      const url =
-        process.env.REACT_APP_BASE_URL +
-        '/api/history/findAllVested?user_name=' +
-        localStorage.getItem('username');
-      const result = await axios.get(url, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const result = await historyService.findAllVested(localStorage.getItem('username'));
+
       if (typeof history === 'string') {
         enqueueSnackbar('History data is not array!', { variant: 'error' });
       } else {
@@ -171,14 +164,7 @@ export default function Dashboard() {
         setVestedProgress(Math.min(min / 1000 / 60, 100));
       }
 
-      const token1 = localStorage.getItem('token');
-      const url1 =
-        process.env.REACT_APP_BASE_URL +
-        '/api/history/findAllWithdrawn/?user_name=' +
-        localStorage.getItem('username');
-      const result1 = await axios.get(url1, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const result1 = await historyService.findAllWithdrawn(localStorage.getItem('username'))
       if (typeof history === 'string') {
         enqueueSnackbar('History data is not array!', { variant: 'error' });
       } else {
@@ -209,9 +195,12 @@ export default function Dashboard() {
         }
       } else {
         enqueueSnackbar('You must sign in!', { variant: 'error' });
+        window.document.location = "/signin"
       }
     } catch (err) {
       enqueueSnackbar('You must sign in!', { variant: 'error' });
+      window.document.location = "/signin"
+
     }
   }, []);
   return (

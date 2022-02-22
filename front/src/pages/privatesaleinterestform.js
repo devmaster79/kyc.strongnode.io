@@ -5,8 +5,8 @@ import InputGroup from '../components/InputGroup';
 import Line from '../components/Line';
 import Input from '../components/Input';
 import Button from '../components/Button';
-import { createInvestor } from '../utils/api';
 import { EntryPage } from 'pages/style';
+import userService from 'services/userService';
 
 export const Container = styled.div`
   display: flex;
@@ -123,7 +123,7 @@ function PrivateSaleInterestForm() {
 
   const handleCreateInvestor = useCallback(async (data) => {
     try {
-      const res = await createInvestor(data);
+      const res = await userService.createInvestor(data);
       if (res.data) {
         navigate('/dashboard');
       }

@@ -287,12 +287,15 @@ exports.createPassword = async (req, res) => {
 // Signin and Save a new token
 exports.signin = async (req, res) => {
   // Validate request
+
   if (!req.body.email && !req.body.password || req.body.password === '') {
     res.status(400).send({
       message: "Content can not be empty!",
     });
     return;
   }
+
+
 
   try {
     // TODO: security holes:
@@ -302,6 +305,7 @@ exports.signin = async (req, res) => {
 
     const user = await User.findOne({ where: { email: req.body.email } });
     const comparePassword = await passwordService.verifyPasswordHash(user.dataValues.password, req.body.password)
+
     if (!comparePassword) {
       res.status(401).send({
         message: `Wrong password.`,
@@ -559,61 +563,8 @@ function generateRandomNumber(min, max) {
 /** Send OTP to the desired sms, and update user with the OTP */
 async function sendOneTimePasswordSMS(destinationNumber, email) {
   const OTP = generateRandomNumber(1000, 9999);
-  const aws_region = "us-west-2";
-  const originationNumber = "+18555460621";
   const message = "Here is your SMS 2-factor authentication code for StrongNode : " + OTP;
-  const applicationId = process.env.ApplicationId;
-  const messageType = "TRANSACTIONAL";
-  const registeredKeyword = "strongnode";
-  const senderId = "MySenderID";
-
-  // const credentials = new AWS.SharedIniFileCredentials({profile: 'default'});
-  // AWS.config.credentials = credentials;
-  AWS.config.update({ region: aws_region });
-
-  let pinpointOptions = {};
-  if (process.env.AWS_LOCALSTACK_URL != '') {
-    pinpointOptions.endpoint = process.env.AWS_LOCALSTACK_URL;
-  }
-
-  const pinpoint = new AWS.Pinpoint(pinpointOptions);
-  const params = {
-    ApplicationId: applicationId,
-    MessageRequest: {
-      Addresses: {
-        [destinationNumber]: {
-          ChannelType: 'SMS'
-        }
-      },
-      MessageConfiguration: {
-        SMSMessage: {
-          Body: message,
-          Keyword: registeredKeyword,
-          MessageType: messageType,
-          OriginationNumber: originationNumber,
-          SenderId: senderId,
-        }
-      }
-    }
-  };
-
-  await new Promise((resolve, reject) => {
-    pinpoint.sendMessages(params, function (err, data) {
-      // TODO: add automated integrated tests for SMS auth.
-      // To test SMSes locally, use these:
-      // ```
-      // console.log(OTP);
-      // err = false
-      // ```
-      // this will bypass pinpoint error and logs OTP to the server logs.
-      if (err) {
-        reject(err);
-      } else {
-        resolve();
-      }
-    });
-  });
-
+  await communicationService.sendSms(destinationNumber, message);
   await User.update({ smscode: OTP }, { where: { email } });
 }
 
@@ -879,17 +830,31 @@ exports.verifyEmail = async (req, res) => {
 
 //Get profile
 exports.getProfile = (req, res) => {
-  User.findAll({ where: { email: req.user.email } })
+  const { email } = req.user;
+
+  if (!email) {
+    res.status(400).send({
+      message: "Email is required!",
+    });
+    return;
+  }
+
+  User.findOne({ where: { email: email } })
     .then((data) => {
-      // TODO: possible data leak, it would be good to show only the required fields
-      // Also /profile/get should return only 1 user not a list of users
-      // Also GET /profile and PATCH or PUT /profile would be enough
-      // There is no need for additional ../get and ../update routes
-      res.send(data);
+      const _returnData = [{
+        remaining_total_amount : data.remaining_total_amount || 0,
+        locked_bonus_amount : data.locked_bonus_amount || 0,
+        user_name : data.user_name,
+        first_name: data.first_name,
+        last_name: data.last_name,
+        wallet_address: data.wallet_address,
+        telegram_id: data.telegram_id,
+        twitter_id: data.twitter_id
+      }];
+      res.send(_returnData);
     })
     .catch((err) => {
       res.status(500).send({
-        // TODO: error message may reveal security holes
         message: err.message || "Some error occurred while retrieving users.",
       });
     });

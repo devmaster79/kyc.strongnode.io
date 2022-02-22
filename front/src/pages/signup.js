@@ -10,7 +10,7 @@ import Input from '../components/Input';
 import Line from '../components/Line';
 import ValidatedField from '../components/ValidatedField';
 import { signupSchema } from '../static/formSchemas';
-import signup from '../utils/api';
+import userService from 'services/userService';
 
 const AlreadyWrapper = styled.p`
   background: transparent;
@@ -56,7 +56,7 @@ function Signup() {
 
   const handleSignup = useCallback(async (data) => {
     try {
-      const resp = await signup(data);
+      const resp = await userService.signup(data);
       if (resp.data.result) {
         localStorage.setItem('email', resp.data.data.email);
         navigate('/sent-email');

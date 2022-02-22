@@ -8,7 +8,7 @@ import EntryCard from '../components/EntryCard';
 import Input from '../components/Input';
 import InputGroup from '../components/InputGroup';
 import { ReactComponent as LockIcon } from '../icons/lock.svg';
-import { sendSMS, authSMS } from '../utils/api';
+import userService from 'services/userService';
 
 const LENGTH_OF_SMS_CODE = 4;
 function SigninSMS() {
@@ -20,9 +20,9 @@ function SigninSMS() {
   const handleSubmit = (event) => {
     event.preventDefault();
     setAuthState('loading');
-    authSMS(smsCode).then((r) => {
+    userService.authSMS(smsCode).then((r) => {
       if (r.data.result === 'success') {
-        localStorage.setItem('token', r.data.token);
+        userService.setToken(r.data.token);
         localStorage.setItem('loggedin', true);
         navigate('/dashboard/app');
       } else {
@@ -35,7 +35,7 @@ function SigninSMS() {
 
   useEffect(() => {
     // start sending SMS as soon as the page loads
-    sendSMS()
+    userService.sendSMS()
       .then((r) => { setSendState(r.data.result) })
       .catch((_error) => {
         setSendState('unexpected-error')

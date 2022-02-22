@@ -16,7 +16,7 @@ import Status from 'components/Status';
 import { fDate } from 'utils/formatTime';
 import { useSnackbar } from 'notistack5';
 
-import { historyAction } from '../../utils/api';
+import historyService from 'services/historyService';
 
 function createData(token, stock, date) {
   return { token, stock, date };
@@ -74,13 +74,12 @@ export default function GroupingFixedHeader({ history, setRefresh }) {
       alert('Input Correct Amount');
       return;
     }
-    const url = process.env.REACT_APP_BASE_URL + `/api/history/update`;
     const data = {
       _id: row.id,
       token_amount: tokenamount,
       date: Date.now()
     };
-    historyAction(url, data).then((r) => {
+    historyService.updateHistory(row.id, data).then((r) => {
       if (r.status === 200) {
         enqueueSnackbar('History updated successfully', {
           variant: 'success'
@@ -93,11 +92,7 @@ export default function GroupingFixedHeader({ history, setRefresh }) {
   };
 
   const onDel = (row) => {
-    const url = process.env.REACT_APP_BASE_URL + `/api/history/delete`;
-    const data = {
-      _id: row.id
-    };
-    historyAction(url, data).then((r) => {
+    historyService.deleteHistory(row.id).then((r) => {
       if (r.status === 200) {
         enqueueSnackbar('History deleted successfully', {
           variant: 'success'

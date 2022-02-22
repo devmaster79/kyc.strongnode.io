@@ -11,7 +11,6 @@ module.exports = (app) => {
   router.post("/", users.create);
   router.put("/verifyEmail", users.verifyEmail);
   router.put("/createPassword", users.createPassword);
-  router.put("/createProfile", auth(MODE_FULL), users.createProfile);
   router.put("/createInvestor", auth(MODE_FULL), users.createInvestor);
 
   // Request a password reset
@@ -44,7 +43,7 @@ module.exports = (app) => {
     sendSMSLimit.limiter,
     users.sendSMS
   );
-  router.get(
+  router.post(
     "/sms/testAuth",
     auth(MODE_FULL),
     sendSMSLimit.resolver,
@@ -56,11 +55,10 @@ module.exports = (app) => {
   router.post("/qr/auth", auth(MODE_QR), users.authQR);
   router.get("/qr/testAuth", auth(MODE_FULL), users.testAuthQR);
 
-  //get profile
-  router.get("/profile/get", auth(MODE_FULL), users.getProfile);
-
-  //update profile
-  router.put("/profile/update", auth(MODE_FULL), users.updateProfile);
+  //profile
+  router.get("/profile", auth(MODE_FULL), users.getProfile);
+  router.post("/profile", auth(MODE_FULL), users.createProfile);
+  router.put("/profile", auth(MODE_FULL), users.updateProfile);
 
   //upload image to s3
   router.put("/profile/image", auth(MODE_FULL), upload.single('image_data'), users.uploadImg);
