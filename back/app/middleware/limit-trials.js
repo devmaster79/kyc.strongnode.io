@@ -11,6 +11,7 @@ let trials = {};
  * after 1 trials -> B*M^1 min ban ->
  * after 1 trials -> B*M^2 min ban
  *
+ * @param {string} name the limitation's name, used for separation
  * @param {(req: Object) => string} getIdentifier a function that returns the unique identifier of a user
  * It is useful to prefix the identifier with the route name,
  * because login trials are not the same as sms trials
@@ -21,11 +22,12 @@ let trials = {};
  * @returns {(req: Object, res: Object, next: () => any) => any}
  */
 exports.limitTrials = (
+    name,
     getIdentifier,
     config = { maxFreeTrials: 5, banMinutesBase: 5, multiplier: 3 }
 ) => (req, res, next) => {
     const now = Date.now();
-    const identifier = getIdentifier(req);
+    const identifier = name + '__' + getIdentifier(req);
     let lastTrial = trials[identifier];
     if (!lastTrial) {
         trials[identifier] = {
@@ -58,10 +60,13 @@ exports.limitTrials = (
     }
 
     // STEP 3: extend request for controllers
-    req.limitTrials = {
-        registerSuccess() {
-            delete trials[identifier];
-        }
+    req.limits = {
+        [name]: {
+            registerSuccess() {
+                delete trials[identifier];
+            }
+        },
+        ...req.limits
     }
 
     lastTrial.count += 1;

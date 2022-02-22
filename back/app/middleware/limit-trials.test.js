@@ -13,11 +13,13 @@ describe("limit of maximal trials", () => {
     it("should allow 5 free trials by default", (done) => {
         const req = {};
         const getIdentifier = (req) => "testuser1";
-        limitTrials(getIdentifier)(req, resWhileFree, () => { });
-        limitTrials(getIdentifier)(req, resWhileFree, () => { });
-        limitTrials(getIdentifier)(req, resWhileFree, () => { });
-        limitTrials(getIdentifier)(req, resWhileFree, () => { });
-        limitTrials(getIdentifier)(req, resWhileFree, () => {
+        const limit = limitTrials("testLimit", getIdentifier);
+
+        limit(req, resWhileFree, () => { });
+        limit(req, resWhileFree, () => { });
+        limit(req, resWhileFree, () => { });
+        limit(req, resWhileFree, () => { });
+        limit(req, resWhileFree, () => {
             done()
         });
     });
@@ -31,15 +33,16 @@ describe("limit of maximal trials", () => {
                 done();
             }
         };
+        const limit = limitTrials("testLimit", getIdentifier);
 
         // allow 5 trials:
-        limitTrials(getIdentifier)(req, resWhileFree, () => { });
-        limitTrials(getIdentifier)(req, resWhileFree, () => { });
-        limitTrials(getIdentifier)(req, resWhileFree, () => { });
-        limitTrials(getIdentifier)(req, resWhileFree, () => { });
-        limitTrials(getIdentifier)(req, resWhileFree, () => { });
+        limit(req, resWhileFree, () => { });
+        limit(req, resWhileFree, () => { });
+        limit(req, resWhileFree, () => { });
+        limit(req, resWhileFree, () => { });
+        limit(req, resWhileFree, () => { });
         // 6th should be banned:
-        limitTrials(getIdentifier)(req, resWhileBanned, () => {
+        limit(req, resWhileBanned, () => {
             assert.ok(false, "next called while it should ban");
         });
     });
@@ -54,23 +57,24 @@ describe("limit of maximal trials", () => {
                 done();
             }
         };
+        const limit = limitTrials("testLimit", getIdentifier);
 
         // allow 5 trials:
-        limitTrials(getIdentifier)(req, resWhileFree, () => { });
-        limitTrials(getIdentifier)(req, resWhileFree, () => { });
-        limitTrials(getIdentifier)(req, resWhileFree, () => { });
-        limitTrials(getIdentifier)(req, resWhileFree, () => { });
-        limitTrials(getIdentifier)(req, resWhileFree, () => {
-            req.limitTrials.registerSuccess()
+        limit(req, resWhileFree, () => { });
+        limit(req, resWhileFree, () => { });
+        limit(req, resWhileFree, () => { });
+        limit(req, resWhileFree, () => { });
+        limit(req, resWhileFree, () => {
+            req.limits.testLimit.registerSuccess()
         });
         // allow 5 additional trials:
-        limitTrials(getIdentifier)(req, resWhileFree, () => { });
-        limitTrials(getIdentifier)(req, resWhileFree, () => { });
-        limitTrials(getIdentifier)(req, resWhileFree, () => { });
-        limitTrials(getIdentifier)(req, resWhileFree, () => { });
-        limitTrials(getIdentifier)(req, resWhileFree, () => { });
+        limit(req, resWhileFree, () => { });
+        limit(req, resWhileFree, () => { });
+        limit(req, resWhileFree, () => { });
+        limit(req, resWhileFree, () => { });
+        limit(req, resWhileFree, () => { });
         // 6th should be banned:
-        limitTrials(getIdentifier)(req, resWhileBanned, () => {
+        limit(req, resWhileBanned, () => {
             assert.ok(false, "next called while it should ban");
         });
     });
@@ -93,37 +97,38 @@ describe("limit of maximal trials", () => {
                 }
             }
         };
+        const limit = limitTrials("testLimit", getIdentifier, config);
 
         // allow 3 trials:
-        limitTrials(getIdentifier, config)(req, resWhileFree, () => { });
-        limitTrials(getIdentifier, config)(req, resWhileFree, () => { });
-        limitTrials(getIdentifier, config)(req, resWhileFree, () => { });
+        limit(req, resWhileFree, () => { });
+        limit(req, resWhileFree, () => { });
+        limit(req, resWhileFree, () => { });
 
         // trials for 90ms + wait until 110ms
-        limitTrials(getIdentifier, config)(req, resWhileBanned, () => {
+        limit(req, resWhileBanned, () => {
             assert.ok(false, "next called while it should ban");
         })
         await snooze(90)
-        limitTrials(getIdentifier, config)(req, resWhileBanned, () => {
+        limit(req, resWhileBanned, () => {
             assert.ok(false, "next called while it should ban");
         })
         await snooze(20)
 
         // allow 1 additional trials:
-        limitTrials(getIdentifier, config)(req, resWhileFree, () => { });
+        limit(req, resWhileFree, () => { });
 
         // trials for 190ms + wait for 210ms
-        limitTrials(getIdentifier, config)(req, resWhileBanned, () => {
+        limit(req, resWhileBanned, () => {
             assert.ok(false, "next called while it should ban");
         })
         await snooze(190)
-        limitTrials(getIdentifier, config)(req, resWhileBanned, () => {
+        limit(req, resWhileBanned, () => {
             assert.ok(false, "next called while it should ban");
         })
         await snooze(210)
 
         // allow 1 additional trials:
-        limitTrials(getIdentifier, config)(req, resWhileFree, () => { });
+        limit(req, resWhileFree, () => { });
 
     });
 });
