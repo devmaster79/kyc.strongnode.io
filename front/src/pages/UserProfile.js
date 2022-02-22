@@ -12,15 +12,6 @@ import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import styled from '@material-ui/core/styles/styled';
 import { useState, useEffect, useCallback } from 'react';
-import axios from 'utils/axios';
-import {
-  updateProfile,
-  sendSMS,
-  testAuthSMS,
-  uploadProfileImage,
-  generateQR,
-  testAuthQR
-} from '../utils/api';
 import * as Yup from 'yup';
 import { useFormik, FormikProvider } from 'formik';
 import UploadSingleFile from 'components/UploadSingleFile';
@@ -30,6 +21,7 @@ import PhoneInput from 'react-phone-number-input';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import ethereum_address from 'ethereum-address-es5';
+import userService from '../services/userService'
 
 const CardStyle = styled(Box)(({ theme }) => ({
   background:
@@ -158,7 +150,7 @@ export default function Dashboard() {
           twitter_id
         };
 
-        updateProfile(data).then((r) => {
+        userService.updateProfile(data).then((r) => {
           if (r.status === 200) {
             enqueueSnackbar('User updated successfully1', {
               variant: 'success'
@@ -183,13 +175,13 @@ export default function Dashboard() {
   };
 
   const checkMFACode = () => {
-    testAuthQR(totp).then((r) => {
+    userService.testAuthQR(totp).then((r) => {
       if (r.data.verified) {
         setFieldValue('enable_totp', true);
         const data = {
           enable_totp: true
         };
-        updateProfile(data).then((r) => {
+        userService.updateProfile(data).then((r) => {
           if (r.status === 200) {
             enqueueSnackbar('User updated successfully1', {
               variant: 'success'
@@ -214,13 +206,13 @@ export default function Dashboard() {
   };
 
   const check2faCode = () => {
-    testAuthSMS(smscode).then((r) => {
+    userService.testAuthSMS(smscode).then((r) => {
       if (r.data.success) {
         setFieldValue('enable_sms', true);
         const data = {
           enable_sms: true
         };
-        updateProfile(data).then((r) => {
+        userService.updateProfile(data).then((r) => {
           if (r.status === 200) {
             enqueueSnackbar('User updated successfully!', {
               variant: 'success'
@@ -240,7 +232,7 @@ export default function Dashboard() {
     let count = 30;
     setDisabled(true);
     setSMSshowError(false);
-    sendSMS(value.substring(1));
+    userService.sendSMS(value.substring(1));
     const counter = setInterval(() => {
       setBtnLabel(`${count}s`);
       count--;
@@ -292,15 +284,11 @@ export default function Dashboard() {
 
   useEffect(() => {
     async function fetch() {
-      const url = (process.env.REACT_APP_BASE_URL
-        ? process.env.REACT_APP_BASE_URL
-        : '') + `/api/users/profile/get`;
-      const result = await axios.get(url, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const result = await userService.getProfile();
+
       if (!result.data[0].enable_totp || result.data[0].enable_totp == null) {
         setShowQR(true);
-        generateQR().then((rq) => {
+        userService.generateQR().then((rq) => {
           setQRURL(rq.data.url);
         });
       }
@@ -345,7 +333,7 @@ export default function Dashboard() {
     [setFieldValue]
   );
   const upload = () => {
-    uploadProfileImage(values.email, values.user_name, values.cover)
+    userService.uploadProfileImage(values.email, values.user_name, values.cover)
       .then((res) => {
         if (res.status === 200) {
           enqueueSnackbar('Uploaded successfully!', {

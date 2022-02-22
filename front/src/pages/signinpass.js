@@ -8,7 +8,7 @@ import Input from '../components/Input';
 import InputGroup from '../components/InputGroup';
 import { ReactComponent as LockIcon } from '../icons/lock.svg';
 import { ReactComponent as MailIcon } from '../icons/message.svg';
-import { signin } from '../utils/api';
+import userService from 'services/userService';
 
 const UserInfoWrapper = styled.div`
   display: flex;
@@ -42,11 +42,11 @@ function SigninPass() {
     event.preventDefault();
     //Need to implement auth for login
     try {
-      signin(email, password)
+      userService.signin(email, password)
         .then((r) => {
           if (r.status === 200) {
+            userService.setToken(r.data.token);
             localStorage.setItem('username', r.data.user_name);
-            localStorage.setItem('token', r.data.token);
             if (r.data.enable_totp === true) {
               navigate('/signintwostep');
             } else if (r.data.enable_sms === true) {

@@ -7,8 +7,8 @@ import Input from '../components/Input';
 import Button from '../components/Button';
 import { ReactComponent as TelegramIcon } from '../icons/telegram.svg';
 import { ReactComponent as TwitterIcon } from '../icons/twitter.svg';
-import { createProfile } from '../utils/api';
 import { EntryPage } from 'pages/style';
+import userService from 'services/userService';
 
 export const Container = styled.div`
   display: flex;
@@ -69,7 +69,7 @@ function Profile() {
 
   const handleCreateProfile = useCallback(async (data) => {
     try {
-      const res = await createProfile(data);
+      const res = await userService.createProfile(data);
       if (res.data) {
         navigate('/private-sale-interest-form');
       }

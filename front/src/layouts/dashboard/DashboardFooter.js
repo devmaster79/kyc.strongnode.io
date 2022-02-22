@@ -7,6 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import useCollapseDrawer from '../../hooks/useCollapseDrawer';
 import { useNavigate } from 'react-router-dom';
 import ThemeSwitch from 'components/ThemeSwitch';
+import userService from 'services/userService';
 import { magic } from '../../utils/index';
 
 const DRAWER_WIDTH = 280;
@@ -50,6 +51,7 @@ export default function DashboardNavbar({ onOpenSidebar }) {
   const signOut = () => {
     magic.user.logout();
     window.localStorage.clear();
+    userService.setToken(null);
     navigate('/signin');
   };
   return (
