@@ -79,7 +79,7 @@ export default function GroupingFixedHeader({ history, setRefresh }) {
       token_amount: tokenamount,
       date: Date.now()
     };
-    historyService.updateHistory(data).then((r) => {
+    historyService.updateHistory(row.id, data).then((r) => {
       if (r.status === 200) {
         enqueueSnackbar('History updated successfully', {
           variant: 'success'
@@ -92,10 +92,7 @@ export default function GroupingFixedHeader({ history, setRefresh }) {
   };
 
   const onDel = (row) => {
-    const data = {
-      _id: row.id
-    };
-    historyService.deleteHistory(data).then((r) => {
+    historyService.deleteHistory(row.id).then((r) => {
       if (r.status === 200) {
         enqueueSnackbar('History deleted successfully', {
           variant: 'success'

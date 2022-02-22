@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { get_profile, update_profile, upload_profile_img, signup_url,
+import { upload_profile_img, signup_url,
   password_reset_url, password_reset_submit_url, verify_email_url, password_url,
   profile_url, investor_url, signin_url, send_sms_url, test_auth_sms_url, auth_sms_url, auth_qr_url,
   generate_qr_url, test_auth_qr_url, get_investor_details } from '../utils/config'
@@ -25,7 +25,7 @@ export default {
       });
   },
   getProfile() {
-    return axios.get(get_profile);
+    return axios.get(profile_url);
   },
   getInvestorDetails() {
     return axios.get(get_investor_details)
@@ -37,13 +37,13 @@ export default {
     return axios.put(password_url, data);
   },
   createProfile(data) {
-    return axios.put(profile_url, data);
+    return axios.post(profile_url, data);
   },
   createInvestor(data) {
     return axios.put(investor_url, data);
   },
   updateProfile(data) {
-    return axios.put(update_profile, data);
+    return axios.put(profile_url, data);
   },
   uploadProfileImage(email, user_name, img_data) {
     return axios.put(upload_profile_img,

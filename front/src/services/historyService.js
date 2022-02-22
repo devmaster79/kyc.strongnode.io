@@ -1,15 +1,15 @@
 import axios from 'axios';
-import { findAllVested, findAllWithdrawn, updateHistory, deleteHistory, createHistory } from '../utils/config'
+import { findAllVested, findAllWithdrawn, history_url } from '../utils/config'
 
 export default {
   createHistory(data) {
-    return axios.post(createHistory, data);
+    return axios.post(history_url, data);
   },
-  updateHistory(data) {
-    return axios.post(updateHistory, data);
+  updateHistory(id, data) {
+    return axios.put(`${history_url}/${id}`, data);
   },
-  deleteHistory(data) {
-    return axios.post(deleteHistory, data);
+  deleteHistory(id) {
+    return axios.delete(`${history_url}/${id}`);
   },
   findAllVested(user_name) {
     return axios.get(`${findAllVested}?user_name=${user_name}`);

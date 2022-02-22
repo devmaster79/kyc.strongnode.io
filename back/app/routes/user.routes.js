@@ -1,5 +1,3 @@
-const auth = require("../middleware/auth");
-const users = require("../controllers/user.controller");
 module.exports = (app) => {
   const users = require("../controllers/user.controller.js");
   const auth = require("../middleware/auth");
@@ -34,12 +32,11 @@ module.exports = (app) => {
   router.post("/qr/auth", auth(MODE_QR), users.authQR);
   router.post("/qr/testAuth", auth(MODE_FULL), users.testAuthQR);
 
-  //get profile
-  router.get("/profile/get", auth(MODE_FULL), users.getProfile);
+  //profile
+  router.get("/profile", auth(MODE_FULL), users.getProfile);
+  router.post("/profile", auth(MODE_FULL), users.createProfile);
+  router.put("/profile", auth(MODE_FULL), users.updateProfile);
   router.get("/profile/getInvestorProfile", auth(MODE_FULL), users.getInvestorDetails);
-
-  //update profile
-  router.put("/profile/update", auth(MODE_FULL), users.updateProfile);
 
   //upload image to s3
   router.put("/profile/image", auth(MODE_FULL), upload.single('image_data'), users.uploadImg);

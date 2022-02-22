@@ -857,14 +857,26 @@ exports.verifyEmail = async (req, res) => {
 // todo add comment
 // todo check with this planned usage with dev team
 exports.getProfile = (req, res) => {
-  const para_email = req.user.email;
+  const { email } = req.user;
 
-  User.findOne({ where: { email: para_email } })
+  if (!email) {
+    res.status(400).send({
+      message: "Email is required!",
+    });
+    return;
+  }
+
+  User.findOne({ where: { email: email } })
     .then((data) => {
       const _returnData = [{
         remaining_total_amount : data.remaining_total_amount || 0,
         locked_bonus_amount : data.locked_bonus_amount || 0,
         user_name : data.user_name,
+        first_name: data.first_name,
+        last_name: data.last_name,
+        wallet_address: data.wallet_address,
+        telegram_id: data.telegram_id,
+        twitter_id: data.twitter_id
       }];
       res.send(_returnData);
     })
