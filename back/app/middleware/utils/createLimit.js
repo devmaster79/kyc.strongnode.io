@@ -41,7 +41,7 @@ exports.createLimit = (
 };
 
 /**
- * A limiter middleware
+ * Create a limiter middleware
  * @param {(req: Object) => string} getIdentifier a function that returns
  * the identifier of a user
  * @param {string} name
@@ -62,6 +62,7 @@ const createLimiter = (getIdentifier, name, config) => (req, res, next) => {
         };
         lastTrial = trials[identifier];
     }
+
     // STEP 1: set the next free-to-try time
     if (lastTrial.count > config.maxFreeTrials) {
         if (!lastTrial.nextFreeTime) {
@@ -90,7 +91,7 @@ const createLimiter = (getIdentifier, name, config) => (req, res, next) => {
 }
 
 /**
- * A middleware that extends request with a resolver function
+ * Creates a middleware that extends request with a resolver function
  * that controllers could call in case of a successful login
  * @param {(req: Object) => string} getIdentifier a function that returns
  * the identifier of a user
