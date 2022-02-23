@@ -1,6 +1,16 @@
 let trials = {};
 
 /**
+ * @typedef {Object} Limit
+ * @property {(req: Object, res: Object, next: () => any) => any} limiter
+ * a middleware that sends error on too many trials
+ * @property {(req: Object, res: Object, next: () => any) => any} resolver
+ * a middleware that makes the controller able to remove the limit on success
+ * @property {(req: Object) => void} resolve
+ * a static method that calls the resolver provided in the request
+ */
+
+/**
  * Limit the maximal trials.
  * The strategy allows multiple trials without limit for example:
  * F = number of free trials
@@ -20,11 +30,7 @@ let trials = {};
  * @param {number} config.maxFreeTrials
  * @param {number} config.banMinutesBase
  * @param {number} config.multiplier
- * @returns {{
- *  limiter: (req: Object, res: Object, next: () => any) => any,
- *  resolver: (req: Object, res: Object, next: () => any) => any,
- *  resolve: (req: Object) => void
- * }}
+ * @returns {Limit} see the Limit typedef
  */
 exports.createLimit = (
     name,
