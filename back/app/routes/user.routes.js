@@ -21,6 +21,9 @@ module.exports = (app) => {
   // Submit a password reset
   router.post("/passwordResetSubmit", users.resetPassword);
 
+  //Change password
+  router.put("/passwordChange", auth(MODE_FULL), users.changePassword);
+
   // SMS authentication
   router.post("/sms/send", auth(MODE_SMS, MODE_FULL), users.sendSMS);
   router.get("/sms/auth", auth(MODE_SMS), users.authSMS);

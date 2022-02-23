@@ -105,7 +105,6 @@ export default function Dashboard() {
     first_name: Yup.string().required('First Name is required'),
     last_name: Yup.string().required('Last Name is required'),
     user_name: Yup.string().required('User Name is required'),
-    password: Yup.string().required('Password is required')
   });
 
   const formik = useFormik({
@@ -113,7 +112,6 @@ export default function Dashboard() {
       first_name: '',
       last_name: '',
       user_name: '',
-      password: '',
       telegram_id: '',
       twitter_id: '',
       email: '',
@@ -132,7 +130,6 @@ export default function Dashboard() {
           first_name,
           last_name,
           user_name,
-          password,
           email,
           wallet_address,
           telegram_id,
@@ -141,7 +138,6 @@ export default function Dashboard() {
 
         const data = {
           email,
-          password,
           first_name,
           last_name,
           user_name,
@@ -452,14 +448,6 @@ export default function Dashboard() {
                   error={Boolean(touched.email && errors.email)}
                   helperText={touched.email && errors.email}
                   disabled
-                />
-                <TextField
-                  fullWidth
-                  placeholder="Password"
-                  type="Password"
-                  {...getFieldProps('password')}
-                  error={Boolean(touched.password && errors.password)}
-                  helperText={touched.password && errors.password}
                 />
                 <TextField
                   fullWidth

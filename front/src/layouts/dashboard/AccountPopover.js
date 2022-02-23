@@ -61,6 +61,9 @@ export default function AccountPopover() {
   const toProfile = () => {
     navigate('/dashboard/profile');
   };
+  const toPasswordChange = () => {
+    navigate('/dashboard/change-password');
+  }
 
   return (
     <>
@@ -141,6 +144,12 @@ export default function AccountPopover() {
             color="white"
             sx={{ cursor: 'pointer', fontSize: 18, ml: 3 }}>
             My account
+          </Typography>
+          <Typography
+            onClick={toPasswordChange}
+            color="white"
+            sx={{ cursor: 'pointer', fontSize: 18, ml: 3 }}>
+            Change password
           </Typography>
           <Typography color="white" sx={{ fontSize: 18, ml: 3 }}>
             Settings

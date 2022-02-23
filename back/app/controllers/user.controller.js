@@ -863,6 +863,60 @@ exports.getProfile = (req, res) => {
     });
 };
 
+exports.changePassword = async (req, res) => {
+  const { email } = req.user;
+  const { old_password, new_password } = req.body;
+
+  if (!email) {
+    res.status(400).send({
+      message: "Email is required!",
+    });
+    return;
+  }
+
+  const user = await User.findOne({ where: { email: email } });
+  const comparePassword = await passwordService.verifyPasswordHash(user.dataValues.password, old_password);
+
+  if (!comparePassword) {
+    res.status(401).send({
+      message: `Wrong password.`,
+    });
+    return;
+  }
+
+  const token = jwt.sign(
+    { user_name: user?.dataValues.user_name, email: user?.dataValues.email },
+    getTokenSecret(MODE_FULL),
+    {
+      expiresIn: MODE_FULL_EXPIRES_IN,
+    }
+  )
+
+  const data = {
+    password: await passwordService.generateHashBcrypt(new_password),
+    token: token
+  }
+
+  // update the user
+  await User.update(data, {
+    where: { email: user.email }
+  }).then((num) => {
+    if (num == 1) {
+      res.send({
+        message: "Password was changed successfully.",
+      });
+    } else {
+      res.send({
+        message: "Cannot change password."
+      });
+    }
+  })
+  .catch((err) => {
+    res.status(500).send({
+      message: err,
+    });
+  });
+}
 //Update profile
 exports.updateProfile = async (req, res) => {
   const { email } = req.user;
@@ -1030,3 +1084,4 @@ exports.addData = async (req, res) => {
     res.send("success");
   })
 }
+
