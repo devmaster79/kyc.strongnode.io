@@ -20,7 +20,7 @@ dotenv.config();
 
 var AWS = require("aws-sdk");
 const { MODE_QR, MODE_SMS, MODE_FULL, getTokenSecret, MODE_QR_EXPIRES_IN, MODE_SMS_EXPIRES_IN, MODE_FULL_EXPIRES_IN } = require("../middleware/auth");
-const { sendSMSLimit, authOTPLimit } = require("../middleware/limits");
+const { sendSMSLimit, authOTPLimit, authPasswordLimit } = require("../middleware/limits");
 var rand, link;
 
 /** Create and Save a new User */
@@ -286,32 +286,35 @@ exports.createPassword = async (req, res) => {
 
 /** Signin and Save a new token */
 exports.signin = async (req, res) => {
-  // Validate request
-
-  if (!req.body.email && !req.body.password || req.body.password === '') {
+  const {email, password} = req.body;
+  if (!email && !password) {
     res.status(400).send({
-      message: "Content can not be empty!",
+      message: "Content cannot be empty!",
     });
     return;
   }
 
-
-
   try {
-    // TODO: security holes:
-    // 1. when email is found, the request is slower
-    // without limiting the maximum trials a hacker could retrieve the registered emails.
-    // 2. with enough trials a hacker could sign in
+    let comparePasswordResult;
+    let user;
+    try {
+      user = await User.findOne({ where: { email } });
+      comparePasswordResult = await passwordService.verifyPasswordHash(user.dataValues.password, password)
+    } catch (e) {
+      // The catch case should be about the same speed as try,
+      // to avoid giving info in response time for hackers.
+      comparePasswordResult = await passwordService.fakeVerifyPasswordHash();
+    }
 
-    const user = await User.findOne({ where: { email: req.body.email } });
-    const comparePassword = await passwordService.verifyPasswordHash(user.dataValues.password, req.body.password)
-
-    if (!comparePassword) {
+    if (!comparePasswordResult) {
       res.status(401).send({
-        message: `Wrong password.`,
+        message: `Wrong email or password.`,
       });
       return;
     }
+
+    // password was good so free the user from the limit
+    authPasswordLimit.resolve(req);
 
     let token_secret_mode;
     let token_expiration;
@@ -339,7 +342,7 @@ exports.signin = async (req, res) => {
       token: token,
     };
     const numberOfUpdatedUsers = (await User.update(data, {
-      where: { email: req.body.email },
+      where: { email },
     }))[0];
     if (numberOfUpdatedUsers === 1) {
       res.send({
@@ -350,7 +353,7 @@ exports.signin = async (req, res) => {
         enable_sms: user.dataValues.enable_sms,
       });
     } else {
-      throw `Cannot update token with user email=${req.body.email}.`
+      throw `Cannot update token with user email=${email}.`
     }
   } catch (err) {
     res.status(500).send({

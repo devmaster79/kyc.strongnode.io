@@ -28,10 +28,25 @@ exports.generateHashBcrypt = async (password) => {
  * Method that verifies hash againsts password.
  * @param hash
  * @param password
- * @returns {Promise<void>}
+ * @returns {Promise<boolean>}
  */
 exports.verifyPasswordHash = async (hash, password) => {
   return await bcrypt.compare(password, hash).then((res) => {
     return res;
   });
+};
+
+/**
+ * Method that has about the same execution time as verifyPasswordHash
+ * It will always fail
+ * @param hash
+ * @param password
+ * @returns {Promise<boolean>}
+ */
+exports.fakeVerifyPasswordHash = async () => {
+  return await exports.verifyPasswordHash(
+    // something in hash:
+    "7f33f5ad070f257e52d7bcdab12effe4771f6703ac8ecc7761dc7de6e932f444",
+    "somethingelse"
+  )
 };

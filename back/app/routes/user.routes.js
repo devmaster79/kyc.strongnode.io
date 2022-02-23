@@ -5,7 +5,7 @@ module.exports = (app) => {
   const multer = require('multer')
   const upload = multer({ dest: 'uploads/' })
   const router = require("express").Router();
-  const { sendSMSLimit, authOTPLimit } = require("../middleware/limits.js");
+  const { sendSMSLimit, authOTPLimit, authPasswordLimit } = require("../middleware/limits.js");
 
   // Create a new User
   router.post("/", users.create);
@@ -20,7 +20,12 @@ module.exports = (app) => {
   router.post("/passwordResetSubmit", users.resetPassword);
 
   // Password authentication
-  router.put("/signin", users.signin);
+  router.put(
+    "/signin",
+    authPasswordLimit.limiter,
+    authPasswordLimit.resolver,
+    users.signin
+  );
 
   // SMS authentication
   router.post(
