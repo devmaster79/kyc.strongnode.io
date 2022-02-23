@@ -2,7 +2,7 @@ import axios from 'axios';
 import { upload_profile_img, signup_url,
   password_reset_url, password_reset_submit_url, verify_email_url, password_url,
   profile_url, investor_url, signin_url, send_sms_url, test_auth_sms_url, auth_sms_url, auth_qr_url,
-  generate_qr_url, test_auth_qr_url, get_investor_details } from '../utils/config'
+  generate_qr_url, test_auth_qr_url, password_change, get_investor_details } from '../utils/config'
 
 export default {
   signin(email, password) {
@@ -35,6 +35,9 @@ export default {
   },
   createPassword(data) {
     return axios.put(password_url, data);
+  },
+  changePassword(data) {
+    return axios.put(password_change, data);
   },
   createProfile(data) {
     return axios.post(profile_url, data);
