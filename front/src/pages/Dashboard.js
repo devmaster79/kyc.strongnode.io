@@ -25,7 +25,6 @@ import WithdrawTimer from '../components/dashboard/WithdrawTimer';
 import userService from 'services/userService';
 import historyService from 'services/historyService';
 
-
 const SneAddress = '0x32934CB16DA43fd661116468c1B225Fc26CF9A8c';
 
 const CardStyle = styled(Box)(({ theme }) => ({
@@ -185,24 +184,13 @@ export default function Dashboard() {
     fetch();
   }, [refresh]);
   const handleDashboard = useCallback(async () => {
-    try {
-      if (localStorage.getItem('username') && localStorage.getItem('email')) {
-        if (localStorage.getItem('visit') !== 'true') {
-          enqueueSnackbar('Welcome to the StrongNodeID dashboard', {
-            variant: 'success'
-          });
-          localStorage.setItem('visit', 'true');
-        }
-      } else {
-        enqueueSnackbar('You must sign in!', { variant: 'error' });
-        window.document.location = "/signin"
-      }
-    } catch (err) {
-      enqueueSnackbar('You must sign in!', { variant: 'error' });
-      window.document.location = "/signin"
+    if (localStorage.getItem('visit') !== 'true') {
+      enqueueSnackbar('Welcome to the StrongNodeID dashboard', {
+        variant: 'success'
+      });
+      localStorage.setItem('visit', 'true');
+    }}, []);
 
-    }
-  }, []);
   return (
     <Container ref={dash} maxWidth="xl" style={{ paddingBottom: 100 }}>
       <CardStyle

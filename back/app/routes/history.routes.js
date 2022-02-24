@@ -11,10 +11,10 @@ module.exports = (app) => {
     router.delete("/:id", auth(MODE_FULL), history.delete);
 
     // Retrieve all vested History
-    router.get("/findAllVested", history.findAllVested);
+    router.get("/findAllVested", auth(MODE_FULL), history.findAllVested);
 
     // Retrieve all withdrawn History
-    router.get("/findAllWithdrawn",  history.findAllWithdrawn);
+    router.get("/findAllWithdrawn", auth(MODE_FULL),  history.findAllWithdrawn);
 
-    app.use("/api/history", router);
+    app.use("/api/history", auth(MODE_FULL), router);
   };
