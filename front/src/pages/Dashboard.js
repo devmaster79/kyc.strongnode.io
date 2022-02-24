@@ -204,7 +204,7 @@ export default function Dashboard() {
     }
   }, []);
   return (
-    <Container ref={dash} maxWidth="xl">
+    <Container ref={dash} maxWidth="xl" style={{ paddingBottom: 100 }}>
       <CardStyle
         sx={{
           height: { xs: 'max-content', md: 120 },

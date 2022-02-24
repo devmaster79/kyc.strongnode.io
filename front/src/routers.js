@@ -3,6 +3,7 @@ import { Navigate, useRoutes } from 'react-router-dom';
 import DashboardLayout from './layouts/dashboard';
 import Dashboard from './pages/Dashboard';
 import UserProfile from './pages/UserProfile';
+import ChangePassword from './pages/ChangePassword';
 
 import Profile from './pages/profile';
 import TermsOfUse from './pages/termsOfUse';
@@ -31,6 +32,7 @@ export default function Router() {
           { path: '/dashboard', element: <Navigate to="/dashboard/app" replace /> },
           { path: 'app', element: <Dashboard /> },
           { path: 'profile', element: <UserProfile /> },
+          { path: 'change-password', element: <ChangePassword /> },
           { path: 'growth', element: <Dashboard /> },
           { path: 'sync', element: <Dashboard /> },
           { path: 'shield', element: <Dashboard /> },
