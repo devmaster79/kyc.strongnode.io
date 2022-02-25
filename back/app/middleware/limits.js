@@ -25,7 +25,7 @@ exports.authOTPLimit = createLimit("qrAuth", identifyByAuth, {
  * Characteristics (T= trial): T T T T T 5 T 15 T 45 T 135 ...
  */
 exports.authPasswordLimit = createLimit("passwordAuth", identifyByEmailAndIP, {
-    maxFreeTrials: 5, // After 10 trials and on every consecutive trials
+    maxFreeTrials: 5, // After 5 trials and on every consecutive trials
     banMinutesBase: 5, // 5 min ban
     multiplier: 3,
 });
