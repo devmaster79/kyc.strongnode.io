@@ -178,7 +178,7 @@ exports.requestPasswordReset = async (req, res) => {
  */
 exports.resetPassword = async (req, res) => {
   // Validate request
-  if (!req.body.password || !req.body.token || req.body.token === '' || req.body.password === '') {
+  if (!req.body.password || !req.body.token) {
     res.status(400).send({
       message: "Required properties are not present in the request.",
     });
