@@ -48,6 +48,9 @@ module.exports = (sequelize, Sequelize) => {
     phone_number: {
       type: Sequelize.STRING
     },
+    enable_password: {
+      type: Sequelize.BOOLEAN
+    },
     enable_qr: {
       type: Sequelize.BOOLEAN
     },
