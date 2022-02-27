@@ -1,4 +1,29 @@
+/**
+ * @type {Object.<string, { nextFreeTime: number, count: number }>}
+ */
 let trials = {};
+
+/**
+ * method that resets the trials database
+ */
+exports.resetTrials = () => {
+    trials = {};
+}
+
+/**
+ * method that cleans up old entries
+ */
+exports.cleanUp = () => {
+    const now = Date.now()
+    Object
+        .keys(trials)
+        .filter(key => trials[key].nextFreeTime < now)
+        .forEach(key => {
+            delete trials[key];
+        });
+}
+
+setInterval(exports.cleanUp, 60 * 60 * 1000);
 
 /**
  * @typedef {Object} Limit
@@ -76,7 +101,7 @@ const createLimiter = (getIdentifier, name, config) => (req, res, next) => {
             lastTrial.nextFreeTime = calculateNextFreeTime(config, lastTrial.count);
         } else if (lastTrial.nextFreeTime <= now) {
             // ban expired so we allow one free trial and renew the ban
-            lastTrial.count+=1;
+            lastTrial.count += 1;
             lastTrial.nextFreeTime = calculateNextFreeTime(config, lastTrial.count);
             return next();
         } else {
@@ -165,4 +190,4 @@ function calculateNextFreeTime(config, trials) {
  * @param {string} identifier
  * @returns {string}
  */
- const calculateUID = (name, identifier) => name + '__' + identifier;
+const calculateUID = (name, identifier) => name + '__' + identifier;
