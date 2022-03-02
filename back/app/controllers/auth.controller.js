@@ -3,7 +3,7 @@ const { EmailAuthService } = require('../services/auth/EmailAuthService');
 const { PasswordAuthService } = require('../services/auth/PasswordAuthService');
 const { SMSAuthService } = require('../services/auth/SMSAuthService');
 const { QRAuthService } = require('../services/auth/QRAuthService');
-const { RegistrationService } = require('../services/auth/RegistrationService');
+const { RegistrationService, UserNameIsAlreadyTakenError, EmailIsAlreadyRegisteredError } = require('../services/auth/RegistrationService');
 const { GravatarService } = require('../services/GravatarService');
 
 const { default: validator } = require('validator');
@@ -19,9 +19,10 @@ const gravatarService = new GravatarService();
 const registrationService = new RegistrationService(userRepository, tokenService, gravatarService);
 
 class ValidationError extends Error {
-    constructor(problematic_field_name) {
+    constructor(problematic_field_name, reason) {
         super(`Wrong field value: ${problematic_field_name}`);
         this.field_name = problematic_field_name;
+        this.reason = reason;
     }
 }
 class GenericClientError extends Error {
@@ -44,8 +45,13 @@ const withResponse = (controller) => async (req, res) => {
             res.send({ result: 'success' });
         }
     } catch (e) {
+        // TODO: unifiy errors
         if(e instanceof ValidationError) {
-            res.status(400).send({ result: "validation-error", field: e.field_name });
+            res.status(400).send({
+                result: "validation-error",
+                field: e.field_name,
+                reason: e.reason,
+            });
         } else if(e instanceof GenericClientError) {
             res.status(400).send({ result: e.id });
         } else if(e instanceof UnauthorizedError) {
@@ -66,13 +72,19 @@ exports.register = withResponse(async req => {
     if (!req.body.first_name) throw new ValidationError('first_name');
     if (!req.body.last_name) throw new ValidationError('last_name');
     if (!req.body.user_name) throw new ValidationError('user_name');
-    const token = await registrationService.createUser({
-        email: req.user.email,
-        user_name: req.body.user_name,
-        first_name: req.body.first_name,
-        last_name: req.body.last_name,
-    })
-    return { token };
+    try {
+        const token = await registrationService.createUser({
+            email: req.user.email,
+            user_name: req.body.user_name,
+            first_name: req.body.first_name,
+            last_name: req.body.last_name,
+        })
+        return { token };
+    } catch(e) {
+        if(e instanceof UserNameIsAlreadyTakenError) {
+            throw new ValidationError('user_name', 'already-taken')
+        }
+    }
 })
 
 exports.enablePasswordAuth = withResponse(async req => {
