@@ -1,3 +1,5 @@
+const auth = require("../middleware/auth");
+const users = require("../controllers/user.controller");
 module.exports = (app) => {
   const users = require("../controllers/user.controller.js");
   const auth = require("../middleware/auth");
@@ -34,6 +36,7 @@ module.exports = (app) => {
 
   //get profile
   router.get("/profile/get", auth(MODE_FULL), users.getProfile);
+  router.get("/profile/getInvestorProfile", auth(MODE_FULL), users.getInvestorDetails);
 
   //update profile
   router.put("/profile/update", auth(MODE_FULL), users.updateProfile);

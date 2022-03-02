@@ -854,8 +854,10 @@ exports.verifyEmail = async (req, res) => {
 };
 
 //Get profile
+// todo add comment
+// todo check with this planned usage with dev team
 exports.getProfile = (req, res) => {
-  const para_email = req.query.email;
+  const para_email = req.user.email;
 
   User.findOne({ where: { email: para_email } })
     .then((data) => {
@@ -872,6 +874,29 @@ exports.getProfile = (req, res) => {
       });
     });
 };
+
+/**
+ * Method that gets investor details for a specific user.
+ * @param req
+ * @param res
+ */
+exports.getInvestorDetails = async (req, res) => {
+  // check if user is assingned
+  if (!req.user) {
+    res.status(500).send({ message: 'User is not assigned.' })
+    return
+  }
+
+  const userCheck = await User.findOne({ email: req.user })
+  const investorDetails = await InvestorDetails.findOne({ user_id: userCheck.dataValues.id, reviewed: 1 })
+
+  // check if investor details are present
+  if (investorDetails) {
+    res.send(investorDetails.dataValues)
+  } else {
+    res.send({ message: 'Investor details are not present. Details were not submitted or reviewed yet.' })
+  }
+}
 
 //Update profile
 exports.updateProfile = async (req, res) => {
