@@ -18,6 +18,7 @@ export const generate_qr_url = `${base_url}/users/qr/generate`;
 export const auth_qr_url = `${base_url}/users/qr/auth`;
 export const test_auth_qr_url = `${base_url}/users/qr/testAuth`;
 export const get_profile = `${base_url}/users/profile/get`;
+export const get_investor_details = `${base_url}/users/profile/getInvestorProfile`;
 export const update_profile = `${base_url}/users/profile/update`;
 export const upload_profile_img = `${base_url}/users/profile/image`;
 

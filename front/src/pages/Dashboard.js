@@ -101,14 +101,17 @@ export default function Dashboard() {
   const token = localStorage.getItem('token');
   const useremail = localStorage.getItem('email');
   const [user, setUser] = useState();
+  const [investor, setInvestor] = useState();
 
   useEffect(() => {
     async function fetch() {
-      const result = userService.getProfile();
-      if(!result.data) return;
-      setUser(result.data[0]);
-      setAvailableToken(result.data[0]?.remaining_total_amount);
-      setLockedToken(result.data[0]?.locked_bonus_amount);
+      const userResult = await userService.getProfile();
+      const investorResult = await userService.getInvestorDetails()
+      if(!userResult.data) return;
+      setUser(userResult.data[0])
+      setInvestor(investorResult.data)
+      setAvailableToken(userResult.data[0]?.remaining_total_amount);
+      setLockedToken(userResult.data[0]?.locked_bonus_amount);
     }
 
     fetch();
@@ -712,7 +715,7 @@ export default function Dashboard() {
                     INVESTOR
                   </Typography>
                   <Typography variant="h6" color="white">
-                    { user?.investor_name || '-' }
+                    { investor?.investor_name || '-' }
                   </Typography>
                 </Stack>
 
