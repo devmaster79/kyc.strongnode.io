@@ -1,11 +1,11 @@
 'use strict';
 
 module.exports = {
-  async up (queryInterface, Sequelize) {
+  async up ({ context: queryInterface }) {
     await queryInterface.renameColumn('users', 'enable_totp', 'enable_qr');
   },
 
-  async down (queryInterface, Sequelize) {
+  async down ({ context: queryInterface }) {
     await queryInterface.renameColumn('users', 'enable_qr', 'enable_totp');
   }
 };

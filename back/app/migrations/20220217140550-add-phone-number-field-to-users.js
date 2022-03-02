@@ -1,11 +1,11 @@
-'use strict';
+const { Sequelize } = require('sequelize');
 
 module.exports = {
-  up: async (queryInterface, Sequelize) => {
+  up: async ({ context: queryInterface }) => {
     await queryInterface.addColumn('users', 'phone_number', Sequelize.STRING );
   },
 
-  down: async (queryInterface, Sequelize) => {
+  down: async ({ context: queryInterface }) => {
      await queryInterface.removeColumn('users', 'phone_number' );
   }
 };

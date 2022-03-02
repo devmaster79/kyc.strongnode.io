@@ -43,8 +43,8 @@ const umzug = new Umzug({
         if (val === 'up') {
             // run the migrations
             await umzug.up();
-        }
-        else if (val === 'down') {
+            console.info('Successfully migrated upwards!');
+        } else if (val === 'down') {
             // revert the migrations
             const downOptions = {}
 
@@ -52,9 +52,9 @@ const umzug = new Umzug({
                 downOptions.step = myArgs[index + 1].replaceAll('-', '')
 
             await umzug.down(downOptions);
+            console.info('Successfully migrated downwards!')
+        } else {
+            console.info("wrong option: ", val);
         }
-
-        console.info('Successfully migrated!')
-        process.exit(0);
     });
 })();
