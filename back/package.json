@@ -5,7 +5,9 @@
   "main": "server.js",
   "scripts": {
     "test": "mocha ./app/**/*.test.js",
-    "test-watch": "mocha ./app/**/*.test.js --watch"
+    "test-watch": "mocha ./app/**/*.test.js --watch",
+    "migrate:up": "node ./app/scripts/run-migrations.js up",
+    "migrate:down": "node ./app/scripts/run-migrations.js down"
   },
   "keywords": [
     "nodejs",
