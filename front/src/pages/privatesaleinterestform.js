@@ -152,7 +152,6 @@ function PrivateSaleInterestForm() {
     } catch (err) {
       console.error('Error for create password', err);
     }
-    alert(formSubmitted)
   }, []);
 
   const handleSubmit = (event) => {
