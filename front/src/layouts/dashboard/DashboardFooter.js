@@ -18,7 +18,9 @@ const APPBAR_DESKTOP = 74;
 
 const RootStyle = styled(AppBar)(({ theme }) => ({
   boxShadow: 'none',
-  position: 'relative',
+  position: 'absolute',
+  top: 'unset',
+  bottom: '0',
   marginTop: 40,
   borderTopLeftRadius: '16px',
   background: 'rgba(255, 255, 255, 0.1)',
