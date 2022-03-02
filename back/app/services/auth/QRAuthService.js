@@ -36,7 +36,7 @@ class QRAuthService {
      * Turn on QR authentication
      * @param {string} email
      * @param {string} token
-     * @returns {boolean}
+     * @returns {Promise<boolean>}
      */
     async activateQrAuth(email, token) {
         const user = await this.__userRepository.findOne({ where: { email } });
@@ -46,11 +46,27 @@ class QRAuthService {
             token,
         });
         if (verified) {
-            const result = await this.__userRepository.update({ enable_qr: true }, { where: { email } });
+            const result = await this.__userRepository.update(
+                { enable_qr: true },
+                { where: { email }
+            });
             return result == 1;
         } else {
             return false
         }
+    }
+
+    /**
+     * Turn off QR authentication
+     * @param {string} email
+     * @returns {Promise<boolean>}
+     */
+    async deactivateQrAuth(email) {
+        const result = await this.__userRepository.update(
+            { enable_qr: false },
+            { where: { email }
+        });
+        return result == 1;
     }
 
     /**
