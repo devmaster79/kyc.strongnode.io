@@ -887,6 +887,29 @@ exports.getProfile = (req, res) => {
     });
 };
 
+/**
+ * Method that gets investor details for a specific user.
+ * @param req
+ * @param res
+ */
+exports.getInvestorDetails = async (req, res) => {
+  // check if user is assingned
+  if (!req.user) {
+    res.status(500).send({ message: 'User is not assigned.' })
+    return
+  }
+
+  const userCheck = await User.findOne({ email: req.user })
+  const investorDetails = await InvestorDetails.findOne({ user_id: userCheck.dataValues.id, reviewed: 1 })
+
+  // check if investor details are present
+  if (investorDetails) {
+    res.send(investorDetails.dataValues)
+  } else {
+    res.send({ message: 'Investor details are not present. Details were not submitted or reviewed yet.' })
+  }
+}
+
 exports.changePassword = async (req, res) => {
   const { email } = req.user;
   const { old_password, new_password } = req.body;
@@ -1132,3 +1155,4 @@ exports.addData = async (req, res) => {
     res.send("success");
   })
 }
+
