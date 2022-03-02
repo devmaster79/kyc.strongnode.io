@@ -1,5 +1,4 @@
 const express = require("express");
-// const bodyParser = require("body-parser"); /* deprecated */
 const cors = require("cors");
 
 const app = express();
@@ -18,26 +17,13 @@ app.use(cors());
 app.options('*', cors());
 
 // parse requests of content-type - application/json
-app.use(express.json({ limit: '25mb'}));  /* bodyParser.json() is deprecated */
+app.use(express.json({ limit: '25mb'}));
 
 // parse requests of content-type - application/x-www-form-urlencoded
-app.use(express.urlencoded({ extended: true, limit: '25mb' }));   /* bodyParser.urlencoded() is deprecated */
-
-const db = require("./app/models");
-
-db.sequelize.sync();
-// // drop the table if it already exists
-// db.sequelize.sync({ force: true }).then(() => {
-//   console.log("Drop and re-sync db.");
-// });
+app.use(express.urlencoded({ extended: true, limit: '25mb' }))
 
 // simple route
 app.use(express.static(path.join(__dirname, '../front/build')));
-/*
-app.get('/*', function(req,res) {
-		res.sendFile(path.join(__dirname, '../front/build', 'index.html'));
-});
-*/
 
 require("./app/routes/history.routes")(app);
 require("./app/routes/news.routes")(app);
