@@ -112,8 +112,8 @@ const createLimiter = (getIdentifier, name, config) => (req, res, next) => {
     // STEP 2: check next free time
     if (lastTrial.nextFreeTime && lastTrial.nextFreeTime > now) {
         return res.status(401).send({
-            banned: true,
-            millis: lastTrial.nextFreeTime - now
+            result: 'banned',
+            remainingTimeMs: lastTrial.nextFreeTime - now
         });
     }
 
