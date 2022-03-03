@@ -107,7 +107,13 @@ export default function Dashboard() {
     async function fetch() {
       const userResult = await userService.getProfile();
       const investorResult = await userService.getInvestorDetails()
-      if(!userResult.data) return;
+
+      if(!userResult.data) {
+        // todo we should be thinking about logging out user in this case
+        console.error('Cannot get the user object! Please, try to relogin.')
+        return;
+      }
+
       setUser(userResult.data[0])
       setInvestor(investorResult.data)
       setAvailableToken(userResult.data[0]?.remaining_total_amount);
