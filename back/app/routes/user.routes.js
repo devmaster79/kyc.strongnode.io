@@ -13,6 +13,7 @@ module.exports = (app) => {
   router.put("/createProfile", auth(MODE_FULL), users.createProfile);
   router.put("/createInvestor", users.createInvestor);
 
+
   // signin with user email and password
   router.put("/signin", users.signin);
 
