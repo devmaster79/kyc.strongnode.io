@@ -6,6 +6,7 @@
 
 .DS_Store
 docker/.localstack/*
+docker/.aws/*
 back/package-lock.json
 front/package.json
 

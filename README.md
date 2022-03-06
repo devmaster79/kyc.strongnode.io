@@ -14,43 +14,11 @@ First of all, **clone this repository**.
 
 ## 🌐 Localstack (AWS emulator for local development)
 
-For faking AWS on localhost you shoud run localstack locally on your machine. This can be done via composing a docker-compose file located in docker/localstack.docker-compose.yaml.
+This is required for testing emails.
 
-Example of creating localstack instance via Docker
-```
+```bash
 cd <repo>/docker/
-
 docker-compose -f localstack.docker-compose.yaml up -d
-```
-
-**-f parameter** selects file name.<br>
-**-d parameter runs** the container in detached mode
-
-
-Localstack is faking AWS services (for faking SES it uses moto mocker). There needs to be initted AWS credentials on your machine (localstack does not have authorization, but it needs atleast fake credentials to run).
-
-// we need to configure localstack account
-aws configure --profile localstack
-
-
-```
-aws configure --profile localstack
-
-AWS Access Key ID [None]: localhost
-AWS Secret Access Key [None]: localhost
-Default region name [None]: eu-west-1
-Default output format [None]: 
-```
-
-
-By default AWS/localstack will return an error when we will try to register user - no-reply@strongnode.io is not a verified e-mail.
-To fix it we **need to run following command in terminal**:
-
-    aws ses verify-email-identity --email-address no-reply@strongnode.io --profile localstack --region eu-west-1 --endpoint-url=http://localhost:4566
-
-In order to run AWS cli against our local localstack **we need to add parameter**:
-```
---endpoint-url=http://localhost:4566
 ```
 
 ## 💽 MySQL
