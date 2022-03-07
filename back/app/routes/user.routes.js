@@ -1,9 +1,9 @@
 const { MODE_FULL } = require("../services/auth/TokenService.js");
+const users = require("../controllers/user.controller.js");
+const auth = require("../middleware/auth");
+const multer = require('multer')
 
 module.exports = (app) => {
-  const users = require("../controllers/user.controller.js");
-  const auth = require("../middleware/auth");
-  const multer = require('multer')
   const upload = multer({ dest: 'uploads/' })
   const router = require("express").Router();
 

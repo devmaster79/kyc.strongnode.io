@@ -1,8 +1,8 @@
-module.exports = (app) => {
-    const history = require("../controllers/history.controller.js");
-    const auth = require("../middleware/auth");
-    const { MODE_FULL } = auth;
+const { MODE_FULL } = require("../services/auth/TokenService.js");
+const history = require("../controllers/history.controller.js");
+const auth = require("../middleware/auth");
 
+module.exports = (app) => {
     const router = require("express").Router();
 
     // Create a new History

@@ -1,8 +1,8 @@
-module.exports = (app) => {
-  const news = require("../controllers/news.controller.js");
-  const auth = require("../middleware/auth");
-  const { MODE_FULL } = auth;
+const { MODE_FULL } = require("../services/auth/TokenService.js");
+const news = require("../controllers/news.controller.js");
+const auth = require("../middleware/auth");
 
+module.exports = (app) => {
   const router = require("express").Router();
 
   // Create a News
