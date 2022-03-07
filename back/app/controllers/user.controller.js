@@ -92,16 +92,10 @@ exports.createInvestor = (req, res) => {
 exports.getProfile = (req, res) => {
   const { email } = req.user;
 
-  if (!email) {
-    res.status(400).send({
-      message: "Email is required!",
-    });
-    return;
-  }
-
   User.findOne({ where: { email: email } })
     .then((data) => {
       const _returnData = [{
+        email,
         remaining_total_amount : data.remaining_total_amount || 0,
         locked_bonus_amount : data.locked_bonus_amount || 0,
         user_name : data.user_name,
