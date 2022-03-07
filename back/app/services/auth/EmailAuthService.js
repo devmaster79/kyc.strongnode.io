@@ -6,7 +6,7 @@ const {
     MODE_PASSWORD,
     MODE_FULL,
 } = require('./TokenService');
-const routes = require("../../config/routes.config");
+const routes = require("shared/shared-routes");
 const { emailTemplatesNames } = require('../communication.services')
 
 class EmailAuthService {
@@ -28,16 +28,17 @@ class EmailAuthService {
      * @param {string} email
      */
     async sendVerificationEmail(email) {
+        email = email.toLowerCase();
         let link;
         try {
-            const user = await this.__userRepository.findOne({ email });
+            const user = await this.__userRepository.findOne({ where: { email } });
             const mode = this.__tokenService.determineNextMode(user, MODE_GUEST);
             const token = this.__tokenService.generateToken(email, user.user_name, mode);
-            link = this.__getRoute(mode, token);
+            link = this.__getURL(mode, token);
         } catch (_) {
             const mode = MODE_REGISTRATION;
             const token = this.__tokenService.generateToken(email, null, mode);
-            link = this.__getRoute(mode, token);
+            link = this.__getURL(mode, token);
         }
         await this.__communicationService.sendTemplatedEmail(
             email,
@@ -46,26 +47,32 @@ class EmailAuthService {
         );
     }
 
+    /**
+     * @param {import("./TokenService").AuthMode} mode
+     * @returns {string}
+     */
+    __getURL(mode, token) {
+        return process.env.FRONTEND_URL + this.__getRoute(mode, token);
+    }
 
     /**
-     *
-     * @param {import("./AuthMode").AuthMode} mode
+     * @param {import("./TokenService").AuthMode} mode
      * @returns {string}
      */
     __getRoute(mode, token) {
-        switch(mode.id) {
+        switch (mode.id) {
             case MODE_GUEST.id:
                 return ''
             case MODE_REGISTRATION.id:
-                return routes.SIGNUP(token)
+                return `${routes.REGISTER}?token=${token}`
             case MODE_QR.id:
-                return routes.SIGNINQR(token)
+                return `${routes.SIGN_IN_WITH_AUTHENTICATOR}?token=${token}`
             case MODE_SMS.id:
-                return routes.SIGNINSMS(token)
+                return `${routes.SIGN_IN_WITH_SMS}?token=${token}`
             case MODE_PASSWORD.id:
-                return routes.SIGNINPASS(token)
+                return `${routes.SIGN_IN_WITH_PASSWORD}?token=${token}`
             case MODE_FULL.id:
-                return routes.SIGNIN(token)
+                return `${routes.SIGN_IN_WITH_TOKEN}?token=${token}`
             default:
                 throw "Unexpected mode.id: " + mode.id
         }
