@@ -1,4 +1,3 @@
-import React from 'react';
 import { EntryPage } from './style';
 import EntryCard from '../components/EntryCard';
 
@@ -7,11 +6,13 @@ import EntryCard from '../components/EntryCard';
  * @returns {JSX.Element}
  */
 function termsOfUse() {
-    return (<EntryPage>
-        <EntryCard>
-            <h2 style={{ fontFamily: 'Halyard' }}>Terms of Use placeholder</h2>
-        </EntryCard>
-    </EntryPage>);
+  return (
+    <EntryPage>
+      <EntryCard>
+        <h2 style={{ fontFamily: 'Halyard' }}>Terms of Use placeholder</h2>
+      </EntryCard>
+    </EntryPage>
+  );
 }
 
 export default termsOfUse;

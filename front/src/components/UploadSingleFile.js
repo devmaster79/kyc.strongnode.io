@@ -1,7 +1,7 @@
 import { useDropzone } from 'react-dropzone';
 // material
 import { alpha, experimentalStyled as styled } from '@mui/material/styles';
-import { Box, Theme, Typography, Paper } from '@mui/material';
+import { Box, Typography, Paper } from '@mui/material';
 // utils
 // ----------------------------------------------------------------------
 
@@ -19,7 +19,7 @@ const DropZoneStyle = styled('div')(({ theme }) => ({
   borderRadius: theme.shape.borderRadius,
   transition: theme.transitions.create('padding'),
   backgroundColor: theme.palette.background.neutral,
-  border: `1px dashed ${theme.palette.grey[500_32]}`,
+  border: `1px dashed ${theme.palette.grey['500_32']}`,
   '&:hover': {
     opacity: 0.72,
     cursor: 'pointer'

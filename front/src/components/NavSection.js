@@ -55,7 +55,7 @@ function NavItem({ item, active, isShow }) {
         pl: '12px',
         ...(isActiveRoot && activeRootStyle)
       }}>
-      <ListItemIconStyle>{icon && icon}</ListItemIconStyle>
+      <ListItemIconStyle>{icon}</ListItemIconStyle>
       {isShow && <ListItemText sx={{ color: 'white' }} disableTypography primary={title} />}
     </ListItemStyle>
   );

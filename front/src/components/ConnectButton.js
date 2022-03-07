@@ -9,8 +9,7 @@ export function SneBalance() {
   const { activateBrowserWallet, deactivate, account } = useEthers();
 
   const SneBalanceBigNumber = useTokenBalance(SneAddress, account);
-  const SneBalance = SneBalanceBigNumber && ethers.utils.formatUnits(SneBalanceBigNumber, 18);
-  return SneBalance;
+  return SneBalanceBigNumber && ethers.utils.formatUnits(SneBalanceBigNumber, 18);
 }
 
 export default function ConnectButton() {

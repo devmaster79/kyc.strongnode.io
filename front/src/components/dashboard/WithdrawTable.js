@@ -1,15 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Table from '@material-ui/core/Table';
 import TableRow from '@material-ui/core/TableRow';
 import TableHead from '@material-ui/core/TableHead';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
-import TablePagination from '@material-ui/core/TableContainer';
 import Typography from '@material-ui/core/Typography';
 import Stack from '@material-ui/core/Stack';
 import Pagination from '@material-ui/core/Pagination';
-import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Scrollbar from 'components/Scrollbar';
 import Status from 'components/Status';
@@ -144,7 +142,7 @@ export default function GroupingFixedHeader({ history, setRefresh }) {
                               {row.token_amount} SNE
                             </Typography>
                           )}
-                          {editflag == true && curdata === row.id && (
+                          {editflag && curdata === row.id && (
                             <TextField
                               style={{ width: '70px' }}
                               value={tokenamount}

@@ -183,7 +183,7 @@ export default function BaseOptionChart() {
       radialBar: {
         track: {
           strokeWidth: '100%',
-          background: theme.palette.grey[500_16]
+          background: theme.palette.grey['500_16']
         },
         dataLabels: {
           value: LABEL_VALUE,
