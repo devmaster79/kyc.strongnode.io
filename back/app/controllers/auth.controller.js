@@ -25,17 +25,13 @@ class ValidationError extends Error {
         this.reason = reason;
     }
 }
-class GenericClientError extends Error {
-    constructor(id) {
-        super(`${id}`);
-        this.id = id;
-    }
-}
+
 class UnauthorizedError extends Error {
     constructor() {
         super(`Unauthorized`);
     }
 }
+
 const withResponse = (controller) => async (req, res) => {
     try {
         const response = await controller(req, res);
@@ -52,8 +48,6 @@ const withResponse = (controller) => async (req, res) => {
                 field: e.field_name,
                 reason: e.reason,
             });
-        } else if(e instanceof GenericClientError) {
-            res.status(400).send({ result: e.id });
         } else if(e instanceof UnauthorizedError) {
             res.status(401).send({ result: 'unauthorized-error' });
         } else {
@@ -79,29 +73,30 @@ exports.register = withResponse(async req => {
             first_name: req.body.first_name,
             last_name: req.body.last_name,
         })
+        console.log(token);
         return { token };
     } catch(e) {
         if(e instanceof UserNameIsAlreadyTakenError) {
             throw new ValidationError('user_name', 'already-taken')
+        } else {
+            throw e;
         }
     }
 })
 
 exports.enablePasswordAuth = withResponse(async req => {
     if (req.body.password.length >= 6) throw new ValidationError('password');
-    const result = await passwordAuthService.setPassword(req.user.email, req.body.password);
-    if (!result) throw new GenericClientError("unable-to-set-password-error");
+    await passwordAuthService.setPassword(req.user.email, req.body.password);
 });
 
 exports.disablePasswordAuth = withResponse(async req => {
-    const result = await passwordAuthService.disablePasswordAuth(req.user.email);
-    if (!result) throw new GenericClientError("unable-to-remove-password-error");
+    await passwordAuthService.disablePasswordAuth(req.user.email);
 });
 
 exports.authByPassword = withResponse(async req => {
     if (!req.body.password) throw new ValidationError('password');
     const token = await passwordAuthService.authByPassword(req.user.email, passwrod);
-    if (!token) throw new UnauthorizedError();
+    if (!token) throw new ValidationError('password','wrong');
     authPasswordLimit.resolve(req);
     return { token };
 });
@@ -113,7 +108,7 @@ exports.sendSMSToUser = withResponse(async req => {
 exports.authBySMSCode = withResponse(async req => {
     if (!req.body.smscode) throw new ValidationError('smscode');
     const token = await smsAuthService.authBySMS(req.user.email, req.body.smscode);
-    if (!token) throw new UnauthorizedError();
+    if (!token) throw new ValidationError('smscode','wrong');
     sendSMSLimit.resolve(req);
     authOTPLimit.resolve(req);
     return { token };
@@ -126,36 +121,33 @@ exports.sendSMSAndSaveNumber = withResponse(async req => {
 exports.enableSMSAuth = withResponse(async req => {
     if (!req.body.smscode) throw new ValidationError('smscode');
     const result = await smsAuthService.activateSMSAuth(req.user.email, req.body.smscode);
-    if (!result) throw new GenericClientError('unable-to-activate-sms-auth-error');
+    if (!result) throw new ValidationError('smscode', 'wrong');
     sendSMSLimit.resolve(req);
 });
 
 exports.disableSMSAuth = withResponse(async req => {
-    const result = await smsAuthService.deactivate(req.user.email);
-    if (!result) throw new GenericClientError('unable-to-deactivate-sms-auth-error');
+    await smsAuthService.deactivate(req.user.email);
 });
 
 exports.authByQRCode = withResponse(async req => {
     if (!req.body.token) throw new ValidationError('token');
     const token = await qrAuthService.authByQR(req.user.email, req.body.token);
-    if (!token) throw new UnauthorizedError();
+    if (!token) throw new ValidationError('token','wrong');
     authOTPLimit.resolve(req);
     return { token };
 });
 
 exports.generateQRCode = withResponse(async req => {
     const qrcode = await qrAuthService.generateQRCode(req.user.email);
-    if (!qrcode) throw new GenericClientError('unable-to-generate-qr-code-error');
     return { qrcode };
 });
 
 exports.enableQRAuth = withResponse(async req => {
     if (!req.body.token) throw new ValidationError('token');
     const result = await qrAuthService.activateQrAuth(req.user.email, req.body.token);
-    if (!result) throw new GenericClientError('unable-to-activate-qr-auth-error');
+    if (!result) throw new ValidationError('token', 'wrong');
 });
 
 exports.disableQRAuth = withResponse(async req => {
-    const result = await qrAuthService.deactivateQrAuth(req.user.email);
-    if (!result) throw new GenericClientError('unable-to-deactivate-qr-auth-error');
+    await qrAuthService.deactivateQrAuth(req.user.email);
 });
