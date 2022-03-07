@@ -71,10 +71,9 @@ describe('SMS authentication', () => {
         assert.equal(typeof authResult, 'string');
 
         // Disable SMS auth
-        const removeResult = await smsAuthService.deactivate(
+        await smsAuthService.deactivate(
             userRecord.email,
         )
-        assert.equal(removeResult, true);
         assert.equal(userRecord.enable_sms, false);
     })
 });

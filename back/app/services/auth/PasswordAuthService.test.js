@@ -27,21 +27,19 @@ describe('Password authentication', () => {
         };
         const passwordAuthService = new PasswordAuthService(fakeUserRepository, tokenService);
 
-        const setResult = await passwordAuthService.setPassword(
+        await passwordAuthService.setPassword(
             userRecord.email,
             "something"
         )
         assert.equal(userRecord.enable_password, true);
-        assert.equal(setResult, true);
         const authResult = await passwordAuthService.authByPassword(
             userRecord.email,
             "something"
         )
         assert.equal(typeof authResult, 'string');
-        const removeResult = await passwordAuthService.removePassword(
+        await passwordAuthService.removePassword(
             userRecord.email,
         )
-        assert.equal(removeResult, true);
         assert.equal(userRecord.enable_password, false);
     })
 });

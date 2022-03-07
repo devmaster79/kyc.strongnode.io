@@ -41,7 +41,7 @@ class PasswordAuthService {
    * Turns on password authentication
    * @param {string} email
    * @param {string} password
-   * @returns {Promise<boolean>}
+   * @returns {Promise<void>}
    */
   async setPassword(email, password) {
     const hash = await this.__generateHashBcrypt(password);
@@ -49,33 +49,25 @@ class PasswordAuthService {
       password: hash,
       enable_password: true
     }, { where: { email } });
-    if (result == 1) {
-      return true
-    } else {
-      return false
-    }
+    if (result != 1) throw new Error("Unable to set password.");
   }
 
   /**
    * Turns off password authentication
    * @param {string} email
-   * @returns {Promise<boolean>}
+   * @returns {Promise<void>}
    */
   async removePassword(email) {
     const result = await this.__userRepository.update({
       password: '',
       enable_password: false
     }, { where: { email } });
-    if (result == 1) {
-      return true
-    } else {
-      return false
-    }
+    if (result != 1) throw new Error("Unable to remove password.");
   }
 
   /**
    * Method that generates hash for specific password using bcrypt
-   * @returns {Promise<boolean>}
+   * @returns {Promise<string>}
    */
   async __generateHashBcrypt(password) {
     // return empty strings

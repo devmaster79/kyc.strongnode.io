@@ -17,7 +17,7 @@ class QRAuthService {
      * when he is registering a new authenticator
      *
      * @param {string} email
-     * @returns {string|null} qrcode image
+     * @returns {Promise<string|null>} qrcode image
      */
     async generateQRCode(email) {
         const secret = speakeasy.generateSecret({ name: "StrongNode" });
@@ -25,11 +25,8 @@ class QRAuthService {
 
         const data = { qr_secret: secret.base32 };
         const result = await this.__userRepository.update(data, { where: { email } });
-        if (result == 1) {
-            return qrcode;
-        } else {
-            return null
-        }
+        if(result != 1) throw new Error('Unable to generate QR code');
+        return qrcode;
     }
 
     /**
@@ -50,23 +47,23 @@ class QRAuthService {
                 { enable_qr: true },
                 { where: { email }
             });
-            return result == 1;
-        } else {
-            return false
+            if(result != 1) throw new Error("Unable to activate QR auth");
+            return true;
         }
+        return false;
     }
 
     /**
      * Turn off QR authentication
      * @param {string} email
-     * @returns {Promise<boolean>}
+     * @returns {Promise<void>}
      */
     async deactivateQrAuth(email) {
         const result = await this.__userRepository.update(
             { enable_qr: false },
             { where: { email }
         });
-        return result == 1;
+        if(result != 1) throw new Error("Unable to activate QR auth");
     }
 
     /**

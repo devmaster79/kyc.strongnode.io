@@ -28,10 +28,11 @@ class SMSAuthService {
      * @returns {Promise<void>}
      */
     async sendSMSAndStoreNumber(email, phone_number) {
-        await this.__userRepository.update(
+        const updateResult = await this.__userRepository.update(
             { phone_number },
             { where: { email } }
         );
+        if(updateResult != 1) throw new Error('Unable to store phone number.');
         await this.__sendOneTimePasswordSMS(phone_number, email)
     }
 
@@ -64,21 +65,22 @@ class SMSAuthService {
                 { enable_sms: true },
                 { where: { email } }
             );
-            return result == 1;
+            if(result != 1) throw new Error("Unable to activate SMS Auth");
+            return true;
         }
         return false
     }
 
     /**
      * @param {string} email
-     * @returns {Promise<boolean>}
+     * @returns {Promise<void>}
      */
     async deactivate(email) {
         let result = await this.__userRepository.update(
             { enable_sms: false, smscode: '' },
             { where: { email } }
         );
-        return result == 1;
+        if(result != 1) throw new Error("Unable to deactivate SMS auth");
     }
 
     /**
@@ -90,7 +92,11 @@ class SMSAuthService {
     async __sendOneTimePasswordSMS(destinationNumber, email) {
         const OTP = this.__generateRandomNumber(1000, 9999);
         const message = "Here is your SMS 2-factor authentication code for StrongNode : " + OTP;
-        await this.__userRepository.update({ smscode: OTP }, { where: { email } });
+        const updateResult = await this.__userRepository.update(
+            { smscode: OTP },
+            { where: { email } }
+        );
+        if(updateResult != 1) throw new Error("Unable to store OTP");
         await this.__communicationService.sendSms(destinationNumber, message);
     }
 
