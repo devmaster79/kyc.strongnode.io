@@ -1,17 +1,11 @@
-import { useState, useEffect, useCallback } from 'react';
 import styled from '@material-ui/core/styles/styled';
 import Stack from '@material-ui/core/Stack';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import useCollapseDrawer from '../../hooks/useCollapseDrawer';
 import { useNavigate } from 'react-router-dom';
 import ThemeSwitch from 'components/ThemeSwitch';
-import userService from 'services/userService';
-import { magic } from '../../utils/index';
-
-const DRAWER_WIDTH = 280;
-const COLLAPSE_WIDTH = 130;
+import * as authService from 'services/auth';
 
 const APPBAR_MOBILE = 64;
 const APPBAR_DESKTOP = 74;
@@ -43,18 +37,12 @@ const ToolbarStyle = styled(Toolbar)(({ theme }) => ({
   }
 }));
 
-export default function DashboardNavbar({ onOpenSidebar }) {
-  const { isCollapse, onToggleCollapse } = useCollapseDrawer();
-  const [email, setEmail] = useState('');
+export default function DashboardNavbar() {
   const navigate = useNavigate();
-  useEffect(() => {
-    setEmail(localStorage.getItem('email'));
-  });
+  const email = localStorage.getItem('email');
   const signOut = () => {
-    magic.user.logout();
-    window.localStorage.clear();
-    userService.setToken(null);
-    navigate('/signin');
+    authService.signOut();
+    navigate('/verify-email');
   };
   return (
     <RootStyle>

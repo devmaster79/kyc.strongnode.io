@@ -11,7 +11,7 @@ import Button from '@mui/material/Button';
 import styled from '@material-ui/core/styles/styled';
 import { useNavigate } from 'react-router-dom';
 import userService from '../../services/userService';
-import { magic } from '../../utils/index';
+import * as authService from 'services/auth';
 
 const MyPopover = styled(Popover)`
   > div {
@@ -53,17 +53,15 @@ export default function AccountPopover() {
     }
   }, []);
   const signOut = () => {
-    magic.user.logout();
-    window.localStorage.clear();
-    userService.setToken(null);
-    navigate('/signin');
+    authService.signOut();
+    navigate('/verify-email');
   };
   const toProfile = () => {
     navigate('/dashboard/profile');
   };
   const toPasswordChange = () => {
     navigate('/dashboard/change-password');
-  }
+  };
 
   return (
     <>
