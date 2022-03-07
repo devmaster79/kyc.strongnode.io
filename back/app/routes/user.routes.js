@@ -10,7 +10,9 @@ module.exports = (app) => {
   router.post("/", users.create);
   router.put("/verifyEmail", users.verifyEmail);
   router.put("/createPassword", users.createPassword);
-  router.put("/createInvestor", auth(MODE_FULL), users.createInvestor);
+  router.put("/createProfile", auth(MODE_FULL), users.createProfile);
+  router.put("/createInvestor", users.createInvestor);
+
 
   // signin with user email and password
   router.put("/signin", users.signin);
@@ -38,6 +40,7 @@ module.exports = (app) => {
   router.get("/profile", auth(MODE_FULL), users.getProfile);
   router.post("/profile", auth(MODE_FULL), users.createProfile);
   router.put("/profile", auth(MODE_FULL), users.updateProfile);
+  router.get("/profile/getInvestorProfile", auth(MODE_FULL), users.getInvestorDetails);
 
   //upload image to s3
   router.put("/profile/image", auth(MODE_FULL), upload.single('image_data'), users.uploadImg);
