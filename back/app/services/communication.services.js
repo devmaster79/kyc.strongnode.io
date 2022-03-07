@@ -31,7 +31,7 @@ exports.emailTemplatesNames = {
  */
 exports.sendTemplatedEmail = async (
   to,
-  templateData = '{ "link":"unknown"}',
+  templateData = { "link":"unknown"},
   templateName = 'EmailTemplate',
   source = defaultEmailSource
 ) => {
@@ -47,7 +47,7 @@ exports.sendTemplatedEmail = async (
     Destination: {
       ToAddresses: [to]
     },
-    TemplateData: templateData,
+    TemplateData: JSON.stringify(templateData),
     Source: source,
     Template: templateName
   };
