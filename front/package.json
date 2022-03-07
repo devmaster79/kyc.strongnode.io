@@ -17,12 +17,13 @@
     "axios": "^0.21.4",
     "browserslist": "^4.16.5",
     "date-fns": "^2.23.0",
+    "eslint": "^8.10.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-sonarjs": "^0.12.0",
     "ethereum-address-es5": "^0.0.5",
     "formik": "^2.2.9",
     "lodash": "^4.17.21",
-    "magic-sdk": "^5.1.0",
     "notistack5": "^1.0.1",
     "prettier": "^2.5.1",
     "react": "^17.0.2",
@@ -31,10 +32,11 @@
     "react-dropzone": "^11.4.2",
     "react-password-strength-bar": "^0.4.0",
     "react-phone-number-input": "^3.1.26",
-    "react-router-dom": "^6.0.0-beta.0",
-    "react-scripts": "^4.0.3",
+    "react-router-dom": "^6.2.2",
+    "react-scripts": "^5.0.0",
     "react-slick": "^0.28.0",
     "react-timer-hook": "^3.0.5",
+    "shared": "file:../shared",
     "simplebar": "^5.3.5",
     "simplebar-react": "^2.3.5",
     "slick-carousel": "^1.8.1",
@@ -46,13 +48,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "lint": "eslint src/",
     "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
   },
   "browserslist": {
     "production": [
@@ -67,6 +64,8 @@
     ]
   },
   "devDependencies": {
+    "@types/react-dom": "^17.0.13",
+    "@types/styled-components": "^5.1.24",
     "@usedapp/core": "^0.6.3"
   }
 }
