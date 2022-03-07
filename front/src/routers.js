@@ -1,36 +1,29 @@
-import React from 'react';
 import { Navigate, useRoutes } from 'react-router-dom';
 import DashboardLayout from './layouts/dashboard';
 import Dashboard from './pages/Dashboard';
 import UserProfile from './pages/UserProfile';
-import ChangePassword from './pages/ChangePassword';
-
 import Profile from './pages/profile';
-import Signup from './pages/signup';
-import Signin from './pages/signin';
-import SentEmail from './pages/sentemail';
-import MagicLink from './pages/magiclink';
-import SigninPass from './pages/signinpass';
-import SigninTwoStep from './pages/signintwostep';
-import SigninSMS from './pages/signinsms';
-import CreateAccountPassword from './pages/createaccountpassword';
+import { Register } from './pages/auth/Register';
+import { VerifyEmail } from './pages/auth/VerifyEmail';
+import { SignInWithPassword } from './pages/auth/SignInWithPassword';
+import { SignInWithAuthenticator } from './pages/auth/SingInWithAuthenticator';
+import { SignInWithSMS } from './pages/auth/SignInWithSMS';
+import { SignInWithToken } from './pages/auth/SignInWithToken';
 import PrivateSaleInterestForm from './pages/privatesaleinterestform';
 import KYC from './pages/kyc';
 import AddData from './pages/AddData';
-import ForgottenPassword from './pages/forgottenPassword';
-import CreateNewPassword from './pages/createNewPassword';
+import SHARED_ROUTES from 'shared/shared-routes';
 
 export default function Router() {
-  const token = localStorage.getItem('token');
+  const loggedin = localStorage.getItem('loggedin');
   return useRoutes([
     {
       path: 'dashboard',
-      element: token ? <DashboardLayout /> : <Navigate to="/signin" replace />,
+      element: loggedin ? <DashboardLayout /> : <Navigate to="/signin" replace />,
       children: [
-        { path: '/dashboard', element: <Navigate to="/dashboard/app" replace /> },
+        { path: SHARED_ROUTES.DASHBOARD, element: <Navigate to="/dashboard/app" replace /> },
         { path: 'app', element: <Dashboard /> },
         { path: 'profile', element: <UserProfile /> },
-        { path: 'change-password', element: <ChangePassword /> },
         { path: 'growth', element: <Dashboard /> },
         { path: 'sync', element: <Dashboard /> },
         { path: 'shield', element: <Dashboard /> },
@@ -40,18 +33,21 @@ export default function Router() {
     {
       path: '*',
       children: [
-        { path: '*', element: token ? <Navigate to="/dashboard/app" replace /> : <Navigate to="/signin" replace /> },
-        { path: 'signin', element: <Signin /> },
-        { path: 'signup', element: <Signup /> },
-        { path: 'magiclink', element: <MagicLink /> },
-        { path: 'signinpass', element: <SigninPass /> },
-        { path: 'signintwostep', element: <SigninTwoStep /> },
-        { path: 'signinsms', element: <SigninSMS /> },
+        {
+          path: '*',
+          element: loggedin ? (
+            <Navigate to="/dashboard/app" replace />
+          ) : (
+            <Navigate to={SHARED_ROUTES.VERIFY_EMAIL} replace />
+          )
+        },
+        { path: SHARED_ROUTES.VERIFY_EMAIL, element: <VerifyEmail /> },
+        { path: SHARED_ROUTES.REGISTER, element: <Register /> },
+        { path: SHARED_ROUTES.SIGN_IN_WITH_PASSWORD, element: <SignInWithPassword /> },
+        { path: SHARED_ROUTES.SIGN_IN_WITH_AUTHENTICATOR, element: <SignInWithAuthenticator /> },
+        { path: SHARED_ROUTES.SIGN_IN_WITH_SMS, element: <SignInWithSMS /> },
+        { path: SHARED_ROUTES.SIGN_IN_WITH_TOKEN, element: <SignInWithToken /> },
         { path: 'profile', element: <Profile /> },
-        { path: 'forgotten-password', element: <ForgottenPassword /> },
-        { path: 'create-new-password', element: <CreateNewPassword /> },
-        { path: 'sent-email', element: <SentEmail /> },
-        { path: 'verifyEmail', element: <CreateAccountPassword /> },
         {
           path: 'private-sale-interest-form',
           element: <PrivateSaleInterestForm />
