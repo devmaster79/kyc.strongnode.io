@@ -5,6 +5,7 @@ const History = db.history;
 const Op = db.Sequelize.Op;
 const PasswordResets = db.passwordreset;
 const InvestorDetails = db.investordetails;
+const SupportRequests = db.supportrequests;
 const jwt = require("jsonwebtoken");
 const speakeasy = require("speakeasy");
 const QRCode = require("qrcode");
@@ -1156,3 +1157,39 @@ exports.addData = async (req, res) => {
   })
 }
 
+/**
+ * Method that requests support from members of SNE.
+ * @param req
+ * @param res
+ * @returns {Promise<void>}
+ */
+exports.createSupportRequest = async (req, res) => {
+  // validate request
+  if (!req.body.subject || !req.body.message)
+    return res.status(400).send({ result: 'Required parameters are not present' })
+
+  const user = await User.findOne({ email: req.user })
+
+  if (!user)
+    return res.status(500).send({ result: 'Unexpected error. User is not in the database.' })
+
+  // send email to SNE support
+  const request = await communicationService.sendSupportRequest({ email: user.dataValues.email, username: user.dataValues.user_name }, req.body.message)
+
+  // if email was sent correctly, create record in database
+  if (request) {
+    const supportRequest = await SupportRequests.create({
+      user_id: user.dataValues.id,
+      subject: req.body.subject,
+      message: req.body.message
+    })
+
+    if (supportRequest) {
+      res.send({ result: 'Success' })
+    } else {
+      res.status(500).send({ result: 'Unexpected error.' })
+    }
+  } else {
+    res.status(500).send({ result: 'Unexpected error.' })
+  }
+}
