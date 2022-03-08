@@ -47,27 +47,41 @@ export default function DashboardNavbar({ onOpenSidebar }) {
   const { isCollapse, onToggleCollapse } = useCollapseDrawer();
   const [email, setEmail] = useState('');
   const navigate = useNavigate();
+
   useEffect(() => {
     setEmail(localStorage.getItem('email'));
   });
+
   const signOut = () => {
     magic.user.logout();
     window.localStorage.clear();
     userService.setToken(null);
     navigate('/signin');
   };
+
+  const contactSupport = () => {
+    navigate('/dashboard/contact-support')
+  }
+
+  const userProfile = () => {
+    navigate('/dashboard/profile')
+  }
+
   return (
     <RootStyle>
       <ToolbarStyle>
         <ThemeSwitch />
         <Stack direction="row" alignItems="center" spacing={{ xs: 0.5, sm: 1.5 }}>
-          <Typography color="white" sx={{ fontSize: { xs: 10, md: 14 } }}>
+          <Typography onClick={userProfile} color="white" sx={{ fontSize: { xs: 10, md: 14 }, cursor: 'pointer' }}>
             {email}
           </Typography>
           <Typography color="white" sx={{ fontSize: { xs: 10, md: 14 } }}>
             |
           </Typography>
-          <Typography color="white" sx={{ fontSize: { xs: 10, md: 14 } }}>
+          <Typography
+              onClick={contactSupport}
+              color="white"
+              sx={{ fontSize: { xs: 10, md: 14 }, cursor: 'pointer' }}>
             Contact Support
           </Typography>
           <Typography color="white" sx={{ fontSize: { xs: 10, md: 14 } }}>

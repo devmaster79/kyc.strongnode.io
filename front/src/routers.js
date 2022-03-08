@@ -19,6 +19,7 @@ import KYC from './pages/kyc';
 import AddData from './pages/AddData';
 import ForgottenPassword from './pages/forgottenPassword';
 import CreateNewPassword from './pages/createNewPassword';
+import ContactSupport from './pages/contactSupport'
 
 export default function Router() {
   const token = localStorage.getItem('token');
@@ -30,6 +31,7 @@ export default function Router() {
         { path: '/dashboard', element: <Navigate to="/dashboard/app" replace /> },
         { path: 'app', element: <Dashboard /> },
         { path: 'profile', element: <UserProfile /> },
+        { path: 'contact-support', element: <ContactSupport /> },
         { path: 'change-password', element: <ChangePassword /> },
         { path: 'growth', element: <Dashboard /> },
         { path: 'sync', element: <Dashboard /> },
