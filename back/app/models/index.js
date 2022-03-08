@@ -39,5 +39,6 @@ db.news = require('./news.model.js')(sequelize, Sequelize);
 db.users = require('./user.model.js')(sequelize, Sequelize);
 db.passwordreset = require('./passwordreset.model.js')(sequelize, Sequelize);
 db.investordetails = require('./investordetails.model.js')(sequelize, Sequelize);
+db.supportrequests = require('./supportrequest.model.js')(sequelize, Sequelize)
 
 module.exports = db;
