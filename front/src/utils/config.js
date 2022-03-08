@@ -20,6 +20,7 @@ export const test_auth_qr_url = `${base_url}/users/qr/testAuth`;
 export const get_investor_details = `${base_url}/users/profile/getInvestorProfile`;
 export const upload_profile_img = `${base_url}/users/profile/image`;
 export const profile_url = `${base_url}/users/profile`;
+export const create_support_request = `${base_url}/users/support/create-request`;
 
 
 // HISTORY
