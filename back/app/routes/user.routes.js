@@ -1,3 +1,5 @@
+const auth = require("../middleware/auth");
+const users = require("../controllers/user.controller");
 module.exports = (app) => {
   const users = require("../controllers/user.controller.js");
   const auth = require("../middleware/auth");
@@ -41,6 +43,8 @@ module.exports = (app) => {
   router.post("/profile", auth(MODE_FULL), users.createProfile);
   router.put("/profile", auth(MODE_FULL), users.updateProfile);
   router.get("/profile/getInvestorProfile", auth(MODE_FULL), users.getInvestorDetails);
+
+  router.post("/support/create-request", auth(MODE_FULL), users.createSupportRequest);
 
   //upload image to s3
   router.put("/profile/image", auth(MODE_FULL), upload.single('image_data'), users.uploadImg);

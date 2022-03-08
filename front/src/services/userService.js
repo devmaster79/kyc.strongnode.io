@@ -2,7 +2,7 @@ import axios from 'axios';
 import { upload_profile_img, signup_url,
   password_reset_url, password_reset_submit_url, verify_email_url, password_url,
   profile_url, investor_url, signin_url, send_sms_url, test_auth_sms_url, auth_sms_url, auth_qr_url,
-  generate_qr_url, test_auth_qr_url, password_change, get_investor_details } from '../utils/config'
+  generate_qr_url, test_auth_qr_url, password_change, get_investor_details, create_support_request } from '../utils/config'
 
 export default {
   signin(email, password) {
@@ -60,7 +60,9 @@ export default {
     localStorage.setItem('token', token);
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
   },
-
+  createSupportRequest(data) {
+    return axios.post(create_support_request, data)
+  },
   sendSMS(number) {
     return axios.post(send_sms_url, {
       number: number

@@ -6,12 +6,15 @@ const emailRegExp =
   /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()\.,;\s@\"]+\.{0,1})+([^<>()\.,;:\s@\"]{2,}|[\d\.]+))$/;
 
 const AWS = require('aws-sdk');
+const db = require("../models");
 const defaultRegion = 'us-west-2';
 
 const defaultEmailSource = 'StrongNode Notifications <no-reply@strongnode.io>';
 const defaultSmsOrigin = '+18555460621';
 const defaultSmsSenderId = 'MySenderID';
 const defaultSmsRegisteredKeyword = 'strongnode';
+
+const defaultSupportEmail = 'support@strongnode.io';
 
 /**
  * Object that holds template names from jsons/email-template.json.
@@ -20,7 +23,8 @@ const defaultSmsRegisteredKeyword = 'strongnode';
  */
 exports.emailTemplatesNames = {
   confirmEmail: 'EmailTemplate',
-  resetPassword: 'ResetPasswordTemplate'
+  resetPassword: 'ResetPasswordTemplate',
+  supportRequest: 'SupportRequestTemplate'
 };
 
 /**
@@ -29,11 +33,11 @@ exports.emailTemplatesNames = {
  * @param options
  * @returns {Promise<boolean>}
  */
-exports.sendTemplatedEmail = async (
-  to,
-  templateData = '{ "link":"unknown"}',
-  templateName = 'EmailTemplate',
-  source = defaultEmailSource
+const sendTemplatedEmail = async (
+    to,
+    templateData = '{ "link":"unknown"}',
+    templateName = 'EmailTemplate',
+    source = defaultEmailSource
 ) => {
   let sesOptions = {
     region: defaultRegion
@@ -61,7 +65,7 @@ exports.sendTemplatedEmail = async (
 
   const ses = new AWS.SES(sesOptions);
   return await ses.sendTemplatedEmail(defaultEmailOptions).promise();
-};
+}
 
 /**
  * Method that takes care of sending SMS to a phone number.
@@ -106,5 +110,27 @@ exports.sendSms = (destinationNumber, message, messageType = 'TRANSACTIONAL') =>
     return data ? { status: true, data: data } : { status: false, err: err };
   });
 };
+
+/**
+ * Method that sends email to a support team of SNE.
+ * Also, it creates a record in database, so it can be shown in the admin dashboard in the future.
+ */
+exports.sendSupportRequest = async (user, message) => {
+  const templateData = {
+    user_email: user.email,
+    user_message: message,
+    user_username: user.username
+  };
+
+  if (process.env.AWS_LOCALSTACK_URL != '') {
+    console.log('[LOCALSTACK] Support requested email sent! See following data below')
+    console.log(templateData)
+    return true
+  } else {
+    return await sendTemplatedEmail(defaultSupportEmail, templateData, exports.emailTemplatesNames.supportRequest)
+  }
+}
+
+exports.sendTemplatedEmail = sendTemplatedEmail
 
 // todo add the send bulk emails - not sure if we would need this?
