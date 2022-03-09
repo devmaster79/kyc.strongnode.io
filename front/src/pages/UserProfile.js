@@ -21,7 +21,8 @@ import PhoneInput from 'react-phone-number-input';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import ethereum_address from 'ethereum-address-es5';
-import userService from '../services/userService'
+import userService from '../services/userService';
+import * as authService from 'services/auth';
 
 const CardStyle = styled(Box)(({ theme }) => ({
   background:
@@ -59,8 +60,6 @@ const MyStack = styled(Stack)`
 `;
 export default function Dashboard() {
   const navigate = useNavigate();
-
-  const [user, setUser] = useState();
   const [openMfa, setOpenMfa] = useState(false);
   const [showQR, setShowQR] = useState(false);
   const [showError, setShowError] = useState(false);
@@ -104,7 +103,7 @@ export default function Dashboard() {
   const ProfileSchema = Yup.object().shape({
     first_name: Yup.string().required('First Name is required'),
     last_name: Yup.string().required('Last Name is required'),
-    user_name: Yup.string().required('User Name is required'),
+    user_name: Yup.string().required('User Name is required')
   });
 
   const formik = useFormik({
@@ -117,24 +116,17 @@ export default function Dashboard() {
       email: '',
       wallet_address: '',
       KYC_Completed: 'level1',
-      enable_qr: user?.enable_qr,
-      enable_sms: user?.enable_sms,
-      MFA: user?.enable_qr,
+      enable_qr: null,
+      enable_sms: null,
+      MFA: null,
       cover: '',
       file: ''
     },
     validationSchema: ProfileSchema,
     onSubmit: async (values, { setErrors, setSubmitting, resetForm }) => {
       try {
-        const {
-          first_name,
-          last_name,
-          user_name,
-          email,
-          wallet_address,
-          telegram_id,
-          twitter_id
-        } = values;
+        const { first_name, last_name, user_name, email, wallet_address, telegram_id, twitter_id } =
+          values;
 
         const data = {
           email,
@@ -171,20 +163,11 @@ export default function Dashboard() {
   };
 
   const checkMFACode = () => {
-    userService.testAuthQR(totp).then((r) => {
-      if (r.data.verified) {
+    authService.enableQRAuth(totp).then((r) => {
+      if (r.result === 'success') {
         setFieldValue('enable_qr', true);
-        const data = {
-          enable_qr: true
-        };
-        userService.updateProfile(data).then((r) => {
-          if (r.status === 200) {
-            enqueueSnackbar('User updated successfully1', {
-              variant: 'success'
-            });
-          } else {
-            enqueueSnackbar('Failed to update profile2', { variant: 'fail' });
-          }
+        enqueueSnackbar('User updated successfully1', {
+          variant: 'success'
         });
         handleCloseMfa();
       } else {
@@ -202,20 +185,11 @@ export default function Dashboard() {
   };
 
   const check2faCode = () => {
-    userService.testAuthSMS(smscode).then((r) => {
-      if (r.data.success) {
+    authService.enableSMSAuth(smscode).then((r) => {
+      if (r.result === 'success') {
         setFieldValue('enable_sms', true);
-        const data = {
-          enable_sms: true
-        };
-        userService.updateProfile(data).then((r) => {
-          if (r.status === 200) {
-            enqueueSnackbar('User updated successfully!', {
-              variant: 'success'
-            });
-          } else {
-            enqueueSnackbar('Failed to update profile2', { variant: 'fail' });
-          }
+        enqueueSnackbar('User updated successfully!', {
+          variant: 'success'
         });
         handleClosesms();
       } else {
@@ -228,7 +202,7 @@ export default function Dashboard() {
     let count = 30;
     setDisabled(true);
     setSMSshowError(false);
-    userService.sendSMS(value.substring(1));
+    authService.sendSMSAndSaveNumber(value.substring(1));
     const counter = setInterval(() => {
       setBtnLabel(`${count}s`);
       count--;
@@ -284,8 +258,8 @@ export default function Dashboard() {
 
       if (!result.data[0].enable_qr || result.data[0].enable_qr == null) {
         setShowQR(true);
-        userService.generateQR().then((rq) => {
-          setQRURL(rq.data.url);
+        authService.generateQRCode().then((res) => {
+          setQRURL(res.qrcode);
         });
       }
 
@@ -329,7 +303,8 @@ export default function Dashboard() {
     [setFieldValue]
   );
   const upload = () => {
-    userService.uploadProfileImage(values.email, values.user_name, values.cover)
+    userService
+      .uploadProfileImage(values.email, values.user_name, values.cover)
       .then((res) => {
         if (res.status === 200) {
           enqueueSnackbar('Uploaded successfully!', {
@@ -401,8 +376,7 @@ export default function Dashboard() {
                   disabled
                   SelectProps={{ value: formik.values.KYC_Completed }}
                   sx={{ flexGrow: 1, width: '100%' }}
-                  {...getFieldProps('KYC_Completed')}
-                >
+                  {...getFieldProps('KYC_Completed')}>
                   {levels.map((option) => (
                     <MenuItem key={option} value={option}>
                       {option}
@@ -469,11 +443,11 @@ export default function Dashboard() {
                   {...getFieldProps('wallet_address')}
                   error={Boolean(
                     (touched.wallet_address && errors.wallet_address) ||
-                      !ethereum_address.isAddress(formik.values.wallet_address)
+                    !ethereum_address.isAddress(formik.values.wallet_address)
                   )}
                   helperText={
                     (touched.wallet_address && errors.wallet_address) ||
-                    !ethereum_address.isAddress(formik.values.wallet_address)
+                      !ethereum_address.isAddress(formik.values.wallet_address)
                       ? 'Incorrect Address'
                       : ''
                   }

@@ -1,6 +1,13 @@
 import { getResponseData, setToken } from "./utils";
 import * as urls from "../../utils/config";
-import { BannedError, GenericResponse, ValidationError } from "./responses";
+import {
+  BannedError,
+  GenericResponse,
+  Success,
+  UnauthorizedError,
+  UnexpectedError,
+  ValidationError,
+} from "./responses";
 
 /**
  * Verify OTP and set token
@@ -20,7 +27,9 @@ export async function authByQRCode(
   return data;
 }
 
-export async function generateQRCode(): Promise<GenericResponse> {
+export async function generateQRCode(): Promise<
+  { result: "success"; qrcode: string } | UnauthorizedError | UnexpectedError
+> {
   return await getResponseData(urls.generateQRCode);
 }
 
