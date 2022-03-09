@@ -9,7 +9,7 @@ import Button from '../components/Button';
 import { ReactComponent as UserIcon } from '../icons/username.svg';
 import { ReactComponent as LockIcon } from '../icons/lock.svg';
 import PasswordStrengthBar from 'react-password-strength-bar';
-import userService from 'services/userService';
+import userService from '../services/userService';
 
 const UserInfoWrapper = styled.div`
   display: flex;

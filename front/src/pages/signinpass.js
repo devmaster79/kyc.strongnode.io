@@ -8,7 +8,7 @@ import Input from '../components/Input';
 import InputGroup from '../components/InputGroup';
 import { ReactComponent as LockIcon } from '../icons/lock.svg';
 import { ReactComponent as MailIcon } from '../icons/message.svg';
-import userService from 'services/userService';
+import userService from '../services/userService';
 
 const UserInfoWrapper = styled.div`
   display: flex;

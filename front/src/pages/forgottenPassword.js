@@ -8,7 +8,7 @@ import ValidatedField from "../components/ValidatedField"
 import Input from "../components/Input"
 import {forgottenPassword} from "../static/formSchemas"
 import { magic } from '../utils/index'
-import userService from "services/userService"
+import userService from "../services/userService"
 
 
 function ForgottenPassword () {

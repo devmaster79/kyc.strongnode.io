@@ -14,7 +14,7 @@ import styled from '@material-ui/core/styles/styled';
 import { useState, useEffect, useCallback } from 'react';
 import * as Yup from 'yup';
 import { useFormik, FormikProvider } from 'formik';
-import UploadSingleFile from 'components/UploadSingleFile';
+import UploadSingleFile from '../components/UploadSingleFile';
 import InputGroup from '../components/InputGroup';
 import { ReactComponent as LockIcon } from '../icons/lock.svg';
 import PhoneInput from 'react-phone-number-input';

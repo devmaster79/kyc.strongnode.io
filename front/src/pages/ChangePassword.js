@@ -6,7 +6,7 @@ import userService from '../services/userService'
 import { Form, Formik } from 'formik';
 import ValidatedField from '../components/ValidatedField';
 import styled from '@material-ui/core/styles/styled';
-import { changePasswordSchema } from 'static/formSchemas'
+import { changePasswordSchema } from '../static/formSchemas'
 import { useSnackbar } from 'notistack5';
 
 const CardStyle = styled(Box)(({ theme }) => ({
