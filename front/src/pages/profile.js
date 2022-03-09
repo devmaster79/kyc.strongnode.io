@@ -7,8 +7,8 @@ import Input from '../components/Input';
 import Button from '../components/Button';
 import { ReactComponent as TelegramIcon } from '../icons/telegram.svg';
 import { ReactComponent as TwitterIcon } from '../icons/twitter.svg';
-import { EntryPage } from 'pages/style';
-import userService from 'services/userService';
+import { EntryPage } from './style';
+import userService from '../services/userService';
 
 export const Container = styled.div`
   display: flex;

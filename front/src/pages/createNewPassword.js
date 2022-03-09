@@ -11,7 +11,7 @@ import PasswordStrengthBar from "react-password-strength-bar"
 import Button from "../components/Button"
 import {useSearchParams, useNavigate} from "react-router-dom"
 import {createNewPassword} from "../static/formSchemas"
-import userService from "services/userService";
+import userService from "../services/userService";
 
 
 const UserInfoWrapper = styled.div`

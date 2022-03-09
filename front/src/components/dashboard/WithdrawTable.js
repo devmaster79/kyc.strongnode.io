@@ -11,13 +11,13 @@ import Stack from '@material-ui/core/Stack';
 import Pagination from '@material-ui/core/Pagination';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import Scrollbar from 'components/Scrollbar';
-import Status from 'components/Status';
+import Scrollbar from '../Scrollbar';
+import Status from '../Status';
 
-import { fDate } from 'utils/formatTime';
+import { fDate } from '../../utils/formatTime';
 import { useSnackbar } from 'notistack5';
 
-import historyService from 'services/historyService';
+import historyService from '../../services/historyService';
 
 function createData(token, stock, date) {
   return { token, stock, date };

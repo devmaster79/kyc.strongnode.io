@@ -1,8 +1,8 @@
 import Switch from '@material-ui/core/Switch';
 import Stack from '@material-ui/core/Stack';
 import styled from '@material-ui/core/styles/styled';
-import SvgIconStyle from 'components/SvgIconStyle';
-import useSettings from 'hooks/useSettings';
+import SvgIconStyle from './SvgIconStyle';
+import useSettings from '../hooks/useSettings';
 
 const IOSSwitch = styled((props) => (
   <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />

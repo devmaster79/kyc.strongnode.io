@@ -12,7 +12,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { ChainId, DAppProvider, useEtherBalance, useEthers } from '@usedapp/core';
 import { GlobalStyle } from './reset.css';
 import './index.css';
-import 'utils/axios';
+import './utils/axios';
 
 const config = {
   readOnlyChainId: ChainId.Mainnet
