@@ -1,14 +1,14 @@
-const express = require("express");
-const cors = require("cors");
+import express from "express";
+import cors from "cors";
 
 const app = express();
-const path = require('path');
+import path from 'path';
 
 // var corsOptions = {
 //   origin: "http://localhost:8081"
 // };
 
-const dotenv = require('dotenv');
+import dotenv from 'dotenv';
 dotenv.config();
 
 // app.use(cors(corsOptions));

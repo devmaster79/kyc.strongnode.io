@@ -2,8 +2,8 @@
   "name": "nodejs-express-sequelize-mysql",
   "version": "1.0.0",
   "description": "Node.js Rest Apis with Express, Sequelize & MySQL",
-  "main": "server.js",
   "scripts": {
+    "start": "ts-node server.ts",
     "test": "mocha ./app/**/*.test.js",
     "test-watch": "mocha ./app/**/*.test.js --watch",
     "migrate:up": "node ./app/scripts/run-migrations.js up",
@@ -20,12 +20,13 @@
   "author": "StrongNode Team",
   "license": "ISC",
   "dependencies": {
+    "@types/cors": "2.8.4",
     "ansi-regex": "^5.0.1",
     "aws-sdk": "^2.984.0",
     "axios": "^0.23.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
-    "cors": "^2.8.5",
+    "cors": "2.8.4",
     "crypto": "^1.0.1",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
@@ -42,7 +43,9 @@
     "sequelize-cli": "^6.3.0",
     "shared": "file:../shared",
     "speakeasy": "^2.0.0",
+    "ts-node": "^10.7.0",
     "umzug": "^3.0.0",
-    "validator": "13.7.0"
+    "validator": "13.7.0",
+    "@types/express": "^4.17.13"
   }
 }
