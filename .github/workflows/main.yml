@@ -33,7 +33,7 @@ jobs:
       - name: Install npm dependencies
         run: cd front && yarn
       - name: Run build task
-        run: cd front && yarn build --if-present
+        run: cd front && yarn build
         env:
            CI: false
       - name: Add .env file
