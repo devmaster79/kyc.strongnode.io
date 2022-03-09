@@ -6,8 +6,9 @@ const {
     MODE_PASSWORD,
     MODE_FULL,
 } = require('./TokenService');
-const routes = require("shared/shared-routes");
+const routes = require("shared/routes");
 const { emailTemplatesNames } = require('../communication.services')
+const path = require('path');
 
 class EmailAuthService {
     /**
@@ -52,7 +53,7 @@ class EmailAuthService {
      * @returns {string}
      */
     __getURL(mode, token) {
-        return process.env.FRONTEND_URL + this.__getRoute(mode, token);
+        return path.join(process.env.FRONTEND_URL, this.__getRoute(mode, token));
     }
 
     /**
