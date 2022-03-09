@@ -20,23 +20,11 @@ const MODE_GUEST = { id: 'GUEST', expiresIn: '1d' }
  */
 const MODE_REGISTRATION = { id: 'REGISTRATION', expiresIn: '30m' }
 /**
- * the user should only have access to the qr authentication
+ * the user should only have access to 2fa authentication
  * @readonly
  * @type {AuthMode}
  */
-const MODE_QR = { id: 'QR', expiresIn: '30m' }
-/**
- * the user should only have access to the sms authentication
- * @readonly
- * @type {AuthMode}
- */
-const MODE_SMS = { id: 'SMS', expiresIn: '30m' }
-/**
- * the user should only have access to the password authentication
- * @readonly
- * @type {AuthMode}
- */
-const MODE_PASSWORD = { id: 'PASSWORD', expiresIn: '30m' }
+const MODE_2FA = { id: '2FA', expiresIn: '30m' }
 /**
  * both first and all 2fa methods completed (if needed)
  * @readonly
@@ -52,17 +40,16 @@ class TokenService {
      * @returns {AuthMode}
      */
     determineNextMode(user, currentMode) {
-        const password_mode_if_enabled = user.enable_password ? [MODE_PASSWORD] : [];
-        const qr_mode_if_enabled = user.enable_qr ? [MODE_QR] : [];
-        const sms_mode_if_enabled = user.enable_sms ? [MODE_SMS] : [];
+        const enable_2fa = user.enable_password || user.enable_qr || user.enable_sms;
+        const mode_2fa_if_enabled = ( enable_2fa ? [MODE_2FA] : []);
+
+        // When the current mode is completed, what will be the next.
         const flow = currentMode == MODE_REGISTRATION ? [
             MODE_REGISTRATION,
             MODE_FULL
         ] : [
             MODE_GUEST,
-            ...password_mode_if_enabled,
-            ...qr_mode_if_enabled,
-            ...sms_mode_if_enabled,
+            ...mode_2fa_if_enabled,
             MODE_FULL
         ];
 
@@ -124,8 +111,6 @@ module.exports = {
     TokenService,
     MODE_GUEST,
     MODE_REGISTRATION,
-    MODE_QR,
-    MODE_SMS,
-    MODE_PASSWORD,
+    MODE_2FA,
     MODE_FULL,
 }

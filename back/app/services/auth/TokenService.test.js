@@ -39,14 +39,14 @@ describe('TokenService', () => {
             TokenService.MODE_FULL
         );
         decoded = tokenService.decode(token, [
-            TokenService.MODE_PASSWORD,
+            TokenService.MODE_2FA,
             TokenService.MODE_FULL
         ]);
         assert.equal(decoded.email, "test@test.com");
 
         decoded = tokenService.decode(token, [
             TokenService.MODE_FULL,
-            TokenService.MODE_PASSWORD
+            TokenService.MODE_2FA
         ]);
         assert.equal(decoded.email, "test@test.com");
     });
@@ -58,6 +58,6 @@ describe('TokenService', () => {
             enable_password: false,
         }, TokenService.MODE_GUEST);
 
-        assert.equal(nextMode.id, TokenService.MODE_SMS.id);
+        assert.equal(nextMode.id, TokenService.MODE_2FA.id);
     });
 });

@@ -1,9 +1,7 @@
 const {
     MODE_GUEST,
     MODE_REGISTRATION,
-    MODE_QR,
-    MODE_SMS,
-    MODE_PASSWORD,
+    MODE_2FA,
     MODE_FULL,
 } = require('./TokenService');
 const routes = require("shared/routes");
@@ -58,20 +56,26 @@ class EmailAuthService {
 
     /**
      * @param {import("./TokenService").AuthMode} mode
+     * @param {string} token
+     * @param {Object} user
+     * @param {boolean} user.enable_qr,
+     * @param {boolean} user.enable_sms,
+     * @param {boolean} user.enable_password,
      * @returns {string}
      */
-    __getRoute(mode, token) {
+    __getRoute(mode, token, user) {
         switch (mode.id) {
             case MODE_GUEST.id:
                 return ''
             case MODE_REGISTRATION.id:
                 return `${routes.REGISTER}?token=${token}`
-            case MODE_QR.id:
-                return `${routes.SIGN_IN_WITH_AUTHENTICATOR}?token=${token}`
-            case MODE_SMS.id:
-                return `${routes.SIGN_IN_WITH_SMS}?token=${token}`
-            case MODE_PASSWORD.id:
-                return `${routes.SIGN_IN_WITH_PASSWORD}?token=${token}`
+            case MODE_2FA.id:
+                if (user.enable_qr)
+                    return `${routes.SIGN_IN_WITH_AUTHENTICATOR}?token=${token}`
+                if (user.enable_sms)
+                    return `${routes.SIGN_IN_WITH_SMS}?token=${token}`
+                if (user.enable_password)
+                    return `${routes.SIGN_IN_WITH_PASSWORD}?token=${token}`
             case MODE_FULL.id:
                 return `${routes.SIGN_IN_WITH_TOKEN}?token=${token}`
             default:

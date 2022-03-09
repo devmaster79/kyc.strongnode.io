@@ -1,7 +1,7 @@
 const dotenv = require('dotenv');
 const bcrypt = require('bcryptjs');
 dotenv.config();
-const { MODE_PASSWORD } = require('./TokenService');
+const { MODE_2FA } = require('./TokenService');
 
 /**
  * const for salting password hashes, more than 10 makes it really slow on localhost
@@ -30,7 +30,7 @@ class PasswordAuthService {
     const user = await this.__userRepository.findOne({ where: { email } });
     const verified = await this.__verifyPasswordHash(user.password, password);
     if (verified) {
-      const mode = this.__tokenService.determineNextMode(user, MODE_PASSWORD);
+      const mode = this.__tokenService.determineNextMode(user, MODE_2FA);
       const token = this.__tokenService.generateToken(user.email, user.user_name, mode);
       return token;
     }

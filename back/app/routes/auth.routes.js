@@ -1,4 +1,4 @@
-const { MODE_REGISTRATION, MODE_PASSWORD, MODE_FULL, MODE_QR, MODE_SMS } = require("../services/auth/TokenService.js");
+const { MODE_REGISTRATION, MODE_FULL, MODE_2FA } = require("../services/auth/TokenService.js");
 const authController = require("../controllers/auth.controller.js");
 const auth = require("../middleware/auth");
 const { sendSMSLimit, authOTPLimit, authPasswordLimit } = require("../middleware/limits.js");
@@ -17,7 +17,7 @@ module.exports = (app) => {
   router.post("/disablePasswordAuth", auth(MODE_FULL), authController.disablePasswordAuth);
   router.post(
     "/authByPassword",
-    auth(MODE_PASSWORD),
+    auth(MODE_2FA),
     authPasswordLimit.limiter,
     authPasswordLimit.resolver,
     authController.authByPassword
@@ -26,13 +26,13 @@ module.exports = (app) => {
   // SMS authentication
   router.post(
     "/sendSMSToUser",
-    auth(MODE_SMS),
+    auth(MODE_2FA),
     sendSMSLimit.limiter,
     authController.sendSMSToUser
   );
   router.post(
     "/authBySMSCode",
-    auth(MODE_SMS),
+    auth(MODE_2FA),
     authOTPLimit.limiter,
     authOTPLimit.resolver,
     sendSMSLimit.resolver,
@@ -59,7 +59,7 @@ module.exports = (app) => {
   // QR authentication
   router.post(
     "/authByQRCode",
-    auth(MODE_QR),
+    auth(MODE_2FA),
     authOTPLimit.limiter,
     authOTPLimit.resolver,
     authController.authByQRCode

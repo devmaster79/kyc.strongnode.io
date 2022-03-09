@@ -1,6 +1,6 @@
 const speakeasy = require('speakeasy');
 const QRCode = require('qrcode');
-const { MODE_QR } = require('./TokenService');
+const { MODE_2FA } = require('./TokenService');
 
 class QRAuthService {
     /**
@@ -80,7 +80,7 @@ class QRAuthService {
             token,
         });
         if (verified) {
-            const mode = this.__tokenService.determineNextMode(user, MODE_QR);
+            const mode = this.__tokenService.determineNextMode(user, MODE_2FA);
             const token = this.__tokenService.generateToken(user.email, user.user_name, mode);
             return token;
         }
