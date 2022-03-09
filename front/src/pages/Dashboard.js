@@ -104,7 +104,7 @@ export default function Dashboard() {
   useEffect(() => {
     async function fetch() {
       const result = userService.getProfile();
-      if(!result.data) return;
+      if (!result.data) return;
       setUser(result.data[0]);
       setAvailableToken(result.data[0]?.remaining_total_amount);
       setLockedToken(result.data[0]?.locked_bonus_amount);
@@ -145,7 +145,7 @@ export default function Dashboard() {
       } else {
         setHistory(result.data);
         if (result.data.length > 0) {
-          console.assert(result.data[0].date !== undefined, "No date provided");
+          console.assert(result.data[0].date !== undefined, 'No date provided');
           const expTime = new Date(result.data[0].date);
           expTime.setFullYear(expTime.getFullYear() + 1);
           setWithdrawTime(expTime);
@@ -163,7 +163,7 @@ export default function Dashboard() {
         setVestedProgress(Math.min(min / 1000 / 60, 100));
       }
 
-      const result1 = await historyService.findAllWithdrawn(localStorage.getItem('username'))
+      const result1 = await historyService.findAllWithdrawn(localStorage.getItem('username'));
       if (typeof history === 'string') {
         enqueueSnackbar('History data is not array!', { variant: 'error' });
       } else {
@@ -183,13 +183,15 @@ export default function Dashboard() {
     }
     fetch();
   }, [refresh]);
+
   const handleDashboard = useCallback(async () => {
     if (localStorage.getItem('visit') !== 'true') {
       enqueueSnackbar('Welcome to the StrongNodeID dashboard', {
         variant: 'success'
       });
       localStorage.setItem('visit', 'true');
-    }}, []);
+    }
+  }, []);
 
   return (
     <Container ref={dash} maxWidth="xl" style={{ paddingBottom: 100 }}>
@@ -700,7 +702,7 @@ export default function Dashboard() {
                     INVESTOR
                   </Typography>
                   <Typography variant="h6" color="white">
-                    { user?.investor_name || '-' }
+                    {user?.investor_name || '-'}
                   </Typography>
                 </Stack>
 
@@ -711,7 +713,7 @@ export default function Dashboard() {
                     PURCHASE DATE
                   </Typography>
                   <Typography color="white" variant="h6">
-                    { user?.purchased_date || '-' }
+                    {user?.purchased_date || '-'}
                   </Typography>
                 </Stack>
 
@@ -722,7 +724,7 @@ export default function Dashboard() {
                     PURCHASE ROUND
                   </Typography>
                   <Typography color="white" variant="h6">
-                    { user?.purchased_round || '-'}
+                    {user?.purchased_round || '-'}
                   </Typography>
                 </Stack>
 
@@ -733,7 +735,7 @@ export default function Dashboard() {
                     TOTAL PURCHASE
                   </Typography>
                   <Typography color="white" variant="h6">
-                    { user?.purchased_total || 0 }SNE
+                    {user?.purchased_total || 0}SNE
                   </Typography>
                 </Stack>
 
@@ -744,7 +746,7 @@ export default function Dashboard() {
                     INVESTMENT AMOUNT
                   </Typography>
                   <Typography color="white" variant="h6">
-                    ${ user?.investment_amount || 0 }
+                    ${user?.investment_amount || 0}
                   </Typography>
                 </Stack>
               </Stack>
