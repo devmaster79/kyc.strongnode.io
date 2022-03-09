@@ -73,10 +73,6 @@ export function SignInWithPassword() {
     <EntryPage>
       <EntryCard>
         <h2>Welcome</h2>
-        <UserInfoWrapper>
-          <MailIcon />
-          <p>{localStorage.get("email")}</p>
-        </UserInfoWrapper>
         <form onSubmit={handleSubmit} style={{ marginTop: 30 }}>
           <InputGroup>
             <LockIcon />
