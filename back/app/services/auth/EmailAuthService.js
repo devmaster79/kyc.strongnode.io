@@ -53,7 +53,7 @@ class EmailAuthService {
      * @returns {string}
      */
     __getURL(mode, token) {
-        return path.join(process.env.FRONTEND_URL, this.__getRoute(mode, token));
+        return (new URL(this.__getRoute(mode, token), process.env.FRONTEND_URL)).href;
     }
 
     /**
