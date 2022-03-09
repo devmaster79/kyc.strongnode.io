@@ -10,7 +10,7 @@ import Input from '../components/Input';
 import Line from '../components/Line';
 import ValidatedField from '../components/ValidatedField';
 import { signupSchema } from '../static/formSchemas';
-import userService from 'services/userService';
+import userService from '../services/userService';
 
 const AlreadyWrapper = styled.p`
   background: transparent;

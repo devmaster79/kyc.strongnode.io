@@ -5,7 +5,7 @@ import Button from '../components/Button';
 import EntryCard from '../components/EntryCard';
 import Input from '../components/Input';
 import InputGroup from '../components/InputGroup';
-import userService from 'services/userService';
+import userService from '../services/userService';
 
 function SigninTwoStep() {
   const navigate = useNavigate();
