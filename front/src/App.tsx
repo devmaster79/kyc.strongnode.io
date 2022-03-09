@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import Routes from './routers';
+import Router from './Router';
 import { SnackbarProvider } from 'notistack5';
 import { useSearchParams } from 'react-router-dom';
 import * as authService from 'services/auth';
@@ -25,7 +25,7 @@ function App() {
           }}
           maxSnack={2}>
           <div className="App">
-            <Routes />
+            <Router />
           </div>
         </SnackbarProvider>
       </ThemeConfig>
