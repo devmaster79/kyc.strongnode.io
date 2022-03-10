@@ -72,6 +72,7 @@
   "devDependencies": {
     "@usedapp/core": "^0.6.3",
     "css-loader": "^6.7.1",
+    "html-webpack-plugin": "^5.5.0",
     "source-map-loader": "2.0.0",
     "ts-loader": "^9.2.7",
     "typescript": "^4.6.2",
