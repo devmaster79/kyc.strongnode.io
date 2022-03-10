@@ -42,16 +42,46 @@ exports.findAllVested = async (req, res) => {
   }
 
   const user_name = req.query.user_name;
-  // console.log("req.query??", req.query);
   const condition = user_name
     ? { [Op.and]: [{ user_name: user_name }, { action_type: "vested" }] }
     : null;
 
-  // console.log("condition??", condition)
+  const page = req.query.page * req.query.perPage || 0;
 
   try {
-    const data = await History.findAll({ where: condition });
-    res.send(data);
+    const data = await History.findAndCountAll({ limit: parseInt(req.query.perPage), offset: page, where: condition });
+    res.send({
+      items: data.rows,
+      total: data.count
+    });
+  } catch (err) {
+    res.status(500).send({
+      message:
+        err.message ||
+        "Some error occurred while retrieving vested history with user_name.",
+    });
+  }
+};
+
+exports.findVestedDetails = async (req, res) => {
+  // Validate request
+  if (!req.query.user_name) {
+    res.status(400).send({
+      message: "Content can not be empty!",
+    });
+    return;
+  }
+
+  const user_name = req.query.user_name;
+  const condition = user_name
+    ? { [Op.and]: [{ user_name: user_name }, { action_type: "vested" }] }
+    : null;
+
+  try {
+    const sum = await History.sum('token_amount', { where: condition });
+    res.send({
+      sum: sum
+    });
   } catch (err) {
     res.status(500).send({
       message:
@@ -76,9 +106,43 @@ exports.findAllWithdrawn = async (req, res) => {
     ? { [Op.and]: [{ user_name: user_name }, { action_type: "withdrawn" }] }
     : null;
 
+  const page = req.query.page * req.query.perPage || 0;
+
   try {
-    const data = await History.findAll({ where: condition });
-    res.send(data);
+    const data = await History.findAndCountAll({ limit: parseInt(req.query.perPage), offset: page, where: condition });
+    res.send({
+      items: data.rows,
+      total: data.count
+    });
+  } catch (err) {
+    res.status(500).send({
+      message:
+        err.message ||
+        "Some error occurred while retrieving withdrawn history with user_name.",
+    });
+  }
+};
+
+exports.findWithdrawnDetails = async (req, res) => {
+  // Validate request
+  if (!req.query.user_name) {
+    res.status(400).send({
+      message: "Content can not be empty!",
+    });
+    return;
+  }
+
+  const user_name = req.query.user_name;
+  const condition = user_name
+    ? { [Op.and]: [{ user_name: user_name }, { action_type: "withdrawn" }] }
+    : null;
+
+
+  try {
+    const sum = await History.sum('token_amount', { where: condition });
+    res.send({
+      sum: sum
+    });
   } catch (err) {
     res.status(500).send({
       message:

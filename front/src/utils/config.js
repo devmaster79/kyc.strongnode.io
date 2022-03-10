@@ -26,6 +26,8 @@ export const create_support_request = `${base_url}/users/support/create-request`
 // HISTORY
 export const findAllVested = `${base_url}/history/findAllVested`;
 export const findAllWithdrawn = `${base_url}/history/findAllWithdrawn`;
+export const findWithdrawnDetails = `${base_url}/history/findWithdrawnDetails`;
+export const findVestedDetails = `${base_url}/history/findVestedDetails`;
 export const history_url = `${base_url}/history`;
 
 // NEWS
