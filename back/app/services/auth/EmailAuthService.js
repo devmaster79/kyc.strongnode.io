@@ -29,15 +29,15 @@ class EmailAuthService {
     async sendVerificationEmail(email) {
         email = email.toLowerCase();
         let link;
-        try {
-            const user = await this.__userRepository.findOne({ where: { email } });
+        const user = await this.__userRepository.findOne({ where: { email } });
+        if(user) {
             const mode = this.__tokenService.determineNextMode(user, MODE_GUEST);
             const token = this.__tokenService.generateToken(email, user.user_name, mode);
-            link = this.__getURL(mode, token);
-        } catch (_) {
+            link = this.__getURL(mode, token, user);
+        } else {
             const mode = MODE_REGISTRATION;
             const token = this.__tokenService.generateToken(email, null, mode);
-            link = this.__getURL(mode, token);
+            link = this.__getURL(mode, token, undefined);
         }
         await this.__communicationService.sendTemplatedEmail(
             email,
@@ -48,16 +48,20 @@ class EmailAuthService {
 
     /**
      * @param {import("./TokenService").AuthMode} mode
+     * @param {Object|undefined} user
+     * @param {boolean} user.enable_qr,
+     * @param {boolean} user.enable_sms,
+     * @param {boolean} user.enable_password,
      * @returns {string}
      */
-    __getURL(mode, token) {
-        return (new URL(this.__getRoute(mode, token), process.env.FRONTEND_URL)).href;
+    __getURL(mode, token, user) {
+        return (new URL(this.__getRoute(mode, token, user), process.env.FRONTEND_URL)).href;
     }
 
     /**
      * @param {import("./TokenService").AuthMode} mode
      * @param {string} token
-     * @param {Object} user
+     * @param {Object|undefined} user
      * @param {boolean} user.enable_qr,
      * @param {boolean} user.enable_sms,
      * @param {boolean} user.enable_password,
