@@ -103,7 +103,10 @@ exports.getProfile = (req, res) => {
         last_name: data.last_name,
         wallet_address: data.wallet_address,
         telegram_id: data.telegram_id,
-        twitter_id: data.twitter_id
+        twitter_id: data.twitter_id,
+        enable_qr: data.enable_qr,
+        enable_sms: data.enable_sms,
+        enable_password: data.enable_password,
       }];
       res.send(_returnData);
     })
@@ -117,7 +120,6 @@ exports.getProfile = (req, res) => {
 /** Update profile */
 exports.updateProfile = async (req, res) => {
   const { email } = req.user;
-  const { first_name, last_name, user_name, twitter_id, telegram_id, wallet_address, enable_qr, enable_sms } = req.body;
 
   if (!email) {
     res.status(400).send({
@@ -127,14 +129,15 @@ exports.updateProfile = async (req, res) => {
   }
 
   const data = {
-    first_name: first_name,
-    last_name: last_name,
-    user_name: user_name,
-    telegram_id: telegram_id,
-    twitter_id: twitter_id,
-    wallet_address: wallet_address,
-    enable_qr: enable_qr,
-    enable_sms: enable_sms
+    first_name: req.body.first_name,
+    last_name: req.body.last_name,
+    user_name: req.body.user_name,
+    telegram_id: req.body.telegram_id,
+    twitter_id: req.body.twitter_id,
+    wallet_address: req.body.wallet_address,
+    enable_qr: req.body.enable_qr,
+    enable_sms: req.body.enable_sms,
+    enable_password: req.body.enable_password
   };
 
   User.update(data, {
