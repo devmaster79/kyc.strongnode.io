@@ -85,7 +85,7 @@ exports.register = withResponse(async req => {
 })
 
 exports.enablePasswordAuth = withResponse(async req => {
-    if (req.body.password.length >= 6) throw new ValidationError('password');
+    if (req.body.password.length <= 6) throw new ValidationError('password', "too-short");
     await passwordAuthService.setPassword(req.user.email, req.body.password);
 });
 
@@ -95,8 +95,8 @@ exports.disablePasswordAuth = withResponse(async req => {
 
 exports.authByPassword = withResponse(async req => {
     if (!req.body.password) throw new ValidationError('password');
-    const token = await passwordAuthService.authByPassword(req.user.email, passwrod);
-    if (!token) throw new ValidationError('password','wrong');
+    const token = await passwordAuthService.authByPassword(req.user.email, req.body.password);
+    if (!token) throw new ValidationError('password', 'wrong');
     authPasswordLimit.resolve(req);
     return { token };
 });
@@ -115,7 +115,8 @@ exports.authBySMSCode = withResponse(async req => {
 });
 
 exports.sendSMSAndSaveNumber = withResponse(async req => {
-    if (!req.body.number) throw new ValidationError('smscode');
+    if (!req.body.number) throw new ValidationError('number');
+    await smsAuthService.sendSMSAndStoreNumber(req.user.email, req.body.number);
 });
 
 exports.enableSMSAuth = withResponse(async req => {
