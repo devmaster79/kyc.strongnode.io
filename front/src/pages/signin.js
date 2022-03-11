@@ -8,6 +8,29 @@ import Input from '../components/Input';
 import ValidatedField from '../components/ValidatedField';
 import { magic } from '../utils/index';
 import { singinSchema } from '../static/formSchemas';
+import styled from 'styled-components';
+import { Box } from '@material-ui/system';
+
+const AlreadyWrapper = styled.p`
+  background: transparent;
+  color: white;
+  font-size: 12px;
+  line-height: 24px;
+  width: 200px;
+  font-family: 'All Round Gothic';
+  text-align: center;
+`;
+
+const SignupButton = styled(EntryCard)`
+  padding: 10px 0px;
+  color: white;
+  font-size: 19px;
+  cursor: pointer;
+  transition: box-shadow 0.2s;
+  :hover {
+    box-shadow: 0px 5px 5px rgba(255, 255, 255, 0.25);
+  }
+`;
 
 function Signin() {
   const navigate = useNavigate();
@@ -86,6 +109,19 @@ function Signin() {
         </Formik>
         <p onClick={forgottenPassword} style={resetPassStyle}>Did you forget your password?</p>
       </EntryCard>
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        width="100%"
+        maxWidth={482}
+        mb="35px"
+        px="10px">
+        <Box height="1px" backgroundColor="rgba(255, 255, 255, 0.25)" width="calc(50% - 100px)" />
+        <AlreadyWrapper>{"Don't have an account? Create one."}</AlreadyWrapper>
+        <Box height="1px" backgroundColor="rgba(255, 255, 255, 0.25)" width="calc(50% - 100px)" />
+      </Box>
+      <SignupButton onClick={() => navigate('/signup')}>SIGN UP</SignupButton>
     </EntryPage>
   );
 }

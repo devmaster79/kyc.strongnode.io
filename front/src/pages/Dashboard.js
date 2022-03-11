@@ -11,8 +11,7 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import styled from '@material-ui/core/styles/styled';
 import { useState, useEffect, useCallback, useRef } from 'react';
 import Status from '../components/Status';
-import VestTable from '../components/dashboard/VestTable';
-import WithdrawTable from '../components/dashboard/WithdrawTable';
+import MainTable from '../components/shared/MainTable';
 import SvgIconStyle from '../components/SvgIconStyle';
 import MyVestedTokensChart from '../components/Charts/MyVestedTokensChart';
 import BonusTokensChart from '../components/Charts/BonusTokensChart';
@@ -62,7 +61,82 @@ const SB2Button = styled(SBButton)`
   box-shadow: none;
 `;
 export default function Dashboard() {
-  const [withdrawable, setWithdrawable] = useState(false);
+
+  const withdrawColumns = [
+    {
+      id: 'token_amount',
+      label: 'SNE Token',
+      align: 'left',
+      format: (value) => `${value.toLocaleString('en-US')} SNE`
+    },
+    {
+      id: 'stock',
+      label: 'Stock',
+      align: 'left'
+    },
+    {
+      id: 'date',
+      label: 'Date',
+      align: 'left',
+      format: (value) => value.toFixed(2)
+    }
+  ];
+
+  const vestedColumns = [
+    {
+      id: 'token_amount',
+      label: 'SNE Token',
+      align: 'left',
+      format: (value) => `${value.toLocaleString('en-US')} SNE`
+    },
+    {
+      id: 'stock',
+      label: 'Stock',
+      align: 'left'
+    },
+    {
+      id: 'date',
+      label: 'Date',
+      align: 'left',
+      format: (value) => value.toFixed(2)
+    }
+  ];
+
+  const withdrawOverwrittenFields = {
+    stock: () => {
+      return (<Typography variant="h5" color="white">
+        Withdrawed
+      </Typography>);
+    },
+    token_amount: (amount) => {
+      return (
+        <Stack direction="row" alignItems="center">
+          <Status color="#1DF4F6" />
+            <Typography variant="h5" color="white">
+              {amount} SNE
+            </Typography>
+        </Stack>)
+    }
+  }
+
+  const vestedOverwrittenFields = {
+    stock: () => {
+      return (<Typography variant="h5" color="white">
+        Vested
+      </Typography>);
+    },
+    token_amount: (amount) => {
+      return (
+        <Stack direction="row" alignItems="center">
+          <Status color="#1DF4F6" />
+            <Typography variant="h5" color="white">
+              {amount} SNE
+            </Typography>
+        </Stack>)
+    }
+  }
+
+  const [withdrawable, setWithdrawable] = useState(true);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [historyOpen, setHistoryOpen] = useState();
   const [newsOpen, setNewsOpen] = useState();
@@ -144,10 +218,25 @@ export default function Dashboard() {
     }
   };
 
+  const fetchWithdraw = async (page, rowsPerPage) => {
+    const result = await historyService.findAllWithdrawn(localStorage.getItem('username'), page, rowsPerPage);
+    setWithdrawHistory(result.data);
+  }
+
+  const fetchVested = async (page, rowsPerPage) => {
+    const result = await historyService.findAllVested(localStorage.getItem('username'), page, rowsPerPage);
+    setHistory(result.data);
+  }
+
   useEffect(() => {
     async function fetch() {
       if (!refresh) return;
-      const result = await historyService.findAllVested(localStorage.getItem('username'));
+
+      historyService.findVestedDetails(localStorage.getItem('username')).then(result => {
+        setTotalVested(result.data.sum);
+      });
+
+      const result = await historyService.findAllVested(localStorage.getItem('username'), 0, 5);
 
       if (typeof history === 'string') {
         enqueueSnackbar('History data is not array!', { variant: 'error' });
@@ -161,31 +250,29 @@ export default function Dashboard() {
         }
 
         let min = 1000000000000;
-        let sumVested = 0;
         for (let i = 0; i < result.data.length; i++) {
-          sumVested += parseInt(result.data[i].token_amount);
           const temp = new Date(result.data[i].date);
           let date = new Date();
           if (min > date.getTime() - temp.getTime()) min = date.getTime() - temp.getTime();
         }
-        setTotalVested(sumVested);
         setVestedProgress(Math.min(min / 1000 / 60, 100));
       }
 
-      const result1 = await historyService.findAllWithdrawn(localStorage.getItem('username'))
+      historyService.findWithdrawnDetails(localStorage.getItem('username')).then(result => {
+        setTotalWithdrawn(result.data.sum);
+      });
+
+      const result1 = await historyService.findAllWithdrawn(localStorage.getItem('username'), 0, 5)
       if (typeof history === 'string') {
         enqueueSnackbar('History data is not array!', { variant: 'error' });
       } else {
         setWithdrawHistory(result1.data);
-        let min = 1000000000000;
-        let sumWithdrawn = 0;
+       let min = 1000000000000;
         for (let i = 0; i < result1.data.length; i++) {
-          sumWithdrawn += parseInt(result1.data[i].token_amount);
           const temp = new Date(result1.data[i].date);
           let date = new Date();
           if (min > date.getTime() - temp.getTime()) min = date.getTime() - temp.getTime();
         }
-        setTotalWithdrawn(sumWithdrawn);
         setWithdrawProgress(Math.min(min / 1000 / 60, 100));
       }
       setRefresh(false);
@@ -477,7 +564,7 @@ export default function Dashboard() {
             <Typography variant="h4" color="white">
               VESTING PROGRESS
             </Typography>
-            <VestTable history={history} setRefresh={setRefresh} />
+            <MainTable dataSet={history} columns={vestedColumns} overwrittenFields={vestedOverwrittenFields} fetchData={fetchVested}/>
           </CardStyle>
         </Grid>
 
@@ -668,7 +755,7 @@ export default function Dashboard() {
                 <Typography variant="h4" color="white">
                   WITHDRAWING PROGRESS
                 </Typography>
-                <WithdrawTable history={withdrawhistory} setRefresh={setRefresh} />
+                <MainTable dataSet={withdrawhistory} columns={withdrawColumns} overwrittenFields={withdrawOverwrittenFields} fetchData={fetchWithdraw}/>
               </Box>
             )}
           </CardStyle>

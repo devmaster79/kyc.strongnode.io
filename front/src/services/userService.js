@@ -57,7 +57,7 @@ export default {
       });
   },
   setToken(token) {
-    localStorage.setItem('token', token);
+    token ? localStorage.setItem('token', token) : localStorage.removeItem('token') ;
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
   },
   createSupportRequest(data) {
