@@ -1,6 +1,8 @@
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+
 module.exports = {
   // change to .tsx if necessary
-  entry: './src/App.js',
+  entry: './src/index.js',
   output: {
     filename: './bundle.js'
   },
@@ -29,6 +31,9 @@ module.exports = {
       }
     ]
   },
+  plugins: [
+    new HtmlWebpackPlugin()
+  ],
   externals: {
     react: 'React',
     'react-dom': 'ReactDOM'
