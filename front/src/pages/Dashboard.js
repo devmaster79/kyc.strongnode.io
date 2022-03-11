@@ -1,14 +1,14 @@
 import * as React from 'react';
-import { useSnackbar } from 'notistack5';
-import Container from '@material-ui/core/Container';
-import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
-import Stack from '@material-ui/core/Stack';
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
-import Divider from '@material-ui/core/Divider';
-import LinearProgress from '@material-ui/core/LinearProgress';
-import styled from '@material-ui/core/styles/styled';
+import { useSnackbar } from 'notistack';
+import Container from '@mui/material/Container';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
+import Divider from '@mui/material/Divider';
+import LinearProgress from '@mui/material/LinearProgress';
+import styled from '@mui/material/styles/styled';
 import { useState, useEffect, useCallback, useRef } from 'react';
 import Status from 'components/Status';
 import VestTable from 'components/dashboard/VestTable';
@@ -127,7 +127,7 @@ export default function Dashboard() {
             variant: 'success'
           });
         } else {
-          enqueueSnackbar('Failed to Withdraw', { variant: 'fail' });
+          enqueueSnackbar('Failed to Withdraw', { variant: 'error' });
         }
       });
     } catch (error) {

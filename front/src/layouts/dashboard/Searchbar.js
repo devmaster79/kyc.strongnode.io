@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { styled, alpha } from '@material-ui/core/styles';
-import { Input, Slide, Button, InputAdornment, ClickAwayListener } from '@material-ui/core';
-import IconButton from '@material-ui/core/IconButton';
+import { styled, alpha } from '@mui/material/styles';
+import { Input, Slide, Button, InputAdornment, ClickAwayListener } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
 
 const APPBAR_MOBILE = 64;
 const APPBAR_DESKTOP = 92;

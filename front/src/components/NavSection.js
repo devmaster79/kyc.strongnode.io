@@ -1,10 +1,10 @@
 import { NavLink as RouterLink, matchPath, useLocation } from 'react-router-dom';
-import styled from '@material-ui/core/styles/styled';
-import Box from '@material-ui/core/Box';
-import List from '@material-ui/core/List';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemButton from '@material-ui/core/ListItemButton';
+import styled from '@mui/material/styles/styled';
+import Box from '@mui/material/Box';
+import List from '@mui/material/List';
+import ListItemText from '@mui/material/ListItemText';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemButton from '@mui/material/ListItemButton';
 
 const ListItemStyle = styled((props) => <ListItemButton disableGutters {...props} />)(
   ({ theme }) => ({

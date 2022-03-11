@@ -1,6 +1,6 @@
-import Switch from '@material-ui/core/Switch';
-import Stack from '@material-ui/core/Stack';
-import styled from '@material-ui/core/styles/styled';
+import Switch from '@mui/material/Switch';
+import Stack from '@mui/material/Stack';
+import styled from '@mui/material/styles/styled';
 import SvgIconStyle from 'components/SvgIconStyle';
 import useSettings from 'hooks/useSettings';
 

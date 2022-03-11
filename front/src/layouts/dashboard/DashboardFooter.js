@@ -1,8 +1,8 @@
-import styled from '@material-ui/core/styles/styled';
-import Stack from '@material-ui/core/Stack';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
+import styled from '@mui/material/styles/styled';
+import Stack from '@mui/material/Stack';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
 import ThemeSwitch from 'components/ThemeSwitch';
 import * as authService from 'services/auth';

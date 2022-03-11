@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { Box } from "@material-ui/system";
+import { Box } from "@mui/material";
 import { EntryPage } from "../style";
 import Button from "../../components/Button";
 import EntryCard from "../../components/EntryCard";

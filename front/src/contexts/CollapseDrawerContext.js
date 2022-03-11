@@ -1,6 +1,6 @@
 import { createContext, useState, useEffect } from 'react';
-import { useMediaQuery } from '@material-ui/core';
-import { useTheme } from '@material-ui/core/styles';
+import { useMediaQuery } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
 const initialState = {
   collapseClick: true,

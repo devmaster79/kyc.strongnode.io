@@ -2,22 +2,27 @@
     "compilerOptions": {
         "jsx": "react-jsx",
         "target": "es6",
-        "module": "commonjs",
+        "module": "es2022",
         "baseUrl": "./src",
         "allowJs": true,
-        "outDir": "./dist",
         "esModuleInterop": true,
         "strict": true,
         "lib": [
             "dom",
-            "es2015"
+            "es6"
         ],
+        "noImplicitAny": true,
+        "noImplicitThis": true,
+        "strictNullChecks": true,
+        "moduleResolution": "Node",
+        "noEmit": true,
+        "rootDirs": [
+            "src"
+        ],
+        "sourceMap": true,
     },
-    "exclude": [
-        "node_modules"
-    ],
     "include": [
-        "custom.d.ts",
-        "./src/**/*"
+        "src/**/*.ts",
+        "src/**/*.tsx"
     ]
 }

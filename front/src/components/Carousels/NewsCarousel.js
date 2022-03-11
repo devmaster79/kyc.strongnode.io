@@ -1,12 +1,12 @@
 import Slider from 'react-slick';
 import { useRef, useEffect, useState } from 'react';
 // material
-import useTheme from '@material-ui/core/styles/useTheme';
-import styled from '@material-ui/core/styles/styled';
-import Box from '@material-ui/core/Box';
-import Stack from '@material-ui/core/Stack';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
+import useTheme from '@mui/material/styles/useTheme';
+import styled from '@mui/material/styles/styled';
+import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
 
 import SvgIconStyle from 'components/SvgIconStyle';
 //

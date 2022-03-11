@@ -1,14 +1,14 @@
 import { useState, useEffect, useCallback } from 'react';
-import Avatar from '@material-ui/core/Avatar';
-import Stack from '@material-ui/core/Stack';
-import Typography from '@material-ui/core/Typography';
+import Avatar from '@mui/material/Avatar';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 import SvgIconStyle from 'components/SvgIconStyle';
 import ConnectButton, { SneBalance } from 'components/ConnectButton';
 import * as React from 'react';
 import Popover from '@mui/material/Popover';
 import Divider from '@mui/material/Divider';
 import Button from '@mui/material/Button';
-import styled from '@material-ui/core/styles/styled';
+import styled from '@mui/material/styles/styled';
 import { useNavigate } from 'react-router-dom';
 import userService from '../../services/userService';
 import * as authService from 'services/auth';

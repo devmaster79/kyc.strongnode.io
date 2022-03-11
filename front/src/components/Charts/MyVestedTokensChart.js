@@ -1,6 +1,6 @@
 import merge from 'lodash/merge';
 import ReactApexChart from 'react-apexcharts';
-import { useTheme, styled } from '@material-ui/core/styles';
+import { useTheme, styled } from '@mui/material/styles';
 import BaseOptionChart from './BaseOptionChart';
 
 const CHART_DATA = [10, 10];
