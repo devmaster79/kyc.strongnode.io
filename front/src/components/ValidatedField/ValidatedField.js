@@ -64,11 +64,6 @@ const ValidatedField = (props) => {
             validate={validateField}
             {...field}
             // eslint-disable-next-line react/jsx-no-duplicate-props
-            style={{
-              paddingLeft: (field.name === 'email' || field.name === 'user_name' || type === 'password') && '55px',
-              width: field.name === 'termsAgreement' && 'unset',
-              height: field.name === 'termsAgreement' && 'unset'
-            }}
           />
           {field.name === 'termsAgreement' && <TermsText />}
         </div>

@@ -8,7 +8,7 @@ import Stack from '@material-ui/core/Stack';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
-import SvgIconStyle from 'components/SvgIconStyle';
+import SvgIconStyle from '../../components/SvgIconStyle';
 //
 import { CarouselControlsPaging2 } from './controls';
 

@@ -8,8 +8,8 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TablePagination from '@material-ui/core/TablePagination';
 import Typography from '@material-ui/core/Typography';
 import Stack from '@material-ui/core/Stack';
-import Scrollbar from 'components/Scrollbar';
-import { fDate } from 'utils/formatTime';
+import Scrollbar from '../Scrollbar';
+import { fDate } from '../../utils/formatTime';
 
 export default function MainTable({ dataSet, columns, fetchData, setRefresh, overwrittenFields }) {
   const [page, setPage] = useState(0);

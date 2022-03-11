@@ -10,19 +10,19 @@ import Divider from '@material-ui/core/Divider';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import styled from '@material-ui/core/styles/styled';
 import { useState, useEffect, useCallback, useRef } from 'react';
-import Status from 'components/Status';
-import MainTable from 'components/shared/MainTable'
-import SvgIconStyle from 'components/SvgIconStyle';
-import MyVestedTokensChart from 'components/Charts/MyVestedTokensChart';
-import BonusTokensChart from 'components/Charts/BonusTokensChart';
-import RecentLockupsChart from 'components/Charts/RecentLockupsChart';
-import NewsCarousel from 'components/Carousels/NewsCarousel';
+import Status from '../components/Status';
+import MainTable from '../components/shared/MainTable';
+import SvgIconStyle from '../components/SvgIconStyle';
+import MyVestedTokensChart from '../components/Charts/MyVestedTokensChart';
+import BonusTokensChart from '../components/Charts/BonusTokensChart';
+import RecentLockupsChart from '../components/Charts/RecentLockupsChart';
+import NewsCarousel from '../components/Carousels/NewsCarousel';
 import useCollapseDrawer from '../hooks/useCollapseDrawer';
 import { useToken, useEthers, useEtherBalance, useTokenBalance } from '@usedapp/core';
 import { ethers } from 'ethers';
 import WithdrawTimer from '../components/dashboard/WithdrawTimer';
-import userService from 'services/userService';
-import historyService from 'services/historyService';
+import userService from '../services/userService';
+import historyService from '../services/historyService';
 
 const SneAddress = '0x32934CB16DA43fd661116468c1B225Fc26CF9A8c';
 

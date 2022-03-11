@@ -1,4 +1,4 @@
-import SvgIconStyle from 'components/SvgIconStyle';
+import SvgIconStyle from '../../components/SvgIconStyle';
 import styled from '@material-ui/core/styles/styled';
 import Box from '@material-ui/core/Box';
 import Stack from '@material-ui/core/Stack';

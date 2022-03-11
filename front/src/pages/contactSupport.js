@@ -3,7 +3,7 @@ import Container from '@material-ui/core/Container';
 import styled from "@material-ui/core/styles/styled";
 import { useForm } from "react-hook-form";
 import Box from "@material-ui/core/Box";
-import userService from 'services/userService';
+import userService from '../services/userService';
 import Button from '@material-ui/core/Button';
 
 const CardStyle = styled(Box)(({ theme }) => ({

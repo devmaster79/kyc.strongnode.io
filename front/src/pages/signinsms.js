@@ -10,7 +10,7 @@ import InputGroup from '../components/InputGroup';
 import { ReactComponent as LockIcon } from '../icons/lock.svg';
 import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
-import userService from 'services/userService';
+import userService from '../services/userService';
 
 const LENGTH_OF_SMS_CODE = 4;
 function SigninSMS() {
