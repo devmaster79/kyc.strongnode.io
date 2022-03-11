@@ -91,6 +91,10 @@ class SMSAuthService {
      */
     async __sendOneTimePasswordSMS(destinationNumber, email) {
         const OTP = this.__generateRandomNumber(1000, 9999);
+        if(process.env.NODE_ENV === 'development') {
+            // This only runs in dev!
+            console.log("The SMS password was", OTP);
+        }
         const message = "Here is your SMS 2-factor authentication code for StrongNode : " + OTP;
         const updateResult = await this.__userRepository.update(
             { smscode: OTP },
