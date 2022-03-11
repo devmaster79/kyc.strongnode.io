@@ -1,7 +1,7 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import DashboardLayout from "./layouts/dashboard";
 import Dashboard from "./pages/Dashboard";
-import UserProfile from "./pages/UserProfile";
+import UserProfile from "./pages/UserProfile/UserProfile";
 import Profile from "./pages/profile";
 import { Register } from "./pages/auth/Register";
 import { VerifyEmail } from "./pages/auth/VerifyEmail";
@@ -42,21 +42,22 @@ export const ROUTES = {
 export default function Router() {
   const loggedin = localStorage.getItem("loggedin");
   if (loggedin) {
-    return (
+    return (<>
       <Routes>
-        <Route path={ROUTES.DASHBOARD.LAYOUT} element={<DashboardLayout />} />
-        <Route path={ROUTES.DASHBOARD.APP} element={<Dashboard />} />
-        <Route path={ROUTES.DASHBOARD.PROFILE} element={<UserProfile />} />
-        <Route path={ROUTES.DASHBOARD.GROWTH} element={<Dashboard />} />
-        <Route path={ROUTES.DASHBOARD.SYNC} element={<Dashboard />} />
-        <Route path={ROUTES.DASHBOARD.SHIELD} element={<Dashboard />} />
-        <Route path={ROUTES.DASHBOARD.ADD_DATA} element={<AddData />} />
+        <Route element={<DashboardLayout />}>
+          <Route path={ROUTES.DASHBOARD.APP} element={<Dashboard />} />
+          <Route path={ROUTES.DASHBOARD.PROFILE} element={<UserProfile />} />
+          <Route path={ROUTES.DASHBOARD.GROWTH} element={<Dashboard />} />
+          <Route path={ROUTES.DASHBOARD.SYNC} element={<Dashboard />} />
+          <Route path={ROUTES.DASHBOARD.SHIELD} element={<Dashboard />} />
+          <Route path={ROUTES.DASHBOARD.ADD_DATA} element={<AddData />} />
+        </Route>
         <Route
           path="*"
           element={<Navigate to={ROUTES.DASHBOARD.APP} replace />}
         />
       </Routes>
-    );
+    </>);
   } else {
     return (
       <Routes>
