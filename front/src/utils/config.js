@@ -2,8 +2,10 @@ export const base_url = process.env.REACT_APP_BASE_URL + '/api';
 
 // USER
 export const investor_url = `${base_url}/users/createInvestor`;
+export const get_investor_details = `${base_url}/users/profile/getInvestorProfile`;
 export const upload_profile_img = `${base_url}/users/profile/image`;
 export const profile_url = `${base_url}/users/profile`;
+export const create_support_request = `${base_url}/users/support/create-request`;
 
 // AUTH
 export const sendVerificationEmail = `${base_url}/auth/sendVerificationEmail`;
@@ -24,6 +26,8 @@ export const disableQRAuth = `${base_url}/auth/disableQRAuth`;
 // HISTORY
 export const findAllVested = `${base_url}/history/findAllVested`;
 export const findAllWithdrawn = `${base_url}/history/findAllWithdrawn`;
+export const findWithdrawnDetails = `${base_url}/history/findWithdrawnDetails`;
+export const findVestedDetails = `${base_url}/history/findVestedDetails`;
 export const history_url = `${base_url}/history`;
 
 // NEWS

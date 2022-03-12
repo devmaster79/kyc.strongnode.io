@@ -10,7 +10,7 @@ import Divider from '@mui/material/Divider';
 import Button from '@mui/material/Button';
 import styled from '@mui/material/styles/styled';
 import { useNavigate } from 'react-router-dom';
-import userService from '../../services/userService';
+import userService from 'services/userService';
 import * as authService from 'services/auth';
 
 const MyPopover = styled(Popover)`

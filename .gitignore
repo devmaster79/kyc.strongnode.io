@@ -23,3 +23,4 @@ docker/.localstack
 
 back/package-lock.json
 .idea/
+front/package-lock.json

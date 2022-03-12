@@ -1,5 +1,6 @@
 const db = require("../models");
 const User = db.users;
+const SupportRequests = db.supportrequests;
 const dotenv = require("dotenv");
 
 dotenv.config();
@@ -45,17 +46,25 @@ exports.createProfile = (req, res) => {
     });
 };
 
-/** Create and Save a User profile */
-exports.createInvestor = (req, res) => {
-  // Validate request
-  if (!req.user) {
-    res.status(400).send({
-      message: "Content can not be empty!",
-    });
-    return;
+/**
+ * Method create investor that is being used for creating investor detail row in investorDetails table.
+ * TODO we should turn this piece of code into it's own "business logic" service
+ * @param req
+ * @param res
+ * @returns {Promise<void>}
+ */
+exports.createInvestor = async (req, res) => {
+  // validate request
+  if (!req.body.investor_name || !req.body.investor_telegram_id || !req.body.investor_country || !req.body.investor_commitment_amount
+    || !req.body.investor_wallet_address || !req.body.investor_email) {
+    res.status(500).send({
+      message: 'Required parameters are not present.',
+      request: req.body
+    })
+    return
   }
 
-  // Create a Investor
+  // data for investor creating
   const data = {
     investor_name: req.body.investor_name,
     investor_telegram_id: req.body.investor_telegram_id,
@@ -67,28 +76,46 @@ exports.createInvestor = (req, res) => {
     investor_fund_website: req.body.investor_fund_website,
   };
 
-  User.update(data, {
-    where: { user_name: req.user.user_name },
-  })
-    .then((num) => {
-      if (num == 1) {
-        res.send({
-          message: "Investor was created successfully.",
-        });
-      } else {
-        res.send({
-          message: `Cannot create Investor with username=${req.user.user_name}. Maybe Investor info was not found or req.body is empty!`,
-        });
-      }
-    })
-    .catch((err) => {
+  const userCreated = await User.findOne({ user_email: req.body.investor_email })
+
+  if (userCreated) {
+    data.user_id = userCreated.dataValues.id
+    data.reviewed = false
+
+    const investorExist = await InvestorDetails.findOne({ user_id: userCreated.dataValues.id })
+
+    // return error that investor already exists
+    if (investorExist) {
       res.status(500).send({
-        message: "Error creating Investor with username=" + req.user.user_name,
-      });
-    });
+        message: 'Investor for a specified e-mail already exists.'
+      })
+      return
+    }
+
+    const investorCreated = await InvestorDetails.create(data)
+
+    // check if the profile was created successfully
+    if (investorCreated) {
+      res.send({
+        message: 'Investor profile was created successfully.',
+        status: 'created'
+      })
+    } else {
+      res.status(500).send({
+        message: 'Internal error occurred (while creating investor profile), please take a look at the servers console.'
+      })
+    }
+  } else {
+    // todo should we create a new user for this investor?
+  }
 };
 
-/** Get profile */
+/**
+ * Get profile
+ *
+ * TODO: add comment
+ * TODO: check with this planned usage with dev team
+ */
 exports.getProfile = (req, res) => {
   const { email } = req.user;
 
@@ -117,7 +144,53 @@ exports.getProfile = (req, res) => {
     });
 };
 
-/** Update profile */
+/**
+ * Method that gets investor details for a specific user.
+ * @param req
+ * @param res
+ */
+exports.getInvestorDetails = async (req, res) => {
+  // check if user is assingned
+  if (!req.user) {
+    res.status(500).send({ message: 'User is not assigned.' })
+    return
+  }
+
+  const userCheck = await User.findOne({ email: req.user })
+  const investorDetails = await InvestorDetails.findOne({ user_id: userCheck.dataValues.id, reviewed: 1 })
+
+  // check if investor details are present
+  if (investorDetails) {
+    res.send(investorDetails.dataValues)
+  } else {
+    res.send({ message: 'Investor details are not present. Details were not submitted or reviewed yet.' })
+  }
+}
+
+/**
+ * Method that gets investor details for a specific user.
+ * @param req
+ * @param res
+ */
+exports.getInvestorDetails = async (req, res) => {
+  // check if user is assingned
+  if (!req.user) {
+    res.status(500).send({ message: 'User is not assigned.' })
+    return
+  }
+
+  const userCheck = await User.findOne({ email: req.user })
+  const investorDetails = await InvestorDetails.findOne({ user_id: userCheck.dataValues.id, reviewed: 1 })
+
+  // check if investor details are present
+  if (investorDetails) {
+    res.send(investorDetails.dataValues)
+  } else {
+    res.send({ message: 'Investor details are not present. Details were not submitted or reviewed yet.' })
+  }
+}
+
+//Update profile
 exports.updateProfile = async (req, res) => {
   const { email } = req.user;
 
@@ -266,3 +339,40 @@ exports.uploadImg = async (req, res) => {
   };
 
 };
+
+/**
+ * Method that requests support from members of SNE.
+ * @param req
+ * @param res
+ * @returns {Promise<void>}
+ */
+exports.createSupportRequest = async (req, res) => {
+  // validate request
+  if (!req.body.subject || !req.body.message)
+    return res.status(400).send({ result: 'Required parameters are not present' })
+
+  const user = await User.findOne({ email: req.user })
+
+  if (!user)
+    return res.status(500).send({ result: 'Unexpected error. User is not in the database.' })
+
+  // send email to SNE support
+  const request = await communicationService.sendSupportRequest({ email: user.dataValues.email, username: user.dataValues.user_name }, req.body.message)
+
+  // if email was sent correctly, create record in database
+  if (request) {
+    const supportRequest = await SupportRequests.create({
+      user_id: user.dataValues.id,
+      subject: req.body.subject,
+      message: req.body.message
+    })
+
+    if (supportRequest) {
+      res.send({ result: 'Success' })
+    } else {
+      res.status(500).send({ result: 'Unexpected error.' })
+    }
+  } else {
+    res.status(500).send({ result: 'Unexpected error.' })
+  }
+}

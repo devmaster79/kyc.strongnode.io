@@ -22,7 +22,8 @@
     "plugins": [
         "react",
         "sonarjs",
-        "prettier"
+        "prettier",
+        "import"
     ],
     "rules": {
         // TODO: Let these be hard errors

@@ -5,8 +5,10 @@ import InputGroup from '../components/InputGroup';
 import Line from '../components/Line';
 import Input from '../components/Input';
 import Button from '../components/Button';
-import { EntryPage } from 'pages/style';
-import userService from 'services/userService';
+import { EntryPage } from './style';
+import userService from '../services/userService';
+import { ReactComponent as MagicImg } from '../assets/images/magic.svg';
+import EntryCard from '../components/EntryCard';
 
 export const Container = styled.div`
   display: flex;
@@ -51,6 +53,18 @@ export const Wrapper = styled.div`
   }
 `;
 
+const P = styled.p`
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 26px;
+  color: white;
+  margin-bottom: 20px;
+  text-align: center;
+  padding-left: 32px;
+  padding-right: 32px;
+`;
+
 const InputRow = styled.div`
   display: flex;
   justify-content: space-between;
@@ -81,6 +95,7 @@ function PrivateSaleInterestForm() {
   const navigate = useNavigate();
 
   const [investorName, setInvestorName] = useState('');
+  const [formSubmitted, setFormSubmitted] = useState('');
   const [investorTelegramId, setInvestorTelegramId] = useState('');
   const [investorCountry, setInvestorCountry] = useState('');
   const [investorCommitmentAmount, setInvestorCommitmentAmount] = useState('');
@@ -121,11 +136,18 @@ function PrivateSaleInterestForm() {
     setInvestorFundWebsite(event.target.value);
   };
 
+
   const handleCreateInvestor = useCallback(async (data) => {
     try {
       const res = await userService.createInvestor(data);
       if (res.data) {
-        navigate('/dashboard');
+        if (res.data.status == 'created')
+          setFormSubmitted(1)
+        else {
+          alert('this is TEMP error')
+          console.error(res.data)
+        }
+
       }
     } catch (err) {
       console.error('Error for create password', err);
@@ -150,136 +172,149 @@ function PrivateSaleInterestForm() {
 
   return (
     <EntryPage>
-      <Wrapper>
-        <h2 style={{ fontFamily: 'Halyard' }}>StrongNode Private Sale Interest Form</h2>
-        <p>
-          This form is for investors interested in participating in the private sale round for the
-          StrongNode token. Your responses will be kept private and will not be distributed without
-          prior consent.
-        </p>
-        <p>
-          A representative from StrongNode will reach out to you after your submittion is reviewed.
-          KYC will be required for all StrongNode private sale participants.
-        </p>
+      { formSubmitted &&
+        <EntryCard>
+          <MagicImg />
+          <h2 style={{ marginTop: 25, marginBottom: 20 }}>Form submitted!</h2>
+          <P>We&apos;ve sent a magic login link. Please check your email to login to StrongNodeID.</P>
+          <Button style={{ width: '30%' }} full onClick={() => navigate('/')}>
+            OK
+          </Button>
+        </EntryCard>
+      }
 
-        <Line full />
-        <form onSubmit={handleSubmit} style={{ marginTop: 30 }}>
-          <InputRow>
-            <InputCol>
-              <InputGroup>
-                <h5>Name *</h5>
-                <Input
-                  type="text"
-                  placeholder="Name"
-                  id="name"
-                  value={investorName}
-                  onChange={handleInvestorNameInputChange}
-                />
-              </InputGroup>
-            </InputCol>
+      { !formSubmitted &&
+        <Wrapper>
+          <h2 style={{ fontFamily: 'Halyard' }}>StrongNode Private Sale Interest Form</h2>
+          <p>
+            This form is for investors interested in participating in the private sale round for the
+            StrongNode token. Your responses will be kept private and will not be distributed without
+            prior consent.
+          </p>
+          <p>
+            A representative from StrongNode will reach out to you after your submittion is reviewed.
+            KYC will be required for all StrongNode private sale participants.
+          </p>
 
-            <InputCol>
-              <InputGroup>
-                <h5>Telegram Handle(@username)</h5>
-                <Input
-                  type="text"
-                  placeholder="@username"
-                  id="telegram"
-                  value={investorTelegramId}
-                  onChange={handleInvestorTelegramIdInputChange}
-                />
-              </InputGroup>
-            </InputCol>
-          </InputRow>
+          <Line full />
+          <form onSubmit={handleSubmit} style={{ marginTop: 30 }}>
+            <InputRow>
+              <InputCol>
+                <InputGroup>
+                  <h5>Name *</h5>
+                  <Input
+                      type="text"
+                      placeholder="Name"
+                      id="name"
+                      value={investorName}
+                      onChange={handleInvestorNameInputChange}
+                  />
+                </InputGroup>
+              </InputCol>
 
-          <InputRow>
-            <InputCol>
-              <InputGroup>
-                <h5>Country of Residence*</h5>
-                <Input
-                  type="text"
-                  placeholder="USA"
-                  id="country"
-                  value={investorCountry}
-                  onChange={handleInvestorCountryInputChange}
-                />
-              </InputGroup>
-            </InputCol>
+              <InputCol>
+                <InputGroup>
+                  <h5>Telegram Handle(@username)</h5>
+                  <Input
+                      type="text"
+                      placeholder="@username"
+                      id="telegram"
+                      value={investorTelegramId}
+                      onChange={handleInvestorTelegramIdInputChange}
+                  />
+                </InputGroup>
+              </InputCol>
+            </InputRow>
 
-            <InputCol>
-              <InputGroup>
-                <h5>Commitment amount (Minimum $500) *</h5>
-                <Input
-                  type="text"
-                  placeholder="500"
-                  id="amount"
-                  value={investorCommitmentAmount}
-                  onChange={handleInvestorCommitmentAmountInputChange}
-                />
-              </InputGroup>
-            </InputCol>
-          </InputRow>
+            <InputRow>
+              <InputCol>
+                <InputGroup>
+                  <h5>Country of Residence*</h5>
+                  <Input
+                      type="text"
+                      placeholder="USA"
+                      id="country"
+                      value={investorCountry}
+                      onChange={handleInvestorCountryInputChange}
+                  />
+                </InputGroup>
+              </InputCol>
 
-          <InputRow>
-            <InputCol>
-              <InputGroup>
-                <h5>Wallet address</h5>
-                <Input
-                  type="text"
-                  placeholder="Wallet address"
-                  id="wallet-address"
-                  value={investorWalletAddress}
-                  onChange={handleInvestorWalletAddressInputChange}
-                />
-              </InputGroup>
-            </InputCol>
+              <InputCol>
+                <InputGroup>
+                  <h5>Commitment amount (Minimum $500) *</h5>
+                  <Input
+                      type="text"
+                      placeholder="500"
+                      id="amount"
+                      value={investorCommitmentAmount}
+                      onChange={handleInvestorCommitmentAmountInputChange}
+                  />
+                </InputGroup>
+              </InputCol>
+            </InputRow>
 
-            <InputCol>
-              <InputGroup>
-                <h5>Email *</h5>
-                <Input
-                  type="text"
-                  placeholder="Email address"
-                  id="email"
-                  value={investorEmail}
-                  onChange={handleInvestorEmailInputChange}
-                />
-              </InputGroup>
-            </InputCol>
-          </InputRow>
+            <InputRow>
+              <InputCol>
+                <InputGroup>
+                  <h5>Wallet address</h5>
+                  <Input
+                      type="text"
+                      placeholder="Wallet address"
+                      id="wallet-address"
+                      value={investorWalletAddress}
+                      onChange={handleInvestorWalletAddressInputChange}
+                  />
+                </InputGroup>
+              </InputCol>
 
-          <InputRow>
-            <InputCol>
-              <InputGroup>
-                <h5>Fund name</h5>
-                <Input
-                  type="text"
-                  placeholder="Fund name"
-                  id="fund-name"
-                  value={investorFundName}
-                  onChange={handleInvestorFundNameInputChange}
-                />
-              </InputGroup>
-            </InputCol>
+              <InputCol>
+                <InputGroup>
+                  <h5>Email *</h5>
+                  <Input
+                      type="text"
+                      placeholder="Email address"
+                      id="email"
+                      value={investorEmail}
+                      onChange={handleInvestorEmailInputChange}
+                  />
+                </InputGroup>
+              </InputCol>
+            </InputRow>
 
-            <InputCol>
-              <InputGroup>
-                <h5>Fund website(if applicable)</h5>
-                <Input
-                  type="text"
-                  placeholder="https://www.google.com"
-                  id="fund-website"
-                  value={investorFundWebsite}
-                  onChange={handleInvestorFundWebsiteInputChange}
-                />
-              </InputGroup>
-            </InputCol>
-          </InputRow>
-          <SubmitButtonWrapper>
-            <Button type="submit">Submit</Button>
-          </SubmitButtonWrapper>
-        </form>
-      </Wrapper>
+            <InputRow>
+              <InputCol>
+                <InputGroup>
+                  <h5>Fund name</h5>
+                  <Input
+                      type="text"
+                      placeholder="Fund name"
+                      id="fund-name"
+                      value={investorFundName}
+                      onChange={handleInvestorFundNameInputChange}
+                  />
+                </InputGroup>
+              </InputCol>
+
+              <InputCol>
+                <InputGroup>
+                  <h5>Fund website(if applicable)</h5>
+                  <Input
+                      type="text"
+                      placeholder="https://www.google.com"
+                      id="fund-website"
+                      value={investorFundWebsite}
+                      onChange={handleInvestorFundWebsiteInputChange}
+                  />
+                </InputGroup>
+              </InputCol>
+            </InputRow>
+            <SubmitButtonWrapper>
+              <Button type="submit">Submit</Button>
+            </SubmitButtonWrapper>
+          </form>
+        </Wrapper>
+      }
     </EntryPage>
   );
 }

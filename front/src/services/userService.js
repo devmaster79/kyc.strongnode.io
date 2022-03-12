@@ -1,9 +1,17 @@
 import axios from 'axios';
-import { upload_profile_img, profile_url, investor_url } from '../utils/config';
+import {
+  upload_profile_img,
+  profile_url,
+  investor_url,
+  create_support_request
+} from '../utils/config';
 
 export default {
   getProfile() {
     return axios.get(profile_url);
+  },
+  getInvestorDetails() {
+    return axios.get(get_investor_details);
   },
   createProfile(data) {
     return axios.post(profile_url, data);
@@ -20,5 +28,8 @@ export default {
       user_name: user_name,
       image_data: img_data
     });
+  },
+  createSupportRequest(data) {
+    return axios.post(create_support_request, data);
   }
 };

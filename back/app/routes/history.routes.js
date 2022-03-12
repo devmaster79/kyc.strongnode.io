@@ -12,9 +12,11 @@ module.exports = (app) => {
 
     // Retrieve all vested History
     router.get("/findAllVested", auth(MODE_FULL), history.findAllVested);
-
+    router.get("/findVestedDetails", auth(MODE_FULL),  history.findVestedDetails);
     // Retrieve all withdrawn History
     router.get("/findAllWithdrawn", auth(MODE_FULL),  history.findAllWithdrawn);
+    router.get("/findWithdrawnDetails", auth(MODE_FULL),  history.findWithdrawnDetails);
+
 
     app.use("/api/history", auth(MODE_FULL), router);
   };

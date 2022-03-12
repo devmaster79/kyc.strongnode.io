@@ -33,7 +33,7 @@ jobs:
       - name: Install npm dependencies
         run: cd front && yarn
       - name: Run build task
-        run: cd front && yarn build --if-present
+        run: cd front && yarn build
         env:
            CI: false
       - name: Add .env file
@@ -48,7 +48,7 @@ jobs:
             REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
             REMOTE_USER: ${{ secrets.REMOTE_USER }}
             TARGET: ${{ secrets.REMOTE_TARGET }}
-            EXCLUDE: "/.git/, /dist/, /node_modules/"
+            EXCLUDE: "/.git/, /node_modules/"
       - name: run npm install on server
         uses: appleboy/ssh-action@master
         with:

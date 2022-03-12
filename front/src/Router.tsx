@@ -3,6 +3,7 @@ import DashboardLayout from "./layouts/dashboard";
 import Dashboard from "./pages/Dashboard";
 import UserProfile from "./pages/UserProfile/UserProfile";
 import Profile from "./pages/profile";
+import ContactSupport from "./pages/contactSupport";
 import { Register } from "./pages/auth/Register";
 import { VerifyEmail } from "./pages/auth/VerifyEmail";
 import { SignInWithPassword } from "./pages/auth/SignInWithPassword";
@@ -19,6 +20,7 @@ export const ROUTES = {
     LAYOUT: "/dashboard",
     APP: "/dashboard/app",
     PROFILE: "/dashboard/profile",
+    CONTACT_SUPORT: "contact-support",
     GROWTH: "/dashboard/growth",
     SYNC: "/dashboard/sync",
     SHIELD: "/dashboard/shield",
@@ -47,6 +49,7 @@ export default function Router() {
         <Route element={<DashboardLayout />}>
           <Route path={ROUTES.DASHBOARD.APP} element={<Dashboard />} />
           <Route path={ROUTES.DASHBOARD.PROFILE} element={<UserProfile />} />
+          <Route path={ROUTES.DASHBOARD.CONTACT_SUPORT} element={<ContactSupport />} />
           <Route path={ROUTES.DASHBOARD.GROWTH} element={<Dashboard />} />
           <Route path={ROUTES.DASHBOARD.SYNC} element={<Dashboard />} />
           <Route path={ROUTES.DASHBOARD.SHIELD} element={<Dashboard />} />
