@@ -137,6 +137,4 @@ exports.sendSupportRequest = async (user, message) => {
   }
 }
 
-exports.sendTemplatedEmail = sendTemplatedEmail
-
 // todo add the send bulk emails - not sure if we would need this?
