@@ -3,6 +3,7 @@ import {
   upload_profile_img,
   profile_url,
   investor_url,
+  get_investor_details,
   create_support_request
 } from '../utils/config';
 
