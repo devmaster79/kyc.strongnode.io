@@ -7,8 +7,8 @@ import { useFormik, FormikProvider } from 'formik';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DateTimePicker from '@mui/lab/DateTimePicker';
-import userService from 'services/userService';
-import historyService from 'services/historyService';
+import userService from '../services/userService';
+import historyService from '../services/historyService';
 
 const CardStyle = styled(Box)(({ theme }) => ({
   background: 'rgba(255, 255, 255, 0.1)',

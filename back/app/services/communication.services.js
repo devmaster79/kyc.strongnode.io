@@ -7,7 +7,6 @@ const emailRegExp =
 
 const AWS = require('aws-sdk');
 const defaultRegion = 'us-west-2';
-
 const defaultEmailSource = 'StrongNode Notifications <no-reply@strongnode.io>';
 const defaultSmsOrigin = '+18555460621';
 const defaultSmsSenderId = 'MySenderID';
