@@ -7,26 +7,9 @@ import EntryCard from "../../components/EntryCard";
 import Input from "../../components/Input";
 import InputGroup from "../../components/InputGroup";
 import { ReactComponent as LockIcon } from "../../icons/lock.svg";
-import { ReactComponent as MailIcon } from "../../icons/message.svg";
 import * as authService from "services/auth";
 import { OtherOptions } from "../../components/OtherOptions";
 import { useService } from "hooks/useService";
-
-const UserInfoWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  color: #4d79f6;
-  margin-top: 30px;
-  p {
-    font-style: normal;
-    font-size: 16px;
-    line-height: 22px;
-    color: #4d79f6;
-    margin: 0 0 0 10px;
-  }
-`;
 
 export function SignInWithPassword() {
   const navigate = useNavigate();
@@ -46,7 +29,7 @@ export function SignInWithPassword() {
   let message;
   switch (authState.result) {
     case "loading":
-      message = "Verifying the password...";
+      message = <Info>Verifying the password...</Info>;
       break;
     case "validation-error":
       message = <Error>Wrong password. Please try agian.</Error>;
@@ -99,6 +82,16 @@ export function SignInWithPassword() {
 }
 
 const AuthMsg = styled.div``;
-const Error = styled.span`
-  color: red;
-`;
+
+const Error = styled("p")({
+  textAlign: "center",
+  marginBottom: "10px",
+  color: '#ff6868',
+  fontWeight: 'bold',
+});
+
+const Info = styled("p")({
+  textAlign: "center",
+  marginBottom: "10px",
+  color: "#dddddd",
+});
