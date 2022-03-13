@@ -10,7 +10,7 @@ const verifyToken = (...authModes) => (req, res, next) => {
 
   let decoded = tokenService.decode(token, authModes);
   if (!decoded) {
-    return res.status(401).send("Invalid Token");
+    return res.status(401).send({ result: 'unauthorized-error' });
   }
   req.user = decoded;
   return next();
