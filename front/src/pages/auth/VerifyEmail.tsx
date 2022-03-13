@@ -1,13 +1,13 @@
-import { Form, Formik, FormikHelpers } from "formik";
+import { Form, Formik, FormikHelpers, Field } from "formik";
 import { EntryPage } from "../style";
 import Button from "../../components/Button";
 import EntryCard from "../../components/EntryCard";
-import Input from "../../components/Input";
 import ValidatedField from "../../components/ValidatedField";
 import { verifyEmailSchema } from "../../static/formSchemas";
 import * as authState from "../../services/auth";
 import styled from "styled-components";
-import { useService } from "hooks/useService";
+import { useService } from "../../hooks/useService";
+import { Input } from "@mui/material";
 
 export function VerifyEmail() {
   const { data: sendResult, call: sendVerificationEmail } = useService(
@@ -43,23 +43,25 @@ export function VerifyEmail() {
                 name="email"
                 onBlur={handleBlur}
                 placeholder="Email"
-                style={{ padding: "16px 20px 16px 40px" }}
+                style={{ padding: "16px 20px 16px 40px", width: "100%" }}
                 type="email"
                 validateField={validateField}
               />
-              {/* eslint-disable prettier/prettier */}
-              <SendMsg>
-                {sendResult.result === "loading" && "Sending the email..."}
-                {sendResult.result === "success" &&
-                  "We have successfully sent you an email. You can close this tab now."}
-                {sendResult.result === "validation-error" && (
-                  <Error>Wrong email. Please try agian.</Error>
-                )}
-                {sendResult.result === "unexpected-error" && (
-                  <Error>Something went wrong. Please try again later.</Error>
-                )}
-              </SendMsg>
-              {/* eslint-enable prettier/prettier */}
+              {sendResult.result === "loading" && (
+                <Info>Sending the email...</Info>
+              )}
+              {sendResult.result === "success" && (
+                <Info>
+                  We have successfully sent you an email. You can close this tab
+                  now.
+                </Info>
+              )}
+              {sendResult.result === "validation-error" && (
+                <Error>Wrong email. Please try agian.</Error>
+              )}
+              {sendResult.result === "unexpected-error" && (
+                <Error>Something went wrong. Please try again later.</Error>
+              )}
               <Button disabled={isSubmitting} type="submit" full>
                 Confirm
               </Button>
@@ -71,9 +73,14 @@ export function VerifyEmail() {
   );
 }
 
-const SendMsg = styled.div`
-  margin-bottom: 10px;
-`;
-const Error = styled.div`
-  color: #e7b3ff;
-`;
+const Error = styled("p")({
+  textAlign: "center",
+  marginBottom: "10px",
+  color: '#ff6868',
+});
+
+const Info = styled("p")({
+  textAlign: "center",
+  marginBottom: "10px",
+  color: "#dddddd",
+});
