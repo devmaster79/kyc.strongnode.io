@@ -1,6 +1,7 @@
 const db = require("../models");
 const User = db.users;
 const SupportRequests = db.supportrequests;
+const InvestorDetails = db.investordetails;
 const dotenv = require("dotenv");
 
 dotenv.config();
