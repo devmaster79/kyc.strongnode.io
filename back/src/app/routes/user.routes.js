@@ -4,7 +4,7 @@ const auth = require("../middleware/auth");
 const multer = require('multer')
 
 module.exports = (app) => {
-  const upload = multer({ dest: 'uploads/' })
+  const upload = multer({ dest: '../uploads/' })
   const router = require("express").Router();
 
   router.put("/createInvestor", auth(MODE_FULL), users.createInvestor);
