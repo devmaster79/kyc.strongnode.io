@@ -1,32 +1,28 @@
-const {
-    MODE_GUEST,
-    MODE_REGISTRATION,
-    MODE_2FA,
-    MODE_FULL,
-} = require('./TokenService');
-const routes = require("shared/routes");
-const { emailTemplatesNames } = require('../communication.services')
-const path = require('path');
+import { MODE_GUEST, MODE_REGISTRATION, MODE_2FA, MODE_FULL, AuthMode } from './TokenService';
+import * as routes from "shared/routes";
+import { emailTemplatesNames } from '../communication.services';
+import path from 'path';
+import { Model } from 'sequelize/types';
 
 class EmailAuthService {
     /**
+     * dbiro: these will be migrated correctly to typescript later
      * @param {typeof import('sequelize').Model} userRepository
      * @param {import('../communication.services')} communicationService
      * @param {import('./TokenService').TokenService} tokenService
      */
-    constructor(userRepository, communicationService, tokenService) {
-        this.__userRepository = userRepository
-        this.__communicationService = communicationService
-        this.__tokenService = tokenService
-    }
+    constructor(
+        private __userRepository: any,
+        private __communicationService: any,
+        private __tokenService: any
+    ) {}
 
     /**
      * send email with link for the next step
      * if not registered -> signin link
      * if registered -> signup link
-     * @param {string} email
      */
-    async sendVerificationEmail(email) {
+    async sendVerificationEmail(email: string) {
         email = email.toLowerCase();
         let link;
         const user = await this.__userRepository.findOne({ where: { email } });
@@ -47,27 +43,24 @@ class EmailAuthService {
     }
 
     /**
-     * @param {import("./TokenService").AuthMode} mode
+     * TODO: type user
      * @param {Object|undefined} user
      * @param {boolean} user.enable_qr,
      * @param {boolean} user.enable_sms,
      * @param {boolean} user.enable_password,
-     * @returns {string}
      */
-    __getURL(mode, token, user) {
+    __getURL(mode: AuthMode, token: string, user: any) {
         return (new URL(this.__getRoute(mode, token, user), process.env.FRONTEND_URL)).href;
     }
 
     /**
-     * @param {import("./TokenService").AuthMode} mode
-     * @param {string} token
+     * TODO: type user
      * @param {Object|undefined} user
      * @param {boolean} user.enable_qr,
      * @param {boolean} user.enable_sms,
      * @param {boolean} user.enable_password,
-     * @returns {string}
      */
-    __getRoute(mode, token, user) {
+    __getRoute(mode: AuthMode, token: string, user: any) {
         switch (mode.id) {
             case MODE_GUEST.id:
                 return ''
