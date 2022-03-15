@@ -1,14 +1,14 @@
 import * as React from 'react';
-import { useSnackbar } from 'notistack5';
-import Container from '@material-ui/core/Container';
-import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
-import Stack from '@material-ui/core/Stack';
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
-import Divider from '@material-ui/core/Divider';
-import LinearProgress from '@material-ui/core/LinearProgress';
-import styled from '@material-ui/core/styles/styled';
+import { useSnackbar } from 'notistack';
+import Container from '@mui/material/Container';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
+import Divider from '@mui/material/Divider';
+import LinearProgress from '@mui/material/LinearProgress';
+import styled from '@mui/material/styles/styled';
 import { useState, useEffect, useCallback, useRef } from 'react';
 import Status from '../components/Status';
 import MainTable from '../components/shared/MainTable';
@@ -210,7 +210,7 @@ export default function Dashboard() {
             variant: 'success'
           });
         } else {
-          enqueueSnackbar('Failed to Withdraw', { variant: 'fail' });
+          enqueueSnackbar('Failed to Withdraw', { variant: 'error' });
         }
       });
     } catch (error) {
@@ -243,7 +243,7 @@ export default function Dashboard() {
       } else {
         setHistory(result.data);
         if (result.data.length > 0) {
-          console.assert(result.data[0].date !== undefined, "No date provided");
+          console.assert(result.data[0].date !== undefined, 'No date provided');
           const expTime = new Date(result.data[0].date);
           expTime.setFullYear(expTime.getFullYear() + 1);
           setWithdrawTime(expTime);
@@ -279,13 +279,15 @@ export default function Dashboard() {
     }
     fetch();
   }, [refresh]);
+
   const handleDashboard = useCallback(async () => {
     if (localStorage.getItem('visit') !== 'true') {
       enqueueSnackbar('Welcome to the StrongNodeID dashboard', {
         variant: 'success'
       });
       localStorage.setItem('visit', 'true');
-    }}, []);
+    }
+  }, []);
 
   return (
     <Container ref={dash} maxWidth="xl" style={{ paddingBottom: 100 }}>
@@ -807,7 +809,7 @@ export default function Dashboard() {
                     PURCHASE DATE
                   </Typography>
                   <Typography color="white" variant="h6">
-                    { user?.purchased_date || '-' }
+                    {user?.purchased_date || '-'}
                   </Typography>
                 </Stack>
 
@@ -818,7 +820,7 @@ export default function Dashboard() {
                     PURCHASE ROUND
                   </Typography>
                   <Typography color="white" variant="h6">
-                    { user?.purchased_round || '-'}
+                    {user?.purchased_round || '-'}
                   </Typography>
                 </Stack>
 
@@ -829,7 +831,7 @@ export default function Dashboard() {
                     TOTAL PURCHASE
                   </Typography>
                   <Typography color="white" variant="h6">
-                    { user?.purchased_total || 0 }SNE
+                    {user?.purchased_total || 0}SNE
                   </Typography>
                 </Stack>
 
@@ -840,7 +842,7 @@ export default function Dashboard() {
                     INVESTMENT AMOUNT
                   </Typography>
                   <Typography color="white" variant="h6">
-                    ${ user?.investment_amount || 0 }
+                    ${user?.investment_amount || 0}
                   </Typography>
                 </Stack>
               </Stack>

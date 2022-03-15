@@ -1,17 +1,11 @@
-import { useState, useEffect, useCallback } from 'react';
-import styled from '@material-ui/core/styles/styled';
-import Stack from '@material-ui/core/Stack';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import useCollapseDrawer from '../../hooks/useCollapseDrawer';
+import styled from '@mui/material/styles/styled';
+import Stack from '@mui/material/Stack';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
-import ThemeSwitch from '../../components/ThemeSwitch';
-import userService from '../../services/userService';
-import { magic } from '../../utils/index';
-
-const DRAWER_WIDTH = 280;
-const COLLAPSE_WIDTH = 130;
+import ThemeSwitch from 'components/ThemeSwitch';
+import * as authService from 'services/auth';
 
 const APPBAR_MOBILE = 64;
 const APPBAR_DESKTOP = 74;
@@ -43,45 +37,40 @@ const ToolbarStyle = styled(Toolbar)(({ theme }) => ({
   }
 }));
 
-export default function DashboardNavbar({ onOpenSidebar }) {
-  const { isCollapse, onToggleCollapse } = useCollapseDrawer();
-  const [email, setEmail] = useState('');
+export default function DashboardNavbar() {
   const navigate = useNavigate();
-
-  useEffect(() => {
-    setEmail(localStorage.getItem('email'));
-  });
-
+  const email = localStorage.getItem('email');
   const signOut = () => {
-    magic.user.logout();
-    window.localStorage.clear();
-    userService.setToken(null);
-    navigate('/signin');
+    authService.signOut();
+    navigate('/verify-email');
   };
 
   const contactSupport = () => {
-    navigate('/dashboard/contact-support')
-  }
+    navigate('/dashboard/contact-support');
+  };
 
   const userProfile = () => {
-    navigate('/dashboard/profile')
-  }
+    navigate('/dashboard/profile');
+  };
 
   return (
     <RootStyle>
       <ToolbarStyle>
         <ThemeSwitch />
         <Stack direction="row" alignItems="center" spacing={{ xs: 0.5, sm: 1.5 }}>
-          <Typography onClick={userProfile} color="white" sx={{ fontSize: { xs: 10, md: 14 }, cursor: 'pointer' }}>
+          <Typography
+            onClick={userProfile}
+            color="white"
+            sx={{ fontSize: { xs: 10, md: 14 }, cursor: 'pointer' }}>
             {email}
           </Typography>
           <Typography color="white" sx={{ fontSize: { xs: 10, md: 14 } }}>
             |
           </Typography>
           <Typography
-              onClick={contactSupport}
-              color="white"
-              sx={{ fontSize: { xs: 10, md: 14 }, cursor: 'pointer' }}>
+            onClick={contactSupport}
+            color="white"
+            sx={{ fontSize: { xs: 10, md: 14 }, cursor: 'pointer' }}>
             Contact Support
           </Typography>
           <Typography color="white" sx={{ fontSize: { xs: 10, md: 14 } }}>

@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
-import styled from '@material-ui/core/styles/styled';
-import Box from '@material-ui/core/Box';
-import Stack from '@material-ui/core/Stack';
-import Drawer from '@material-ui/core/Drawer';
-import Hidden from '@material-ui/core/Hidden';
+import styled from '@mui/material/styles/styled';
+import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
+import Drawer from '@mui/material/Drawer';
+import Hidden from '@mui/material/Hidden';
 import useCollapseDrawer from '../../hooks/useCollapseDrawer';
 import Logo from '../../components/Logo';
 import Scrollbar from '../../components/Scrollbar';

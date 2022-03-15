@@ -1,4 +1,4 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   // change to .tsx if necessary
@@ -31,9 +31,7 @@ module.exports = {
       }
     ]
   },
-  plugins: [
-    new HtmlWebpackPlugin()
-  ],
+  plugins: [new HtmlWebpackPlugin()],
   externals: {
     react: 'React',
     'react-dom': 'ReactDOM'

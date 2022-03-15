@@ -1,4 +1,4 @@
-import Box from '@material-ui/core/Box';
+import Box from '@mui/material/Box';
 
 export default function SvgIconStyle({ src, color = 'inherit', sx }) {
   return (

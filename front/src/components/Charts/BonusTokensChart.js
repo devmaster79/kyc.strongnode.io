@@ -1,6 +1,6 @@
 import merge from 'lodash/merge';
 import ReactApexChart from 'react-apexcharts';
-import { useTheme } from '@material-ui/core/styles';
+import { useTheme } from '@mui/material/styles';
 import useCollapseDrawer from '../../hooks/useCollapseDrawer';
 import BaseOptionChart from './BaseOptionChart';
 

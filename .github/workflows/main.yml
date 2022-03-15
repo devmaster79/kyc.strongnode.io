@@ -36,9 +36,12 @@ jobs:
         run: cd front && yarn build
         env:
            CI: false
-      - name: Add .env file
+      - name: Add backend .env file
         shell: bash
         run: echo ${{ secrets.ENV_STAGE_FILE }} | base64 -d > back/.env
+      - name: Add frontend .env file
+        shell: bash
+        run: echo "REACT_APP_BASE_URL=https://stage.strongnode.io:8080" > back/.env
       - name: Deploy to Server
         uses: easingthemes/ssh-deploy@main
         env:
@@ -105,7 +108,7 @@ jobs:
           script: |
             export NVM_DIR=~/.nvm
             source ~/.nvm/nvm.sh
-            cd kyc/back && npm install
+            cd kyc/back && npm install && npm run build
       - name: restart pm2
         uses: appleboy/ssh-action@master
         with:

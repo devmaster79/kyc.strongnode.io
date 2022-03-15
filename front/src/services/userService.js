@@ -1,43 +1,18 @@
 import axios from 'axios';
-import { upload_profile_img, signup_url,
-  password_reset_url, password_reset_submit_url, verify_email_url, password_url,
-  profile_url, investor_url, signin_url, send_sms_url, test_auth_sms_url, auth_sms_url, auth_qr_url,
-  generate_qr_url, test_auth_qr_url, password_change, get_investor_details, create_support_request } from '../utils/config'
+import {
+  upload_profile_img,
+  profile_url,
+  investor_url,
+  get_investor_details,
+  create_support_request
+} from '../utils/config';
 
 export default {
-  signin(email, password) {
-    return axios.put(signin_url, {
-      email: email,
-      password: password
-    });
-  },
-  signup(data) {
-    return axios.post(signup_url, data);
-  },
-  requestPasswordReset(email) {
-    return axios.get(`${password_reset_url}?email=${email}`);
-  },
-  passwordResetSubmit(password, token) {
-    return axios.post(password_reset_submit_url,
-      {
-        password: password,
-        token: token,
-      });
-  },
   getProfile() {
     return axios.get(profile_url);
   },
   getInvestorDetails() {
-    return axios.get(get_investor_details)
-  },
-  verifyEmail(data) {
-    return axios.put(verify_email_url, data);
-  },
-  createPassword(data) {
-    return axios.put(password_url, data);
-  },
-  changePassword(data) {
-    return axios.put(password_change, data);
+    return axios.get(get_investor_details);
   },
   createProfile(data) {
     return axios.post(profile_url, data);
@@ -49,53 +24,13 @@ export default {
     return axios.put(profile_url, data);
   },
   uploadProfileImage(email, user_name, img_data) {
-    return axios.put(upload_profile_img,
-      {
-        email: email,
-        user_name: user_name,
-        image_data: img_data
-      });
-  },
-  setToken(token) {
-    token ? localStorage.setItem('token', token) : localStorage.removeItem('token') ;
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    return axios.put(upload_profile_img, {
+      email: email,
+      user_name: user_name,
+      image_data: img_data
+    });
   },
   createSupportRequest(data) {
-    return axios.post(create_support_request, data)
-  },
-  sendSMS(number) {
-    return axios.post(send_sms_url, {
-      number: number
-    });
-  },
-
-  /**
- * Check SMS code validity but doesn't do anything else.
- * useful for profile SMS auth setup.
- */
-
-  testAuthSMS(smscode) {
-    return axios.get(`${test_auth_sms_url}?smscode=${smscode}`)
-  },
-
-  /**
- * Check SMS code validity and progress the auth flow in case of valid sms.
- */
-  authSMS(smscode) {
-    return axios.get(`${auth_sms_url}?smscode=${smscode}`)
-  },
-
-  authQR(otp) {
-    return axios.post(auth_qr_url, {
-      token: otp
-    });
-  },
-  generateQR() {
-    return axios.put(generate_qr_url);
-  },
-  testAuthQR(otp) {
-    return axios.post(test_auth_qr_url, {
-      token: otp
-    });
+    return axios.post(create_support_request, data);
   }
-}
+};

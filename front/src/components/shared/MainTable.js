@@ -1,13 +1,13 @@
-import { useState, useEffect } from 'react';
-import Table from '@material-ui/core/Table';
-import TableRow from '@material-ui/core/TableRow';
-import TableHead from '@material-ui/core/TableHead';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TablePagination from '@material-ui/core/TablePagination';
-import Typography from '@material-ui/core/Typography';
-import Stack from '@material-ui/core/Stack';
+import { useState } from 'react';
+import Table from '@mui/material/Table';
+import TableRow from '@mui/material/TableRow';
+import TableHead from '@mui/material/TableHead';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TablePagination from '@mui/material/TablePagination';
+import Typography from '@mui/material/Typography';
+import Stack from '@mui/material/Stack';
 import Scrollbar from '../Scrollbar';
 import { fDate } from '../../utils/formatTime';
 
@@ -53,9 +53,9 @@ export default function MainTable({ dataSet, columns, fetchData, setRefresh, ove
                 <TableRow key={row.id}>
                   {columns.map((column) => (
                     <TableCell key={column.id}>
-                      { overwrittenFields[column.id] ? overwrittenFields[column.id](row[column.id]) :
+                      {overwrittenFields[column.id] ? overwrittenFields[column.id](row[column.id]) :
                         <Typography variant="h5" color="white">
-                          { column.id === 'date' ? fDate(row[column.id]) : row[column.id] }
+                          {column.id === 'date' ? fDate(row[column.id]) : row[column.id]}
                         </Typography>
                       }
                     </TableCell>

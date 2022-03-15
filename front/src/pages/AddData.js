@@ -1,6 +1,6 @@
-import { useSnackbar } from 'notistack5';
-import { Container, Box, Stack, Button, Select, TextField, MenuItem } from '@material-ui/core';
-import styled from '@material-ui/core/styles/styled';
+import { useSnackbar } from 'notistack';
+import { Container, Box, Stack, Button, Select, TextField, MenuItem } from '@mui/material';
+import styled from '@mui/material/styles/styled';
 import { useState, useEffect } from 'react';
 import * as Yup from 'yup';
 import { useFormik, FormikProvider } from 'formik';
@@ -64,7 +64,7 @@ export default function Dashboard() {
               variant: 'success'
             });
           } else {
-            enqueueSnackbar('Failed to Add Data', { variant: 'fail' });
+            enqueueSnackbar('Failed to Add Data', { variant: 'error' });
           }
         });
       } catch (error) {

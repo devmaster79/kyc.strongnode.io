@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { styled, alpha } from '@material-ui/core/styles';
-import { Box, Input, Slide, Button, InputAdornment, ClickAwayListener } from '@material-ui/core';
-import { MIconButton } from '../../components/@material-extend';
+import { styled, alpha } from '@mui/material/styles';
+import { Input, Slide, Button, InputAdornment, ClickAwayListener } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
 
 const APPBAR_MOBILE = 64;
 const APPBAR_DESKTOP = 92;
@@ -43,9 +43,9 @@ export default function Searchbar() {
     <ClickAwayListener onClickAway={handleClose}>
       <div>
         {!isOpen && (
-          <MIconButton onClick={handleOpen}>
+          <IconButton onClick={handleOpen}>
             {/* <Icon icon={searchFill} width={20} height={20} /> */}
-          </MIconButton>
+          </IconButton>
         )}
 
         <Slide direction="down" in={isOpen} mountOnEnter unmountOnExit>

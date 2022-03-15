@@ -1,7 +1,7 @@
 import merge from 'lodash/merge';
 import ReactApexChart from 'react-apexcharts';
-import Stack from '@material-ui/core/Stack';
-import { useTheme } from '@material-ui/core/styles';
+import Stack from '@mui/material/Stack';
+import { useTheme } from '@mui/material/styles';
 import BaseOptionChart from './BaseOptionChart';
 
 const Lockup1 = [80];

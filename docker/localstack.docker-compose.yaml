@@ -12,4 +12,24 @@ services:
       - DATA_DIR=/tmp/localstack/data
     volumes:
       - './.localstack:/tmp/localstack'
+      - './.aws:/root/.aws'
       - '/var/run/docker.sock:/var/run/docker.sock'
+  localstack-settings:
+    depends_on:
+      - localstack
+    image: localstack/localstack:latest
+    volumes:
+      - './.localstack:/tmp/localstack'
+      - './.aws:/root/.aws'
+      - '/var/run/docker.sock:/var/run/docker.sock'
+    entrypoint: >
+      sh -c '
+      sleep 10 &&
+      echo "SETUP CREDENTIALS" &&
+      echo "localstack\nlocalstack\neu-west-1\njson\n" | aws configure --profile localstack &&
+      echo "STARTING VERIFY EMAIL" &&
+      aws ses verify-email-identity
+      --email-address no-reply@strongnode.io
+      --region eu-west-1
+      --profile localstack
+      --endpoint-url=http://localstack:4566'
