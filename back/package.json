@@ -5,10 +5,10 @@
   "scripts": {
     "start": "NODE_ENV=development ts-node src/server.ts",
     "build": "tsc --build tsconfig.json",
-    "test": "mocha -r ts-node/register ./app/**/*.test.js",
-    "test-watch": "mocha -r ts-node/register ./app/**/*.test.js --watch",
-    "migrate:up": "node ./app/scripts/run-migrations.js up",
-    "migrate:down": "node ./app/scripts/run-migrations.js down"
+    "test": "mocha -r ts-node/register ./src/app/**/*.test.js",
+    "test-watch": "mocha -r ts-node/register ./src/app/**/*.test.js --watch",
+    "migrate:up": "node ./src/app/scripts/run-migrations.js up",
+    "migrate:down": "node ./src/app/scripts/run-migrations.js down"
   },
   "keywords": [
     "nodejs",

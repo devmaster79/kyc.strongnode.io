@@ -8,8 +8,9 @@ if (process.argv.length === 2) {
 const myArgs = process.argv
 
 // load dotenv
+const path = require('path');
 const dotenv = require('dotenv');
-dotenv.config({ path: __dirname + '/../../.env' });
+dotenv.config({ path: path.join(__dirname, '../../../.env') });
 
 const dbConfig = require('../config/db.config.js');
 const { Umzug, SequelizeStorage } = require('umzug');
