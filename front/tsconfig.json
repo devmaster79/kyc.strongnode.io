@@ -17,6 +17,7 @@
         "strictNullChecks": true,
         "moduleResolution": "Node",
         "noEmit": true,
+        "typeRoots": ["./src/types"],
         "rootDirs": [
             "src"
         ],
