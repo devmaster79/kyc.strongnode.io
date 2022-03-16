@@ -41,7 +41,7 @@ jobs:
         run: echo ${{ secrets.ENV_STAGE_FILE }} | base64 -d > back/.env
       - name: Add frontend .env file
         shell: bash
-        run: echo "REACT_APP_BASE_URL=https://stage.strongnode.io:8080" > back/.env
+        run: echo "REACT_APP_BASE_URL=https://stage.strongnode.io:8080" > front/.env
       - name: Deploy to Server
         uses: easingthemes/ssh-deploy@main
         env:
@@ -58,7 +58,7 @@ jobs:
           host: ${{ secrets.REMOTE_HOST }}
           username: ${{ secrets.REMOTE_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
-          script: cd kyc/back && npm install
+          script: cd kyc/back && npm install && npm run build
       - name: restart pm2
         uses: appleboy/ssh-action@master
         with:
@@ -86,9 +86,12 @@ jobs:
         run: cd front && yarn build --if-present
         env:
            CI: false
-      - name: Add .env file
+      - name: Add backend .env file
         shell: bash
         run: echo ${{ secrets.ENV_PROD_FILE }} | base64 -d > back/.env
+      - name: Add frontend .env file
+        shell: bash
+        run: echo "REACT_APP_BASE_URL=https://stage.strongnode.io:8080" > front/.env # TODO
       - name: Deploy to Server
         uses: easingthemes/ssh-deploy@main
         env:
