@@ -1,4 +1,4 @@
-import type { CustomTheme as CustomTheme } from './theme'
+import type { CustomTheme as CustomTheme } from '../theme'
 
 // and extend them!
 declare module '@emotion/styled' {
