@@ -31,9 +31,9 @@ jobs:
         with:
           node-version: '14.17.5'
       - name: Install npm dependencies
-        run: cd front && yarn
+        run: cd front && NODE_OPTIONS=--max_old_space_size=4096 yarn
       - name: Run build task
-        run: cd front && yarn build
+        run: cd front && NODE_OPTIONS=--max_old_space_size=4096 yarn build
         env:
            CI: false
       - name: Add backend .env file
@@ -52,13 +52,13 @@ jobs:
             REMOTE_USER: ${{ secrets.REMOTE_USER }}
             TARGET: ${{ secrets.REMOTE_TARGET }}
             EXCLUDE: "/.git/, /node_modules/"
-      - name: run npm install on server
+      - name: run npm ci on server
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.REMOTE_HOST }}
           username: ${{ secrets.REMOTE_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
-          script: cd kyc/back && npm install && npm run build
+          script: cd kyc/back && NODE_OPTIONS=--max_old_space_size=4096 npm ci && npm run build
       - name: restart pm2
         uses: appleboy/ssh-action@master
         with:
@@ -102,7 +102,7 @@ jobs:
             REMOTE_USER: ${{ secrets.REMOTE_PROD_USER }}
             TARGET: ${{ secrets.REMOTE_PROD_TARGET }}
             EXCLUDE: "/.git/, /dist/, /node_modules/"
-      - name: run npm install on server
+      - name: run npm ci on server
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.REMOTE_PROD_HOST }}
@@ -111,7 +111,7 @@ jobs:
           script: |
             export NVM_DIR=~/.nvm
             source ~/.nvm/nvm.sh
-            cd kyc/back && npm install && npm run build
+            cd kyc/back && NODE_OPTIONS=--max_old_space_size=4096 npm ci && npm run build
       - name: restart pm2
         uses: appleboy/ssh-action@master
         with:
