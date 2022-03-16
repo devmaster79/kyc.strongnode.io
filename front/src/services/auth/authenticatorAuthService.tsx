@@ -3,7 +3,6 @@ import * as urls from "../../utils/config";
 import {
   BannedError,
   GenericResponse,
-  Success,
   UnauthorizedError,
   UnexpectedError,
   ValidationError,
@@ -12,7 +11,7 @@ import {
 /**
  * Verify OTP and set token
  */
-export async function authByQRCode(
+export async function authByAuthenticator(
   otp: string
 ): Promise<
   | GenericResponse
@@ -20,29 +19,29 @@ export async function authByQRCode(
   | ValidationError<"token", undefined>
   | ValidationError<"token", "wrong">
 > {
-  const data = await getResponseData(urls.authByQRCode, { token: otp });
+  const data = await getResponseData(urls.authByAuthenticator, { token: otp });
   if (data.token) {
     setToken(data.token);
   }
   return data;
 }
 
-export async function generateQRCode(): Promise<
+export async function generateAuthenticatorQRCode(): Promise<
   { result: "success"; qrcode: string } | UnauthorizedError | UnexpectedError
 > {
-  return await getResponseData(urls.generateQRCode);
+  return await getResponseData(urls.generateAuthenticatorQRCode);
 }
 
-export async function enableQRAuth(
+export async function enableAuthenticatorAuth(
   token: string
 ): Promise<
   | GenericResponse
   | ValidationError<"token", undefined>
   | ValidationError<"token", "wrong">
 > {
-  return await getResponseData(urls.enableQRAuth, { token });
+  return await getResponseData(urls.enableAuthenticatorAuth, { token });
 }
 
-export async function disableQRAuth(): Promise<GenericResponse> {
-  return await getResponseData(urls.disableQRAuth);
+export async function disableAuthenticatorAuth(): Promise<GenericResponse> {
+  return await getResponseData(urls.disableAuthenticatorAuth);
 }

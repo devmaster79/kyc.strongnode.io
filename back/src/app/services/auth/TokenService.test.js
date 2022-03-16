@@ -54,7 +54,7 @@ describe('TokenService', () => {
     it('should be able to determine the next mode', () => {
         let nextMode = tokenService.determineNextMode({
             enable_sms: false,
-            enable_qr:false,
+            enable_authenticator: false,
             enable_password: false,
         }, TokenService.MODE_GUEST);
 
@@ -64,7 +64,7 @@ describe('TokenService', () => {
     it('should be able to determine the next mode 2fa', () => {
         let nextMode = tokenService.determineNextMode({
             enable_sms: true,
-            enable_qr:true,
+            enable_authenticator: true,
             enable_password: true,
         }, TokenService.MODE_GUEST);
 

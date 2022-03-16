@@ -45,7 +45,7 @@ class EmailAuthService {
     /**
      * TODO: type user
      * @param {Object|undefined} user
-     * @param {boolean} user.enable_qr,
+     * @param {boolean} user.enable_authenticator,
      * @param {boolean} user.enable_sms,
      * @param {boolean} user.enable_password,
      */
@@ -56,7 +56,7 @@ class EmailAuthService {
     /**
      * TODO: type user
      * @param {Object|undefined} user
-     * @param {boolean} user.enable_qr,
+     * @param {boolean} user.enable_authenticator,
      * @param {boolean} user.enable_sms,
      * @param {boolean} user.enable_password,
      */
@@ -67,7 +67,7 @@ class EmailAuthService {
             case MODE_REGISTRATION.id:
                 return `${routes.REGISTER}?token=${token}`
             case MODE_2FA.id:
-                if (user.enable_qr)
+                if (user.enable_authenticator)
                     return `${routes.SIGN_IN_WITH_AUTHENTICATOR}?token=${token}`
                 if (user.enable_sms)
                     return `${routes.SIGN_IN_WITH_SMS}?token=${token}`

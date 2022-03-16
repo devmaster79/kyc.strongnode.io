@@ -13,11 +13,11 @@ import { useService } from 'hooks/useService';
 export function SignInWithAuthenticator() {
   const navigate = useNavigate();
   const [totp, setTOTP] = useState('');
-  const { data: authState, call: authByQRCode } = useService(authService.authByQRCode);
+  const { data: authState, call: authByAuthenticator } = useService(authService.authByAuthenticator);
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    await authByQRCode(totp);
+    await authByAuthenticator(totp);
     if (authState.result == 'success') {
       navigate('/sign-in-with-token');
     }

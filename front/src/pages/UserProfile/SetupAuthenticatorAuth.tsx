@@ -12,11 +12,11 @@ import {
   SingleServiceData,
   useServices,
 } from "hooks/useService";
-import { enableQRAuth, generateQRCode } from "services/auth";
+import { enableAuthenticatorAuth, generateAuthenticatorQRCode } from "services/auth";
 
 const authServices = {
-  enableQRAuth,
-  generateQRCode,
+  enableAuthenticatorAuth,
+  generateAuthenticatorQRCode,
 };
 
 export function SetupAuthenticatorAuth({ onSuccess }: { onSuccess: () => void }) {
@@ -33,7 +33,7 @@ export function SetupAuthenticatorAuth({ onSuccess }: { onSuccess: () => void })
   };
 
   const enableAuthenticatorAuth = () => {
-    authService.enableQRAuth(totp).then((data) => {
+    authService.enableAuthenticatorAuth(totp).then((data) => {
       if (data.result == "success") {
         onSuccess();
       }
@@ -41,12 +41,12 @@ export function SetupAuthenticatorAuth({ onSuccess }: { onSuccess: () => void })
   };
 
   useEffect(() => {
-    authService.generateQRCode();
+    authService.generateAuthenticatorQRCode();
   }, []);
 
   const qrCode =
-    (authService.dataPerService.generateQRCode.result == "success" &&
-      authService.dataPerService.generateQRCode.qrcode) ||
+    (authService.dataPerService.generateAuthenticatorQRCode.result == "success" &&
+      authService.dataPerService.generateAuthenticatorQRCode.qrcode) ||
     undefined;
 
   return (
@@ -79,10 +79,10 @@ export function SetupAuthenticatorAuth({ onSuccess }: { onSuccess: () => void })
 }
 
 const Msgs = (props: { authService: ServicesProps<typeof authServices> }) => {
-  if (props.authService.last === "generateQRCode")
+  if (props.authService.last === "generateAuthenticatorQRCode")
     return <GenerateQRCodeMsg data={props.authService.data} />;
-  if (props.authService.last === "enableQRAuth")
-    return <EnableQrAuthMsg data={props.authService.data} />;
+  if (props.authService.last === "enableAuthenticatorAuth")
+    return <EnableAuthenticatorAuthMsg data={props.authService.data} />;
   return (
     <Info>Please setup MFA on authenticator app like Google authenticator</Info>
   );
@@ -92,13 +92,13 @@ interface MsgProps<T extends (...args: any) => any> {
   data: SingleServiceData<T>;
 }
 
-const GenerateQRCodeMsg = (props: MsgProps<typeof generateQRCode>) => {
+const GenerateQRCodeMsg = (props: MsgProps<typeof generateAuthenticatorQRCode>) => {
   if (props.data.result == "loading") return <></>;
   if (props.data.result == "success") return <></>;
   return <Error>We could not send you an SMS. Please try again later.</Error>;
 };
 
-const EnableQrAuthMsg = (props: MsgProps<typeof enableQRAuth>) => {
+const EnableAuthenticatorAuthMsg = (props: MsgProps<typeof enableAuthenticatorAuth>) => {
   if (props.data.result == "loading")
     return <Info>Verifying the password...</Info>;
   if (props.data.result == "validation-error")

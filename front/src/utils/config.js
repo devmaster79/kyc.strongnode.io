@@ -18,10 +18,10 @@ export const authBySMSCode = `${base_url}/auth/authBySMSCode`;
 export const sendSMSAndSaveNumber = `${base_url}/auth/sendSMSAndSaveNumber`;
 export const enableSMSAuth = `${base_url}/auth/enableSMSAuth`;
 export const disableSMSAuth = `${base_url}/auth/disableSMSAuth`;
-export const authByQRCode = `${base_url}/auth/authByQRCode`;
-export const generateQRCode = `${base_url}/auth/generateQRCode`;
-export const enableQRAuth = `${base_url}/auth/enableQRAuth`;
-export const disableQRAuth = `${base_url}/auth/disableQRAuth`;
+export const authByAuthenticator = `${base_url}/auth/authByAuthenticator`;
+export const generateAuthenticatorQRCode = `${base_url}/auth/generateAuthenticatorQRCode`;
+export const enableAuthenticatorAuth = `${base_url}/auth/enableAuthenticatorAuth`;
+export const disableAuthenticatorAuth = `${base_url}/auth/disableAuthenticatorAuth`;
 
 // HISTORY
 export const findAllVested = `${base_url}/history/findAllVested`;

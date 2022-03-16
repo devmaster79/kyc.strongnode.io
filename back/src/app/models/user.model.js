@@ -39,11 +39,8 @@ module.exports = (sequelize, Sequelize) => {
     smscode: {
       type: Sequelize.STRING
     },
-    qr_secret: {
+    authenticator_qr_secret: {
       type: Sequelize.STRING
-    },
-    qrcode: {
-      type: Sequelize.TEXT
     },
     phone_number: {
       type: Sequelize.STRING
@@ -51,7 +48,7 @@ module.exports = (sequelize, Sequelize) => {
     enable_password: {
       type: Sequelize.BOOLEAN
     },
-    enable_qr: {
+    enable_authenticator: {
       type: Sequelize.BOOLEAN
     },
     enable_sms: {

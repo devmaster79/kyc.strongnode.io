@@ -12,7 +12,7 @@ describe('SMS authentication', () => {
             email: "test@test.com",
             password: "",
             enable_password: false,
-            enable_qr: false,
+            enable_authenticator: false,
             enable_sms: false,
             smscode: '',
         }

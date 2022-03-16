@@ -82,7 +82,7 @@ export default function UserProfile() {
           telegram_id: values.telegram_id,
           twitter_id: values.twitter_id,
           enable_password: values.enable_password,
-          enable_qr: values.enable_authenticator,
+          enable_authenticator: values.enable_authenticator,
           enable_sms: values.enable_sms,
         };
 
@@ -118,7 +118,7 @@ export default function UserProfile() {
             cover: "",
             file: undefined,
             enable_password: res.data[0].enable_password,
-            enable_authenticator: res.data[0].enable_qr,
+            enable_authenticator: res.data[0].enable_authenticator,
             enable_sms: res.data[0].enable_sms,
           },
           false

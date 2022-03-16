@@ -1,13 +1,13 @@
 const { describe, teardown } = require('mocha');
 const assert = require('assert');
-const { QRAuthService } = require('./QRAuthService');
+const { AuthenticatorAuthService } = require('./AuthenticatorAuthService');
 const { TokenService } = require('./TokenService');
 
 const OriginalDate = Date;
 const setTime = (t) => {Date = { now() { return t } }};
 const resetTime = () => {Date = OriginalDate};
 
-describe('QR Authentication', () => {
+describe('Authenticator Authentication', () => {
     const tokenService = new TokenService();
     it('should work', async () => {
         let actualToken;
@@ -15,7 +15,7 @@ describe('QR Authentication', () => {
             email: "test@test.com",
             password: "",
             enable_password: false,
-            enable_qr: false,
+            enable_authenticator: false,
             enable_sms: false,
         }
 
@@ -25,9 +25,9 @@ describe('QR Authentication', () => {
             },
             update(data, query) {
                 assert.equal(userRecord.email, query.where.email)
-                if(data.qr_secret && data.qr_secret.length) {
+                if(data.authenticator_qr_secret && data.authenticator_qr_secret.length) {
                     setTime(1000)
-                    data.qr_secret = 'GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ';
+                    data.authenticator_qr_secret = 'GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ';
                     // with this date and secret the token will be this:
                     actualToken = '755224';
                 }
@@ -37,21 +37,21 @@ describe('QR Authentication', () => {
             }
         };
 
-        const qrAuthService = new QRAuthService(fakeUserRepository, tokenService);
+        const authenticatorAuthService = new AuthenticatorAuthService(fakeUserRepository, tokenService);
 
-        const preAuthResult = await qrAuthService.authByQR(userRecord.email, "123");
+        const preAuthResult = await authenticatorAuthService.authByAuthenticator(userRecord.email, "123");
         assert.equal(preAuthResult, null);
 
-        const generateResult = await qrAuthService.generateQRCode(userRecord.email);
+        const generateResult = await authenticatorAuthService.generateQRCode(userRecord.email);
         assert.equal(typeof generateResult, 'string');
 
-        const activateResult = await qrAuthService.activateQrAuth(
+        const activateResult = await authenticatorAuthService.activateAuthenticatorAuth(
             userRecord.email,
             actualToken
         );
         assert.equal(activateResult, true);
 
-        const authResult = await qrAuthService.authByQR(
+        const authResult = await authenticatorAuthService.authByAuthenticator(
             userRecord.email,
             actualToken
         );

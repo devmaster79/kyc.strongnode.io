@@ -132,7 +132,7 @@ exports.getProfile = (req, res) => {
         wallet_address: data.wallet_address,
         telegram_id: data.telegram_id,
         twitter_id: data.twitter_id,
-        enable_qr: data.enable_qr,
+        enable_authenticator: data.enable_authenticator,
         enable_sms: data.enable_sms,
         enable_password: data.enable_password,
       }];
@@ -209,7 +209,7 @@ exports.updateProfile = async (req, res) => {
     telegram_id: req.body.telegram_id,
     twitter_id: req.body.twitter_id,
     wallet_address: req.body.wallet_address,
-    enable_qr: req.body.enable_qr,
+    enable_authenticator: req.body.enable_authenticator,
     enable_sms: req.body.enable_sms,
     enable_password: req.body.enable_password
   };
