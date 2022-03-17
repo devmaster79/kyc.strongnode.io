@@ -32,6 +32,9 @@ jobs:
           node-version: '14.17.5'
       - name: Install npm dependencies
         run: cd front && NODE_OPTIONS=--max_old_space_size=4096 yarn
+      - name: Add frontend .env file
+        shell: bash
+        run: echo "REACT_APP_BASE_URL=https://stage.strongnode.io:8080" > front/.env
       - name: Run build task
         run: cd front && NODE_OPTIONS=--max_old_space_size=4096 yarn build
         env:
@@ -39,9 +42,6 @@ jobs:
       - name: Add backend .env file
         shell: bash
         run: echo ${{ secrets.ENV_STAGE_FILE }} | base64 -d > back/.env
-      - name: Add frontend .env file
-        shell: bash
-        run: echo "REACT_APP_BASE_URL=https://stage.strongnode.io:8080" > front/.env
       - name: Deploy to Server
         uses: easingthemes/ssh-deploy@main
         env:
@@ -89,6 +89,9 @@ jobs:
           node-version: '14.17.5'
       - name: Install npm dependencies
         run: cd front && yarn
+      - name: Add frontend .env file
+        shell: bash
+        run: echo "REACT_APP_BASE_URL=https://stage.strongnode.io:8080" > front/.env # TODO
       - name: Run build task
         run: cd front && yarn build --if-present
         env:
@@ -96,9 +99,6 @@ jobs:
       - name: Add backend .env file
         shell: bash
         run: echo ${{ secrets.ENV_PROD_FILE }} | base64 -d > back/.env
-      - name: Add frontend .env file
-        shell: bash
-        run: echo "REACT_APP_BASE_URL=https://stage.strongnode.io:8080" > front/.env # TODO
       - name: Deploy to Server
         uses: easingthemes/ssh-deploy@main
         env:
