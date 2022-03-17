@@ -2,7 +2,7 @@ const { TokenService } = require('../services/auth/TokenService');
 const { EmailAuthService } = require('../services/auth/EmailAuthService');
 const { PasswordAuthService } = require('../services/auth/PasswordAuthService');
 const { SMSAuthService } = require('../services/auth/SMSAuthService');
-const { QRAuthService } = require('../services/auth/QRAuthService');
+const { AuthenticatorAuthService } = require('../services/auth/AuthenticatorAuthService');
 const { RegistrationService, UserNameIsAlreadyTakenError, EmailIsAlreadyRegisteredError } = require('../services/auth/RegistrationService');
 const { GravatarService } = require('../services/GravatarService');
 
@@ -14,7 +14,7 @@ const tokenService = new TokenService();
 const emailAuthService = new EmailAuthService(userRepository, communicationService, tokenService);
 const passwordAuthService = new PasswordAuthService(userRepository, tokenService);
 const smsAuthService = new SMSAuthService(userRepository, communicationService, tokenService);
-const qrAuthService = new QRAuthService(userRepository, tokenService);
+const authenticatorAuthService = new AuthenticatorAuthService(userRepository, tokenService);
 const gravatarService = new GravatarService();
 const registrationService = new RegistrationService(userRepository, tokenService, gravatarService);
 
@@ -130,25 +130,25 @@ exports.disableSMSAuth = withResponse(async req => {
     await smsAuthService.deactivate(req.user.email);
 });
 
-exports.authByQRCode = withResponse(async req => {
+exports.authByAuthenticator = withResponse(async req => {
     if (!req.body.token) throw new ValidationError('token');
-    const token = await qrAuthService.authByQR(req.user.email, req.body.token);
+    const token = await authenticatorAuthService.authByAuthenticator(req.user.email, req.body.token);
     if (!token) throw new ValidationError('token','wrong');
     authOTPLimit.resolve(req);
     return { token };
 });
 
-exports.generateQRCode = withResponse(async req => {
-    const qrcode = await qrAuthService.generateQRCode(req.user.email);
-    return { qrcode };
+exports.generateAuthenticatorQRCode = withResponse(async req => {
+    const authenticatorcode = await authenticatorAuthService.generateQRCode(req.user.email);
+    return { authenticatorcode };
 });
 
-exports.enableQRAuth = withResponse(async req => {
+exports.enableAuthenticatorAuth = withResponse(async req => {
     if (!req.body.token) throw new ValidationError('token');
-    const result = await qrAuthService.activateQrAuth(req.user.email, req.body.token);
+    const result = await authenticatorAuthService.activateAuthenticatorAuth(req.user.email, req.body.token);
     if (!result) throw new ValidationError('token', 'wrong');
 });
 
-exports.disableQRAuth = withResponse(async req => {
-    await qrAuthService.deactivateQrAuth(req.user.email);
+exports.disableAuthenticatorAuth = withResponse(async req => {
+    await authenticatorAuthService.deactivateAuthenticatorAuth(req.user.email);
 });

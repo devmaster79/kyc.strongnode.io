@@ -1,7 +1,7 @@
 const db = require('../models');
 const User = db.users;
 
-const usersPublicData = ['email', 'first_name', 'enable_qr', 'enable_sms', 'user_name'];
+const usersPublicData = ['email', 'first_name', 'enable_authenticator', 'enable_sms', 'user_name'];
 
 /**
  * Method that returns public data of our user.

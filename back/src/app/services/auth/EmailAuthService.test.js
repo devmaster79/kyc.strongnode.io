@@ -12,7 +12,7 @@ describe('Email Authentication', () => {
             email: "test@test.com",
             password: "",
             enable_password: false,
-            enable_qr: false,
+            enable_authenticator: false,
             enable_sms: false,
         };
         const fakeUserRepository = {
@@ -51,7 +51,7 @@ describe('Email Authentication', () => {
             email: "test@test.com",
             password: "",
             enable_password: true,
-            enable_qr: true,
+            enable_authenticator: true,
             enable_sms: true,
         };
         const fakeUserRepository = {

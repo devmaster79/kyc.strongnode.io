@@ -40,7 +40,7 @@ class TokenService {
      * @returns {AuthMode}
      */
     determineNextMode(user, currentMode) {
-        const enable_2fa = user.enable_password || user.enable_qr || user.enable_sms;
+        const enable_2fa = user.enable_password || user.enable_authenticator || user.enable_sms;
         const mode_2fa_if_enabled = ( enable_2fa ? [MODE_2FA] : []);
 
         // When the current mode is completed, what will be the next.

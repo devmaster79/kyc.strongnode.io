@@ -56,17 +56,17 @@ module.exports = (app) => {
     authController.disableSMSAuth
   );
 
-  // QR authentication
+  // Authenticator authentication
   router.post(
-    "/authByQRCode",
+    "/authByAuthenticator",
     auth(MODE_2FA),
     authOTPLimit.limiter,
     authOTPLimit.resolver,
-    authController.authByQRCode
+    authController.authByAuthenticator
   );
-  router.post("/generateQRCode", auth(MODE_FULL), authController.generateQRCode);
-  router.post("/enableQRAuth", auth(MODE_FULL), authController.enableQRAuth);
-  router.post("/disableQRAuth", auth(MODE_FULL), authController.disableQRAuth);
+  router.post("/generateAuthenticatorQRCode", auth(MODE_FULL), authController.generateAuthenticatorQRCode);
+  router.post("/enableAuthenticatorAuth", auth(MODE_FULL), authController.enableAuthenticatorAuth);
+  router.post("/disableAuthenticatorAuth", auth(MODE_FULL), authController.disableAuthenticatorAuth);
 
   app.use("/api/auth", router);
 };

@@ -54,5 +54,5 @@ export { RegisterParams, register };
 export * from "./passwordAuthService";
 /* SMS Auth */
 export * from "./smsAuthService";
-/* QR Auth */
-export * from "./qrAuthService";
+/* Authenticator Auth */
+export * from "./authenticatorAuthService";
