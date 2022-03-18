@@ -29,6 +29,11 @@ If you don't want to run MySQL in Docker, you can use a whole server distributio
 
 Create MySQL database that we will add to .env later on. (default DB name: kyc_db)
 
+Example:
+```sh
+docker run --name kyc-db -p 3306:3306 -e MYSQL_ROOT_PASSWORD=secret -e MYSQL_USER=kyc -e MYSQL_PASSWORD=kyc -e MYSQL_DATABASE=kyc_db -d mysql:latest
+```
+
 ## 💽 Migrations (database updates)
 In order to have our DB "versioned" we are using Sequelize migrations.
 
@@ -93,31 +98,22 @@ Backend is built with Node.JS along with Express.JS.
 
 **Setuping backend**:
 
-    cd <repo>/back
-    yarn install 				// for BE, you can use "npm install" too
+ - cd <repo>/back
+ - npm install
+ - cp .env.sample .env
+ - Read carefully and edit .env
 
-Then we need to **create our .env file from .env.sample** (eg.: below)
+## 📀 AWS seed
 
-    APP_NAME = StrongNode.io
-    AWS_ACCESS_KEY_ID =
-    AWS_SECRET_ACCESS_KEY =
-    AWS_REGION =
-    AWS_LOCALSTACK_URL = http://localhost:4566          // used for localhost development
-    HOST = localhost
-	HOSTNAME_KYC = localhost:8000        // this var is being used for creating links that are beign sent via emails
-    DB_USER =
-    DB_PASSWORD =
-    DB_NAME = kyc_db
-    DB_DIALECT = mysql
-    DB_POOL_MAX = 5
-    DB_POOL_MIN = 0
-    DB_POOL_ACQUIRE = 30000
-    DB_POOL_IDLE = 10000
-    TOKEN_SECRET = ae9e943d7853e70709d8ed594140e334403dfca25516ab2327e9c0ecfeace9ded2d0f9031f860f08dc4a3044e562d511f5a24d55b574ef530bd8e1571418c6c9
+ - Run db (with probably `docker container start kyc-db`)
+ - Run localstack with `docker-compose -f localstack.docker-compose.yaml up`
+	(from the `<repo>/docker` directory)
+ - Run backend with `npm start`
+	(from the `<repo>/back` directory)
+ - Wait at least 10seconds.
+ - Open this URL: http://localhost:8080/api/utils/refreshEmailTemplates
+ 	(replace http://localhost:8080 with your current backend URL)
 
-In case of running localstack instead of AWS servers, you need to pass value to AWS_LOCALSTACK_URL variable, otherwise if you're using AWS, keep this variable empty.
-
-Fill all of the missing parameters in order to make your localhost BE run correctly.
 
 ## 📀 Frontend
 
@@ -131,17 +127,23 @@ Installation need to be run with yarn, eg: ⬇️
 
 Then create your own `front/.env` based on `front/.env.sample`.
 
-## 📀 Database seed (for new databases only)
+	npm start
 
- - Run backend with `npm start`
- - Open this URL: http://localhost:8080/api/utils/refreshEmailTemplates
- 	(replace http://localhost:8080 with your current backend URL)
-
+And you will be able to access the frontend by `https://localhost:3000`
 
 # 🔫 Trouble shooting
-List of issues I've faced on my MB Pro (15 inch).
 
-## #1 Chrome redirects API calls from http to https
+## #1 Windows
+If you are using windows, please don't. But if you really want to use windows, you have to understand the key differences of the unix and windows shells.
+For example, backend's `npm start` will probably not work for you. Because it sets the env like this: `NODE_ENV=development ts-node src/server.ts`
+But windows would like to see something like this:
+
+	set NODE_ENV=development
+	node_modules/.bin/ts-node src/server.ts
+
+This issue will be solved when all services get containerized.
+
+## #2 Chrome redirects API calls from http to https
 For some reason - Chrome, Firefox & Safari is redirecting API calls from FE to force use https (secured connection)
 There are multiple solutions:
 - remove domain from HSTS in Chrome (https://www.thesslstore.com/blog/clear-hsts-settings-chrome-firefox/)
