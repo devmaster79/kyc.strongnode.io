@@ -4,7 +4,7 @@
         "es2021": true,
         "jest": true
     },
-    "extends": ["eslint:recommended", "plugin:react/recommended", "plugin:prettier/recommended"],
+    "extends": ["eslint:recommended", "plugin:react/recommended", "plugin:@typescript-eslint/eslint-recommended", "plugin:@typescript-eslint/recommended", "plugin:prettier/recommended"],
     "parserOptions": {
         "ecmaFeatures": {
             "jsx": true
@@ -13,6 +13,7 @@
         "sourceType": "module"
     },
     "plugins": [
+        "@typescript-eslint",
         "react",
         "import"
     ],
@@ -25,6 +26,11 @@
             {
                 "endOfLine": "lf"
             }
-          ]
+          ],
+        "no-use-before-define": "off",
+        "no-empty-function": "off",
+        "@typescript-eslint/no-empty-function": "off",
+        "no-empty-interface": "off",
+        "@typescript-eslint/no-empty-interface": "off"
     }
 }
