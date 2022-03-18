@@ -7,6 +7,7 @@ function createGradient(color1: string, color2: string): string {
 const WHITE = {
   100: '#FFF',
   60: 'rgba(255, 255, 255, 0.6)',
+  40: 'rgba(255, 255, 255, 0.4)',
   12: 'rgba(255, 255, 255, 0.12)',
   8: 'rgba(255, 255, 255, 0.08)',
 }
@@ -14,12 +15,15 @@ const WHITE = {
 const NIGHTBLUE = {
   100: '#141343',
   90: '#141245',
+  80: '#101054',
+  60: alpha('#141245', 0.6),
   40: alpha('#141245', 0.4),
   10: '#AA1FEC'
 }
 
 const NEW_GREY = {
   60: 'rgba(153, 153, 153, 0.12)',
+  50: '#E5E5E5',
   30: '#F6F6FD'
 }
 
@@ -125,14 +129,15 @@ const palette = {
     ...COMMON,
     text: {
       primary: NIGHTBLUE[90],
-      secondary: NIGHTBLUE[40],
+      secondary: NIGHTBLUE[60],
       disabled: GREY[600]
     },
     background: {
       primary: WHITE[100],
       secondary: NEW_GREY[30],
+      light: WHITE[40],
+      default: NEW_GREY[60],
       paper: GREY[800],
-      default: GREY[900],
       neutral: GREY['500_16']
     },
     border: {
@@ -150,8 +155,9 @@ const palette = {
     background: {
       primary: NIGHTBLUE[90],
       secondary: NIGHTBLUE[100],
+      light: WHITE[8],
+      default: NIGHTBLUE[80],
       paper: GREY[800],
-      default: GREY[900],
       neutral: GREY['500_16']
     },
     border: {

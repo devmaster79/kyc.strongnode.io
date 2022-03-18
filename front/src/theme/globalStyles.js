@@ -19,7 +19,13 @@ const GlobalStyles = withStyles((theme) => ({
       width: '100%',
       height: '100%',
       background: '#F3F5F9',
-      fontFamily: 'Halyard'
+      fontFamily: 'Satoshi'
+    },
+    h1: {
+      fontWeight: 900,
+      fontSize: '32px',
+      paddingBottom: 40,
+      color: theme.palette.text.primary
     },
     '#root': {
       width: '100%',

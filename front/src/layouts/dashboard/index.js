@@ -13,7 +13,7 @@ const RootStyle = styled('div')(({ theme }) => ({
   display: 'flex',
   minHeight: '100%',
   overflow: 'hidden',
-  background: `url(/images/background.png)`,
+  backgroundColor: theme.palette.background.default,
   backgroundSize: '100% 100%'
 }));
 
