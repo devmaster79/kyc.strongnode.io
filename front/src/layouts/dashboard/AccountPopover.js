@@ -7,7 +7,7 @@ import ConnectButton, { SneBalance } from 'components/ConnectButton';
 import * as React from 'react';
 import Popover from '@mui/material/Popover';
 import Divider from '@mui/material/Divider';
-import Button from '@mui/material/Button';
+import Button from '../../@ui/Button/Button';
 import styled from '@mui/material/styles/styled';
 import { useNavigate } from 'react-router-dom';
 import userService from 'services/userService';

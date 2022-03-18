@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography';
 import Badge from '@mui/material/Badge';
 import Hidden from '@mui/material/Hidden';
 import useCollapseDrawer from '../../hooks/useCollapseDrawer';
-import AccountPopover from './AccountPopover';
+import AccountPopover from '../../pages/Dashboard/AccountPopover/AccountPopover';
 import { useState, useEffect } from 'react';
 import Snackbar from '@mui/material/Snackbar';
 

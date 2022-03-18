@@ -3,6 +3,26 @@ import { alpha } from '@mui/material/styles';
 function createGradient(color1: string, color2: string): string {
   return `linear-gradient(to bottom, ${color1}, ${color2})`;
 }
+
+const WHITE = {
+  100: '#FFF',
+  60: 'rgba(255, 255, 255, 0.6)',
+  12: 'rgba(255, 255, 255, 0.12)',
+  8: 'rgba(255, 255, 255, 0.08)',
+}
+
+const NIGHTBLUE = {
+  100: '#141343',
+  90: '#141245',
+  40: alpha('#141245', 0.4),
+  10: '#AA1FEC'
+}
+
+const NEW_GREY = {
+  60: 'rgba(153, 153, 153, 0.12)',
+  30: '#F6F6FD'
+}
+
 const GREY = {
   0: '#FFFFFF',
   100: '#F9FAFB',
@@ -103,14 +123,40 @@ const COMMON = {
 const palette = {
   light: {
     ...COMMON,
-    text: { primary: '#fff', secondary: GREY[500], disabled: GREY[600] },
-    background: { paper: GREY[800], default: GREY[900], neutral: GREY['500_16'] },
+    text: {
+      primary: NIGHTBLUE[90],
+      secondary: NIGHTBLUE[40],
+      disabled: GREY[600]
+    },
+    background: {
+      primary: WHITE[100],
+      secondary: NEW_GREY[30],
+      paper: GREY[800],
+      default: GREY[900],
+      neutral: GREY['500_16']
+    },
+    border: {
+      light: NEW_GREY[60]
+    },
     action: { active: GREY[500], ...COMMON.action }
   },
   dark: {
     ...COMMON,
-    text: { primary: '#fff', secondary: GREY[500], disabled: GREY[600] },
-    background: { paper: GREY[800], default: GREY[900], neutral: GREY['500_16'] },
+    text: {
+      primary: WHITE[100],
+      secondary: WHITE[60],
+      disabled: GREY[600]
+    },
+    background: {
+      primary: NIGHTBLUE[90],
+      secondary: NIGHTBLUE[100],
+      paper: GREY[800],
+      default: GREY[900],
+      neutral: GREY['500_16']
+    },
+    border: {
+      light: WHITE[12]
+    },
     action: { active: GREY[500], ...COMMON.action }
   }
 };
