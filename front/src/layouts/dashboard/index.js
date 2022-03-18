@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom';
 import { styled, useTheme } from '@material-ui/core/styles';
 import useCollapseDrawer from '../../hooks/useCollapseDrawer';
 import DashboardNavbar from './DashboardNavbar';
-import DashboardSidebar from './DashboardSidebar';
+import Sidebar from './Sidebar';
 import DashboardFooter from './DashboardFooter';
 
 const APP_BAR_MOBILE = 64;
@@ -39,7 +39,7 @@ export default function DashboardLayout() {
   return (
     <RootStyle>
       <DashboardNavbar onOpenSidebar={() => setOpen(true)} />
-      <DashboardSidebar isOpenSidebar={open} onCloseSidebar={() => setOpen(false)} />
+      <Sidebar isOpenSidebar={open} onCloseSidebar={() => setOpen(false)} />
       <MainStyle
         style={{ minHeight: '100vh', position: 'relative'}}
         sx={{
