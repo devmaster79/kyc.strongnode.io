@@ -11,7 +11,6 @@ import { SignInWithAuthenticator } from "./pages/auth/SingInWithAuthenticator";
 import { SignInWithSMS } from "./pages/auth/SignInWithSMS";
 import { SignInWithToken } from "./pages/auth/SignInWithToken";
 import PrivateSaleInterestForm from "./pages/privatesaleinterestform";
-import KYC from "./pages/kyc";
 import AddData from "./pages/AddData";
 import * as SHARED_ROUTES from "shared/routes";
 import NFTDashboard from "pages/Dashboard/NFTDashboard/NFTDashboard";
@@ -39,7 +38,6 @@ export const ROUTES = {
   // TODO: review these routes, and rename/relocate/remove if needed
   PROFILE: "/profile",
   PRIVATE_SALE_INTEREST_FORM: "/private-sale-interest-form",
-  KYC: "/kyc",
 };
 
 /* prettier-ignore */
@@ -75,7 +73,6 @@ export default function Router() {
         <Route path={ROUTES.AUTH.SIGN_IN_WITH_TOKEN} element={<SignInWithToken />} />
         <Route path={ROUTES.PROFILE} element={<Profile />} />
         <Route path={ROUTES.PRIVATE_SALE_INTEREST_FORM} element={<PrivateSaleInterestForm />} />
-        <Route path={ROUTES.KYC} element={<KYC />} />
         <Route
           path="*"
           element={<Navigate to={ROUTES.AUTH.VERIFY_EMAIL} replace />}

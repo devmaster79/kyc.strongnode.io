@@ -223,13 +223,6 @@ export default function UserProfile() {
                 <Button onClick={upload} sx={{ mb: 5 }} variant="contained">
                   Upload
                 </Button>
-                <Button
-                  sx={{ mb: 5 }}
-                  id="blockpass-kyc-connect"
-                  variant="contained"
-                >
-                  Register KYC
-                </Button>
                 <TextField
                   id="outlined-select-currency"
                   select
