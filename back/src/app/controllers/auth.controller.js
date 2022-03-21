@@ -3,17 +3,22 @@ const { EmailAuthService } = require('../services/auth/EmailAuthService');
 const { PasswordAuthService } = require('../services/auth/PasswordAuthService');
 const { SMSAuthService } = require('../services/auth/SMSAuthService');
 const { AuthenticatorAuthService } = require('../services/auth/AuthenticatorAuthService');
-const { RegistrationService, UserNameIsAlreadyTakenError, EmailIsAlreadyRegisteredError } = require('../services/auth/RegistrationService');
+const { RegistrationService, UserNameIsAlreadyTakenError } = require('../services/auth/RegistrationService');
 const { GravatarService } = require('../services/GravatarService');
-
+const { EmailService } = require('../services/communication/EmailService');
+const { SmsService } = require('../services/communication/SmsService');
 const { default: validator } = require('validator');
+const { AWS_CONFIG } = require('app/config/config');
 const { sendSMSLimit, authOTPLimit, authPasswordLimit } = require('../middleware/limits');
-const communicationService = require('../services/communication.services');
+const AWS = require('aws-sdk');
+
+const smsService = new SmsService(new AWS.Pinpoint(AWS_CONFIG()));
+const emailService = new EmailService(new AWS.SES(AWS_CONFIG()));
 const userRepository = require('../models').users;
 const tokenService = new TokenService();
-const emailAuthService = new EmailAuthService(userRepository, communicationService, tokenService);
+const emailAuthService = new EmailAuthService(userRepository, emailService, tokenService);
 const passwordAuthService = new PasswordAuthService(userRepository, tokenService);
-const smsAuthService = new SMSAuthService(userRepository, communicationService, tokenService);
+const smsAuthService = new SMSAuthService(userRepository, smsService, tokenService);
 const authenticatorAuthService = new AuthenticatorAuthService(userRepository, tokenService);
 const gravatarService = new GravatarService();
 const registrationService = new RegistrationService(userRepository, tokenService, gravatarService);

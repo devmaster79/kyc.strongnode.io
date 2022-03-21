@@ -27,15 +27,15 @@ describe('SMS authentication', () => {
                 return [1];
             }
         };
-        const fakeCommunicationService = {
-            sendSms(destinationNumber, message) {
+        const fakeSmsService = {
+            send(destinationNumber, message) {
                 assert.ok(message.indexOf(userRecord.smscode) !== -1);
                 assert.equal(destinationNumber, phone_number);
             }
         };
         const smsAuthService = new SMSAuthService(
             fakeUserRepository,
-            fakeCommunicationService,
+            fakeSmsService,
             tokenService
         );
 

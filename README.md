@@ -103,18 +103,6 @@ Backend is built with Node.JS along with Express.JS.
  - cp .env.sample .env
  - Read carefully and edit .env
 
-## 📀 AWS seed
-
- - Run db (with probably `docker container start kyc-db`)
- - Run localstack with `docker-compose -f localstack.docker-compose.yaml up`
-	(from the `<repo>/docker` directory)
- - Run backend with `npm start`
-	(from the `<repo>/back` directory)
- - Wait at least 10seconds.
- - Open this URL: http://localhost:8080/api/utils/refreshEmailTemplates
- 	(replace http://localhost:8080 with your current backend URL)
-
-
 ## 📀 Frontend
 
 Front-end is created with React.

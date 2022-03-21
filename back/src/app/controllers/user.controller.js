@@ -2,11 +2,10 @@ const db = require("../models");
 const User = db.users;
 const SupportRequests = db.supportrequests;
 const InvestorDetails = db.investordetails;
-const dotenv = require("dotenv");
-
-dotenv.config();
-
-var AWS = require("aws-sdk");
+const AWS = require("aws-sdk");
+const { EmailService } = require("app/services/communication/EmailService");
+const { AWS_CONFIG, EMAIL_CONFIG } = require("app/config/config");
+const { SupportRequestTemplate } = require("app/services/communication/templates/SupportRequestTemplate");
 
 /** Create and Save a User profile */
 exports.createProfile = (req, res) => {
@@ -358,7 +357,12 @@ exports.createSupportRequest = async (req, res) => {
     return res.status(500).send({ result: 'Unexpected error. User is not in the database.' })
 
   // send email to SNE support
-  const request = await communicationService.sendSupportRequest({ email: user.dataValues.email, username: user.dataValues.user_name }, req.body.message)
+  const emailService = new EmailService(new AWS.SES(AWS_CONFIG()));
+  const request = await emailService.sendTemplate(EMAIL_CONFIG.supportTeamEmail, new SupportRequestTemplate(), {
+    email: user.dataValues.email,
+    username: user.dataValues.user_name,
+    message: req.body.message,
+  })
 
   // if email was sent correctly, create record in database
   if (request) {
