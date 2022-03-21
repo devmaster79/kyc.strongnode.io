@@ -1,7 +1,8 @@
 import React from 'react'
-import styled from 'styled-components'
+import styled from '@emotion/styled/macro'
 import ThemedLogo from '../../components/ThemedLogo'
-import SidebarButtonWrapper from '../../components/dashboard/sidebar/SidebarButtonWrapper'
+import SidebarButtonWrapper from '../../@ui/Sidebar/SidebarButtonWrapper'
+import ThemeSwitch from '../../components/ThemeSwitch'
 
 const SidebarWrapper = styled.div`
   width: 104px;
@@ -10,7 +11,7 @@ const SidebarWrapper = styled.div`
   flex: 1 0 auto;
   z-index: 1200;
   position: fixed;
-  background: #141245;
+  background: ${props => props.theme.palette.background.primary};
   box-shadow: inset -1px 0px 0px rgba(255, 255, 255, 0.12);
 `
 
@@ -22,11 +23,19 @@ const SidebarButtonWrapperStyled = styled(SidebarButtonWrapper)`
   margin-top: 60px;
 `
 
+const themeSwitchStyles = {
+  position: 'absolute',
+  left: '50%',
+  transform: 'translateX(-50%)',
+  bottom: '32px',
+}
+
 const Sidebar = () => {
   return (
     <SidebarWrapper>
       <StyledThemedLogo />
       <SidebarButtonWrapperStyled />
+      <ThemeSwitch sx={themeSwitchStyles} color={{}} />
     </SidebarWrapper>
   )
 }

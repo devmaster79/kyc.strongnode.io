@@ -1,5 +1,5 @@
 import React from 'react'
-import styled from 'styled-components'
+import styled from '@emotion/styled/macro'
 import SidebarButton from './SidebarButton'
 
 const ButtonWrapper = styled.div`
@@ -29,28 +29,42 @@ const buttonItems = [
   {
     type: 'defi',
     tooltipHint: 'Defi',
-    path: '/'
+    path: '/dashboard/app'
   },
   {
     type: 'nft',
     tooltipHint: 'NFT',
-    path: '/nft'
+    path: '/dashboard/nft'
   },
   {
     type: 'kyc',
     tooltipHint: 'KYC Registration',
-    path: 'kyc'
+    path: '/dashboard/kyc'
   }
 ]
 
 class SidebarButtonWrapper extends React.Component<SidebarButtonWrapperProps, SidebarButtonWrapperState> {
-  state: SidebarButtonWrapperState = {
-    activeButton: 'defi',
-    verticaLineTopOffset: '0px'
+  constructor(props: any) {
+    super(props);
+
+    // this handles default animation state on refresh
+    let defaultActiveButton = 'defi'
+    let defaultOffset = '0px'
+    buttonItems.map((item: any, index: number) => {
+      if (window.location.href.includes(item.path)) {
+        defaultActiveButton = item.type
+        defaultOffset = (index * 72) +'px'
+      }
+    })
+
+    // default state definition
+    this.state = {
+      activeButton: defaultActiveButton,
+      verticaLineTopOffset: defaultOffset
+    }
   }
 
-  handleOnClick(path, activeType, index) {
-    // todo redirect to the given path
+  handleOnClick(path: string, activeType: string, index: number) {
     this.setState({
       activeButton: activeType,
       verticaLineTopOffset: (index * 72) +'px'
@@ -61,7 +75,7 @@ class SidebarButtonWrapper extends React.Component<SidebarButtonWrapperProps, Si
     return (
       <ButtonWrapper>
         <VerticalActiveLine style={{top: this.state.verticaLineTopOffset}} />
-        {buttonItems.map((item, index) => <SidebarButton key={item.tooltipHint} onPress={() => this.handleOnClick(item.path, item.type, index)} icon={item.type} tooltipHint={item.tooltipHint} active={(item.type === this.state.activeButton)} />)}
+        {buttonItems.map((item, index) => <SidebarButton key={item.tooltipHint} onPress={() => this.handleOnClick(item.path, item.type, index)} icon={item.type} tooltipHint={item.tooltipHint} active={(item.type === this.state.activeButton)} url={item.path} />)}
       </ButtonWrapper>
     )
   }

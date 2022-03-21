@@ -7,19 +7,20 @@ import useSettings from '../hooks/useSettings';
 const IOSSwitch = styled((props) => (
   <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
 ))(({ theme }) => ({
-  width: 68,
-  height: 34,
-  margin: '0 8px',
+  width: 52,
+  height: 24,
+  margin: '0 auto',
   padding: 0,
   '& .MuiSwitch-switchBase': {
     padding: 0,
     margin: 2,
     transitionDuration: '300ms',
+    backgroundColor: '#AA1FEC',
     '&.Mui-checked': {
-      transform: 'translateX(34px)',
+      transform: 'translateX(23px)',
       color: '#fff',
       '& + .MuiSwitch-track': {
-        backgroundColor: theme.palette.mode === 'dark' ? '#1DF4F6' : '#1DF4F6',
+        backgroundColor: '#AA1FEC !important',
         opacity: 1,
         border: 0
       },
@@ -40,28 +41,34 @@ const IOSSwitch = styled((props) => (
   },
   '& .MuiSwitch-thumb': {
     boxSizing: 'border-box',
-    width: 30,
-    height: 30
+    width: 24,
+    height: 20,
+    borderRadius: 47
   },
   '& .MuiSwitch-track': {
     borderRadius: 34 / 2,
-    backgroundColor: theme.palette.mode === 'light' ? '#E9E9EA' : '#39393D',
+    backgroundColor: '#AA1FEC',
     opacity: 1,
     transition: theme.transitions.create(['background-color'], {
       duration: 500
     })
   }
 }));
+
+const SunIcon = styled(SvgIconStyle)`
+  position: absolute;
+  left: 20px;
+`
+
 export default function ThemeSwitch({ sx, color }) {
   const { themeMode, onChangeMode } = useSettings();
   const handleChange = (event) => {
     onChangeMode(event.target.checked ? 'dark' : 'light');
   };
   return (
-    <Stack direction="row" alignItems="center">
-      <SvgIconStyle src="/icons/sun.svg" sx={{ width: 24, height: 24, background: 'white' }} />
+    <div style={sx}>
+      <SunIcon src="/icons/sun.svg" sx={{ width: 24, height: 24, background: 'white' }} />
       <IOSSwitch onChange={handleChange} checked={themeMode === 'dark'} />
-      <SvgIconStyle src="/icons/moon.svg" sx={{ width: 24, height: 24, background: 'white' }} />
-    </Stack>
+    </div>
   );
 }
