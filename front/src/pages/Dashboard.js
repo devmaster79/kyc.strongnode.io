@@ -11,7 +11,7 @@ import LinearProgress from '@mui/material/LinearProgress';
 import styled from '@mui/material/styles/styled';
 import { useState, useEffect, useCallback, useRef } from 'react';
 import Status from '../components/Status';
-import MainTable from '../components/shared/MainTable';
+import MainTable from '../@ui/Table/MainTable/MainTable';
 import SvgIconStyle from '../components/SvgIconStyle';
 import MyVestedTokensChart from '../components/Charts/MyVestedTokensChart';
 import BonusTokensChart from '../components/Charts/BonusTokensChart';
@@ -61,7 +61,6 @@ const SB2Button = styled(SBButton)`
   box-shadow: none;
 `;
 export default function Dashboard() {
-
   const withdrawColumns = [
     {
       id: 'token_amount',
@@ -104,37 +103,33 @@ export default function Dashboard() {
 
   const withdrawOverwrittenFields = {
     stock: () => {
-      return (<Typography variant="h5" color="white">
-        Withdrawed
-      </Typography>);
+      return 'Withdrawed';
     },
     token_amount: (amount) => {
       return (
-        <Stack direction="row" alignItems="center">
+        <>
           <Status color="#1DF4F6" />
-            <Typography variant="h5" color="white">
-              {amount} SNE
-            </Typography>
-        </Stack>)
+          {amount} SNE
+        </>
+      );
     }
-  }
+  };
 
   const vestedOverwrittenFields = {
     stock: () => {
-      return (<Typography variant="h5" color="white">
-        Vested
-      </Typography>);
+      return 'Vested';
     },
     token_amount: (amount) => {
       return (
         <Stack direction="row" alignItems="center">
           <Status color="#1DF4F6" />
-            <Typography variant="h5" color="white">
-              {amount} SNE
-            </Typography>
-        </Stack>)
+          <Typography variant="h5" color="white">
+            {amount} SNE
+          </Typography>
+        </Stack>
+      );
     }
-  }
+  };
 
   const [withdrawable, setWithdrawable] = useState(true);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -179,16 +174,16 @@ export default function Dashboard() {
   useEffect(() => {
     async function fetch() {
       const userResult = await userService.getProfile();
-      const investorResult = await userService.getInvestorDetails()
+      const investorResult = await userService.getInvestorDetails();
 
-      if(!userResult.data) {
+      if (!userResult.data) {
         // todo we should be thinking about logging out user in this case
-        console.error('Cannot get the user object! Please, try to relogin.')
+        console.error('Cannot get the user object! Please, try to relogin.');
         return;
       }
 
-      setUser(userResult.data[0])
-      setInvestor(investorResult.data)
+      setUser(userResult.data[0]);
+      setInvestor(investorResult.data);
       setAvailableToken(userResult.data[0]?.remaining_total_amount);
       setLockedToken(userResult.data[0]?.locked_bonus_amount);
     }
@@ -219,20 +214,35 @@ export default function Dashboard() {
   };
 
   const fetchWithdraw = async (page, rowsPerPage) => {
-    const result = await historyService.findAllWithdrawn(localStorage.getItem('username'), page, rowsPerPage);
-    setWithdrawHistory(result.data);
-  }
+    const result = await historyService.findAllWithdrawn(
+      localStorage.getItem('username'),
+      page,
+      rowsPerPage
+    );
+
+    setWithdrawHistory({
+      items: [...withdrawhistory.items, ...result.data.items],
+      total: result.data.total
+    });
+  };
 
   const fetchVested = async (page, rowsPerPage) => {
-    const result = await historyService.findAllVested(localStorage.getItem('username'), page, rowsPerPage);
-    setHistory(result.data);
-  }
+    const result = await historyService.findAllVested(
+      localStorage.getItem('username'),
+      page,
+      rowsPerPage
+    );
+    setHistory({
+      items: [...history.items, ...result.data.items],
+      total: result.data.total
+    });
+  };
 
   useEffect(() => {
     async function fetch() {
       if (!refresh) return;
 
-      historyService.findVestedDetails(localStorage.getItem('username')).then(result => {
+      historyService.findVestedDetails(localStorage.getItem('username')).then((result) => {
         setTotalVested(result.data.sum);
       });
 
@@ -258,16 +268,16 @@ export default function Dashboard() {
         setVestedProgress(Math.min(min / 1000 / 60, 100));
       }
 
-      historyService.findWithdrawnDetails(localStorage.getItem('username')).then(result => {
+      historyService.findWithdrawnDetails(localStorage.getItem('username')).then((result) => {
         setTotalWithdrawn(result.data.sum);
       });
 
-      const result1 = await historyService.findAllWithdrawn(localStorage.getItem('username'), 0, 5)
+      const result1 = await historyService.findAllWithdrawn(localStorage.getItem('username'), 0, 5);
       if (typeof history === 'string') {
         enqueueSnackbar('History data is not array!', { variant: 'error' });
       } else {
         setWithdrawHistory(result1.data);
-       let min = 1000000000000;
+        let min = 1000000000000;
         for (let i = 0; i < result1.data.length; i++) {
           const temp = new Date(result1.data[i].date);
           let date = new Date();
@@ -566,7 +576,12 @@ export default function Dashboard() {
             <Typography variant="h4" color="white">
               VESTING PROGRESS
             </Typography>
-            <MainTable dataSet={history} columns={vestedColumns} overwrittenFields={vestedOverwrittenFields} fetchData={fetchVested}/>
+            <MainTable
+              dataSet={history}
+              columns={vestedColumns}
+              overwrittenFields={vestedOverwrittenFields}
+              fetchData={fetchVested}
+            />
           </CardStyle>
         </Grid>
 
@@ -757,7 +772,12 @@ export default function Dashboard() {
                 <Typography variant="h4" color="white">
                   WITHDRAWING PROGRESS
                 </Typography>
-                <MainTable dataSet={withdrawhistory} columns={withdrawColumns} overwrittenFields={withdrawOverwrittenFields} fetchData={fetchWithdraw}/>
+                <MainTable
+                  dataSet={withdrawhistory}
+                  columns={withdrawColumns}
+                  overwrittenFields={withdrawOverwrittenFields}
+                  fetchData={fetchWithdraw}
+                />
               </Box>
             )}
           </CardStyle>
@@ -798,7 +818,7 @@ export default function Dashboard() {
                     INVESTOR
                   </Typography>
                   <Typography variant="h6" color="white">
-                    { investor?.investor_name || '-' }
+                    {investor?.investor_name || '-'}
                   </Typography>
                 </Stack>
 
