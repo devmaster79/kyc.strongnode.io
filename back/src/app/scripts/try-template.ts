@@ -1,7 +1,6 @@
 import express from "express";
 import fs from "fs/promises";
 import path from "path";
-import { spawn } from "child_process";
 import livereload from 'livereload'
 import connectLiveReload from 'connect-livereload'
 import { RegistrationTemplate } from '../services/communication/templates/RegistrationTemplate';
