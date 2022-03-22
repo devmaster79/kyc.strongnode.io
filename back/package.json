@@ -3,12 +3,17 @@
   "version": "1.0.0",
   "description": "Node.js Rest Apis with Express, Sequelize & MySQL",
   "scripts": {
-    "start": "NODE_ENV=development ts-node src/server.ts",
-    "build": "tsc --build tsconfig.json",
-    "test": "mocha -r ts-node/register ./src/app/**/*.test.js",
+    "start": "NODE_ENV=development nodemon src/server.ts",
+    "build:shared:transpile": "npx swc $(find ../shared | grep .ts | grep -v .d.ts) -d ../shared",
+    "build:shared:move": "mv ../shared/shared/* ../shared/ && rm -r ../shared/shared",
+    "build:shared": "npm run build:shared:transpile && npm run build:shared:move",
+    "build:app": "swc src --copy-files -d build",
+    "build": "npm run build:shared && npm run build:app",
+    "test": "mocha -r ts-node/register ./src/app/**/*.test.js --exit",
     "test-watch": "mocha -r ts-node/register ./src/app/**/*.test.js --watch",
     "migrate:up": "node ./src/app/scripts/run-migrations.js up",
-    "migrate:down": "node ./src/app/scripts/run-migrations.js down"
+    "migrate:down": "node ./src/app/scripts/run-migrations.js down",
+    "templates": "NODE_ENV=development nodemon --ignore public ./src/app/scripts/try-template.ts"
   },
   "keywords": [
     "nodejs",
@@ -50,11 +55,18 @@
     "validator": "13.7.0"
   },
   "devDependencies": {
+    "@swc/cli": "^0.1.55",
+    "@swc/core": "^1.2.157",
     "@types/bluebird": "^3.5.36",
-    "@types/node": "^17.0.21",
+    "@types/connect-livereload": "^0.6.0",
+    "@types/node": "^17.0.22",
     "@types/validator": "^13.7.1",
+    "@types/websocket": "^1.0.5",
+    "@types/ws": "^8.5.3",
+    "connect-livereload": "^0.6.1",
     "i": "^0.3.7",
-    "npm": "^8.5.4",
+    "livereload": "^0.9.3",
+    "nodemon": "^2.0.15",
     "typescript": "^4.6.2"
   }
 }

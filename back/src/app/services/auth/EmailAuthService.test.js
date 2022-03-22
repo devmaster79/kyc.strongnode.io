@@ -25,8 +25,8 @@ describe('Email Authentication', () => {
                 return [1];
             }
         };
-        const fakeCommunicationService = {
-            sendTemplatedEmail(to, templateData, _templateName) {
+        const fakeEmailService = {
+            sendTemplate(to, _template, templateData) {
                 assert.equal(to, userRecord.email);
                 let token = templateData.link.split('token=')[1];
                 assert.ok(token.length)
@@ -38,7 +38,7 @@ describe('Email Authentication', () => {
         };
         const emailAuthService = new EmailAuthService(
             fakeUserRepository,
-            fakeCommunicationService,
+            fakeEmailService,
             tokenService
         );
 
@@ -64,8 +64,8 @@ describe('Email Authentication', () => {
                 return [1];
             }
         };
-        const fakeCommunicationService = {
-            sendTemplatedEmail(to, templateData, _templateName) {
+        const fakeEmailService = {
+            sendTemplate(to, template, templateData) {
                 assert.equal(to, userRecord.email);
                 let token = templateData.link.split('token=')[1];
                 assert.ok(token.length)
@@ -77,7 +77,7 @@ describe('Email Authentication', () => {
         };
         const emailAuthService = new EmailAuthService(
             fakeUserRepository,
-            fakeCommunicationService,
+            fakeEmailService,
             tokenService
         );
 
@@ -94,8 +94,8 @@ describe('Email Authentication', () => {
                 return [0];
             }
         };
-        const fakeCommunicationService = {
-            sendTemplatedEmail(to, templateData, _templateName) {
+        const fakeEmailService = {
+            sendTemplate(to, template, templateData) {
                 assert.equal(to, email);
                 let token = templateData.link.split('token=')[1];
                 assert.ok(token.length)
@@ -107,7 +107,7 @@ describe('Email Authentication', () => {
         };
         const emailAuthService = new EmailAuthService(
             fakeUserRepository,
-            fakeCommunicationService,
+            fakeEmailService,
             tokenService
         );
 

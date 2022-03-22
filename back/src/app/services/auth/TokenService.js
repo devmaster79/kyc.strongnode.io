@@ -66,7 +66,7 @@ class TokenService {
     /**
      * Generate token that the auth middleware could understand
      * @param {string} email
-     * @param {string} userName
+     * @param {string|null} userName null when the jwt is created for registration
      * @param {AuthMode} mode
      * @param {string} expiresIn e.g: 30m
      * @returns {string}

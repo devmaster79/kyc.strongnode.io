@@ -1,0 +1,13 @@
+#!/bin/sh
+
+branch="$(git rev-parse --abbrev-ref HEAD)"
+
+# test and try building backend
+cd back
+npm run build || exit 1
+npm run test || exit 1
+rm -r build
+
+# run linter on frontend
+cd ../front
+npm run lint || exit 1

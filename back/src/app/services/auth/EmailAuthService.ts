@@ -1,21 +1,19 @@
 import { MODE_GUEST, MODE_REGISTRATION, MODE_2FA, MODE_FULL, AuthMode } from './TokenService';
 import * as routes from "shared/routes";
-import { emailTemplatesNames } from '../communication.services';
-import path from 'path';
-import { Model } from 'sequelize/types';
-
+import { RegistrationTemplate } from '../communication/templates/RegistrationTemplate';
+import { SignInTemplate } from '../communication/templates/SignInTemplate';
+import type { EmailService } from '../communication/EmailService';
+import type { TokenService } from './TokenService';
 class EmailAuthService {
     /**
-     * dbiro: these will be migrated correctly to typescript later
+     * dbiro: this will be migrated correctly to typescript later
      * @param {typeof import('sequelize').Model} userRepository
-     * @param {import('../communication.services')} communicationService
-     * @param {import('./TokenService').TokenService} tokenService
      */
     constructor(
         private __userRepository: any,
-        private __communicationService: any,
-        private __tokenService: any
-    ) {}
+        private __emailService: EmailService,
+        private __tokenService: TokenService
+    ) { }
 
     /**
      * send email with link for the next step
@@ -26,20 +24,25 @@ class EmailAuthService {
         email = email.toLowerCase();
         let link;
         const user = await this.__userRepository.findOne({ where: { email } });
-        if(user) {
+        if (user) {
             const mode = this.__tokenService.determineNextMode(user, MODE_GUEST);
             const token = this.__tokenService.generateToken(email, user.user_name, mode);
             link = this.__getURL(mode, token, user);
+            await this.__emailService.sendTemplate(
+                email,
+                new SignInTemplate(),
+                { link, userName: user.user_name }
+            );
         } else {
             const mode = MODE_REGISTRATION;
             const token = this.__tokenService.generateToken(email, null, mode);
             link = this.__getURL(mode, token, undefined);
+            await this.__emailService.sendTemplate(
+                email,
+                new RegistrationTemplate(),
+                { link }
+            );
         }
-        await this.__communicationService.sendTemplatedEmail(
-            email,
-            { link },
-            emailTemplatesNames.confirmEmail
-        );
     }
 
     /**

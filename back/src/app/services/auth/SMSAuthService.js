@@ -4,12 +4,12 @@ class SMSAuthService {
 
     /**
      * @param {typeof import('sequelize').Model} userRepository
-     * @param {import('../communication.services')} communicationService
+     * @param {import('../communication/SmsService').SmsService} smsService
      * @param {import('./TokenService').TokenService} tokenService
      */
-    constructor(userRepository, communicationService, tokenService) {
+    constructor(userRepository, smsService, tokenService) {
         this.__userRepository = userRepository;
-        this.__communicationService = communicationService;
+        this.__smsService = smsService;
         this.__tokenService = tokenService;
     }
 
@@ -101,7 +101,7 @@ class SMSAuthService {
             { where: { email } }
         );
         if(updateResult != 1) throw new Error("Unable to store OTP");
-        await this.__communicationService.sendSms(destinationNumber, message);
+        await this.__smsService.send(destinationNumber, message);
     }
 
     __generateRandomNumber(min, max) {
