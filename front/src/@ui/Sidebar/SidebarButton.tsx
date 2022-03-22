@@ -3,6 +3,7 @@ import styled from '@emotion/styled/macro'
 import Icon from '../../components/icon/Icon'
 import { useNavigate } from 'react-router'
 import { useTheme } from '@mui/styles'
+import Tooltip from "../Tooltip/Tooltip"
 
 const Svg = styled(Icon)`
   width: 24px;
@@ -78,10 +79,12 @@ const SidebarButton = ({icon, tooltipHint, active, onPress, url}: buttonProps) =
 
   return (
     <ButtonWrapper onClick={() => {onClick()}} style={active ? buttonActiveStyle : {}}>
+      <Tooltip tooltip={tooltipHint}>
         <Svg viewBox="0 0 24 24">
           {resolveIconContent()}
           {tooltipHint}
         </Svg>
+      </Tooltip>
     </ButtonWrapper>
   )
 }

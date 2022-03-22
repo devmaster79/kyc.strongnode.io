@@ -38,7 +38,7 @@ const buttonItems = [
   },
   {
     type: 'kyc',
-    tooltipHint: 'KYC Registration',
+    tooltipHint: 'KYC',
     path: '/dashboard/kyc'
   }
 ]
