@@ -143,7 +143,10 @@ const palette = {
     border: {
       light: NEW_GREY[60]
     },
-    action: { active: GREY[500], ...COMMON.action }
+    action: { active: GREY[500], ...COMMON.action },
+    icon: {
+      primary: NIGHTBLUE[90]
+    }
   },
   dark: {
     ...COMMON,
@@ -163,7 +166,10 @@ const palette = {
     border: {
       light: WHITE[12]
     },
-    action: { active: GREY[500], ...COMMON.action }
+    action: { active: GREY[500], ...COMMON.action },
+    icon: {
+      primary: WHITE[100]
+    }
   }
 };
 

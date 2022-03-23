@@ -20,6 +20,7 @@
         "ecmaVersion": "latest"
     },
     "plugins": [
+        "@typescript-eslint",
         "react",
         "sonarjs",
         "prettier",
