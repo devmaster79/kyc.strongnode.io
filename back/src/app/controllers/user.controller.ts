@@ -1,14 +1,14 @@
-const db = require("../models");
-const User = db.users;
-const SupportRequests = db.supportrequests;
-const InvestorDetails = db.investordetails;
-const AWS = require("aws-sdk");
-const { EmailService } = require("app/services/communication/EmailService");
-const { AWS_CONFIG, EMAIL_CONFIG } = require("app/config/config");
-const { SupportRequestTemplate } = require("app/services/communication/templates/SupportRequestTemplate");
+import { User, SupportRequest, InvestorDetail } from "../models";
+import AWS  from "aws-sdk";
+import { EmailService }  from "app/services/communication/EmailService";
+import { AWS_CONFIG, EMAIL_CONFIG }  from "app/config/config";
+import { SupportRequestTemplate }  from "app/services/communication/templates/SupportRequestTemplate";
+import { Request, Response } from "express";
+
+type UserRequest = Request & { user: { email: string, user_name: string }};
 
 /** Create and Save a User profile */
-exports.createProfile = (req, res) => {
+export const createProfile = (req: UserRequest, res: Response) => {
   // Validate request
   if (!req.user) {
     res.status(400).send({
@@ -28,7 +28,7 @@ exports.createProfile = (req, res) => {
     where: { user_name: req.user.user_name },
   })
     .then((num) => {
-      if (num == 1) {
+      if (num) {
         res.send({
           message: "User profile was created successfully.",
         });
@@ -53,7 +53,7 @@ exports.createProfile = (req, res) => {
  * @param res
  * @returns {Promise<void>}
  */
-exports.createInvestor = async (req, res) => {
+export const createInvestor = async (req: Request, res: Response) => {
   // validate request
   if (!req.body.investor_name || !req.body.investor_telegram_id || !req.body.investor_country || !req.body.investor_commitment_amount
     || !req.body.investor_wallet_address || !req.body.investor_email) {
@@ -66,23 +66,25 @@ exports.createInvestor = async (req, res) => {
 
   // data for investor creating
   const data = {
+    user_id: -1,
+    reviewed: false,
     investor_name: req.body.investor_name,
     investor_telegram_id: req.body.investor_telegram_id,
     investor_country: req.body.investor_country,
     investor_commitment_amount: req.body.investor_commitment_amount,
     investor_wallet_address: req.body.investor_wallet_address,
-    investor_email: req.body.investor_email,
+    investor_email: req.body.investor_email as string,
     investor_fund_name: req.body.investor_fund_name,
     investor_fund_website: req.body.investor_fund_website,
   };
 
-  const userCreated = await User.findOne({ user_email: req.body.investor_email })
+  const userCreated = await User.findOne({ where: { email: req.body.investor_email } })
 
   if (userCreated) {
-    data.user_id = userCreated.dataValues.id
+    data.user_id = userCreated.id
     data.reviewed = false
 
-    const investorExist = await InvestorDetails.findOne({ user_id: userCreated.dataValues.id })
+    const investorExist = await InvestorDetail.findOne({ where: { user_id: userCreated.id }})
 
     // return error that investor already exists
     if (investorExist) {
@@ -92,7 +94,7 @@ exports.createInvestor = async (req, res) => {
       return
     }
 
-    const investorCreated = await InvestorDetails.create(data)
+    const investorCreated = await InvestorDetail.create(data)
 
     // check if the profile was created successfully
     if (investorCreated) {
@@ -116,24 +118,24 @@ exports.createInvestor = async (req, res) => {
  * TODO: add comment
  * TODO: check with this planned usage with dev team
  */
-exports.getProfile = (req, res) => {
+export const getProfile = (req: UserRequest, res: Response) => {
   const { email } = req.user;
 
   User.findOne({ where: { email: email } })
     .then((data) => {
       const _returnData = [{
         email,
-        remaining_total_amount : data.remaining_total_amount || 0,
-        locked_bonus_amount : data.locked_bonus_amount || 0,
-        user_name : data.user_name,
-        first_name: data.first_name,
-        last_name: data.last_name,
-        wallet_address: data.wallet_address,
-        telegram_id: data.telegram_id,
-        twitter_id: data.twitter_id,
-        enable_authenticator: data.enable_authenticator,
-        enable_sms: data.enable_sms,
-        enable_password: data.enable_password,
+        remaining_total_amount : data!.remaining_total_amount || 0,
+        locked_bonus_amount : data!.locked_bonus_amount || 0,
+        user_name : data!.user_name,
+        first_name: data!.first_name,
+        last_name: data!.last_name,
+        wallet_address: data!.wallet_address,
+        telegram_id: data!.telegram_id,
+        twitter_id: data!.twitter_id,
+        enable_authenticator: data!.enable_authenticator,
+        enable_sms: data!.enable_sms,
+        enable_password: data!.enable_password,
       }];
       res.send(_returnData);
     })
@@ -149,49 +151,26 @@ exports.getProfile = (req, res) => {
  * @param req
  * @param res
  */
-exports.getInvestorDetails = async (req, res) => {
+export const getInvestorDetails = async (req: UserRequest, res: Response) => {
   // check if user is assingned
   if (!req.user) {
     res.status(500).send({ message: 'User is not assigned.' })
     return
   }
 
-  const userCheck = await User.findOne({ email: req.user })
-  const investorDetails = await InvestorDetails.findOne({ user_id: userCheck.dataValues.id, reviewed: 1 })
+  const userCheck = await User.findOne({ where: { email: req.user.email } })
+  const investorDetails = await InvestorDetail.findOne({ where: { user_id: userCheck!.id, reviewed: 1 } })
 
   // check if investor details are present
   if (investorDetails) {
-    res.send(investorDetails.dataValues)
-  } else {
-    res.send({ message: 'Investor details are not present. Details were not submitted or reviewed yet.' })
-  }
-}
-
-/**
- * Method that gets investor details for a specific user.
- * @param req
- * @param res
- */
-exports.getInvestorDetails = async (req, res) => {
-  // check if user is assingned
-  if (!req.user) {
-    res.status(500).send({ message: 'User is not assigned.' })
-    return
-  }
-
-  const userCheck = await User.findOne({ email: req.user })
-  const investorDetails = await InvestorDetails.findOne({ user_id: userCheck.dataValues.id, reviewed: 1 })
-
-  // check if investor details are present
-  if (investorDetails) {
-    res.send(investorDetails.dataValues)
+    res.send(investorDetails.toJSON())
   } else {
     res.send({ message: 'Investor details are not present. Details were not submitted or reviewed yet.' })
   }
 }
 
 //Update profile
-exports.updateProfile = async (req, res) => {
+export const updateProfile = async (req: UserRequest, res: Response) => {
   const { email } = req.user;
 
   if (!email) {
@@ -216,8 +195,8 @@ exports.updateProfile = async (req, res) => {
   User.update(data, {
     where: { email: email },
   })
-    .then((num) => {
-      if (num == 1) {
+    .then((result) => {
+      if (result[0] === 1) {
         res.send({
           message: "User profile was updated successfully.",
         });
@@ -236,7 +215,7 @@ exports.updateProfile = async (req, res) => {
 };
 
 /** Upload profile Image */
-exports.uploadImg = async (req, res) => {
+export const uploadImg = async (req: UserRequest, res: Response) => {
   const { email } = req.user;
   const { user_name, image_data } = req.body;
 
@@ -252,13 +231,15 @@ exports.uploadImg = async (req, res) => {
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
     region: process.env.AWS_REGION,
+  });
+  await s3.createBucket({
     Bucket: "strong-profile-img",
     ACL: "public-read",
-  });
+  }).promise()
 
   if (image_data !== undefined) {
 
-    const base64Data = new Buffer.from(
+    const base64Data = Buffer.from(
       image_data.replace(/^data:image\/\w+;base64,/, ""),
       "base64"
     );
@@ -320,8 +301,8 @@ exports.uploadImg = async (req, res) => {
     User.update(data, {
       where: { email: email },
     })
-      .then((num) => {
-        if (num == 1) {
+      .then((result) => {
+        if (result[0] === 1) {
           res.send({
             message: "User profile image was uploaded successfully.",
           });
@@ -346,12 +327,12 @@ exports.uploadImg = async (req, res) => {
  * @param res
  * @returns {Promise<void>}
  */
-exports.createSupportRequest = async (req, res) => {
+export const createSupportRequest = async (req: UserRequest, res: Response) => {
   // validate request
   if (!req.body.subject || !req.body.message)
     return res.status(400).send({ result: 'Required parameters are not present' })
 
-  const user = await User.findOne({ email: req.user })
+  const user = await User.findOne({ where: { email: req.user.email }})
 
   if (!user)
     return res.status(500).send({ result: 'Unexpected error. User is not in the database.' })
@@ -359,15 +340,15 @@ exports.createSupportRequest = async (req, res) => {
   // send email to SNE support
   const emailService = new EmailService(new AWS.SES(AWS_CONFIG()));
   const request = await emailService.sendTemplate(EMAIL_CONFIG.supportTeamEmail, new SupportRequestTemplate(), {
-    email: user.dataValues.email,
-    username: user.dataValues.user_name,
+    email: user.email,
+    username: user.user_name,
     message: req.body.message,
   })
 
   // if email was sent correctly, create record in database
   if (request) {
-    const supportRequest = await SupportRequests.create({
-      user_id: user.dataValues.id,
+    const supportRequest = await SupportRequest.create({
+      user_id: user.id,
       subject: req.body.subject,
       message: req.body.message
     })

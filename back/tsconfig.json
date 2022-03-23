@@ -19,12 +19,12 @@
         "rootDir": "./src",
         "resolveJsonModule": true,
         "paths": {
-            "shared": ["../shared"]
+            "shared": ["../shared"],
         },
         "typeRoots": [
+            "./node_modules/@types",
             "./src/types",
-            "./node_modules/@types"
-        ]
+        ],
     },
     "include": [
         "./src",

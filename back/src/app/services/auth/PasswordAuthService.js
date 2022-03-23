@@ -28,6 +28,7 @@ class PasswordAuthService {
    */
   async authByPassword(email, password) {
     const user = await this.__userRepository.findOne({ where: { email } });
+    if(!user.password) return null;
     const verified = await this.__verifyPasswordHash(user.password, password);
     if (verified) {
       const mode = this.__tokenService.determineNextMode(user, MODE_2FA);
@@ -83,8 +84,8 @@ class PasswordAuthService {
 
   /**
    * Method that verifies hash againsts password.
-   * @param hash
-   * @param password
+   * @param {string} hash
+   * @param {string} password
    * @returns {Promise<boolean>}
    */
   async __verifyPasswordHash(hash, password) {
