@@ -4,7 +4,6 @@ import { styled, useTheme } from '@mui/material/styles';
 import useCollapseDrawer from '../../hooks/useCollapseDrawer';
 import DashboardNavbar from './DashboardNavbar';
 import Sidebar from './Sidebar';
-import DashboardFooter from './DashboardFooter';
 
 const APP_BAR_MOBILE = 64;
 const APP_BAR_DESKTOP = 92;
@@ -41,7 +40,7 @@ export default function DashboardLayout() {
       <DashboardNavbar onOpenSidebar={() => setOpen(true)} />
       <Sidebar isOpenSidebar={open} onCloseSidebar={() => setOpen(false)} />
       <MainStyle
-        style={{ minHeight: '100vh', position: 'relative'}}
+        style={{ minHeight: '100vh', position: 'relative' }}
         sx={{
           transition: theme.transitions.create('margin', {
             duration: theme.transitions.duration.complex
@@ -51,7 +50,6 @@ export default function DashboardLayout() {
           })
         }}>
         <Outlet />
-        <DashboardFooter />
       </MainStyle>
     </RootStyle>
   );
