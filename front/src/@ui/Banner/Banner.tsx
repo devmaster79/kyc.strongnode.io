@@ -2,6 +2,23 @@ import React from 'react';
 import styled from '@emotion/styled/macro'
 import background from '../../assets/images/banner_background.png'
 
+export type BannerProps = {
+  title: string,
+  description: string
+}
+
+export const Banner = (props: BannerProps) => {
+  // todo
+  return (
+    <BannerWrapper>
+      <TextWrapper>
+        <Title>{ props.title }</Title>
+        <Description>{ props.description }</Description>
+      </TextWrapper>
+    </BannerWrapper>
+  )
+};
+
 const BannerWrapper = styled.div`
   background-image: url("${background}");
   background-repeat: no-repeat;
@@ -34,22 +51,3 @@ const Description = styled.p`
   color: #FFFFFF;
   color: white;
 `
-
-type bannerProps = {
-  title: string,
-  description: string
-}
-
-const Banner = (props: bannerProps) => {
-  // todo
-  return (
-    <BannerWrapper>
-      <TextWrapper>
-        <Title>{ props.title }</Title>
-        <Description>{ props.description }</Description>
-      </TextWrapper>
-    </BannerWrapper>
-  )
-};
-
-export default Banner

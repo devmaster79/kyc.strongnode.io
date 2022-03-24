@@ -2,10 +2,9 @@ import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { styled, useTheme } from '@mui/material/styles';
 import useCollapseDrawer from '../../hooks/useCollapseDrawer';
-import DashboardNavbar from './DashboardNavbar';
 import Sidebar from './Sidebar';
 import DashboardFooter from './DashboardFooter';
-import Navbar from './Navbar';
+import { Navbar } from './Navbar';
 
 const APP_BAR_MOBILE = 64;
 const APP_BAR_DESKTOP = 92;
