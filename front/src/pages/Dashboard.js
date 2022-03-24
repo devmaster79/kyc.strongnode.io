@@ -23,6 +23,7 @@ import { ethers } from 'ethers';
 import WithdrawTimer from '../components/dashboard/WithdrawTimer';
 import userService from '../services/userService';
 import historyService from '../services/historyService';
+import { Banner } from '../@ui/Banner/Banner';
 
 const SneAddress = '0x32934CB16DA43fd661116468c1B225Fc26CF9A8c';
 
@@ -301,30 +302,7 @@ export default function Dashboard() {
 
   return (
     <Container ref={dash} maxWidth="xl" style={{ paddingBottom: 100 }}>
-      <CardStyle
-        sx={{
-          height: { xs: 'max-content', md: 120 },
-          width: 1,
-          borderRadius: '16px',
-          py: 1,
-          px: '30px'
-        }}>
-        <Stack direction={{ xs: 'column', md: 'row' }} alignItems="center">
-          <Box component="img" src="/images/SNE disorted edited shadow 1.png" alt="pair" />
-          <Stack justifyContent="space-between" sx={{ pl: 4, py: 1 }}>
-            <Typography
-              color="white"
-              sx={{ fontSize: 24, fontFamily: 'Halyard-Book', fontWeight: 600 }}>
-              STAKE SNE ON STRONGNODE.IO
-            </Typography>
-          </Stack>
-          <Box sx={{ flexGrow: 1 }} />
-          <SBButton variant="contained" size="large">
-            Earn SNE
-          </SBButton>
-        </Stack>
-      </CardStyle>
-
+      <Banner title={'Banner lorem ipsum'} description={'This is the testing description'} />
       <Grid container spacing={4} sx={{ mt: 1 }}>
         <Grid item xs={12} md={4}>
           <CardStyle sx={{ height: { md: '250px' } }}>
