@@ -6,9 +6,6 @@ import Sidebar from './Sidebar';
 import DashboardFooter from './DashboardFooter';
 import { Navbar } from './Navbar';
 
-const APP_BAR_MOBILE = 64;
-const APP_BAR_DESKTOP = 92;
-
 const RootStyle = styled('div')(({ theme }) => ({
   display: 'flex',
   minHeight: '100%',
