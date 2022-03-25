@@ -48,7 +48,6 @@ export default function DashboardLayout() {
           })
         }}>
         <Outlet />
-        <DashboardFooter />
       </MainStyle>
     </RootStyle>
   );
