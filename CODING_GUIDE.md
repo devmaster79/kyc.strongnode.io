@@ -50,3 +50,6 @@ GUI programming is different unfortunately, we cannot apply strong conventions t
 The main component is always the first. Styled and other child components are defined after.
 
 It helps the reader, because they start from the top of the file
+
+# react_component_type
+When developing a new React component we should use the functional-style way. We agreed on #dev channel at Slack.
