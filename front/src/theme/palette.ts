@@ -145,7 +145,9 @@ const palette = {
     },
     action: { active: GREY[500], ...COMMON.action },
     icon: {
-      primary: NIGHTBLUE[90]
+      primary: NIGHTBLUE[90],
+      secondary: GREY['600'],
+      wrapper: '#E0E0EE'
     }
   },
   dark: {
@@ -168,7 +170,9 @@ const palette = {
     },
     action: { active: GREY[500], ...COMMON.action },
     icon: {
-      primary: WHITE[100]
+      primary: WHITE[100],
+      secondary: WHITE[100],
+      wrapper: 'rgba(255, 255, 255, 0.12)'
     }
   }
 };

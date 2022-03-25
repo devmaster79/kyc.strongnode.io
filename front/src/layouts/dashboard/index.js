@@ -2,11 +2,9 @@ import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { styled, useTheme } from '@mui/material/styles';
 import useCollapseDrawer from '../../hooks/useCollapseDrawer';
-import DashboardNavbar from './DashboardNavbar';
 import Sidebar from './Sidebar';
-
-const APP_BAR_MOBILE = 64;
-const APP_BAR_DESKTOP = 92;
+import DashboardFooter from './DashboardFooter';
+import { Navbar } from './Navbar';
 
 const RootStyle = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -20,11 +18,11 @@ const MainStyle = styled('div')(({ theme }) => ({
   flexGrow: 1,
   overflow: 'auto',
   minHeight: '100%',
-  paddingTop: APP_BAR_MOBILE + 24,
+  paddingTop: 32,
   paddingLeft: theme.spacing(2),
   paddingRight: theme.spacing(2),
   [theme.breakpoints.up('lg')]: {
-    paddingTop: APP_BAR_DESKTOP + 24
+    paddingTop: 32
   }
 }));
 
@@ -37,7 +35,7 @@ export default function DashboardLayout() {
 
   return (
     <RootStyle>
-      <DashboardNavbar onOpenSidebar={() => setOpen(true)} />
+      <Navbar />
       <Sidebar isOpenSidebar={open} onCloseSidebar={() => setOpen(false)} />
       <MainStyle
         style={{ minHeight: '100vh', position: 'relative' }}
