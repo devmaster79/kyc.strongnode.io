@@ -3,7 +3,6 @@ import { Outlet } from 'react-router-dom';
 import { styled, useTheme } from '@mui/material/styles';
 import useCollapseDrawer from '../../hooks/useCollapseDrawer';
 import Sidebar from './Sidebar';
-import DashboardFooter from './DashboardFooter';
 import { Navbar } from './Navbar';
 
 const RootStyle = styled('div')(({ theme }) => ({
