@@ -24,6 +24,7 @@ import WithdrawTimer from '../components/dashboard/WithdrawTimer';
 import userService from '../services/userService';
 import historyService from '../services/historyService';
 import { Banner } from '../@ui/Banner/Banner';
+import { BaseChart } from '../@ui/Chart/BaseChart';
 
 const SneAddress = '0x32934CB16DA43fd661116468c1B225Fc26CF9A8c';
 
@@ -303,6 +304,8 @@ export default function Dashboard() {
   return (
     <Container ref={dash} maxWidth="xl" style={{ paddingBottom: 100 }}>
       <Banner title={'Banner lorem ipsum'} description={'This is the testing description'} />
+      <BaseChart />
+
       <Grid container spacing={4} sx={{ mt: 1 }}>
         <Grid item xs={12} md={4}>
           <CardStyle sx={{ height: { md: '250px' } }}>
