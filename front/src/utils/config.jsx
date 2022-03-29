@@ -1,4 +1,4 @@
-export const base_url = process.env.REACT_APP_BASE_URL + '/api';
+export const base_url = '/api';
 
 // USER
 export const investor_url = `${base_url}/users/createInvestor`;

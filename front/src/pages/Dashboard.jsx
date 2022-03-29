@@ -18,7 +18,7 @@ import BonusTokensChart from '../components/Charts/BonusTokensChart';
 import RecentLockupsChart from '../components/Charts/RecentLockupsChart';
 import NewsCarousel from '../components/Carousels/NewsCarousel';
 import useCollapseDrawer from '../hooks/useCollapseDrawer';
-import { useToken, useEthers, useEtherBalance, useTokenBalance } from '@usedapp/core';
+import { useEthers, useEtherBalance, useTokenBalance } from '@usedapp/core';
 import { ethers } from 'ethers';
 import WithdrawTimer from '../components/dashboard/WithdrawTimer';
 import userService from '../services/userService';
@@ -136,7 +136,7 @@ export default function Dashboard() {
   const [historyOpen, setHistoryOpen] = useState();
   const [newsOpen, setNewsOpen] = useState();
   const { activateBrowserWallet, deactivate, account } = useEthers();
-  const tokenInfo = useToken(account);
+
   const balance = useEtherBalance(account);
   const accountBalance = balance ? ethers.utils.formatEther(balance) : 0;
   const SneBalanceBigNumber = useTokenBalance(SneAddress, account);

@@ -18,9 +18,6 @@
         "sourceMap": true,
         "rootDir": "./src",
         "resolveJsonModule": true,
-        "paths": {
-            "shared": ["../shared"],
-        },
         "typeRoots": [
             "./node_modules/@types",
             "./src/types",
@@ -28,8 +25,5 @@
     },
     "include": [
         "./src",
-    ],
-    "references": [{
-        "path": "../shared",
-    }]
+    ]
 }

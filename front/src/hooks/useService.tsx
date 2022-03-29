@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { useState } from "react";
 
 export interface ServiceProps<T extends (...args: any) => any> {
@@ -63,7 +65,7 @@ export type PossibleServicesPropsDescriptions<
     >;
 
 /**
- * 
+ * The return type of useServices hook
  */
 export type ServicesProps<
   Services extends ObjectOfFunctions
@@ -120,7 +122,7 @@ export function useServices<S extends ObjectOfFunctions>(
 
   const calls: any = {};
   const keys = Object.keys(apiCalls);
-  for (let i of keys) {
+  for (const i of keys) {
     calls[i] = call(i, apiCalls[i]);
   }
 
