@@ -131,9 +131,8 @@ export default function UserProfile() {
 
   const readBlobAsBase64 = (file: Blob): Promise<string> => {
     return new Promise((resolve, reject) => {
-      let fileInfo;
       // Make new FileReader
-      let reader = new FileReader();
+      const reader = new FileReader();
 
       // Convert the file to base64 text
       reader.readAsDataURL(file);

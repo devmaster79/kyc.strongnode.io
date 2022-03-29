@@ -1,5 +1,5 @@
 import Button from '../@ui/Button/Button';
-import { useTokenList, useToken, useEthers, useEtherBalance, useTokenBalance } from '@usedapp/core';
+import { useTokenList, useEthers, useEtherBalance, useTokenBalance } from '@usedapp/core';
 import { ethers } from 'ethers';
 
 const UNISWAP_DEFAULT_TOKEN_LIST_URI = 'https://gateway.ipfs.io/ipns/tokens.uniswap.org';
@@ -14,7 +14,6 @@ export function SneBalance() {
 
 export default function ConnectButton() {
   const { activateBrowserWallet, deactivate, account } = useEthers();
-  const tokenInfo = useToken(account);
   const balance = useEtherBalance(account);
   const SneBalanceBigNumber = useTokenBalance(SneAddress, account);
   const SneBalance = SneBalanceBigNumber && ethers.utils.formatUnits(SneBalanceBigNumber, 18);

@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import darkLogo from '../assets/SNE_logo_dark.png'
 import lightLogo from '../assets/SNE_logo_light.png'
 import { useTheme } from '@mui/styles'
+import type { Theme } from '@mui/material'
 
 const Logo = styled.img`
   width: 40px;
@@ -16,8 +17,8 @@ type ButtonProps = {
 }
 
 const ThemedLogo = ({ className }: ButtonProps) => {
-  const theme: any = useTheme()
-  let isDark = theme.palette.mode === 'dark'
+  const theme = useTheme<Theme>()
+  const isDark = theme.palette.mode === 'dark'
 
   return (
     <span>

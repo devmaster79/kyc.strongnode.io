@@ -8,6 +8,9 @@ import breakpoints from './breakpoints';
 import GlobalStyles from './globalStyles';
 import componentsOverride from './overrides';
 import shadows, { customShadows } from './shadows';
+import { CacheProvider } from "@emotion/react";
+import { cache } from "@emotion/css";
+cache.compat = true;
 
 interface ThemeConfigProps {
   children: React.ReactNode
@@ -38,7 +41,9 @@ export function ThemeConfig({ children }: ThemeConfigProps) {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <GlobalStyles />
-        {children}
+        <CacheProvider value={cache}>
+          {children}
+        </CacheProvider>
       </ThemeProvider>
     </StyledEngineProvider>
   );

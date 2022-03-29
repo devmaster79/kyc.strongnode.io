@@ -1,6 +1,5 @@
-import type { CustomTheme as CustomTheme } from '../theme'
+import type { CustomTheme } from '../theme'
 
-// and extend them!
 declare module '@emotion/styled' {
   export interface Theme extends CustomTheme { }
 }
@@ -11,8 +10,22 @@ declare module '@emotion/react' {
   export interface Theme extends CustomTheme { }
 }
 declare module '@mui/material/styles' {
-  export interface Theme extends CustomTheme { }
-  export interface ThemeOptions extends CustomTheme { }
+  export interface Theme {
+    customShadows: {
+      z1: string
+      z8: string
+      z12: string
+      z16: string
+      z20: string
+      z24: string
+      primary: string
+      secondary: string
+      info: string
+      success: string
+      warning: string
+      error: string
+    }
+  }
   export interface Palette {
     gradients: {
       button: string

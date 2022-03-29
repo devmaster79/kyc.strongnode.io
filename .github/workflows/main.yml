@@ -20,7 +20,8 @@ jobs:
     if: github.ref == 'refs/heads/dev'
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-
+    env:
+      NODE_OPTIONS: --max_old_space_size=2048 # Node memory limit for the github actions' server
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -31,12 +32,12 @@ jobs:
         with:
           node-version: '14.17.5'
       - name: Install npm dependencies
-        run: cd front && NODE_OPTIONS=--max_old_space_size=4096 yarn
+        run: cd front && npm ci
       - name: Add frontend .env file
         shell: bash
         run: echo "REACT_APP_BASE_URL=https://stage.strongnode.io:8080" > front/.env
       - name: Run build task
-        run: cd front && NODE_OPTIONS=--max_old_space_size=4096 yarn build
+        run: cd front && npm run build
         env:
            CI: false
       - name: Add backend .env file
@@ -58,14 +59,14 @@ jobs:
           host: ${{ secrets.REMOTE_HOST }}
           username: ${{ secrets.REMOTE_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
-          script: cd kyc/back && NODE_OPTIONS=--max_old_space_size=4096 npm ci
+          script: cd kyc/back && NODE_OPTIONS=--max_old_space_size=2048 npm ci
       - name: run npm build on server
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.REMOTE_HOST }}
           username: ${{ secrets.REMOTE_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
-          script: cd kyc/back && NODE_OPTIONS=--max_old_space_size=4096 npm run build
+          script: cd kyc/back && NODE_OPTIONS=--max_old_space_size=2048 npm run build
       - name: restart pm2
         uses: appleboy/ssh-action@master
         with:
@@ -77,6 +78,8 @@ jobs:
     if: github.ref == 'refs/heads/main'
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
+    env:
+      NODE_OPTIONS: --max_old_space_size=2048 # Node memory limit for the github actions' server
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -88,12 +91,12 @@ jobs:
         with:
           node-version: '14.17.5'
       - name: Install npm dependencies
-        run: cd front && yarn
+        run: cd front && npm ci
       - name: Add frontend .env file
         shell: bash
         run: echo "REACT_APP_BASE_URL=https://stage.strongnode.io:8080" > front/.env # TODO
       - name: Run build task
-        run: cd front && yarn build --if-present
+        run: cd front && npm run build
         env:
            CI: false
       - name: Add backend .env file
@@ -118,7 +121,7 @@ jobs:
           script: |
             export NVM_DIR=~/.nvm
             source ~/.nvm/nvm.sh
-            cd kyc/back && NODE_OPTIONS=--max_old_space_size=4096 npm ci
+            cd kyc/back && NODE_OPTIONS=--max_old_space_size=2048 npm ci
       - name: run npm build on server
         uses: appleboy/ssh-action@master
         with:
@@ -128,7 +131,7 @@ jobs:
           script: |
             export NVM_DIR=~/.nvm
             source ~/.nvm/nvm.sh
-            cd kyc/back && NODE_OPTIONS=--max_old_space_size=4096 npm run build
+            cd kyc/back && NODE_OPTIONS=--max_old_space_size=2048 npm run build
       - name: restart pm2
         uses: appleboy/ssh-action@master
         with:
