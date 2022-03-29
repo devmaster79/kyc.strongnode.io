@@ -14,10 +14,8 @@ const getIcon = (name) => (
 
 const sidebarConfig = [
   {
-    items: [
-      { title: 'Dashboard', path: '/dashboard/app', icon: getIcon('booster') }
-    ],
-    subheader:'dashboard'
+    items: [{ title: 'Dashboard', path: '/dashboard/app', icon: getIcon('booster') }],
+    subheader: 'dashboard'
   }
 ];
 

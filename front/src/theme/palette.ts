@@ -22,9 +22,10 @@ const NIGHTBLUE = {
 }
 
 const NEW_GREY = {
+  70: '#9593C8',
   60: 'rgba(153, 153, 153, 0.12)',
   50: '#E5E5E5',
-  30: '#F6F6FD'
+  30: '#F6F6FD',
 }
 
 const GREY = {
@@ -170,7 +171,8 @@ const palette = {
     },
     action: { active: GREY[500], ...COMMON.action },
     icon: {
-      primary: WHITE[100],
+      primary: NEW_GREY[70],
+      active: WHITE[100],
       secondary: WHITE[100],
       wrapper: 'rgba(255, 255, 255, 0.12)'
     }

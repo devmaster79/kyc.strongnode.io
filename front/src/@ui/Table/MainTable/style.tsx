@@ -16,8 +16,13 @@ export const Table = styled.table`
     border-top: 1px solid ${props => props.theme.palette.border.light};
   }
 
+  tr:first-child {
+    border-top: 0px;
+  }
+
   th {
     text-align: left;
+    text-transform: uppercase;
     color: ${props => props.theme.palette.text.secondary};
   }
 `

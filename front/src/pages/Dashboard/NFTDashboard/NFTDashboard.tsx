@@ -1,14 +1,6 @@
-import { useState, useEffect, useCallback } from 'react';
-import TextButton from '../../../@ui/Button/TextButton'
-import ConnectButton, { SneBalance } from 'components/ConnectButton';
-import { useNavigate } from 'react-router-dom';
-import userService from 'services/userService';
-import * as authService from 'services/auth';
-import { ReactComponent as ArrowDown} from '../../../icons/arrow-down.svg'
-import { ReactComponent as ArrowUp} from '../../../icons/arrow-up.svg'
-import { ReactComponent as AvatarIcon } from '../../../icons/avatar.svg'
 import NFTCard from './NFTCard/NFTCard';
 import styled from '@emotion/styled'
+import TableSection from 'components/TableSection/TableSection';
 
 const CardWrapper = styled.div`
   display: flex;
@@ -16,6 +8,72 @@ const CardWrapper = styled.div`
 `
 export default function NFTDashboard() {
   var cards = ['1', '2', '3', '4', '5','6','7'];
+
+  const columns = [
+    {
+      id: 'nft',
+      label: 'NFT',
+      align: 'left',
+    },
+    {
+      id: 'price_paid',
+      label: 'Price Paid',
+      align: 'left'
+    },
+    {
+      id: 'floor_price',
+      label: 'Floor Price',
+      align: 'left',
+    },
+    {
+      id: 'volume',
+      label: '24H VOLUME',
+      align: 'left',
+    },
+    {
+      id: 'price',
+      label: '24H PRICE',
+      align: 'left',
+    }
+  ];
+
+  const dataSet = {
+    items: [
+    {
+      nft: 'Scary punk #24',
+      price_paid:'44.124',
+      floor_price:'70',
+      volume:'290.7K',
+      price:'290.7K'
+    },
+    {
+      nft: 'Scary punk #24',
+      price_paid:'44.124',
+      floor_price:'70',
+      volume:'290.7K',
+      price:'290.7K'
+    },
+    {
+      nft: 'Scary punk #24',
+      price_paid:'44.124',
+      floor_price:'70',
+      volume:'290.7K',
+      price:'290.7K'
+    },
+    {
+      nft: 'Scary punk #24',
+      price_paid:'44.124',
+      floor_price:'70',
+      volume:'290.7K',
+      price:'290.7K'
+    }
+  ]}
+
+  const overwrittenFields = {
+    price: () => {
+      return 'Vested';
+    }
+  };
 
   return (
     <>
@@ -25,5 +83,6 @@ export default function NFTDashboard() {
         <NFTCard key={card}/>
       ))}
       </CardWrapper>
+      <TableSection title="Metrics" subtitle="NFT 18" columns={columns} dataSet={dataSet} overwrittenFields={overwrittenFields} ></TableSection>
     </>);
 }

@@ -8,7 +8,7 @@ const TooltipElement = styled.div`
   min-width: 72px;
   padding-top: 8px;
   padding-bottom: 8px;
-  font-family: 'Satoshi', Arial;
+  font-family: 'Satosh-Variable', Arial;
   font-style: normal;
   font-weight: 900;
   font-size: 12px;
@@ -23,7 +23,7 @@ const TooltipElement = styled.div`
   transform: translateX(-50%) translateY(-10%);
   top: -56px;
   height: max-content;
-  
+
   &:after {
     content: "";
     position: absolute;
@@ -39,7 +39,7 @@ const TooltipElement = styled.div`
 
 const TooltipContentWrapper = styled.div`
   position: relative;
-  
+
   &:hover ${TooltipElement} {
     opacity: 1;
     transform: translateX(-50%) translateY(0%);

@@ -25,7 +25,6 @@ export const template = ({ body, title }: TemplateParams) => /*html*/ `<html>
 
       body {
         background-color: #f6f6f6;
-        font-family: sans-serif;
         -webkit-font-smoothing: antialiased;
         font-size: 14px;
         line-height: 1.4;
@@ -43,7 +42,6 @@ export const template = ({ body, title }: TemplateParams) => /*html*/ `<html>
       }
 
       table td {
-        font-family: sans-serif;
         font-size: 14px;
         vertical-align: top;
       }
@@ -107,7 +105,6 @@ export const template = ({ body, title }: TemplateParams) => /*html*/ `<html>
       h3,
       h4 {
         color: #000000;
-        font-family: sans-serif;
         font-weight: 400;
         line-height: 1.4;
         margin: 0;
@@ -124,7 +121,6 @@ export const template = ({ body, title }: TemplateParams) => /*html*/ `<html>
       p,
       ul,
       ol {
-        font-family: sans-serif;
         font-size: 14px;
         font-weight: normal;
         margin: 0;

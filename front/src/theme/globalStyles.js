@@ -16,12 +16,18 @@ const GlobalStyles = withStyles((theme) => ({
       '-webkit-overflow-scrolling': 'touch'
     },
     body: {
+      color:  theme.palette.text.primary,
       width: '100%',
       height: '100%',
       background: '#F3F5F9',
-      fontFamily: 'Satoshi'
+      fontFamily: 'Satoshi-Regular'
+    },
+    h2: {
+      fontFamily: 'Satoshi-Variable',
+      fontWeight: 900
     },
     h1: {
+      fontFamily: 'Satoshi-Variable',
       fontWeight: 900,
       fontSize: '32px',
       paddingBottom: 40,

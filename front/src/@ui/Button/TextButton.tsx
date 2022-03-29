@@ -1,9 +1,7 @@
 import styled from '@emotion/styled'
 
 const StyledButton = styled.button`
-      font-family: 'Satoshi';
       font-style: normal;
-      font-weight: 400;
       font-size: 16px;
       line-height: 140%;
       text-align: center;

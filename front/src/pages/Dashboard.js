@@ -51,7 +51,6 @@ const SBButton = styled(Button)`
   border-radius: 30px;
   border: none;
   font-size: 19px;
-  font-family: 'Halyard-Book';
   width: 192px;
   height: 58px;
 `;

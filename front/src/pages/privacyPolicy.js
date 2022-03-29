@@ -7,11 +7,13 @@ import EntryCard from '../components/EntryCard';
  * @returns {JSX.Element}
  */
 function privacyPolicy() {
-    return (<EntryPage>
-        <EntryCard>
-            <h2 style={{ fontFamily: 'Halyard' }}>Privacy Policy placeholder</h2>
-        </EntryCard>
-    </EntryPage>);
+  return (
+    <EntryPage>
+      <EntryCard>
+        <h2 style={{ fontFamily: 'Halyard' }}>Privacy Policy placeholder</h2>
+      </EntryCard>
+    </EntryPage>
+  );
 }
 
 export default privacyPolicy;
