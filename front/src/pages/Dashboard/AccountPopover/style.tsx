@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import Icon from '../../../components/icon/Icon';
+import Icon from '../../../@ui/Icon/Icon';
 
 export const IconWrapper = styled.div`
   display: flex;
@@ -13,7 +13,7 @@ export const IconWrapper = styled.div`
 export const AccountPopoverWrapper = styled.div`
   position: absolute;
   top: 65px;
-  right: 25px;
+  right: 0px;
   display: flex;
   flex-direction: column;
   background: ${(props) => props.theme.palette.background.secondary};
@@ -21,9 +21,7 @@ export const AccountPopoverWrapper = styled.div`
   box-sizing: border-box;
   border-radius: 10px;
   padding: 32px 40px;
-  font-family: 'Satoshi';
   line-height: 140%;
-  font-weight: 400;
   font-size: 16px;
   text-align: center;
   color: ${(props) => props.theme.palette.text.primary};
@@ -44,25 +42,6 @@ export const AccountPopoverWrapper = styled.div`
       border-bottom: 1px solid ${(props) => props.theme.palette.border.light};
       cursor: pointer;
     }
-  }
-`;
-
-export const AvatarArrow = styled(Icon)`
-  width: 8px;
-  height: 6px;
-  transition: 450ms ease;
-
-  & path {
-    fill: ${(props) => props.theme.palette.icon.secondary};
-  }
-`;
-
-export const AvatarIcon = styled(Icon)`
-  width: 20px;
-  height: 20px;
-
-  & path {
-    fill: ${(props) => props.theme.palette.icon.primary};
   }
 `;
 

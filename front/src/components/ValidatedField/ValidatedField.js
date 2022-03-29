@@ -23,7 +23,6 @@ const ErrorWrapper = styled.div`
     font-size: 12px;
   }
   > svg {
-
   }
   > svg > path {
     fill: white;
@@ -38,7 +37,14 @@ const TermsText = () => (
       color: 'white',
       fontFamily: 'Halyard-Book'
     }}>
-    By continuing, you agree to <Link to="/terms-of-use" target="_blank">Terms of Use</Link> <Link to="/privacy-policy" target="_blank">Privacy Policy</Link>.
+    By continuing, you agree to{' '}
+    <Link to="/terms-of-use" target="_blank">
+      Terms of Use
+    </Link>{' '}
+    <Link to="/privacy-policy" target="_blank">
+      Privacy Policy
+    </Link>
+    .
   </p>
 );
 

@@ -7,8 +7,7 @@ export const Card = styled.div`
   border: 1px solid  ${props => props.theme.palette.border.light};
   box-sizing: border-box;
   border-radius: 8px;
-
-  font-family: 'Satoshi';
+  font-family: 'Satoshi-Variable';
   font-style: normal;
   font-weight: 900;
   font-size: 14px;
@@ -35,6 +34,7 @@ export const CardContent = styled.div`
   }
 
   span {
+    font-family: 'Satoshi-Regular';
     color: ${props => props.theme.palette.text.secondary};
   }
 `

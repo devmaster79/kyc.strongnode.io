@@ -1,5 +1,11 @@
 import axios from 'axios';
-import { findAllVested, findAllWithdrawn, findWithdrawnDetails, history_url, findVestedDetails } from '../utils/config'
+import {
+  findAllVested,
+  findAllWithdrawn,
+  findWithdrawnDetails,
+  history_url,
+  findVestedDetails
+} from '../utils/config';
 
 export default {
   createHistory(data) {
@@ -23,4 +29,4 @@ export default {
   findVestedDetails(user_name) {
     return axios.get(`${findVestedDetails}?user_name=${user_name}`);
   }
-}
+};
