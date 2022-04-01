@@ -83,6 +83,6 @@ export default function NFTDashboard() {
         <NFTCard key={card}/>
       ))}
       </CardWrapper>
-      <TableSection title="Metrics" subtitle="NFT 18" columns={columns} dataSet={dataSet} overwrittenFields={overwrittenFields} ></TableSection>
+      <TableSection title="Metrics" subtitle="NFT 18" columns={columns} dataSet={dataSet} overwrittenFields={overwrittenFields} />
     </>);
 }
