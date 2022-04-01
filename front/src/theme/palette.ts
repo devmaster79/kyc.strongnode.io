@@ -137,6 +137,7 @@ const palette = {
       primary: WHITE[100],
       secondary: NEW_GREY[30],
       light: WHITE[40],
+      switch: NIGHTBLUE[10],
       default: NEW_GREY[60],
       paper: GREY[800],
       neutral: GREY['500_16']
@@ -162,6 +163,7 @@ const palette = {
       primary: NIGHTBLUE[90],
       secondary: NIGHTBLUE[100],
       light: WHITE[8],
+      switch: WHITE[8],
       default: NIGHTBLUE[80],
       paper: GREY[800],
       neutral: GREY['500_16']

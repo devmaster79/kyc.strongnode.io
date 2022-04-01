@@ -1,4 +1,30 @@
 import styled from '@emotion/styled'
+import { useTheme } from '@mui/styles'
+
+function Button({ children, ...props }: any) {
+  const theme: any = useTheme();
+  const styles: any = {
+    huge:{
+      fontSize: '14px',
+      padding: '21px',
+      minWidth: '200px',
+      margin: '8px'
+    },
+    hugeInvert: {
+      fontSize: '14px',
+      padding: '21px',
+      minWidth: '200px',
+      background: theme.palette.background.light,
+      border: '1px solid ' + theme.palette.border.light,
+      boxShadow: 'none',
+      margin: '8px'
+    }
+  }
+
+  return <StyledButton style={styles[props.type]} {...props}>{children}</StyledButton>;
+}
+
+export default Button;
 
 const StyledButton = styled.button`
       background: linear-gradient(90.39deg, #AA1FEC 0.24%, #7A3BFE 101.6%);
@@ -17,10 +43,3 @@ const StyledButton = styled.button`
       cursor: pointer;
       white-space: nowrap;
 `
-
-
-function Button({ children, ...props }: any) {
-  return <StyledButton {...props}>{children}</StyledButton>;
-}
-
-export default Button;

@@ -14,11 +14,13 @@ import PrivateSaleInterestForm from "./pages/privatesaleinterestform";
 import AddData from "./pages/AddData";
 import * as SHARED_ROUTES from "shared/routes";
 import NFTDashboard from "pages/Dashboard/NFTDashboard/NFTDashboard";
+import KYC from 'pages/Dashboard/KYC/KYC';
 
 export const ROUTES = {
   DASHBOARD: {
     LAYOUT: "/dashboard",
     NFT:"/dashboard/nft",
+    KYC:'/dashboard/kyc',
     APP: "/dashboard/app",
     PROFILE: "/dashboard/profile",
     CONTACT_SUPORT: "contact-support",
@@ -55,6 +57,7 @@ export default function Router() {
           <Route path={ROUTES.DASHBOARD.SHIELD} element={<Dashboard />} />
           <Route path={ROUTES.DASHBOARD.ADD_DATA} element={<AddData />} />
           <Route path={ROUTES.DASHBOARD.NFT} element={<NFTDashboard />} />
+          <Route path={ROUTES.DASHBOARD.KYC} element={<KYC />} />
         </Route>
         <Route
           path="*"
