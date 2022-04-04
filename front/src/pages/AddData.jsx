@@ -34,7 +34,7 @@ export default function Dashboard() {
 
   const { enqueueSnackbar } = useSnackbar();
 
-  //Fetch value from local storage
+  // Fetch value from local storage
   const token = localStorage.getItem('token');
   const useremail = localStorage.getItem('email');
 
