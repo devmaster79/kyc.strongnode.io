@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { BaseChart } from './BaseChart';
 import styled from '@emotion/styled/macro'
 import cryptoDataService from '../../services/cryptoDataService'
+import { ValueTrendIndicator } from "./ValueTrendIndicator";
 
 // sample placeholder data
 const placeholderData = [
@@ -51,14 +52,17 @@ export const CryptoChart = (props: CryptoChartProps) => {
       <CryptoPair>
         <Pair>{cryptoCurrency}/{targetCurrency}</Pair>
       </CryptoPair>
-      <BaseChart data={(chartDataTemp) ? chartDataTemp : placeholderData} xKey={'timestamp'} yKey={'value'} chartKey={'value'} />
+      <TrendPairWrapper>
+        <ValueTrendIndicator value={'210%'} up={true} />
+        <ValueTrendIndicator value={'$20'} up={false} />
+      </TrendPairWrapper>
+      <BaseChart xAxisFormat={'days'} data={(chartDataTemp) ? chartDataTemp : placeholderData} xKey={'timestamp'} yKey={'value'} chartKey={'value'} />
     </div>
   );
 };
 
 const CryptoPair = styled.div`
   width: max-content;
-  margin-bottom: 32px;
 `
 
 const Pair = styled.div`
@@ -69,4 +73,19 @@ const Pair = styled.div`
   color: #141245;
   opacity: 0.4;
   margin-bottom: 8px;
+`
+
+const TrendPairWrapper = styled.div`
+  margin-top: 8px;
+  margin-bottom: 32px;
+  
+  div {
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 24px;
+  }
+  
+  div:first-child {
+    margin-left: 0px;
+  }
 `
