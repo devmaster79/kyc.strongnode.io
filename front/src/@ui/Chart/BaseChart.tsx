@@ -18,12 +18,33 @@ const ChartWrapper = styled.div`
 type BaseChartProps = {
   data: Array<Object>,
   xKey: string,
+  xAxisFormat?: string,
   yKey: string,
   chartKey: string
 }
 
 export const BaseChart = (props: BaseChartProps) => {
   const [yAxisWidth, setYAxisWidth] = useState(undefined)
+  const [chartKey, setChartKey] = useState(1)
+
+  const formatTimestamp = (tickItem: any) => {
+    if (!props.xAxisFormat || isNaN(tickItem))
+      return tickItem
+
+    switch (props.xAxisFormat) {
+      case 'days':
+        return new Intl.DateTimeFormat('en-Us', { weekday: 'short' }).format(new Date(tickItem))
+
+      case 'weeks':
+        return 'TODO'
+
+      case 'months':
+        return new Intl.DateTimeFormat('en-Us', { month: 'short' }).format(new Date(tickItem))
+
+      case 'years':
+        return new Intl.DateTimeFormat('en-Us', { year: 'numeric' }).format(new Date(tickItem))
+    }
+  }
 
   const calculateYAxisWidth = (data: any) => {
     return data
@@ -32,8 +53,8 @@ export const BaseChart = (props: BaseChartProps) => {
   }
 
   useEffect(() => {
-    console.log('width is calculated to ' + calculateYAxisWidth(props.data))
     setYAxisWidth(calculateYAxisWidth(props.data))
+    setChartKey(chartKey + 1)
   }, [props.data])
 
   const tooltipContentStyle = {
@@ -54,12 +75,13 @@ export const BaseChart = (props: BaseChartProps) => {
               <stop offset="95%" stopColor="#AA1FEC" stopOpacity={0} />
             </linearGradient>
           </defs>
-          <XAxis ticks={['test', 'vest', 'lol']} tickLine={false} axisLine={false} padding={{ left: 16, right: 16 }} dataKey={props.xKey} />
+          <XAxis tickFormatter={formatTimestamp} tickLine={false} axisLine={false} padding={{ left: 16, right: 16 }} dataKey={props.xKey} />
           <YAxis width={(yAxisWidth) ? yAxisWidth + 34 : yAxisWidth} tickLine={false} axisLine={false} dataKey={props.yKey} />
           <CartesianGrid vertical={false} stroke="rgba(153, 153, 153, 0.12)" />
 
           <Tooltip wrapperStyle={tooltipWrapperStyle} contentStyle={tooltipContentStyle} />
           <Area
+            key={chartKey}
             type="monotone"
             dataKey={props.chartKey}
             stroke="#AA1FEC"
