@@ -1,3 +1,5 @@
+const { off } = require("process");
+
 module.exports = {
   env: {
     browser: true,
@@ -11,7 +13,8 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'plugin:sonarjs/recommended',
     'plugin:promise/recommended',
-    'standard'
+    'standard',
+    'standard-jsx'
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -45,6 +48,21 @@ module.exports = {
     /*
      * Lints to enable later:
      */
+     'jsx-quotes': 'warn',
+     'no-undef': 'warn',
+     'react/jsx-boolean-value': 'warn',
+     'react/jsx-closing-bracket-location': 'warn',
+     'react/jsx-closing-tag-location': 'warn',
+     'react/jsx-curly-brace-presence': 'warn',
+     'react/jsx-curly-newline': 'warn',
+     'react/jsx-curly-spacing': 'warn',
+     'react/jsx-indent': 'warn',
+     'react/jsx-indent-props': 'warn',
+     'react/jsx-pascal-case': 'warn',
+     'react/jsx-props-no-multi-spaces': 'warn',
+     'react/jsx-tag-spacing': 'warn',
+     'react/jsx-wrap-multilines': 'warn',
+     'react/self-closing-comp': 'warn',
     '@typescript-eslint/ban-types':'warn',
     'array-bracket-spacing':'warn',
     'operator-linebreak':'warn',
@@ -66,7 +84,6 @@ module.exports = {
     'quotes':'warn',
     'space-before-function-paren':'warn',
     'comma-dangle':'warn',
-    'no-undef':'warn',
     'object-curly-spacing':'warn',
     'dot-notation':'warn',
     'no-multi-spaces':'warn',
