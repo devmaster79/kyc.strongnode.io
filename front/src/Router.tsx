@@ -1,33 +1,33 @@
-import { Navigate, Route, Routes } from "react-router-dom";
-import DashboardLayout from "./layouts/dashboard";
-import Dashboard from "./pages/Dashboard";
-import UserProfile from "./pages/UserProfile/UserProfile";
-import Profile from "./pages/profile";
-import ContactSupport from "./pages/contactSupport";
-import { Register } from "./pages/auth/Register";
-import { VerifyEmail } from "./pages/auth/VerifyEmail";
-import { SignInWithPassword } from "./pages/auth/SignInWithPassword";
-import { SignInWithAuthenticator } from "./pages/auth/SingInWithAuthenticator";
-import { SignInWithSMS } from "./pages/auth/SignInWithSMS";
-import { SignInWithToken } from "./pages/auth/SignInWithToken";
-import PrivateSaleInterestForm from "./pages/privatesaleinterestform";
-import AddData from "./pages/AddData";
-import * as SHARED_ROUTES from "shared/routes";
-import NFTDashboard from "pages/Dashboard/NFTDashboard/NFTDashboard";
-import KYC from 'pages/Dashboard/KYC/KYC';
+import { Navigate, Route, Routes } from 'react-router-dom'
+import DashboardLayout from './layouts/dashboard'
+import Dashboard from './pages/Dashboard'
+import UserProfile from './pages/UserProfile/UserProfile'
+import Profile from './pages/profile'
+import ContactSupport from './pages/contactSupport'
+import { Register } from './pages/auth/Register'
+import { VerifyEmail } from './pages/auth/VerifyEmail'
+import { SignInWithPassword } from './pages/auth/SignInWithPassword'
+import { SignInWithAuthenticator } from './pages/auth/SingInWithAuthenticator'
+import { SignInWithSMS } from './pages/auth/SignInWithSMS'
+import { SignInWithToken } from './pages/auth/SignInWithToken'
+import PrivateSaleInterestForm from './pages/privatesaleinterestform'
+import AddData from './pages/AddData'
+import * as SHARED_ROUTES from 'shared/routes'
+import NFTDashboard from 'pages/Dashboard/NFTDashboard/NFTDashboard'
+import KYC from 'pages/Dashboard/KYC/KYC'
 
 export const ROUTES = {
   DASHBOARD: {
-    LAYOUT: "/dashboard",
-    NFT:"/dashboard/nft",
-    KYC:'/dashboard/kyc',
-    APP: "/dashboard/app",
-    PROFILE: "/dashboard/profile",
-    CONTACT_SUPORT: "contact-support",
-    GROWTH: "/dashboard/growth",
-    SYNC: "/dashboard/sync",
-    SHIELD: "/dashboard/shield",
-    ADD_DATA: "/dashboard/add_data",
+    LAYOUT: '/dashboard',
+    NFT: '/dashboard/nft',
+    KYC: '/dashboard/kyc',
+    APP: '/dashboard/app',
+    PROFILE: '/dashboard/profile',
+    CONTACT_SUPORT: 'contact-support',
+    GROWTH: '/dashboard/growth',
+    SYNC: '/dashboard/sync',
+    SHIELD: '/dashboard/shield',
+    ADD_DATA: '/dashboard/add_data'
   },
   AUTH: {
     VERIFY_EMAIL: SHARED_ROUTES.VERIFY_EMAIL,
@@ -35,16 +35,16 @@ export const ROUTES = {
     SIGN_IN_WITH_PASSWORD: SHARED_ROUTES.SIGN_IN_WITH_PASSWORD,
     SIGN_IN_WITH_AUTHENTICATOR: SHARED_ROUTES.SIGN_IN_WITH_AUTHENTICATOR,
     SIGN_IN_WITH_SMS: SHARED_ROUTES.SIGN_IN_WITH_SMS,
-    SIGN_IN_WITH_TOKEN: SHARED_ROUTES.SIGN_IN_WITH_TOKEN,
+    SIGN_IN_WITH_TOKEN: SHARED_ROUTES.SIGN_IN_WITH_TOKEN
   },
   // TODO: review these routes, and rename/relocate/remove if needed
-  PROFILE: "/profile",
-  PRIVATE_SALE_INTEREST_FORM: "/private-sale-interest-form",
-};
+  PROFILE: '/profile',
+  PRIVATE_SALE_INTEREST_FORM: '/private-sale-interest-form'
+}
 
 /* prettier-ignore */
-export default function Router() {
-  const loggedin = localStorage.getItem("loggedin");
+export default function Router () {
+  const loggedin = localStorage.getItem('loggedin')
   if (loggedin) {
     return (<>
       <Routes>
@@ -64,7 +64,7 @@ export default function Router() {
           element={<Navigate to={ROUTES.DASHBOARD.APP} replace />}
         />
       </Routes>
-    </>);
+    </>)
   } else {
     return (
       <Routes>
@@ -81,6 +81,6 @@ export default function Router() {
           element={<Navigate to={ROUTES.AUTH.VERIFY_EMAIL} replace />}
         />
       </Routes>
-    );
+    )
   }
 }

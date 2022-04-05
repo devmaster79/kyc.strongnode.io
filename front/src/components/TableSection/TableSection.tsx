@@ -1,23 +1,22 @@
 import styled from '@emotion/styled'
-import InputField from '@ui/Input/InputField';
-import Select from '@ui/Select/Select';
-import MainTable from '@ui/Table/MainTable/MainTable';
-import Icon from '@ui/Icon/Icon';
-import { useState } from 'react';
+import InputField from '@ui/Input/InputField'
+import Select from '@ui/Select/Select'
+import MainTable from '@ui/Table/MainTable/MainTable'
+import Icon from '@ui/Icon/Icon'
+import { useState } from 'react'
 
+function TableSection ({ children, ...props }: any) {
+  const [selectedOption, setSelectedOption] = useState()
 
-function TableSection({ children, ...props }: any) {
-  const [selectedOption, setSelectedOption]= useState();
-
-  const selectOptions = [ {label: 'First', value:'1'} , {label: 'Second', value:'2'}];
+  const selectOptions = [{ label: 'First', value: '1' }, { label: 'Second', value: '2' }]
   return <TableSectionWrapper {...props}>
-      { props.comingSoon ?
-      <ComingSoonWrapper>
+      { props.comingSoon
+        ? <ComingSoonWrapper>
         <Icon name="info" height={24} width={24} viewBox="0 0 24 24" />
         <h2>{ props.title }</h2>
         <span>Comming soon</span>
-      </ComingSoonWrapper> :
-      <>
+      </ComingSoonWrapper>
+        : <>
         <HeaderWrapper>
           <h2>{ props.title } <span>{ props.subtitle }</span></h2>
           <InputField icon="search" placeholder="Search"></InputField>
@@ -32,10 +31,10 @@ function TableSection({ children, ...props }: any) {
         />
       </>
   }
-    </TableSectionWrapper>;
+    </TableSectionWrapper>
 }
 
-export default TableSection;
+export default TableSection
 
 const TableSectionWrapper = styled.div`
   width: 100%;
@@ -87,4 +86,3 @@ const ComingSoonWrapper = styled.div`
     color: ${props => props.theme.palette.text.secondary};
   }
 `
-

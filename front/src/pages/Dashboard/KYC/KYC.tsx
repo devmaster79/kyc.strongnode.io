@@ -1,27 +1,27 @@
 import styled from '@emotion/styled'
-import SwitchButton from '@ui/Button/SwitchButton';
-import Modal from '@ui/Modal/Modal';
-import { useState } from 'react';
+import SwitchButton from '@ui/Button/SwitchButton'
+import Modal from '@ui/Modal/Modal'
+import { useState } from 'react'
 
-export default function KYC() {
-  const [is2fa, setIs2fa] = useState(true);
-  const [show2faModal, setShow2faModal] = useState(false);
+export default function KYC () {
+  const [is2fa, setIs2fa] = useState(true)
+  const [show2faModal, setShow2faModal] = useState(false)
 
-  const [isSMS, setIsSMS] = useState(true);
-  const [showSMSModal, setShowSMSModal] = useState(false);
+  const [isSMS, setIsSMS] = useState(true)
+  const [showSMSModal, setShowSMSModal] = useState(false)
 
   const handle2faChange = () => {
     if (is2fa) {
-      setShow2faModal(true);
-      return;
+      setShow2faModal(true)
+      return
     }
     setIs2fa(true)
-  };
+  }
 
   const handleSMSChange = () => {
     if (isSMS) {
-      setShowSMSModal(true);
-      return;
+      setShowSMSModal(true)
+      return
     }
     setIsSMS(true)
   }
@@ -36,14 +36,14 @@ export default function KYC() {
       </SwitchWrapper>
 
       { show2faModal &&
-        <Modal title="Without 2FA" icon="lock" onClose={() => setShow2faModal(false)} onApprove={() => { setIs2fa(false); setShow2faModal(false); }}>
+        <Modal title="Without 2FA" icon="lock" onClose={() => setShow2faModal(false)} onApprove={() => { setIs2fa(false); setShow2faModal(false) }}>
           Unauthorized access to your account can occur.<br /> Are you sure you want to disable this?
       </Modal> }
       { showSMSModal &&
-        <Modal title="Without SMS" icon="sms" onClose={() => setShowSMSModal(false)} onApprove={() => { setIsSMS(false); setShowSMSModal(false); }}>
+        <Modal title="Without SMS" icon="sms" onClose={() => setShowSMSModal(false)} onApprove={() => { setIsSMS(false); setShowSMSModal(false) }}>
           Unauthorized access to your account can occur.<br /> Are you sure you want to disable this?
       </Modal> }
-    </KYCWrapper>);
+    </KYCWrapper>)
 }
 
 const KYCWrapper = styled.div`

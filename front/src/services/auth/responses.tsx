@@ -1,18 +1,18 @@
 export type Success = {
-  result: "success";
+  result: 'success';
 };
 export type UnexpectedError = {
-  result: "unexpected-error";
+  result: 'unexpected-error';
 };
 export type UnauthorizedError = {
-  result: "unauthorized-error";
+  result: 'unauthorized-error';
 };
 export type BannedError = {
-  result: "banned";
+  result: 'banned';
   remainingTimeMs: number;
 };
 export type ValidationError<Field, Reason> = {
-  result: "validation-error";
+  result: 'validation-error';
   field: Field;
   reason: Reason;
 };

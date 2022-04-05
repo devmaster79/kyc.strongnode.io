@@ -2,7 +2,7 @@ import styled from '@emotion/styled/macro'
 import Icon from '../Icon/Icon'
 import { useNavigate } from 'react-router'
 import { useTheme } from '@mui/styles'
-import Tooltip from "../Tooltip/Tooltip"
+import Tooltip from '../Tooltip/Tooltip'
 
 const Svg = styled(Icon)`
   width: 24px;
@@ -45,7 +45,7 @@ type buttonProps = {
   url?: string
 }
 
-const SidebarButton = ({icon, tooltipHint, active, onPress, url}: buttonProps) => {
+const SidebarButton = ({ icon, tooltipHint, active, onPress, url }: buttonProps) => {
   const navigate: any = useNavigate()
   const theme: any = useTheme()
 
@@ -54,15 +54,13 @@ const SidebarButton = ({icon, tooltipHint, active, onPress, url}: buttonProps) =
   }
 
   const onClick = () => {
-    if (onPress)
-      onPress()
+    if (onPress) { onPress() }
 
-    if (url)
-      navigate(url)
+    if (url) { navigate(url) }
   }
 
   return (
-    <ButtonWrapper onClick={() => {onClick()}} style={active ? buttonActiveStyle : {}}>
+    <ButtonWrapper onClick={() => { onClick() }} style={active ? buttonActiveStyle : {}}>
       <Tooltip tooltip={tooltipHint}>
         <Svg name={icon} height={24} width={24} viewBox="0 0 24 24" color={ active ? theme.palette.icon.active : theme.palette.icon.primary }>
           {tooltipHint}

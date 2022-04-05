@@ -1,10 +1,10 @@
-import { useSnackbar } from "notistack";
-import { useCallback, useEffect, useState } from "react";
-import * as Yup from "yup";
-import { useFormik, FormikProvider } from "formik";
-import UploadSingleFile from "components/UploadSingleFile";
-import ethereum_address from "ethereum-address-es5";
-import userService from "../../services/userService";
+import { useSnackbar } from 'notistack'
+import { useCallback, useEffect, useState } from 'react'
+import * as Yup from 'yup'
+import { useFormik, FormikProvider } from 'formik'
+import UploadSingleFile from 'components/UploadSingleFile'
+import ethereum_address from 'ethereum-address-es5'
+import userService from '../../services/userService'
 import {
   Container,
   Box,
@@ -16,13 +16,13 @@ import {
   Switch,
   styled,
   FormControlLabel,
-  Typography,
-} from "@mui/material";
-import { SetupModal } from "./SetupModal";
-import { SetupAuthenticatorAuth } from "./SetupAuthenticatorAuth";
-import { SetupSMSAuth } from "./SetupSMSAuth";
-import { SetupPasswordAuth } from "./SetupPasswordAuth";
-import { rest } from "lodash";
+  Typography
+} from '@mui/material'
+import { SetupModal } from './SetupModal'
+import { SetupAuthenticatorAuth } from './SetupAuthenticatorAuth'
+import { SetupSMSAuth } from './SetupSMSAuth'
+import { SetupPasswordAuth } from './SetupPasswordAuth'
+import { rest } from 'lodash'
 
 interface FormFields {
   first_name: string;
@@ -40,35 +40,35 @@ interface FormFields {
   enable_sms: boolean;
 }
 
-export default function UserProfile() {
-  const [showSMSAuthSetup, setShowSMSAuthSetup] = useState(false);
+export default function UserProfile () {
+  const [showSMSAuthSetup, setShowSMSAuthSetup] = useState(false)
   const [showAuthenticatorAuthSetup, setShowAuthenticatorAuthSetup] = useState(
     false
-  );
-  const [showPasswordAuthSetup, setShowPasswordAuthSetup] = useState(false);
-  const { enqueueSnackbar } = useSnackbar();
+  )
+  const [showPasswordAuthSetup, setShowPasswordAuthSetup] = useState(false)
+  const { enqueueSnackbar } = useSnackbar()
 
   const ProfileSchema = Yup.object().shape({
-    first_name: Yup.string().required("First Name is required"),
-    last_name: Yup.string().required("Last Name is required"),
-    user_name: Yup.string().required("User Name is required"),
-  });
+    first_name: Yup.string().required('First Name is required'),
+    last_name: Yup.string().required('Last Name is required'),
+    user_name: Yup.string().required('User Name is required')
+  })
 
   const formik = useFormik<FormFields>({
     initialValues: {
-      first_name: "",
-      last_name: "",
-      user_name: "",
-      telegram_id: "",
-      twitter_id: "",
-      email: "",
-      wallet_address: "",
-      KYC_Completed: "level1",
-      cover: "",
+      first_name: '',
+      last_name: '',
+      user_name: '',
+      telegram_id: '',
+      twitter_id: '',
+      email: '',
+      wallet_address: '',
+      KYC_Completed: 'level1',
+      cover: '',
       file: undefined,
       enable_password: false,
       enable_authenticator: false,
-      enable_sms: false,
+      enable_sms: false
     },
     validationSchema: ProfileSchema,
     onSubmit: async (values, { setSubmitting }) => {
@@ -83,24 +83,24 @@ export default function UserProfile() {
           twitter_id: values.twitter_id,
           enable_password: values.enable_password,
           enable_authenticator: values.enable_authenticator,
-          enable_sms: values.enable_sms,
-        };
+          enable_sms: values.enable_sms
+        }
 
         userService.updateProfile(data).then((r) => {
           if (r.status === 200) {
-            enqueueSnackbar("User updated successfully1", {
-              variant: "success",
-            });
+            enqueueSnackbar('User updated successfully1', {
+              variant: 'success'
+            })
           } else {
-            enqueueSnackbar("Failed to update profile2", { variant: "error" });
+            enqueueSnackbar('Failed to update profile2', { variant: 'error' })
           }
-        });
+        })
       } catch (error) {
-        console.error(error);
-        setSubmitting(false);
+        console.error(error)
+        setSubmitting(false)
       }
-    },
-  });
+    }
+  })
 
   useEffect(() => {
     userService.getProfile().then((res) => {
@@ -114,78 +114,78 @@ export default function UserProfile() {
             twitter_id: res.data[0].twitter_id,
             email: res.data[0].email,
             wallet_address: res.data[0].wallet_address,
-            KYC_Completed: "level1",
-            cover: "",
+            KYC_Completed: 'level1',
+            cover: '',
             file: undefined,
             enable_password: res.data[0].enable_password,
             enable_authenticator: res.data[0].enable_authenticator,
-            enable_sms: res.data[0].enable_sms,
+            enable_sms: res.data[0].enable_sms
           },
           false
-        );
+        )
       }
-    });
-  }, []);
+    })
+  }, [])
 
-  const { values, errors, touched, getFieldProps, setFieldValue } = formik;
+  const { values, errors, touched, getFieldProps, setFieldValue } = formik
 
   const readBlobAsBase64 = (file: Blob): Promise<string> => {
     return new Promise((resolve, reject) => {
       // Make new FileReader
-      const reader = new FileReader();
+      const reader = new FileReader()
 
       // Convert the file to base64 text
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(file)
 
       // on reader load somthing...
       reader.onload = () => {
         // Make a fileInfo Object
-        if (typeof reader.result == "string") {
-          resolve(reader.result);
+        if (typeof reader.result === 'string') {
+          resolve(reader.result)
         } else {
-          reject("Couldn't read file as DataURL");
+          reject("Couldn't read file as DataURL")
         }
-      };
-    });
-  };
+      }
+    })
+  }
 
   const handleDrop = useCallback(
     (acceptedFiles) => {
-      const file = acceptedFiles[0];
+      const file = acceptedFiles[0]
       readBlobAsBase64(file).then((result) => {
-        setFieldValue("cover", result);
-      });
+        setFieldValue('cover', result)
+      })
       if (file) {
-        setFieldValue("file", file);
+        setFieldValue('file', file)
       }
     },
     [setFieldValue]
-  );
+  )
 
   const upload = () => {
     userService
       .uploadProfileImage(values.email, values.user_name, values.cover)
       .then((res) => {
         if (res.status === 200) {
-          enqueueSnackbar("Uploaded successfully!", {
-            variant: "success",
-          });
-          window.location.reload();
+          enqueueSnackbar('Uploaded successfully!', {
+            variant: 'success'
+          })
+          window.location.reload()
         } else {
-          enqueueSnackbar("Failed to upload!", { variant: "error" });
+          enqueueSnackbar('Failed to upload!', { variant: 'error' })
         }
       })
       .catch((err) => {
         if (err.request) {
-          console.error(err.request);
+          console.error(err.request)
         }
         if (err.response) {
-          console.error(err.response);
+          console.error(err.response)
         }
-      });
-  };
+      })
+  }
 
-  const levels = ["level1", "level2", "level3"];
+  const levels = ['level1', 'level2', 'level3']
 
   return (
     <Container maxWidth="xl">
@@ -197,9 +197,9 @@ export default function UserProfile() {
               spacing={4}
               alignItems="flex-start"
               sx={{
-                display: { xs: "flex" },
-                justifyContent: { xs: "space-evenly" },
-                flexWrap: { xs: "wrap", md: "nowrap" },
+                display: { xs: 'flex' },
+                justifyContent: { xs: 'space-evenly' },
+                flexWrap: { xs: 'wrap', md: 'nowrap' }
               }}
             >
               <Stack spacing={5} sx={{ flex: 0 }}>
@@ -209,7 +209,7 @@ export default function UserProfile() {
                     accept="image/*"
                     file={
                       values.file && {
-                        preview: URL.createObjectURL(values.file),
+                        preview: URL.createObjectURL(values.file)
                       }
                     }
                     onDrop={(acceptedFiles: File[]) =>
@@ -228,8 +228,8 @@ export default function UserProfile() {
                   placeholder="KYC Completed"
                   disabled
                   SelectProps={{ value: formik.values.KYC_Completed }}
-                  sx={{ flexGrow: 1, width: "100%" }}
-                  {...getFieldProps("KYC_Completed")}
+                  sx={{ flexGrow: 1, width: '100%' }}
+                  {...getFieldProps('KYC_Completed')}
                 >
                   {levels.map((option) => (
                     <MenuItem key={option} value={option}>
@@ -238,7 +238,7 @@ export default function UserProfile() {
                   ))}
                 </TextField>
               </Stack>
-              <Stack spacing={3} sx={{ width: "100%" }}>
+              <Stack spacing={3} sx={{ width: '100%' }}>
                 <h2>General</h2>
                 <Stack
                   direction="row"
@@ -250,7 +250,7 @@ export default function UserProfile() {
                     id="first_name"
                     fullWidth
                     placeholder="First Name"
-                    {...getFieldProps("first_name")}
+                    {...getFieldProps('first_name')}
                     error={Boolean(touched.first_name && errors.first_name)}
                     helperText={touched.first_name && errors.first_name}
                   />
@@ -258,7 +258,7 @@ export default function UserProfile() {
                     id="last_name"
                     fullWidth
                     placeholder="Last Name"
-                    {...getFieldProps("last_name")}
+                    {...getFieldProps('last_name')}
                     error={Boolean(touched.last_name && errors.last_name)}
                     helperText={touched.last_name && errors.last_name}
                   />
@@ -266,14 +266,14 @@ export default function UserProfile() {
                 <TextField
                   fullWidth
                   placeholder="User Name"
-                  {...getFieldProps("user_name")}
+                  {...getFieldProps('user_name')}
                   error={Boolean(touched.user_name && errors.user_name)}
                   helperText={touched.user_name && errors.user_name}
                 />
                 <TextField
                   fullWidth
                   placeholder="Email"
-                  {...getFieldProps("email")}
+                  {...getFieldProps('email')}
                   error={Boolean(touched.email && errors.email)}
                   helperText={touched.email && errors.email}
                   disabled
@@ -281,21 +281,21 @@ export default function UserProfile() {
                 <TextField
                   fullWidth
                   placeholder="Telegram"
-                  {...getFieldProps("telegram_id")}
+                  {...getFieldProps('telegram_id')}
                   error={Boolean(touched.telegram_id && errors.telegram_id)}
                   helperText={touched.telegram_id && errors.telegram_id}
                 />
                 <TextField
                   fullWidth
                   placeholder="Twitter"
-                  {...getFieldProps("twitter_id")}
+                  {...getFieldProps('twitter_id')}
                   error={Boolean(touched.twitter_id && errors.twitter_id)}
                   helperText={touched.twitter_id && errors.twitter_id}
                 />
                 <TextField
                   fullWidth
                   placeholder="Wallet Address"
-                  {...getFieldProps("wallet_address")}
+                  {...getFieldProps('wallet_address')}
                   error={Boolean(
                     (touched.wallet_address && errors.wallet_address) ||
                       !ethereum_address.isAddress(formik.values.wallet_address)
@@ -303,11 +303,11 @@ export default function UserProfile() {
                   helperText={
                     (touched.wallet_address && errors.wallet_address) ||
                     !ethereum_address.isAddress(formik.values.wallet_address)
-                      ? "Incorrect Address"
-                      : ""
+                      ? 'Incorrect Address'
+                      : ''
                   }
                 />
-                <Grid container direction={"column"} sx={{ color: "white" }}>
+                <Grid container direction={'column'} sx={{ color: 'white' }}>
                   <h2>Two factor authentication</h2>
                   <FormControlLabel
                     control={
@@ -316,10 +316,10 @@ export default function UserProfile() {
                         checked={formik.values.enable_authenticator}
                         onClick={() => {
                           if (formik.values.enable_authenticator) {
-                            formik.setFieldValue("enable_authenticator", false);
-                            formik.submitForm();
+                            formik.setFieldValue('enable_authenticator', false)
+                            formik.submitForm()
                           } else {
-                            setShowAuthenticatorAuthSetup(true);
+                            setShowAuthenticatorAuthSetup(true)
                           }
                         }}
                       />
@@ -334,10 +334,10 @@ export default function UserProfile() {
                         checked={formik.values.enable_sms}
                         onClick={() => {
                           if (formik.values.enable_sms) {
-                            formik.setFieldValue("enable_sms", false);
-                            formik.submitForm();
+                            formik.setFieldValue('enable_sms', false)
+                            formik.submitForm()
                           } else {
-                            setShowSMSAuthSetup(true);
+                            setShowSMSAuthSetup(true)
                           }
                         }}
                       />
@@ -352,10 +352,10 @@ export default function UserProfile() {
                         checked={formik.values.enable_password}
                         onClick={() => {
                           if (formik.values.enable_password) {
-                            formik.setFieldValue("enable_password", false);
-                            formik.submitForm();
+                            formik.setFieldValue('enable_password', false)
+                            formik.submitForm()
                           } else {
-                            setShowPasswordAuthSetup(true);
+                            setShowPasswordAuthSetup(true)
                           }
                         }}
                       />
@@ -366,8 +366,8 @@ export default function UserProfile() {
                   <SetupModal
                     Component={SetupAuthenticatorAuth}
                     onSuccess={() => {
-                      formik.setFieldValue("enable_authenticator", true);
-                      formik.submitForm();
+                      formik.setFieldValue('enable_authenticator', true)
+                      formik.submitForm()
                     }}
                     onClose={() => setShowAuthenticatorAuthSetup(false)}
                     open={showAuthenticatorAuthSetup}
@@ -375,8 +375,8 @@ export default function UserProfile() {
                   <SetupModal
                     Component={SetupSMSAuth}
                     onSuccess={() => {
-                      formik.setFieldValue("enable_sms", true);
-                      formik.submitForm();
+                      formik.setFieldValue('enable_sms', true)
+                      formik.submitForm()
                     }}
                     onClose={() => setShowSMSAuthSetup(false)}
                     open={showSMSAuthSetup}
@@ -384,8 +384,8 @@ export default function UserProfile() {
                   <SetupModal
                     Component={SetupPasswordAuth}
                     onSuccess={() => {
-                      formik.setFieldValue("enable_password", true);
-                      formik.submitForm();
+                      formik.setFieldValue('enable_password', true)
+                      formik.submitForm()
                     }}
                     onClose={() => setShowPasswordAuthSetup(false)}
                     open={showPasswordAuthSetup}
@@ -400,21 +400,21 @@ export default function UserProfile() {
         </FormikProvider>
       </CardStyle>
     </Container>
-  );
+  )
 }
 
 const CardStyle = styled(Box)(({ theme }) => ({
   background:
-    "linear-gradient(180deg, rgba(248, 255, 255, 0.15) 0%, rgba(156, 255, 249, 0.15) 100%)",
-  border: "5px solid #964CFA",
+    'linear-gradient(180deg, rgba(248, 255, 255, 0.15) 0%, rgba(156, 255, 249, 0.15) 100%)',
+  border: '5px solid #964CFA',
   color: theme.palette.text.primary,
-  boxSizing: "border-box",
-  borderRadius: "16px",
+  boxSizing: 'border-box',
+  borderRadius: '16px',
   padding: theme.spacing(4),
-  width: "90%",
-  margin: "auto",
-}));
+  width: '90%',
+  margin: 'auto'
+}))
 
 const SBGrid = styled(Grid)`
   padding-left: 0 !important;
-`;
+`

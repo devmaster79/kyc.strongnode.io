@@ -1,4 +1,4 @@
-import { DropzoneOptions, useDropzone } from "react-dropzone";
+import { DropzoneOptions, useDropzone } from 'react-dropzone'
 // material
 import {
   Box,
@@ -7,33 +7,33 @@ import {
   SxProps,
   Theme,
   alpha,
-  styled,
-} from "@mui/material";
+  styled
+} from '@mui/material'
 // utils
 // ----------------------------------------------------------------------
 
-const DropZoneStyle = styled("div")(({ theme }) => ({
-  outline: "none",
-  minWidth: "9.5em",
-  display: "flex",
-  overflow: "hidden",
-  textAlign: "center",
-  height: "100%",
-  position: "relative",
-  alignItems: "center",
-  flexDirection: "column",
-  justifyContent: "center",
+const DropZoneStyle = styled('div')(({ theme }) => ({
+  outline: 'none',
+  minWidth: '9.5em',
+  display: 'flex',
+  overflow: 'hidden',
+  textAlign: 'center',
+  height: '100%',
+  position: 'relative',
+  alignItems: 'center',
+  flexDirection: 'column',
+  justifyContent: 'center',
   padding: theme.spacing(5, 0),
   borderRadius: theme.shape.borderRadius,
-  transition: theme.transitions.create("padding"),
+  transition: theme.transitions.create('padding'),
   backgroundColor: theme.palette.background.neutral,
-  border: `1px dashed ${theme.palette.grey["500_32"]}`,
-  "&:hover": {
+  border: `1px dashed ${theme.palette.grey['500_32']}`,
+  '&:hover': {
     opacity: 0.72,
-    cursor: "pointer",
+    cursor: 'pointer'
   },
-  [theme.breakpoints.up("md")]: { flexDirection: "row" },
-}));
+  [theme.breakpoints.up('md')]: { flexDirection: 'row' }
+}))
 
 export interface UploadSingleFileProps extends DropzoneOptions {
   error?: boolean;
@@ -41,7 +41,7 @@ export interface UploadSingleFileProps extends DropzoneOptions {
   sx?: SxProps<Theme>;
 }
 
-export default function UploadSingleFile({
+export default function UploadSingleFile ({
   error = false,
   file,
   sx,
@@ -52,11 +52,11 @@ export default function UploadSingleFile({
     getInputProps,
     isDragActive,
     isDragReject,
-    fileRejections,
+    fileRejections
   } = useDropzone({
     multiple: false,
-    ...other,
-  });
+    ...other
+  })
 
   const ShowRejectionItems = () => (
     <Paper
@@ -65,8 +65,8 @@ export default function UploadSingleFile({
         py: 1,
         px: 2,
         mt: 3,
-        borderColor: "error.light",
-        bgcolor: (theme) => alpha(theme.palette.error.main, 0.08),
+        borderColor: 'error.light',
+        bgcolor: (theme) => alpha(theme.palette.error.main, 0.08)
       }}
     >
       {fileRejections.map(({ file, errors }) => {
@@ -81,10 +81,10 @@ export default function UploadSingleFile({
               </Typography>
             ))}
           </Box>
-        );
+        )
       })}
     </Paper>
-  );
+  )
 
   return (
     <Box sx={{ ...sx }}>
@@ -93,18 +93,18 @@ export default function UploadSingleFile({
         sx={{
           ...(isDragActive && { opacity: 0.72 }),
           ...((isDragReject || error) && {
-            color: "error.main",
-            borderColor: "error.light",
-            bgcolor: "error.lighter",
+            color: 'error.main',
+            borderColor: 'error.light',
+            bgcolor: 'error.lighter'
           }),
-          ...(file && { padding: "12% 0" }),
+          ...(file && { padding: '12% 0' })
         }}
       >
         <input {...getInputProps()} />
 
         {!file && (
           <Box sx={{ p: 3 }}>
-            <Typography variant="body2" sx={{ color: "text.secondary" }}>
+            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
               Drop files here or click
             </Typography>
           </Box>
@@ -118,10 +118,10 @@ export default function UploadSingleFile({
             sx={{
               top: 8,
               borderRadius: 1,
-              objectFit: "cover",
-              position: "absolute",
-              width: "calc(100% - 16px)",
-              height: "calc(100% - 16px)",
+              objectFit: 'cover',
+              position: 'absolute',
+              width: 'calc(100% - 16px)',
+              height: 'calc(100% - 16px)'
             }}
           />
         )}
@@ -129,5 +129,5 @@ export default function UploadSingleFile({
 
       {fileRejections.length > 0 && <ShowRejectionItems />}
     </Box>
-  );
+  )
 }

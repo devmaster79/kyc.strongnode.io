@@ -1,20 +1,21 @@
 import styled from '@emotion/styled'
-import Button from '@ui/Button/Button';
-import Icon from '@ui/Icon/Icon';
+import Button from '@ui/Button/Button'
+import Icon from '@ui/Icon/Icon'
+import { MouseEventHandler, ReactNode } from 'react'
 
 type ModalProps = {
-  children: any,
+  children: ReactNode,
   icon: string,
   title: string,
-  onClose: Function,
-  onApprove: Function
+  onClose: MouseEventHandler<HTMLDivElement> | undefined,
+  onApprove: MouseEventHandler<HTMLDivElement> | undefined
 }
 
-function Modal(props: ModalProps) {
+function Modal (props: ModalProps) {
   return <ModalWrapper>
     <StyledModal>
       <IconWrapper onClick={props.onClose}>
-        <Icon name="close" width={18} height={18} viewBox="0 0 18 18" style={{cursor: 'pointer'}} />
+        <Icon name="close" width={18} height={18} viewBox="0 0 18 18" style={{ cursor: 'pointer' }} />
       </IconWrapper>
       <Icon name={props.icon} width={64} height={64} viewBox="0 0 64 64" />
       <h1>{props.title}</h1>
@@ -24,7 +25,7 @@ function Modal(props: ModalProps) {
         <Button type="huge" onClick={props.onApprove}>Approve</Button>
       </ButtonWrapper>
     </StyledModal>
-     </ModalWrapper>;
+     </ModalWrapper>
 }
 
 export default Modal
