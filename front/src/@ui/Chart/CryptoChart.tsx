@@ -3,6 +3,7 @@ import { BaseChart } from './BaseChart';
 import styled from '@emotion/styled/macro'
 import cryptoDataService from '../../services/cryptoDataService'
 import { ValueTrendIndicator } from "./ValueTrendIndicator";
+import { ChartScopeSelector } from "./ChartScopeSelector";
 
 // sample placeholder data
 const placeholderData = [
@@ -26,16 +27,46 @@ type CryptoChartProps = {
 }
 
 export const CryptoChart = (props: CryptoChartProps) => {
+  const [chartScopeDays, setChartScopeDays] = useState(7)
+  const [chartScopeFormat, setChartScopeFormat] = useState('weeks')
   const [chartDataTemp, setChartDataTemp] = useState([]);
   const [cryptoCurrency, setCryptoCurrency] = useState('SNE')
   const [targetCurrency, setTargetCurrency] = useState('USD')
 
+  const onScopeChange = (scope: number, scopeFormat: string) => {
+    setChartScopeDays(scope)
+    setChartScopeFormat(scopeFormat)
+  }
+
+  const chartSelectors = [
+    {
+      title: 'days',
+      handler: onScopeChange,
+      scope: 7
+    },
+    {
+      title: 'weeks',
+      handler: onScopeChange,
+      scope: 30
+    },
+    {
+      title: 'months',
+      handler: onScopeChange,
+      scope: 365
+    },
+    {
+      title: 'years',
+      handler: onScopeChange,
+      scope: 1095
+    }
+  ]
+
   useEffect(() => {
-    loadStrongnodeCurrency()
-  }, [])
+    loadStrongnodeCurrency().then(r => console.log('CryptoChart loaded with data.'))
+  }, [chartScopeDays])
 
   const loadStrongnodeCurrency = async () => {
-    const data: any = await cryptoDataService.getChartDataAsync()
+    const data: any = await cryptoDataService.getChartDataAsync(chartScopeDays)
     const tempData: any = []
 
     data.data.prices.forEach((el: Array<string>) => {
@@ -49,6 +80,7 @@ export const CryptoChart = (props: CryptoChartProps) => {
 
   return (
     <div style={props.wrapperStyles}>
+      <ChartScopeSelector style={{float: 'right'}} selectors={chartSelectors} />
       <CryptoPair>
         <Pair>{cryptoCurrency}/{targetCurrency}</Pair>
       </CryptoPair>
@@ -56,7 +88,7 @@ export const CryptoChart = (props: CryptoChartProps) => {
         <ValueTrendIndicator value={'210%'} up={true} />
         <ValueTrendIndicator value={'$20'} up={false} />
       </TrendPairWrapper>
-      <BaseChart xAxisFormat={'days'} data={(chartDataTemp) ? chartDataTemp : placeholderData} xKey={'timestamp'} yKey={'value'} chartKey={'value'} />
+      <BaseChart xAxisFormat={chartScopeFormat} data={(chartDataTemp) ? chartDataTemp : placeholderData} xKey={'timestamp'} yKey={'value'} chartKey={'value'} />
     </div>
   );
 };

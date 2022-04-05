@@ -58,7 +58,6 @@ export const BaseChart = (props: BaseChartProps) => {
   }, [props.data])
 
   const tooltipContentStyle = {
-    display: 'none'
   }
 
   const tooltipWrapperStyle = {
@@ -75,7 +74,7 @@ export const BaseChart = (props: BaseChartProps) => {
               <stop offset="95%" stopColor="#AA1FEC" stopOpacity={0} />
             </linearGradient>
           </defs>
-          <XAxis tickFormatter={formatTimestamp} tickLine={false} axisLine={false} padding={{ left: 16, right: 16 }} dataKey={props.xKey} />
+          <XAxis minTickGap={60} tickFormatter={formatTimestamp} tickLine={false} axisLine={false} padding={{ left: 16, right: 16 }} dataKey={props.xKey} />
           <YAxis width={(yAxisWidth) ? yAxisWidth + 34 : yAxisWidth} tickLine={false} axisLine={false} dataKey={props.yKey} />
           <CartesianGrid vertical={false} stroke="rgba(153, 153, 153, 0.12)" />
 
