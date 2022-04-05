@@ -1,14 +1,14 @@
 import styled from '@emotion/styled'
 
-function SwitchButton({ children, ...props }: any) {
-  return <SwitchWrapper style={{display: 'block'}}>
+function SwitchButton ({ children, ...props }: any) {
+  return <SwitchWrapper style={{ display: 'block' }}>
     {props.label}
     <StyledInput type="checkbox" hidden={true} id={props.id} {...props} />
     <StyledButton className="switch" htmlFor={props.id}>{children}</StyledButton>
   </SwitchWrapper>
 }
 
-export default SwitchButton;
+export default SwitchButton
 
 const SwitchWrapper = styled.label`
   display:block;

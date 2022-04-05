@@ -1,10 +1,10 @@
 import styled from '@emotion/styled'
 import { useTheme } from '@mui/styles'
 
-function Button({ children, ...props }: any) {
-  const theme: any = useTheme();
+function Button ({ children, ...props }: any) {
+  const theme: any = useTheme()
   const styles: any = {
-    huge:{
+    huge: {
       fontSize: '14px',
       padding: '21px',
       minWidth: '200px',
@@ -21,10 +21,10 @@ function Button({ children, ...props }: any) {
     }
   }
 
-  return <StyledButton style={styles[props.type]} {...props}>{children}</StyledButton>;
+  return <StyledButton style={styles[props.type]} {...props}>{children}</StyledButton>
 }
 
-export default Button;
+export default Button
 
 const StyledButton = styled.button`
       background: linear-gradient(90.39deg, #AA1FEC 0.24%, #7A3BFE 101.6%);

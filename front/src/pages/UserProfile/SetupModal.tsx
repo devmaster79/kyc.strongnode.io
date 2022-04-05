@@ -1,4 +1,4 @@
-import { Backdrop, Box, Modal, styled } from "@mui/material";
+import { Backdrop, Box, Modal, styled } from '@mui/material'
 
 interface SetupModalProps {
   open: boolean;
@@ -7,7 +7,7 @@ interface SetupModalProps {
   Component: React.FunctionComponent<{ onSuccess: () => void }>;
 }
 
-export function SetupModal({ open, onClose, onSuccess, Component }: SetupModalProps) {
+export function SetupModal ({ open, onClose, onSuccess, Component }: SetupModalProps) {
   return (
     <Modal
       open={open}
@@ -15,30 +15,30 @@ export function SetupModal({ open, onClose, onSuccess, Component }: SetupModalPr
       closeAfterTransition
       BackdropComponent={Backdrop}
       BackdropProps={{
-        timeout: 500,
+        timeout: 500
       }}
     >
       <ModalContainer>
         <Component onSuccess={() => {
-          onSuccess();
-          onClose();
+          onSuccess()
+          onClose()
         }} />
       </ModalContainer>
     </Modal>
-  );
+  )
 }
 
 const ModalContainer = styled(Box)((props) => ({
-  position: "absolute",
-  top: "50%",
-  left: "50%",
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
   background: props.theme.palette.background.paper,
-  transform: "translate(-50%, -50%)",
-  width: "400",
-  border: "2px solid #964CFA",
-  borderRadius: "16px",
+  transform: 'translate(-50%, -50%)',
+  width: '400',
+  border: '2px solid #964CFA',
+  borderRadius: '16px',
   padding: 32,
   sx: {
-    boxShadow: 24,
-  },
-}));
+    boxShadow: 24
+  }
+}))

@@ -44,8 +44,8 @@ const buttonItems = [
 ]
 
 class SidebarButtonWrapper extends React.Component<SidebarButtonWrapperProps, SidebarButtonWrapperState> {
-  constructor(props: any) {
-    super(props);
+  constructor (props: any) {
+    super(props)
 
     // this handles default animation state on refresh
     let defaultActiveButton = 'defi'
@@ -53,7 +53,7 @@ class SidebarButtonWrapper extends React.Component<SidebarButtonWrapperProps, Si
     buttonItems.map((item: any, index: number) => {
       if (window.location.href.includes(item.path)) {
         defaultActiveButton = item.type
-        defaultOffset = (index * 72) +'px'
+        defaultOffset = (index * 72) + 'px'
       }
     })
 
@@ -64,17 +64,17 @@ class SidebarButtonWrapper extends React.Component<SidebarButtonWrapperProps, Si
     }
   }
 
-  handleOnClick(path: string, activeType: string, index: number) {
+  handleOnClick (path: string, activeType: string, index: number) {
     this.setState({
       activeButton: activeType,
-      verticaLineTopOffset: (index * 72) +'px'
+      verticaLineTopOffset: (index * 72) + 'px'
     })
   }
 
-  render() {
+  render () {
     return (
       <ButtonWrapper>
-        <VerticalActiveLine style={{top: this.state.verticaLineTopOffset}} />
+        <VerticalActiveLine style={{ top: this.state.verticaLineTopOffset }} />
         {buttonItems.map((item, index) => <SidebarButton key={item.tooltipHint} onPress={() => this.handleOnClick(item.path, item.type, index)} icon={item.type} tooltipHint={item.tooltipHint} active={(item.type === this.state.activeButton)} url={item.path} />)}
       </ButtonWrapper>
     )

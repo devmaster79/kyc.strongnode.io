@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
-import Icon from '@ui/Icon/Icon';
-import { useState } from 'react';
+import Icon from '@ui/Icon/Icon'
+import { useState } from 'react'
 import { useTheme } from '@mui/styles'
 
 export type SelectProps = {
@@ -11,20 +11,20 @@ export type SelectProps = {
   handleChange: Function
 }
 
-function Select(props: SelectProps) {
-  const [opened, setOpened] = useState(false);
+function Select (props: SelectProps) {
+  const [opened, setOpened] = useState(false)
 
-  function onSelectValue(event: any): void {
-    const selected = props.options.find((option:any) => option[props.trackBy] === event.target.value.toString());
-    props.handleChange(selected);
-    setOpened(false);
+  function onSelectValue (event: any): void {
+    const selected = props.options.find((option:any) => option[props.trackBy] === event.target.value.toString())
+    props.handleChange(selected)
+    setOpened(false)
   }
-  const theme: any = useTheme();
+  const theme: any = useTheme()
 
   return <SelectWrapper>
     <HeaderWrapper onClick={() => setOpened(!opened)}>
-      <span>{ props.value ? props.value[props.searchBy]  : 'Select' } </span>
-      <Icon name="arrowDown" width={8} height={6} viewBox="0 0 8 6" style={opened ? { transform: 'rotate(180deg)',   transition: '450ms ease'} : { transition: '450ms ease' }} color={theme.palette.text.primary}  />
+      <span>{ props.value ? props.value[props.searchBy] : 'Select' } </span>
+      <Icon name="arrowDown" width={8} height={6} viewBox="0 0 8 6" style={opened ? { transform: 'rotate(180deg)', transition: '450ms ease' } : { transition: '450ms ease' }} color={theme.palette.text.primary} />
     </HeaderWrapper>
     { opened && <OptionsWrapper>
       <ul>
@@ -35,9 +35,9 @@ function Select(props: SelectProps) {
         )}
       </ul>
     </OptionsWrapper>}
-  </SelectWrapper>;
+  </SelectWrapper>
 }
-export default Select;
+export default Select
 
 Select.defaultProps = {
   trackBy: 'value',
@@ -84,4 +84,3 @@ const OptionsWrapper = styled.div`
     }
   }
 `
-

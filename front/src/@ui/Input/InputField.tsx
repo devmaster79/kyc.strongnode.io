@@ -1,14 +1,14 @@
 import styled from '@emotion/styled'
-import Icon from '@ui/Icon/Icon';
+import Icon from '@ui/Icon/Icon'
 
-function InputField({ children, ...props }: any) {
+function InputField ({ children, ...props }: any) {
   return <StyledInputWrapper>
     { props.icon && <Icon name={props.icon} /> }
     <StyledInputField {...props} />
-  </StyledInputWrapper>;
+  </StyledInputWrapper>
 }
 
-export default InputField;
+export default InputField
 
 const StyledInputWrapper = styled.div`
   background: ${props => props.theme.palette.background.secondary};
@@ -42,4 +42,3 @@ const StyledInputField = styled.input`
     color: ${props => props.theme.palette.text.secondary};
   }
 `
-

@@ -1,6 +1,6 @@
-import { Card, CardContent} from './style';
+import { Card, CardContent } from './style'
 
-export default function NFTCard() {
+export default function NFTCard () {
   return (
     <>
       <Card>
@@ -16,5 +16,5 @@ export default function NFTCard() {
           </div>
         </CardContent>
       </Card>
-    </>);
+    </>)
 }

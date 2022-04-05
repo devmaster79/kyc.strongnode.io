@@ -27,7 +27,7 @@ const themeSwitchStyles = {
   position: 'absolute',
   left: '50%',
   transform: 'translateX(-50%)',
-  bottom: '32px',
+  bottom: '32px'
 }
 
 const Sidebar = () => {

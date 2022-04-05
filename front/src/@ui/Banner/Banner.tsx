@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import styled from '@emotion/styled/macro'
 import background from '../../assets/images/banner_background.png'
 
@@ -17,7 +17,7 @@ export const Banner = (props: BannerProps) => {
       </TextWrapper>
     </BannerWrapper>
   )
-};
+}
 
 const BannerWrapper = styled.div`
   background-image: url("${background}");

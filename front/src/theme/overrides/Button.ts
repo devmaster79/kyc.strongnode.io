@@ -1,9 +1,9 @@
 // ----------------------------------------------------------------------
 
-import { css } from '@emotion/react';
-import { Theme } from '@mui/material/styles';
+import { css } from '@emotion/react'
+import { Theme } from '@mui/material/styles'
 
-export default function Button(theme: Theme) {
+export default function Button (theme: Theme) {
   return {
     MuiButton: {
       styleOverrides: {
@@ -65,5 +65,5 @@ export default function Button(theme: Theme) {
         })
       }
     }
-  };
+  }
 }

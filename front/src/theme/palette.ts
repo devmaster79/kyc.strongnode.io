@@ -1,7 +1,7 @@
-import { alpha } from '@mui/material/styles';
+import { alpha } from '@mui/material/styles'
 
-function createGradient(color1: string, color2: string): string {
-  return `linear-gradient(to bottom, ${color1}, ${color2})`;
+function createGradient (color1: string, color2: string): string {
+  return `linear-gradient(to bottom, ${color1}, ${color2})`
 }
 
 const WHITE = {
@@ -9,7 +9,7 @@ const WHITE = {
   60: 'rgba(255, 255, 255, 0.6)',
   40: 'rgba(255, 255, 255, 0.4)',
   12: 'rgba(255, 255, 255, 0.12)',
-  8: 'rgba(255, 255, 255, 0.08)',
+  8: 'rgba(255, 255, 255, 0.08)'
 }
 
 const NIGHTBLUE = {
@@ -25,7 +25,7 @@ const NEW_GREY = {
   70: '#9593C8',
   60: 'rgba(153, 153, 153, 0.12)',
   50: '#E5E5E5',
-  30: '#F6F6FD',
+  30: '#F6F6FD'
 }
 
 const GREY = {
@@ -47,7 +47,7 @@ const GREY = {
   '500_48': alpha('#919EAB', 0.48),
   '500_56': alpha('#919EAB', 0.56),
   '500_80': alpha('#919EAB', 0.8)
-};
+}
 
 const PRIMARY = {
   main: '#964CFA',
@@ -56,7 +56,7 @@ const PRIMARY = {
   30: alpha('#964CFA', 0.3),
   10: alpha('#964CFA', 0.1),
   contrastText: '#fff'
-};
+}
 const SECONDARY = {
   main: '#33D69F',
   75: alpha('#33D69F', 0.75),
@@ -64,27 +64,27 @@ const SECONDARY = {
   30: alpha('#33D69F', 0.3),
   10: alpha('#33D69F', 0.1),
   contrastText: '#fff'
-};
+}
 const INFO = {
   main: '#556BE0',
   light: alpha('#556BE0', 0.1),
   contrastText: '#fff'
-};
+}
 const SUCCESS = {
   main: '#34C759',
   light: alpha('#34C759', 0.1),
   contrastText: GREY[800]
-};
+}
 const WARNING = {
   main: '#E7B32E',
   light: alpha('#E7B32E', 0.1),
   contrastText: GREY[800]
-};
+}
 const ERROR = {
   main: '#DF53BB',
   light: alpha('#DF53BB', 0.1),
   contrastText: '#fff'
-};
+}
 
 const TYPOGRAPHY = {
   main: '#2D405A',
@@ -92,7 +92,7 @@ const TYPOGRAPHY = {
   50: alpha('#2D405A', 0.5),
   30: alpha('#2D405A', 0.3),
   10: alpha('#2D405A', 0.1)
-};
+}
 
 const GRADIENTS = {
   button: 'linear-gradient(180deg, #AF56B8 0%, #a91ed1 100%)',
@@ -100,7 +100,7 @@ const GRADIENTS = {
   success: createGradient(SUCCESS.light, SUCCESS.main),
   warning: createGradient(WARNING.light, WARNING.main),
   error: createGradient(ERROR.light, ERROR.main)
-};
+}
 
 const COMMON = {
   common: { black: '#000', white: '#fff' },
@@ -123,7 +123,7 @@ const COMMON = {
     hoverOpacity: 0.08,
     disabledOpacity: 0.48
   }
-};
+}
 
 const palette = {
   light: {
@@ -179,6 +179,6 @@ const palette = {
       wrapper: 'rgba(255, 255, 255, 0.12)'
     }
   }
-};
+}
 
-export default palette;
+export default palette

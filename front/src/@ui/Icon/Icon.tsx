@@ -1,4 +1,4 @@
-import useTheme from '@mui/material/styles/useTheme';
+import useTheme from '@mui/material/styles/useTheme'
 import styled from 'styled-components'
 import { Icons } from './CustomIcons'
 
@@ -11,20 +11,20 @@ export type IconProps = {
   style?: React.CSSProperties
 }
 
-function Icon(props: IconProps) {
-  const theme = useTheme();
+function Icon (props: IconProps) {
+  const theme = useTheme()
 
   return <SvgIcon height={props.height} width={props.width} viewBox={props.viewBox} color={props.color || theme.palette.text.secondary} style={props.style}>
         { Icons[props.name]}
-      </SvgIcon>;
+      </SvgIcon>
 }
 
-export default Icon;
+export default Icon
 
 Icon.defaultProps = {
   height: 16,
   width: 16,
-  viewBox: "0 0 16 16",
+  viewBox: '0 0 16 16',
   style: {}
 }
 

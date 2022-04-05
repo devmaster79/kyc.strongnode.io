@@ -1,30 +1,30 @@
-import { Form, Formik, FormikHelpers, Field } from "formik";
-import { EntryPage } from "../style";
-import Button from "../../components/Button";
-import EntryCard from "../../components/EntryCard";
-import ValidatedField from "../../components/ValidatedField";
-import { verifyEmailSchema } from "../../static/formSchemas";
-import * as authState from "../../services/auth";
-import styled from "styled-components";
-import { useService } from "../../hooks/useService";
-import { Input } from "@mui/material";
+import { Form, Formik, FormikHelpers, Field } from 'formik'
+import { EntryPage } from '../style'
+import Button from '../../components/Button'
+import EntryCard from '../../components/EntryCard'
+import ValidatedField from '../../components/ValidatedField'
+import { verifyEmailSchema } from '../../static/formSchemas'
+import * as authState from '../../services/auth'
+import styled from 'styled-components'
+import { useService } from '../../hooks/useService'
+import { Input } from '@mui/material'
 
-export function VerifyEmail() {
+export function VerifyEmail () {
   const { data: sendResult, call: sendVerificationEmail } = useService(
     authState.sendVerificationEmail
-  );
+  )
 
   const formState = {
-    email: "",
-  };
+    email: ''
+  }
 
   const handleFormSubmit = async (
     data: typeof formState,
     { setSubmitting }: FormikHelpers<typeof formState>
   ) => {
-    setSubmitting(true);
-    await sendVerificationEmail(data.email);
-  };
+    setSubmitting(true)
+    await sendVerificationEmail(data.email)
+  }
 
   return (
     <EntryPage>
@@ -43,23 +43,23 @@ export function VerifyEmail() {
                 name="email"
                 onBlur={handleBlur}
                 placeholder="Email"
-                style={{ padding: "16px 20px 16px 40px", width: "100%" }}
+                style={{ padding: '16px 20px 16px 40px', width: '100%' }}
                 type="email"
                 validateField={validateField}
               />
-              {sendResult.result === "loading" && (
+              {sendResult.result === 'loading' && (
                 <Info>Sending the email...</Info>
               )}
-              {sendResult.result === "success" && (
+              {sendResult.result === 'success' && (
                 <Info>
                   We have successfully sent you an email. You can close this tab
                   now.
                 </Info>
               )}
-              {sendResult.result === "validation-error" && (
+              {sendResult.result === 'validation-error' && (
                 <Error>Wrong email. Please try agian.</Error>
               )}
-              {sendResult.result === "unexpected-error" && (
+              {sendResult.result === 'unexpected-error' && (
                 <Error>Something went wrong. Please try again later.</Error>
               )}
               <Button disabled={isSubmitting} type="submit" full>
@@ -70,17 +70,17 @@ export function VerifyEmail() {
         </Formik>
       </EntryCard>
     </EntryPage>
-  );
+  )
 }
 
-const Error = styled("p")({
-  textAlign: "center",
-  marginBottom: "10px",
-  color: '#ff6868',
-});
+const Error = styled('p')({
+  textAlign: 'center',
+  marginBottom: '10px',
+  color: '#ff6868'
+})
 
-const Info = styled("p")({
-  textAlign: "center",
-  marginBottom: "10px",
-  color: "#dddddd",
-});
+const Info = styled('p')({
+  textAlign: 'center',
+  marginBottom: '10px',
+  color: '#dddddd'
+})

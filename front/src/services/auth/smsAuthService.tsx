@@ -1,47 +1,47 @@
-import { getResponseData, setToken } from "./utils";
-import * as urls from "../../utils/config";
-import { BannedError, GenericResponse, ValidationError } from "./responses";
+import { getResponseData, setToken } from './utils'
+import * as urls from '../../utils/config'
+import { BannedError, GenericResponse, ValidationError } from './responses'
 
-export async function sendSMSToUser(): Promise<GenericResponse | BannedError> {
-  return await getResponseData(urls.sendSMSToUser);
+export async function sendSMSToUser (): Promise<GenericResponse | BannedError> {
+  return await getResponseData(urls.sendSMSToUser)
 }
 
 /** Verify smscode and set token */
-export async function authBySMSCode(
+export async function authBySMSCode (
   smscode: string
 ): Promise<
   | GenericResponse
   | BannedError
-  | ValidationError<"smscode", undefined>
-  | ValidationError<"smscode", "wrong">
+  | ValidationError<'smscode', undefined>
+  | ValidationError<'smscode', 'wrong'>
 > {
-  const data = await getResponseData(urls.authBySMSCode, { smscode });
+  const data = await getResponseData(urls.authBySMSCode, { smscode })
   if (data.token) {
-    setToken(data.token);
+    setToken(data.token)
   }
-  return data;
+  return data
 }
 
-export async function sendSMSAndSaveNumber(
+export async function sendSMSAndSaveNumber (
   phoneNumber: string
 ): Promise<
-  GenericResponse | BannedError | ValidationError<"number", undefined>
+  GenericResponse | BannedError | ValidationError<'number', undefined>
 > {
   return await getResponseData(urls.sendSMSAndSaveNumber, {
-    number: phoneNumber,
-  });
+    number: phoneNumber
+  })
 }
 
-export async function enableSMSAuth(
+export async function enableSMSAuth (
   smscode: string
 ): Promise<
   | GenericResponse
-  | ValidationError<"smscode", undefined>
-  | ValidationError<"smscode", "wrong">
+  | ValidationError<'smscode', undefined>
+  | ValidationError<'smscode', 'wrong'>
 > {
-  return await getResponseData(urls.enableSMSAuth, { smscode });
+  return await getResponseData(urls.enableSMSAuth, { smscode })
 }
 
-export async function disableSMSAuth(): Promise<GenericResponse> {
-  return await getResponseData(urls.disableSMSAuth);
+export async function disableSMSAuth (): Promise<GenericResponse> {
+  return await getResponseData(urls.disableSMSAuth)
 }
