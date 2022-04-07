@@ -19,7 +19,7 @@ function TableSection ({ children, ...props }: any) {
         : <>
         <HeaderWrapper>
           <h2>{ props.title } <span>{ props.subtitle }</span></h2>
-          <InputField icon="search" placeholder="Search"></InputField>
+          <InputField icon="search" inputProps={{ placeholder: 'Search' }} />
         </HeaderWrapper>
         <Select value={selectedOption} options={selectOptions} handleChange={(e:any) => setSelectedOption(e)}></Select>
 

@@ -1,14 +1,15 @@
 import useTheme from '@mui/material/styles/useTheme'
+import { CSSProperties } from 'react'
 import styled from 'styled-components'
 import { Icons } from './CustomIcons'
 
 export type IconProps = {
-  name: string,
+  name: keyof typeof Icons,
   color?: string,
   height?: number,
   width?: number,
   viewBox?: string,
-  style?: React.CSSProperties
+  style?: CSSProperties
 }
 
 function Icon (props: IconProps) {
