@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { BaseChart } from './BaseChart';
+import React, { useEffect, useState } from 'react'
+import { BaseChart } from './BaseChart'
 import styled from '@emotion/styled/macro'
 import cryptoDataService from '../../services/cryptoDataService'
-import { ValueTrendIndicator } from "./ValueTrendIndicator";
-import { ChartScopeSelector } from "./ChartScopeSelector";
+import { ValueTrendIndicator } from './ValueTrendIndicator'
+import { ChartScopeSelector } from './ChartScopeSelector'
 
 // sample placeholder data
 const placeholderData = [
@@ -19,7 +19,7 @@ const placeholderData = [
     timestamp: 1638057600000,
     value: 0.007328889506987581
   }
-];
+]
 
 type CryptoChartProps = {
   coin: string,
@@ -29,9 +29,11 @@ type CryptoChartProps = {
 export const CryptoChart = (props: CryptoChartProps) => {
   const [chartScopeDays, setChartScopeDays] = useState(7)
   const [chartScopeFormat, setChartScopeFormat] = useState('weeks')
-  const [chartDataTemp, setChartDataTemp] = useState([]);
+  const [chartDataTemp, setChartDataTemp] = useState([])
   const [cryptoCurrency, setCryptoCurrency] = useState('SNE')
   const [targetCurrency, setTargetCurrency] = useState('USD')
+
+  const [valueTrendIndicator, setValueTrendIndicator] = useState({ up: false, value: '20%' })
 
   const onScopeChange = (scope: number, scopeFormat: string) => {
     setChartScopeDays(scope)
@@ -62,7 +64,14 @@ export const CryptoChart = (props: CryptoChartProps) => {
   ]
 
   useEffect(() => {
+    // init load
     loadStrongnodeCurrency().then(r => console.log('CryptoChart loaded with data.'))
+
+    const refreshDataInterval = setInterval(() => {
+      loadStrongnodeCurrency().then(r => console.log('CryptoChart loaded with data.'))
+    }, 5000)
+
+    return () => clearInterval(refreshDataInterval)
   }, [chartScopeDays])
 
   const loadStrongnodeCurrency = async () => {
@@ -75,23 +84,27 @@ export const CryptoChart = (props: CryptoChartProps) => {
         value: el[1]
       })
     })
+
+    setValueTrendIndicator({
+      value: Number(tempData[tempData.length - 1].value).toFixed(6) + ' ' + targetCurrency,
+      up: (tempData[tempData.length - 1].value > tempData[0].value)
+    })
     setChartDataTemp(tempData)
   }
 
   return (
     <div style={props.wrapperStyles}>
-      <ChartScopeSelector style={{float: 'right'}} selectors={chartSelectors} />
+      <ChartScopeSelector style={{ float: 'right' }} selectors={chartSelectors} />
       <CryptoPair>
         <Pair>{cryptoCurrency}/{targetCurrency}</Pair>
       </CryptoPair>
       <TrendPairWrapper>
-        <ValueTrendIndicator value={'210%'} up={true} />
-        <ValueTrendIndicator value={'$20'} up={false} />
+        <ValueTrendIndicator value={valueTrendIndicator.value} up={valueTrendIndicator.up} />
       </TrendPairWrapper>
-      <BaseChart xAxisFormat={chartScopeFormat} data={(chartDataTemp) ? chartDataTemp : placeholderData} xKey={'timestamp'} yKey={'value'} chartKey={'value'} />
+      <BaseChart xAxisFormat={chartScopeFormat} data={(chartDataTemp) || placeholderData} xKey='timestamp' yKey='value' chartKey='value' />
     </div>
-  );
-};
+  )
+}
 
 const CryptoPair = styled.div`
   width: max-content;
