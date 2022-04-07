@@ -303,7 +303,6 @@ export default function Dashboard() {
   return (
     <Container ref={dash} maxWidth="xl" style={{ paddingBottom: 100 }}>
       <Banner title={'Banner lorem ipsum'} description={'This is the testing description'} />
-
       <h1 style={{ marginTop: '56px' }}>DeFi Dashboard</h1>
       <CryptoChart wrapperStyles={{ marginTop: '16px' }} />
 

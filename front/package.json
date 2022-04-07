@@ -17,7 +17,6 @@
     "@mui/material": "^5.5.2",
     "@mui/styles": "^5.5.1",
     "@usedapp/core": "^0.12.1",
-    "recharts": "^2.1.9",
     "apexcharts": "^3.33.2",
     "axios": "^0.26.1",
     "date-fns": "^2.28.0",
