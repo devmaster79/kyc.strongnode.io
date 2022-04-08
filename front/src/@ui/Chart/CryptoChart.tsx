@@ -115,9 +115,8 @@ const Pair = styled.div`
   font-size: 14px;
   line-height: 100%;
   text-transform: uppercase;
-  color: #141245;
-  opacity: 0.4;
   margin-bottom: 8px;
+  opacity: 0.4;
 `
 
 const TrendPairWrapper = styled.div`

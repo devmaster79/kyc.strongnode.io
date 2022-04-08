@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import styled from '@emotion/styled/macro';
+import React, { useState } from 'react'
+import styled from '@emotion/styled/macro'
 
 type SelectorArray = {
   title: string,
@@ -13,18 +13,18 @@ type ChartScopeSelectorProps = {
 }
 
 export const ChartScopeSelector = (props: ChartScopeSelectorProps) => {
-  const [activeScope, setActiveScope] = useState(props.selectors[0].title);
+  const [activeScope, setActiveScope] = useState(props.selectors[0].title)
 
   return (
     <SelectorWrapper style={props.style ? props.style : {}}>
       {props.selectors.map((selector, index) =>
-        <SelectorButton key={selector.title} style={activeScope == selector.title ? activeSelectorStyle : {}} onClick={() => {selector.handler(selector.scope, selector.title);setActiveScope(selector.title)}}>{selector.title}
-          <ButtonActiveLine style={activeScope == selector.title ? {opacity: 1} : {}} />
+        <SelectorButton key={selector.title} style={activeScope == selector.title ? activeSelectorStyle : {}} onClick={() => { selector.handler(selector.scope, selector.title); setActiveScope(selector.title) }}>{selector.title}
+          <ButtonActiveLine style={activeScope == selector.title ? { opacity: 1 } : {}} />
         </SelectorButton>
       )}
     </SelectorWrapper>
-  );
-};
+  )
+}
 
 const ButtonActiveLine = styled.div`
   width: 50%;
@@ -47,7 +47,7 @@ const SelectorButton = styled.div`
   cursor: pointer;
 
   transition: 240ms ease;
-  color: #141245;
+  color: ${props => props.theme.palette.text.primary};
   opacity: 0.4;
   
   &:hover {
@@ -57,7 +57,7 @@ const SelectorButton = styled.div`
   &:hover ${ButtonActiveLine} {
     opacity: 1;
   }
-`;
+`
 
 const SelectorWrapper = styled.div`
   width: max-content;
@@ -69,7 +69,7 @@ const SelectorWrapper = styled.div`
   ${SelectorButton}:first-child {
     margin-left: 0px;
   }
-`;
+`
 
 const activeSelectorStyle = {
   opacity: 1
