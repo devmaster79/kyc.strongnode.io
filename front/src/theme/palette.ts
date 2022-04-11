@@ -149,6 +149,7 @@ const palette = {
     action: { active: GREY[500], ...COMMON.action },
     icon: {
       primary: NIGHTBLUE[90],
+      active: NIGHTBLUE[90],
       secondary: GREY['600'],
       wrapper: '#E0E0EE'
     }

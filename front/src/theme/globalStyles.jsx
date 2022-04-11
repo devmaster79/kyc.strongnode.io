@@ -62,6 +62,18 @@ const GlobalStyles = withStyles((theme) => ({
     '.blur-up.lazyloaded ': {
       WebkitFilter: 'blur(0)',
       filter: 'blur(0)'
+    },
+
+    // Custom styles overwriting for recharts components that does not supports custom styling via props
+    '.recharts-tooltip-cursor': {
+      stroke: '#AA1FEC !important',
+      border: '3px solid #AA1FEC',
+      'box-shadow': '0px 4px 4px rgba(0, 0, 0, 0.25)'
+    },
+    '.recharts-dot': {
+      fill: '#ffffff',
+      stroke: '#AA1FEC !important',
+      border: '3px solid #AA1FEC'
     }
   }
 }))(() => null);

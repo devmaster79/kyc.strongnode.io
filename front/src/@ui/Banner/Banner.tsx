@@ -12,8 +12,8 @@ export const Banner = (props: BannerProps) => {
   return (
     <BannerWrapper>
       <TextWrapper>
-        <Title>{ props.title }</Title>
-        <Description>{ props.description }</Description>
+        <Title>{props.title}</Title>
+        <Description>{props.description}</Description>
       </TextWrapper>
     </BannerWrapper>
   )
