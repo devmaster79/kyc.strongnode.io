@@ -54,9 +54,6 @@ export const BaseChart = (props: BaseChartProps) => {
     setYAxisWidth(calculateYAxisWidth(props.data))
   }, [props.data])
 
-  const tooltipContentStyle = {
-  }
-
   const tooltipWrapperStyle = {
     background: 'red'
   }
