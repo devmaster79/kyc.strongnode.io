@@ -65,10 +65,10 @@ export const CryptoChart = (props: CryptoChartProps) => {
 
   useEffect(() => {
     // init load
-    loadStrongnodeCurrency().then(r => console.log('CryptoChart loaded with data.'))
+    loadStrongnodeCurrency()
 
     const refreshDataInterval = setInterval(() => {
-      loadStrongnodeCurrency().then(r => console.log('CryptoChart loaded with data.'))
+      loadStrongnodeCurrency()
     }, 5000)
 
     return () => clearInterval(refreshDataInterval)
@@ -78,10 +78,10 @@ export const CryptoChart = (props: CryptoChartProps) => {
     const data: any = await cryptoDataService.getChartDataAsync(chartScopeDays)
     const tempData: any = []
 
-    data.data.prices.forEach((el: Array<string>) => {
+    data.data.prices.forEach((price: Array<string>) => {
       tempData.push({
-        timestamp: el[0],
-        value: el[1]
+        timestamp: price[0],
+        value: price[1]
       })
     })
 

@@ -25,7 +25,6 @@ type BaseChartProps = {
 
 export const BaseChart = (props: BaseChartProps) => {
   const [yAxisWidth, setYAxisWidth] = useState(undefined)
-  const [chartKey, setChartKey] = useState(1)
 
   const formatTimestamp = (tickItem: any) => {
     if (!props.xAxisFormat || isNaN(tickItem)) { return tickItem }
@@ -53,7 +52,6 @@ export const BaseChart = (props: BaseChartProps) => {
 
   useEffect(() => {
     setYAxisWidth(calculateYAxisWidth(props.data))
-    // setChartKey(chartKey + 1)
   }, [props.data])
 
   const tooltipContentStyle = {
@@ -79,7 +77,7 @@ export const BaseChart = (props: BaseChartProps) => {
 
           <Tooltip wrapperStyle={tooltipWrapperStyle} contentStyle={tooltipContentStyle} />
           <Area
-            key={chartKey}
+            key={1}
             type='monotone'
             dataKey={props.chartKey}
             stroke='#AA1FEC'

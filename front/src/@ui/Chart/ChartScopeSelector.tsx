@@ -3,7 +3,7 @@ import styled from '@emotion/styled/macro'
 
 type SelectorArray = {
   title: string,
-  handler: any,
+  handler: Function,
   scope: number
 }
 type ChartScopeSelectorProps = {
