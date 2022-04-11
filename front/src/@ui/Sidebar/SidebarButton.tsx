@@ -1,8 +1,43 @@
 import styled from '@emotion/styled/macro'
 import Icon from '../Icon/Icon'
+import { CustomTheme } from '../../theme/index'
 import { useNavigate } from 'react-router'
 import { useTheme } from '@mui/styles'
 import Tooltip from '../Tooltip/Tooltip'
+
+type buttonProps = {
+  icon: string,
+  tooltipHint: string,
+  active: boolean,
+  onPress?: unknown,
+  url?: string
+}
+
+const SidebarButton = ({ icon, tooltipHint, active, onPress, url }: buttonProps) => {
+  const navigate = useNavigate()
+  const theme: CustomTheme = useTheme()
+
+  const buttonActiveStyle = {
+    backgroundColor: 'rgba(170, 31, 236, 0.12)'
+  }
+
+  const onClick = () => {
+    if (onPress && typeof onPress === 'function') { onPress() }
+    if (url) { navigate(url) }
+  }
+
+  return (
+    <ButtonWrapper onClick={() => { onClick() }} style={active ? buttonActiveStyle : {}}>
+      <Tooltip tooltip={tooltipHint}>
+        <Svg name={icon} height={24} width={24} viewBox='0 0 24 24' color={active ? theme.palette.icon.active : theme.palette.icon.primary}>
+          {tooltipHint}
+        </Svg>
+      </Tooltip>
+    </ButtonWrapper>
+  )
+}
+
+export default SidebarButton
 
 const Svg = styled(Icon)`
   width: 24px;
@@ -36,38 +71,3 @@ const ButtonWrapper = styled.button`
     stroke: ${props => props.theme.palette.icon.primary};
   }
 `
-
-type buttonProps = {
-  icon: string,
-  tooltipHint: string,
-  active: boolean,
-  onPress?: any,
-  url?: string
-}
-
-const SidebarButton = ({ icon, tooltipHint, active, onPress, url }: buttonProps) => {
-  const navigate: any = useNavigate()
-  const theme: any = useTheme()
-
-  const buttonActiveStyle = {
-    backgroundColor: 'rgba(170, 31, 236, 0.12)'
-  }
-
-  const onClick = () => {
-    if (onPress) { onPress() }
-
-    if (url) { navigate(url) }
-  }
-
-  return (
-    <ButtonWrapper onClick={() => { onClick() }} style={active ? buttonActiveStyle : {}}>
-      <Tooltip tooltip={tooltipHint}>
-        <Svg name={icon} height={24} width={24} viewBox="0 0 24 24" color={ active ? theme.palette.icon.active : theme.palette.icon.primary }>
-          {tooltipHint}
-        </Svg>
-      </Tooltip>
-    </ButtonWrapper>
-  )
-}
-
-export default SidebarButton

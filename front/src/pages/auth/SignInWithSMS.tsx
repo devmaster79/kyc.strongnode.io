@@ -43,7 +43,7 @@ export function SignInWithSMS () {
   return (
     <EntryPage>
       <EntryCard>
-        <Box padding="0px 20px">
+        <Box padding='0px 20px'>
           <h2 style={{ fontFamily: 'Halyard' }}>2-STEP VERIFICATION</h2>
           <SendMsg>
             {sendState.result === 'loading' && 'Sending the SMS...'}
@@ -68,14 +68,13 @@ export function SignInWithSMS () {
             <InputGroup>
               <LockIcon />
               <SBInput
-                type="number"
-                placeholder="Enter your SMS code"
-                id="smsConfirm"
+                type='number'
+                placeholder='Enter your SMS code'
+                id='smsConfirm'
                 value={smsCode}
                 style={{ padding: '16px 20px 16px 40px' }}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  handleSMSCodeChange(e.target.value)
-                }
+                  handleSMSCodeChange(e.target.value)}
               />
             </InputGroup>
             <AuthMsg>
@@ -97,7 +96,7 @@ export function SignInWithSMS () {
               )}
             </AuthMsg>
             <Button
-              type="submit"
+              type='submit'
               full
               disabled={smsCode.length < LENGTH_OF_SMS_CODE}
             >

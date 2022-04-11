@@ -1,4 +1,4 @@
-import { Form, Formik, FormikHelpers, Field } from 'formik'
+import { Form, Formik, FormikHelpers } from 'formik'
 import { EntryPage } from '../style'
 import Button from '../../components/Button'
 import EntryCard from '../../components/EntryCard'
@@ -40,11 +40,11 @@ export function VerifyEmail () {
             <Form style={{ marginTop: 30 }}>
               <ValidatedField
                 as={Input}
-                name="email"
+                name='email'
                 onBlur={handleBlur}
-                placeholder="Email"
+                placeholder='Email'
                 style={{ padding: '16px 20px 16px 40px', width: '100%' }}
-                type="email"
+                type='email'
                 validateField={validateField}
               />
               {sendResult.result === 'loading' && (
@@ -62,7 +62,7 @@ export function VerifyEmail () {
               {sendResult.result === 'unexpected-error' && (
                 <Error>Something went wrong. Please try again later.</Error>
               )}
-              <Button disabled={isSubmitting} type="submit" full>
+              <Button disabled={isSubmitting} type='submit' full>
                 Confirm
               </Button>
             </Form>

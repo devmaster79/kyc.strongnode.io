@@ -1,6 +1,24 @@
 import React from 'react'
 import styled from '@emotion/styled/macro'
 
+type tooltipProps = {
+  tooltip: string,
+  children?: React.ReactNode
+}
+
+const Tooltip = (props: tooltipProps) => {
+  return (
+    <TooltipContentWrapper>
+      {props.children}
+      <TooltipElement>
+        {props.tooltip}
+      </TooltipElement>
+    </TooltipContentWrapper>
+  )
+}
+
+export default Tooltip
+
 const TooltipElement = styled.div`
   display: block;
   position: absolute;
@@ -45,21 +63,3 @@ const TooltipContentWrapper = styled.div`
     transform: translateX(-50%) translateY(0%);
   }
 `
-
-type tooltipProps = {
-  tooltip: string,
-  children?: any
-}
-
-const Tooltip = (props: tooltipProps) => {
-  return (
-    <TooltipContentWrapper>
-      {props.children}
-      <TooltipElement>
-        {props.tooltip}
-      </TooltipElement>
-    </TooltipContentWrapper>
-  )
-}
-
-export default Tooltip

@@ -46,11 +46,11 @@ export function SetupSMSAuth ({ onSuccess }: SetupSMSAuthProps) {
 
   return (
     <Stack spacing={3} width={300}>
-      <Stack direction={'row'}>
+      <Stack direction='row'>
         <PhoneInput
           sx={{ flex: 1 }}
-          label="Enter phone number"
-          defaultCountry={'us'}
+          label='Enter phone number'
+          defaultCountry='us'
           onChange={(e) => {
             if (typeof e === 'string') {
               setPhoneNumber(e)
@@ -63,13 +63,13 @@ export function SetupSMSAuth ({ onSuccess }: SetupSMSAuthProps) {
         />
       </Stack>
       <TextField
-        type="number"
-        label="Enter your SMS code"
-        id="smsConfirm"
+        type='number'
+        label='Enter your SMS code'
+        id='smsConfirm'
         value={smsCode}
         InputProps={{
           startAdornment: (
-            <InputAdornment position="start">
+            <InputAdornment position='start'>
               <LockIcon />
             </InputAdornment>
           )
@@ -78,7 +78,7 @@ export function SetupSMSAuth ({ onSuccess }: SetupSMSAuthProps) {
       />
       <Msgs authService={authService} />
       <Button
-        variant="contained"
+        variant='contained'
         sx={{ width: '100%' }}
         onClick={verifySMSCode}
         disabled={authService.data.result == 'loading'}

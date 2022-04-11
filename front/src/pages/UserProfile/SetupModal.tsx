@@ -1,3 +1,4 @@
+import React from 'react'
 import { Backdrop, Box, Modal, styled } from '@mui/material'
 
 interface SetupModalProps {
@@ -22,7 +23,8 @@ export function SetupModal ({ open, onClose, onSuccess, Component }: SetupModalP
         <Component onSuccess={() => {
           onSuccess()
           onClose()
-        }} />
+        }}
+        />
       </ModalContainer>
     </Modal>
   )

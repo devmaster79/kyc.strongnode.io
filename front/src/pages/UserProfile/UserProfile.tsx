@@ -188,14 +188,14 @@ export default function UserProfile () {
   const levels = ['level1', 'level2', 'level3']
 
   return (
-    <Container maxWidth="xl">
+    <Container maxWidth='xl'>
       <CardStyle>
         <FormikProvider value={formik}>
-          <form onSubmit={formik.handleSubmit} encType="multipart/form-data">
+          <form onSubmit={formik.handleSubmit} encType='multipart/form-data'>
             <Stack
-              direction="row"
+              direction='row'
               spacing={4}
-              alignItems="flex-start"
+              alignItems='flex-start'
               sx={{
                 display: { xs: 'flex' },
                 justifyContent: { xs: 'space-evenly' },
@@ -206,26 +206,25 @@ export default function UserProfile () {
                 <Box>
                   <UploadSingleFile
                     maxSize={31457280}
-                    accept="image/*"
+                    accept='image/*'
                     file={
                       values.file && {
                         preview: URL.createObjectURL(values.file)
                       }
                     }
                     onDrop={(acceptedFiles: File[]) =>
-                      handleDrop(acceptedFiles)
-                    }
+                      handleDrop(acceptedFiles)}
                     error={Boolean(touched.cover && errors.cover)}
                     sx={{ height: 200 }}
                   />
                 </Box>
-                <Button onClick={upload} sx={{ mb: 5 }} variant="contained">
+                <Button onClick={upload} sx={{ mb: 5 }} variant='contained'>
                   Upload
                 </Button>
                 <TextField
-                  id="outlined-select-currency"
+                  id='outlined-select-currency'
                   select
-                  placeholder="KYC Completed"
+                  placeholder='KYC Completed'
                   disabled
                   SelectProps={{ value: formik.values.KYC_Completed }}
                   sx={{ flexGrow: 1, width: '100%' }}
@@ -241,23 +240,23 @@ export default function UserProfile () {
               <Stack spacing={3} sx={{ width: '100%' }}>
                 <h2>General</h2>
                 <Stack
-                  direction="row"
-                  justifyContent="space-between"
-                  flexGrow="1"
+                  direction='row'
+                  justifyContent='space-between'
+                  flexGrow='1'
                   spacing={3}
                 >
                   <TextField
-                    id="first_name"
+                    id='first_name'
                     fullWidth
-                    placeholder="First Name"
+                    placeholder='First Name'
                     {...getFieldProps('first_name')}
                     error={Boolean(touched.first_name && errors.first_name)}
                     helperText={touched.first_name && errors.first_name}
                   />
                   <TextField
-                    id="last_name"
+                    id='last_name'
                     fullWidth
-                    placeholder="Last Name"
+                    placeholder='Last Name'
                     {...getFieldProps('last_name')}
                     error={Boolean(touched.last_name && errors.last_name)}
                     helperText={touched.last_name && errors.last_name}
@@ -265,14 +264,14 @@ export default function UserProfile () {
                 </Stack>
                 <TextField
                   fullWidth
-                  placeholder="User Name"
+                  placeholder='User Name'
                   {...getFieldProps('user_name')}
                   error={Boolean(touched.user_name && errors.user_name)}
                   helperText={touched.user_name && errors.user_name}
                 />
                 <TextField
                   fullWidth
-                  placeholder="Email"
+                  placeholder='Email'
                   {...getFieldProps('email')}
                   error={Boolean(touched.email && errors.email)}
                   helperText={touched.email && errors.email}
@@ -280,21 +279,21 @@ export default function UserProfile () {
                 />
                 <TextField
                   fullWidth
-                  placeholder="Telegram"
+                  placeholder='Telegram'
                   {...getFieldProps('telegram_id')}
                   error={Boolean(touched.telegram_id && errors.telegram_id)}
                   helperText={touched.telegram_id && errors.telegram_id}
                 />
                 <TextField
                   fullWidth
-                  placeholder="Twitter"
+                  placeholder='Twitter'
                   {...getFieldProps('twitter_id')}
                   error={Boolean(touched.twitter_id && errors.twitter_id)}
                   helperText={touched.twitter_id && errors.twitter_id}
                 />
                 <TextField
                   fullWidth
-                  placeholder="Wallet Address"
+                  placeholder='Wallet Address'
                   {...getFieldProps('wallet_address')}
                   error={Boolean(
                     (touched.wallet_address && errors.wallet_address) ||
@@ -307,12 +306,12 @@ export default function UserProfile () {
                       : ''
                   }
                 />
-                <Grid container direction={'column'} sx={{ color: 'white' }}>
+                <Grid container direction='column' sx={{ color: 'white' }}>
                   <h2>Two factor authentication</h2>
                   <FormControlLabel
                     control={
                       <Switch
-                        color="primary"
+                        color='primary'
                         checked={formik.values.enable_authenticator}
                         onClick={() => {
                           if (formik.values.enable_authenticator) {
@@ -324,13 +323,13 @@ export default function UserProfile () {
                         }}
                       />
                     }
-                    label="Enable Authenticator Verification"
-                    labelPlacement="start"
+                    label='Enable Authenticator Verification'
+                    labelPlacement='start'
                   />
                   <FormControlLabel
                     control={
                       <Switch
-                        color="primary"
+                        color='primary'
                         checked={formik.values.enable_sms}
                         onClick={() => {
                           if (formik.values.enable_sms) {
@@ -342,13 +341,13 @@ export default function UserProfile () {
                         }}
                       />
                     }
-                    label="Enable SMS Verification"
-                    labelPlacement="start"
+                    label='Enable SMS Verification'
+                    labelPlacement='start'
                   />
                   <FormControlLabel
                     control={
                       <Switch
-                        color="primary"
+                        color='primary'
                         checked={formik.values.enable_password}
                         onClick={() => {
                           if (formik.values.enable_password) {
@@ -360,8 +359,8 @@ export default function UserProfile () {
                         }}
                       />
                     }
-                    label="Enable Password Verification"
-                    labelPlacement="start"
+                    label='Enable Password Verification'
+                    labelPlacement='start'
                   />
                   <SetupModal
                     Component={SetupAuthenticatorAuth}
@@ -391,7 +390,7 @@ export default function UserProfile () {
                     open={showPasswordAuthSetup}
                   />
                 </Grid>
-                <Button variant="contained" type="submit">
+                <Button variant='contained' type='submit'>
                   Save
                 </Button>
               </Stack>

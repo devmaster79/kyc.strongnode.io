@@ -46,25 +46,27 @@ export const ROUTES = {
 export default function Router () {
   const loggedin = localStorage.getItem('loggedin')
   if (loggedin) {
-    return (<>
-      <Routes>
-        <Route element={<DashboardLayout />}>
-          <Route path={ROUTES.DASHBOARD.APP} element={<Dashboard />} />
-          <Route path={ROUTES.DASHBOARD.PROFILE} element={<UserProfile />} />
-          <Route path={ROUTES.DASHBOARD.CONTACT_SUPORT} element={<ContactSupport />} />
-          <Route path={ROUTES.DASHBOARD.GROWTH} element={<Dashboard />} />
-          <Route path={ROUTES.DASHBOARD.SYNC} element={<Dashboard />} />
-          <Route path={ROUTES.DASHBOARD.SHIELD} element={<Dashboard />} />
-          <Route path={ROUTES.DASHBOARD.ADD_DATA} element={<AddData />} />
-          <Route path={ROUTES.DASHBOARD.NFT} element={<NFTDashboard />} />
-          <Route path={ROUTES.DASHBOARD.KYC} element={<KYC />} />
-        </Route>
-        <Route
-          path="*"
-          element={<Navigate to={ROUTES.DASHBOARD.APP} replace />}
-        />
-      </Routes>
-    </>)
+    return (
+      <>
+        <Routes>
+          <Route element={<DashboardLayout />}>
+            <Route path={ROUTES.DASHBOARD.APP} element={<Dashboard />} />
+            <Route path={ROUTES.DASHBOARD.PROFILE} element={<UserProfile />} />
+            <Route path={ROUTES.DASHBOARD.CONTACT_SUPORT} element={<ContactSupport />} />
+            <Route path={ROUTES.DASHBOARD.GROWTH} element={<Dashboard />} />
+            <Route path={ROUTES.DASHBOARD.SYNC} element={<Dashboard />} />
+            <Route path={ROUTES.DASHBOARD.SHIELD} element={<Dashboard />} />
+            <Route path={ROUTES.DASHBOARD.ADD_DATA} element={<AddData />} />
+            <Route path={ROUTES.DASHBOARD.NFT} element={<NFTDashboard />} />
+            <Route path={ROUTES.DASHBOARD.KYC} element={<KYC />} />
+          </Route>
+          <Route
+            path='*'
+            element={<Navigate to={ROUTES.DASHBOARD.APP} replace />}
+          />
+        </Routes>
+      </>
+    )
   } else {
     return (
       <Routes>
@@ -77,7 +79,7 @@ export default function Router () {
         <Route path={ROUTES.PROFILE} element={<Profile />} />
         <Route path={ROUTES.PRIVATE_SALE_INTEREST_FORM} element={<PrivateSaleInterestForm />} />
         <Route
-          path="*"
+          path='*'
           element={<Navigate to={ROUTES.AUTH.VERIFY_EMAIL} replace />}
         />
       </Routes>

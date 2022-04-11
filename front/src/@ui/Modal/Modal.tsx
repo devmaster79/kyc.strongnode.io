@@ -12,20 +12,22 @@ type ModalProps = {
 }
 
 function Modal (props: ModalProps) {
-  return <ModalWrapper>
-    <StyledModal>
-      <IconWrapper onClick={props.onClose}>
-        <Icon name="close" width={18} height={18} viewBox="0 0 18 18" style={{ cursor: 'pointer' }} />
-      </IconWrapper>
-      <Icon name={props.icon} width={64} height={64} viewBox="0 0 64 64" />
-      <h1>{props.title}</h1>
-      {props.children}
-      <ButtonWrapper>
-        <Button type="hugeInvert" onClick={props.onClose} >Cancel</Button>
-        <Button type="huge" onClick={props.onApprove}>Approve</Button>
-      </ButtonWrapper>
-    </StyledModal>
-     </ModalWrapper>
+  return (
+    <ModalWrapper>
+      <StyledModal>
+        <IconWrapper onClick={props.onClose}>
+          <Icon name='close' width={18} height={18} viewBox='0 0 18 18' style={{ cursor: 'pointer' }} />
+        </IconWrapper>
+        <Icon name={props.icon} width={64} height={64} viewBox='0 0 64 64' />
+        <h1>{props.title}</h1>
+        {props.children}
+        <ButtonWrapper>
+          <Button type='hugeInvert' onClick={props.onClose}>Cancel</Button>
+          <Button type='huge' onClick={props.onApprove}>Approve</Button>
+        </ButtonWrapper>
+      </StyledModal>
+    </ModalWrapper>
+  )
 }
 
 export default Modal

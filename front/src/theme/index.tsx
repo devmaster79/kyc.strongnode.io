@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import React, { useMemo } from 'react'
 import { CssBaseline } from '@mui/material'
 import { createTheme, ThemeProvider, StyledEngineProvider } from '@mui/material/styles'
 import useSettings from '../hooks/useSettings'
@@ -16,8 +16,8 @@ interface ThemeConfigProps {
   children: React.ReactNode
 }
 
-export const getTheme = (isLight: boolean, custom_palette: typeof palette) => ({
-  palette: isLight ? { ...custom_palette.light, mode: 'light' } : { ...custom_palette.dark, mode: 'dark' },
+export const getTheme = (isLight: boolean, customPalette: typeof palette) => ({
+  palette: isLight ? { ...customPalette.light, mode: 'light' } : { ...customPalette.dark, mode: 'dark' },
   typography,
   breakpoints,
   shadows: isLight ? shadows.light : shadows.dark,

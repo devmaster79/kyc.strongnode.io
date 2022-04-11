@@ -10,14 +10,16 @@ type InputParams = {
 }
 
 function InputField (props: InputParams) {
-  return <StyledInputWrapper>
-    { props.icon && <Icon name={props.icon} /> }
+  return (
+    <StyledInputWrapper>
+      {props.icon && <Icon name={props.icon} />}
 
-    <FloatingLabelWrapper>
-      <StyledInputField {...props.inputProps} placeholder=" " />
-      <FloatingLabel className="floating-label">{props.inputProps?.placeholder}</FloatingLabel>
-    </FloatingLabelWrapper>
-  </StyledInputWrapper>
+      <FloatingLabelWrapper>
+        <StyledInputField {...props.inputProps} placeholder=' ' />
+        <FloatingLabel className='floating-label'>{props.inputProps?.placeholder}</FloatingLabel>
+      </FloatingLabelWrapper>
+    </StyledInputWrapper>
+  )
 }
 
 export default InputField

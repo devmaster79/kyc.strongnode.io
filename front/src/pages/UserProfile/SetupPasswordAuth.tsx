@@ -21,7 +21,7 @@ export function SetupPasswordAuth ({ onSuccess }: { onSuccess: () => void }) {
 
   const enablePasswordAuth = () => {
     authService.enablePasswordAuth(password1).then((data) => {
-      if (data.result == 'success') {
+      if (data.result === 'success') {
         onSuccess()
       }
     })
@@ -30,36 +30,36 @@ export function SetupPasswordAuth ({ onSuccess }: { onSuccess: () => void }) {
   return (
     <Stack spacing={3} width={300}>
       <TextField
-        type="password"
+        type='password'
         InputProps={{
           startAdornment: (
-            <InputAdornment position="start">
+            <InputAdornment position='start'>
               <LockIcon />
             </InputAdornment>
           )
         }}
-        label="Enter your Password"
+        label='Enter your Password'
         value={password1}
         onChange={(e) => setPassword1(e.target.value)}
       />
       <TextField
-        type="password"
+        type='password'
         InputProps={{
           startAdornment: (
-            <InputAdornment position="start">
+            <InputAdornment position='start'>
               <LockIcon />
             </InputAdornment>
           )
         }}
         error={password1 !== password2}
         helperText={password1 && password1 !== password2 && 'Passwords do not match'}
-        label="Enter your Password again"
+        label='Enter your Password again'
         value={password2}
         onChange={(e) => setPassword2(e.target.value)}
       />
       <Msgs authService={authService} />
       <Button
-        variant="contained"
+        variant='contained'
         sx={{ width: '100%' }}
         onClick={enablePasswordAuth}
         disabled={password1 !== password2}
@@ -71,9 +71,9 @@ export function SetupPasswordAuth ({ onSuccess }: { onSuccess: () => void }) {
 }
 
 const Msgs = (props: { authService: ServicesProps<typeof authServices> }) => {
-  if (props.authService.data.result == 'waiting') return <></>
-  if (props.authService.data.result == 'loading') { return <Info>Verifying the password...</Info> }
-  if (props.authService.data.result == 'validation-error') { return <Error>Wrong password.</Error> }
+  if (props.authService.data.result === 'waiting') return <></>
+  if (props.authService.data.result === 'loading') { return <Info>Verifying the password...</Info> }
+  if (props.authService.data.result === 'validation-error') { return <Error>Wrong password.</Error> }
   return (
     <Error>We could not verify your password. Please try again later.</Error>
   )

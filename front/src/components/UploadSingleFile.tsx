@@ -60,7 +60,7 @@ export default function UploadSingleFile ({
 
   const ShowRejectionItems = () => (
     <Paper
-      variant="outlined"
+      variant='outlined'
       sx={{
         py: 1,
         px: 2,
@@ -72,11 +72,11 @@ export default function UploadSingleFile ({
       {fileRejections.map(({ file, errors }) => {
         return (
           <Box key={file.name} sx={{ my: 1 }}>
-            <Typography variant="subtitle2" noWrap>
+            <Typography variant='subtitle2' noWrap>
               {file.name}
             </Typography>
             {errors.map((e) => (
-              <Typography key={e.code} variant="caption" component="p">
+              <Typography key={e.code} variant='caption' component='p'>
                 - {e.message}
               </Typography>
             ))}
@@ -104,7 +104,7 @@ export default function UploadSingleFile ({
 
         {!file && (
           <Box sx={{ p: 3 }}>
-            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+            <Typography variant='body2' sx={{ color: 'text.secondary' }}>
               Drop files here or click
             </Typography>
           </Box>
@@ -112,8 +112,8 @@ export default function UploadSingleFile ({
 
         {file && (
           <Box
-            component="img"
-            alt="file preview"
+            component='img'
+            alt='file preview'
             src={file && file.preview}
             sx={{
               top: 8,

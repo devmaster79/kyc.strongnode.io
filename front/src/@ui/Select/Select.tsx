@@ -21,21 +21,23 @@ function Select (props: SelectProps) {
   }
   const theme: any = useTheme()
 
-  return <SelectWrapper>
-    <HeaderWrapper onClick={() => setOpened(!opened)}>
-      <span>{ props.value ? props.value[props.searchBy] : 'Select' } </span>
-      <Icon name="arrowDown" width={8} height={6} viewBox="0 0 8 6" style={opened ? { transform: 'rotate(180deg)', transition: '450ms ease' } : { transition: '450ms ease' }} color={theme.palette.text.primary} />
-    </HeaderWrapper>
-    { opened && <OptionsWrapper>
-      <ul>
-        { props.options.map((option: any) =>
-        <li key={option[props.trackBy]} value={option[props.trackBy]} className={props.value && option[props.trackBy] === props.value[props.trackBy] ? 'active' : ''} onClick={onSelectValue}>
-          { option[props.searchBy] }
-        </li>
-        )}
-      </ul>
-    </OptionsWrapper>}
-  </SelectWrapper>
+  return (
+    <SelectWrapper>
+      <HeaderWrapper onClick={() => setOpened(!opened)}>
+        <span>{props.value ? props.value[props.searchBy] : 'Select'} </span>
+        <Icon name='arrowDown' width={8} height={6} viewBox='0 0 8 6' style={opened ? { transform: 'rotate(180deg)', transition: '450ms ease' } : { transition: '450ms ease' }} color={theme.palette.text.primary} />
+      </HeaderWrapper>
+      {opened && <OptionsWrapper>
+        <ul>
+          {props.options.map((option: any) =>
+            <li key={option[props.trackBy]} value={option[props.trackBy]} className={props.value && option[props.trackBy] === props.value[props.trackBy] ? 'active' : ''} onClick={onSelectValue}>
+              {option[props.searchBy]}
+            </li>
+          )}
+        </ul>
+                 </OptionsWrapper>}
+    </SelectWrapper>
+  )
 }
 export default Select
 

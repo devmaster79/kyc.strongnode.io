@@ -2,27 +2,17 @@ import React from 'react'
 import styled from '@emotion/styled/macro'
 import SidebarButton from './SidebarButton'
 
-const ButtonWrapper = styled.div`
-  width: 100%;
-  height: max-content;
-  position: relative;
-`
-
-const VerticalActiveLine = styled.div`
-  position: absolute;
-  right: 0;
-  top: 0;
-  width: 2px;
-  height: 72px;
-  background: #AA1FEC;
-  transition: 250ms ease;
-`
-
 interface SidebarButtonWrapperProps {}
 
 type SidebarButtonWrapperState = {
   activeButton: string,
   verticaLineTopOffset: string
+}
+
+interface IButtonItem {
+  type: string,
+  tooltipHint: string,
+  path: string
 }
 
 const buttonItems = [
@@ -44,13 +34,13 @@ const buttonItems = [
 ]
 
 class SidebarButtonWrapper extends React.Component<SidebarButtonWrapperProps, SidebarButtonWrapperState> {
-  constructor (props: any) {
+  constructor (props: SidebarButtonWrapperProps | Readonly<SidebarButtonWrapperProps>) {
     super(props)
 
     // this handles default animation state on refresh
     let defaultActiveButton = 'defi'
     let defaultOffset = '0px'
-    buttonItems.map((item: any, index: number) => {
+    buttonItems.forEach((item: IButtonItem, index: number) => {
       if (window.location.href.includes(item.path)) {
         defaultActiveButton = item.type
         defaultOffset = (index * 72) + 'px'
@@ -82,3 +72,19 @@ class SidebarButtonWrapper extends React.Component<SidebarButtonWrapperProps, Si
 }
 
 export default SidebarButtonWrapper
+
+const ButtonWrapper = styled.div`
+  width: 100%;
+  height: max-content;
+  position: relative;
+`
+
+const VerticalActiveLine = styled.div`
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 2px;
+  height: 72px;
+  background: #AA1FEC;
+  transition: 250ms ease;
+`

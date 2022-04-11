@@ -18,7 +18,7 @@ function App () {
   }
 
   return (
-    <Suspense fallback={<div></div>}>
+    <Suspense fallback={<div />}>
       <ThemeConfig>
         <SnackbarProvider
           anchorOrigin={{
@@ -27,7 +27,7 @@ function App () {
           }}
           maxSnack={2}
         >
-          <div className="App">
+          <div className='App'>
             <Router />
           </div>
         </SnackbarProvider>

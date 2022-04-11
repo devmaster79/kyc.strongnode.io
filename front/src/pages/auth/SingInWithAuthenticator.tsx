@@ -18,7 +18,7 @@ export function SignInWithAuthenticator () {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
     await authByAuthenticator(totp)
-    if (authState.result == 'success') {
+    if (authState.result === 'success') {
       navigate('/sign-in-with-token')
     }
   }
@@ -58,7 +58,7 @@ export function SignInWithAuthenticator () {
               </Error>
             )}
           </AuthMsg>
-          <Button type="submit" full>
+          <Button type='submit' full>
             CONFIRM
           </Button>
         </Form>

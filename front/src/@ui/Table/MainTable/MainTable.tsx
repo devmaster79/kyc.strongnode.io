@@ -27,7 +27,7 @@ export default function MainTable ({
 
   return (
     <>
-    <TableWrapper onScroll={onScroll} ref={listInnerRef}>
+      <TableWrapper onScroll={onScroll} ref={listInnerRef}>
         <Table>
           <tbody>
             {!hideHeading && (
@@ -47,13 +47,13 @@ export default function MainTable ({
                             overwrittenFields[column.id](row[column.id])
                           )
                         : (
-                        <p>{column.id === 'date' ? fDate(row[column.id]) : row[column.id]}</p>
+                          <p>{column.id === 'date' ? fDate(row[column.id]) : row[column.id]}</p>
                           )}
                     </td>
                   ))}
                 </tr>
               ))}
-            </tbody>
+          </tbody>
         </Table>
       </TableWrapper>
     </>

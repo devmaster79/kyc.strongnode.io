@@ -80,10 +80,11 @@ export default function NFTDashboard () {
     <>
       <h1>NFT Dashboard</h1>
       <CardWrapper>
-      {cards.map((card) => (
-        <NFTCard key={card}/>
-      ))}
+        {cards.map((card) => (
+          <NFTCard key={card} />
+        ))}
       </CardWrapper>
-      <TableSection title="Metrics" subtitle="NFT 18" columns={columns} dataSet={dataSet} overwrittenFields={overwrittenFields} />
-    </>)
+      <TableSection title='Metrics' subtitle='NFT 18' columns={columns} dataSet={dataSet} overwrittenFields={overwrittenFields} />
+    </>
+  )
 }

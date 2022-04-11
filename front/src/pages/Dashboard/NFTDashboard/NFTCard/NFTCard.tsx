@@ -4,7 +4,7 @@ export default function NFTCard () {
   return (
     <>
       <Card>
-        <img src="https://nftcalendar.io/storage/uploads/2021/12/23/4_1223202109373161c4435bdc931.png" />
+        <img src='https://nftcalendar.io/storage/uploads/2021/12/23/4_1223202109373161c4435bdc931.png' />
         <CardContent>
           <div>
             Rubber bubbler dolor
@@ -16,5 +16,6 @@ export default function NFTCard () {
           </div>
         </CardContent>
       </Card>
-    </>)
+    </>
+  )
 }

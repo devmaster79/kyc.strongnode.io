@@ -5,5 +5,5 @@ interface LogoProps{
 }
 
 export default function Logo ({ sx }: LogoProps) {
-  return <Box component="img" src="/images/logo.png" sx={{ ...sx }} />
+  return <Box component='img' src='/images/logo.png' sx={{ ...sx }} />
 }

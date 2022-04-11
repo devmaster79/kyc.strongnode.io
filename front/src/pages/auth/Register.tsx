@@ -54,35 +54,35 @@ export function Register () {
             <Form style={{ marginTop: 30 }}>
               <ValidatedField
                 as={Input}
-                name="first_name"
+                name='first_name'
                 onBlur={handleBlur}
-                placeholder="First name"
-                type="input"
+                placeholder='First name'
+                type='input'
                 validateField={validateField}
               />
               <ValidatedField
                 as={Input}
-                name="last_name"
+                name='last_name'
                 onBlur={handleBlur}
-                placeholder="Last name"
-                type="input"
+                placeholder='Last name'
+                type='input'
                 validateField={validateField}
               />
               <ValidatedField
                 as={Input}
-                name="user_name"
+                name='user_name'
                 onBlur={handleBlur}
-                placeholder="Username"
+                placeholder='Username'
                 style={{ padding: '16px 20px 16px 40px' }}
-                type="text"
+                type='text'
                 validateField={validateField}
               />
               <ValidatedField
                 as={Input}
-                name="termsAgreement"
+                name='termsAgreement'
                 onBlur={handleBlur}
                 style={{ width: 'auto' }}
-                type="checkbox"
+                type='checkbox'
                 wrapperStyle={{
                   alignItems: 'center',
                   display: 'flex',
@@ -102,7 +102,7 @@ export function Register () {
               </RegisterMsg>
               <Button
                 disabled={registerState.result === 'loading'}
-                type="submit"
+                type='submit'
                 full
               >
                 SIGN UP

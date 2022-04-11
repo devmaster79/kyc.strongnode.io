@@ -15,9 +15,11 @@ export type IconProps = {
 function Icon (props: IconProps) {
   const theme = useTheme()
 
-  return <SvgIcon height={props.height} width={props.width} viewBox={props.viewBox} color={props.color || theme.palette.text.secondary} style={props.style}>
-        { Icons[props.name]}
-      </SvgIcon>
+  return (
+    <SvgIcon height={props.height} width={props.width} viewBox={props.viewBox} color={props.color || theme.palette.text.secondary} style={props.style}>
+      {Icons[props.name]}
+    </SvgIcon>
+  )
 }
 
 export default Icon

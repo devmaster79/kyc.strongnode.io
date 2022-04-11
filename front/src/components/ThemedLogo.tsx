@@ -23,11 +23,9 @@ const ThemedLogo = ({ className }: ButtonProps) => {
   return (
     <span>
       {isDark &&
-        <Logo className={className} src={lightLogo} alt="SNE logo" />
-      }
+        <Logo className={className} src={lightLogo} alt='SNE logo' />}
       {!isDark &&
-        <Logo className={className} src={darkLogo} alt="SNE logo" />
-      }
+        <Logo className={className} src={darkLogo} alt='SNE logo' />}
     </span>
   )
 }

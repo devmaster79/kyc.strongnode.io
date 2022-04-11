@@ -1,4 +1,4 @@
-import React, { FormEventHandler, useState } from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { EntryPage } from '../style'
@@ -60,18 +60,17 @@ export function SignInWithPassword () {
           <InputGroup>
             <LockIcon />
             <Input
-              type="password"
-              placeholder="Password"
-              id="password"
+              type='password'
+              placeholder='Password'
+              id='password'
               value={password}
               style={{ padding: '16px 20px 16px 40px' }}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setPassword(e.target.value)
-              }
+                setPassword(e.target.value)}
             />
           </InputGroup>
           <AuthMsg>{message}</AuthMsg>
-          <Button type="submit" full>
+          <Button type='submit' full>
             Confirm
           </Button>
           <OtherOptions hidePassword />

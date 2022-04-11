@@ -43,10 +43,10 @@ export default function AccountPopover (props: any) {
   return (
     <>
       <IconWrapper onClick={() => setShowModal(!showModal)}>
-        <Icon name="arrowDown" width={8} height={6} viewBox="0 0 8 6" style={showModal ? { transform: 'rotate(180deg)', transition: '450ms ease' } : { transition: '450ms ease' }} color={theme.palette.icon.secondary} />
+        <Icon name='arrowDown' width={8} height={6} viewBox='0 0 8 6' style={showModal ? { transform: 'rotate(180deg)', transition: '450ms ease' } : { transition: '450ms ease' }} color={theme.palette.icon.secondary} />
 
         <AvatarIconWrapper>
-          <Icon name="avatar" width={20} height={20} viewBox="0 0 20 20" color={theme.palette.icon.primary} />
+          <Icon name='avatar' width={20} height={20} viewBox='0 0 20 20' color={theme.palette.icon.primary} />
         </AvatarIconWrapper>
       </IconWrapper>
       {showModal && (

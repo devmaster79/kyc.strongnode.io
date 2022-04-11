@@ -31,19 +31,20 @@ export default function KYC () {
       <h1>StrongNode ID and KYC</h1>
 
       <SwitchWrapper>
-        <SwitchButton id="2fa" label="2FA" checked={is2fa} onChange={handle2faChange} />
-        <SwitchButton id="sms" label="SMS" checked={isSMS} onChange={handleSMSChange} />
+        <SwitchButton id='2fa' label='2FA' checked={is2fa} onChange={handle2faChange} />
+        <SwitchButton id='sms' label='SMS' checked={isSMS} onChange={handleSMSChange} />
       </SwitchWrapper>
 
-      { show2faModal &&
-        <Modal title="Without 2FA" icon="lock" onClose={() => setShow2faModal(false)} onApprove={() => { setIs2fa(false); setShow2faModal(false) }}>
+      {show2faModal &&
+        <Modal title='Without 2FA' icon='lock' onClose={() => setShow2faModal(false)} onApprove={() => { setIs2fa(false); setShow2faModal(false) }}>
           Unauthorized access to your account can occur.<br /> Are you sure you want to disable this?
-      </Modal> }
-      { showSMSModal &&
-        <Modal title="Without SMS" icon="sms" onClose={() => setShowSMSModal(false)} onApprove={() => { setIsSMS(false); setShowSMSModal(false) }}>
+        </Modal>}
+      {showSMSModal &&
+        <Modal title='Without SMS' icon='sms' onClose={() => setShowSMSModal(false)} onApprove={() => { setIsSMS(false); setShowSMSModal(false) }}>
           Unauthorized access to your account can occur.<br /> Are you sure you want to disable this?
-      </Modal> }
-    </KYCWrapper>)
+        </Modal>}
+    </KYCWrapper>
+  )
 }
 
 const KYCWrapper = styled.div`

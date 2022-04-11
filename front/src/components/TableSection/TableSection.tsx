@@ -9,29 +9,30 @@ function TableSection ({ children, ...props }: any) {
   const [selectedOption, setSelectedOption] = useState()
 
   const selectOptions = [{ label: 'First', value: '1' }, { label: 'Second', value: '2' }]
-  return <TableSectionWrapper {...props}>
-      { props.comingSoon
+  return (
+    <TableSectionWrapper {...props}>
+      {props.comingSoon
         ? <ComingSoonWrapper>
-        <Icon name="info" height={24} width={24} viewBox="0 0 24 24" />
-        <h2>{ props.title }</h2>
-        <span>Comming soon</span>
-      </ComingSoonWrapper>
+          <Icon name='info' height={24} width={24} viewBox='0 0 24 24' />
+          <h2>{props.title}</h2>
+          <span>Comming soon</span>
+        </ComingSoonWrapper>
         : <>
-        <HeaderWrapper>
-          <h2>{ props.title } <span>{ props.subtitle }</span></h2>
-          <InputField icon="search" inputProps={{ placeholder: 'Search' }} />
-        </HeaderWrapper>
-        <Select value={selectedOption} options={selectOptions} handleChange={(e:any) => setSelectedOption(e)}></Select>
+          <HeaderWrapper>
+            <h2>{props.title} <span>{props.subtitle}</span></h2>
+            <InputField icon='search' inputProps={{ placeholder: 'Search' }} />
+          </HeaderWrapper>
+          <Select value={selectedOption} options={selectOptions} handleChange={(e:any) => setSelectedOption(e)} />
 
-        <MainTable
-          dataSet={props.dataSet}
-          columns={props.columns}
-          overwrittenFields={props.overwrittenFields || {}}
-          fetchData={props.fetchData || null}
-        />
-      </>
-  }
+          <MainTable
+            dataSet={props.dataSet}
+            columns={props.columns}
+            overwrittenFields={props.overwrittenFields || {}}
+            fetchData={props.fetchData || null}
+          />
+        </>}
     </TableSectionWrapper>
+  )
 }
 
 export default TableSection

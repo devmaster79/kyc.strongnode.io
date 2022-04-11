@@ -56,19 +56,19 @@ export function SetupAuthenticatorAuth ({ onSuccess }: { onSuccess: () => void }
       <TextField
         InputProps={{
           startAdornment: (
-            <InputAdornment position="start">
+            <InputAdornment position='start'>
               <LockIcon />
             </InputAdornment>
           )
         }}
-        type="input"
-        label="Enter your TOTP"
-        id="totp"
+        type='input'
+        label='Enter your TOTP'
+        id='totp'
         value={totp}
         onChange={handleTOTPInputChange}
       />
       <Button
-        variant="contained"
+        variant='contained'
         sx={{ width: '100%' }}
         onClick={enableAuthenticatorAuth}
       >
