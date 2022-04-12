@@ -4,33 +4,63 @@ import Select from '@ui/Select/Select'
 import MainTable from '@ui/Table/MainTable/MainTable'
 import Icon from '@ui/Icon/Icon'
 import { useState } from 'react'
+import { TypeOf } from 'yup'
 
-function TableSection ({ children, ...props }: any) {
-  const [selectedOption, setSelectedOption] = useState()
+interface Column {
+  id: string,
+  label: string,
+  align: string,
+}
 
-  const selectOptions = [{ label: 'First', value: '1' }, { label: 'Second', value: '2' }]
+interface DataSet<Item> {
+  items: Item[]
+}
+interface TableSectionProps<Item extends Record<string, unknown>> {
+  comingSoon?: string
+  title: string
+  subtitle: string
+  dataSet: DataSet<Item>
+  columns: Column[]
+  overwrittenFields?: { [ItemAttributeName in keyof Item]?: () => string }
+  fetchData?: string
+}
+
+const selectOptions = [{ label: 'First', value: '1' }, { label: 'Second', value: '2' }]
+
+function TableSection<Item extends Record<string, unknown>> (props: TableSectionProps<Item>) {
+  const [selectedOption, setSelectedOption] = useState(selectOptions[0])
   return (
     <TableSectionWrapper {...props}>
       {props.comingSoon
-        ? <ComingSoonWrapper>
-          <Icon name='info' height={24} width={24} viewBox='0 0 24 24' />
-          <h2>{props.title}</h2>
-          <span>Comming soon</span>
-        </ComingSoonWrapper>
-        : <>
-          <HeaderWrapper>
-            <h2>{props.title} <span>{props.subtitle}</span></h2>
-            <InputField icon='search' inputProps={{ placeholder: 'Search' }} />
-          </HeaderWrapper>
-          <Select value={selectedOption} options={selectOptions} handleChange={(e:any) => setSelectedOption(e)} />
+        ? (
+          <ComingSoonWrapper>
+            <Icon name='info' height={24} width={24} viewBox='0 0 24 24' />
+            <h2>{props.title}</h2>
+            <span>Comming soon</span>
+          </ComingSoonWrapper>
+          )
+        : (
+          <>
+            <HeaderWrapper>
+              <h2>{props.title} <span>{props.subtitle}</span></h2>
+              <InputField icon='search' inputProps={{ placeholder: 'Search' }} />
+            </HeaderWrapper>
+            <Select
+              value={selectedOption.value}
+              trackBy='value'
+              searchBy='label'
+              options={selectOptions}
+              onChange={(option) => setSelectedOption(option)}
+            />
 
-          <MainTable
-            dataSet={props.dataSet}
-            columns={props.columns}
-            overwrittenFields={props.overwrittenFields || {}}
-            fetchData={props.fetchData || null}
-          />
-        </>}
+            <MainTable
+              dataSet={props.dataSet}
+              columns={props.columns}
+              overwrittenFields={props.overwrittenFields || {}}
+              fetchData={props.fetchData || null}
+            />
+          </>
+          )}
     </TableSectionWrapper>
   )
 }

@@ -75,9 +75,9 @@ export default function UploadSingleFile ({
             <Typography variant='subtitle2' noWrap>
               {file.name}
             </Typography>
-            {errors.map((e) => (
-              <Typography key={e.code} variant='caption' component='p'>
-                - {e.message}
+            {errors.map((error) => (
+              <Typography key={error.code} variant='caption' component='p'>
+                - {error.message}
               </Typography>
             ))}
           </Box>

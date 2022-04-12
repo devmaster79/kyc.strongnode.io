@@ -91,7 +91,7 @@ export function Register () {
                 }}
                 validateField={validateField}
               />
-              <RegisterMsg>
+              <RegisterMessage>
                 {registerState.result === 'loading' && 'Loading...'}
                 {registerState.result === 'unauthorized-error' && (
                   <Error>You do not have access to this feature.</Error>
@@ -99,7 +99,7 @@ export function Register () {
                 {registerState.result === 'unexpected-error' && (
                   <Error>Something went wrong.</Error>
                 )}
-              </RegisterMsg>
+              </RegisterMessage>
               <Button
                 disabled={registerState.result === 'loading'}
                 type='submit'
@@ -115,7 +115,7 @@ export function Register () {
   )
 }
 
-const RegisterMsg = styled.p`
+const RegisterMessage = styled.p`
   margin-bottom: 10px;
 `
 

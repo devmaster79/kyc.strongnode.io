@@ -40,7 +40,7 @@ export function SignInWithAuthenticator () {
           <InputGroup>
             <TOTPInput onChange={handleTOTPInputChange} value={totp} />
           </InputGroup>
-          <AuthMsg>
+          <AuthMessage>
             {authState.result === 'loading' && 'Verifying the TOTP...'}
             {authState.result === 'validation-error' && (
               <Error>Wrong TOTP. Please try agian.</Error>
@@ -57,7 +57,7 @@ export function SignInWithAuthenticator () {
                 seconds later.
               </Error>
             )}
-          </AuthMsg>
+          </AuthMessage>
           <Button type='submit' full>
             CONFIRM
           </Button>
@@ -84,7 +84,7 @@ const Form = styled.form`
   margin-right: 60px;
 `
 
-const AuthMsg = styled.div``
+const AuthMessage = styled.div``
 const Error = styled.span`
   color: #e7b3ff;
 `

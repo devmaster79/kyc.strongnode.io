@@ -22,24 +22,24 @@ export function SignInWithToken () {
           localStorage.setItem('loggedin', 'true')
           navigate('/dashboard/app')
         }
-      } catch (e) {
+      } catch (error) {
         setShowError(true)
       }
     })()
-  }, [])
+  }, [navigate])
 
   return (
     <EntryPage>
       <EntryCard>
-        <AuthMsg>
+        <AuthMessage>
           {showError && <Error>Something went wrong. Try again later.</Error>}
-        </AuthMsg>
+        </AuthMessage>
       </EntryCard>
     </EntryPage>
   )
 }
 
-const AuthMsg = styled.div``
+const AuthMessage = styled.div``
 const Error = styled.span`
   color: red;
 `

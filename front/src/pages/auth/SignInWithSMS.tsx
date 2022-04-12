@@ -45,7 +45,7 @@ export function SignInWithSMS () {
       <EntryCard>
         <Box padding='0px 20px'>
           <h2 style={{ fontFamily: 'Halyard' }}>2-STEP VERIFICATION</h2>
-          <SendMsg>
+          <SendMessage>
             {sendState.result === 'loading' && 'Sending the SMS...'}
             {sendState.result === 'success' &&
               'We have sent you an SMS to your given phone number.'}
@@ -63,7 +63,7 @@ export function SignInWithSMS () {
                 {Math.floor(sendState.remainingTimeMs / 1000)} seconds later.
               </Error>
             )}
-          </SendMsg>
+          </SendMessage>
           <form onSubmit={handleSubmit} style={{ marginTop: 30 }}>
             <InputGroup>
               <LockIcon />
@@ -77,7 +77,7 @@ export function SignInWithSMS () {
                   handleSMSCodeChange(e.target.value)}
               />
             </InputGroup>
-            <AuthMsg>
+            <AuthMessage>
               {authState.result === 'loading' && 'Validating...'}
               {authState.result === 'validation-error' && (
                 <Error>Invalid code please try again.</Error>
@@ -94,7 +94,7 @@ export function SignInWithSMS () {
                   later.
                 </Error>
               )}
-            </AuthMsg>
+            </AuthMessage>
             <Button
               type='submit'
               full
@@ -116,11 +116,11 @@ const SBInput = styled(Input)`
     font-size: 18px;
   }
 `
-const SendMsg = styled.div`
+const SendMessage = styled.div`
   display: flex;
   margin-top: 50px;
 `
-const AuthMsg = styled.div`
+const AuthMessage = styled.div`
   margin-bottom: 10px;
 `
 const Error = styled.span`

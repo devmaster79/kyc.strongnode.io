@@ -1,0 +1,1 @@
+# Everything that is specific component for dashboard

@@ -15,13 +15,16 @@ export default defineConfig({
     // support JSX
     react({
       babel: {
-        plugins: ['babel-plugin-macros']
-      },
+        plugins: [
+          'babel-plugin-macros',
+          '@emotion/babel-plugin'
+        ]
+      }
     }),
     // support absolute imports
     tsconfigPaths(),
     // support importing SVG
-    svgrPlugin(),
+    svgrPlugin()
   ],
   server: {
     proxy: {
@@ -29,7 +32,7 @@ export default defineConfig({
         target: process.env.REACT_APP_BASE_URL,
         changeOrigin: true,
         rewrite: (path) => path
-      },
+      }
     }
   }
 })

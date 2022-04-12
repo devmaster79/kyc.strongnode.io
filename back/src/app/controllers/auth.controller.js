@@ -144,8 +144,8 @@ exports.authByAuthenticator = withResponse(async req => {
 });
 
 exports.generateAuthenticatorQRCode = withResponse(async req => {
-    const authenticatorcode = await authenticatorAuthService.generateQRCode(req.user.email);
-    return { authenticatorcode };
+    const qrcode = await authenticatorAuthService.generateQRCode(req.user.email);
+    return { qrcode };
 });
 
 exports.enableAuthenticatorAuth = withResponse(async req => {

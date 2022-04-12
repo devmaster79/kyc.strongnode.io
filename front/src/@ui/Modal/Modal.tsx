@@ -1,48 +1,53 @@
 import styled from '@emotion/styled'
-import Button from '@ui/Button/Button'
-import Icon from '@ui/Icon/Icon'
-import { MouseEventHandler, ReactNode } from 'react'
+import Icon, { IconProps } from '@ui/Icon/Icon'
+import { IAnim } from '@ui/utils/useAnimated'
+import { ReactNode } from 'react'
 
-type ModalProps = {
+export type ModalProps = {
   children: ReactNode,
-  icon: string,
+  icon: IconProps['name'],
   title: string,
-  onClose: MouseEventHandler<HTMLDivElement> | undefined,
-  onApprove: MouseEventHandler<HTMLDivElement> | undefined
+  onClose: () => void,
+  footer: ReactNode
+  anim: IAnim
 }
 
-function Modal (props: ModalProps) {
+export default function Modal (props: ModalProps) {
   return (
-    <ModalWrapper>
+    <ModalWrapper anim={props.anim}>
       <StyledModal>
         <IconWrapper onClick={props.onClose}>
           <Icon name='close' width={18} height={18} viewBox='0 0 18 18' style={{ cursor: 'pointer' }} />
         </IconWrapper>
-        <Icon name={props.icon} width={64} height={64} viewBox='0 0 64 64' />
+        <Icon name={props.icon} width={64} height={64} viewBox='0 0 27 27' />
         <h1>{props.title}</h1>
         {props.children}
-        <ButtonWrapper>
-          <Button type='hugeInvert' onClick={props.onClose}>Cancel</Button>
-          <Button type='huge' onClick={props.onApprove}>Approve</Button>
-        </ButtonWrapper>
+        <Footer>
+          {props.footer}
+        </Footer>
       </StyledModal>
     </ModalWrapper>
   )
 }
 
-export default Modal
+interface ModalWrapperProps {
+  anim: IAnim
+}
 
-const ModalWrapper = styled.div`
+const ModalWrapper = styled.div<ModalWrapperProps>`
       height: 100vh;
       width: 100vw;
       background-color: rgba(8, 7, 41, 0.8);
       position: fixed;
       top: 0;
       left: 0;
-      display: flex;
       align-items: center;
       justify-content: center;
       z-index: 1300;
+      display: ${({ anim }) => anim.state === 'closed' ? 'none' : 'flex'};
+      opacity: ${({ anim }) => anim.state === 'open' || anim.state === 'beforeOpening' ? '1' : '0'};
+      transition: opacity ${({ anim }) => anim.delay}ms ease;
+
 `
 const IconWrapper = styled.div`
       width: 100%;
@@ -70,7 +75,7 @@ const StyledModal = styled.div`
         padding-bottom: 8px;
       }
 `
-const ButtonWrapper = styled.div`
+const Footer = styled.div`
       padding-top: 23px;
       padding-bottom: 40px;
 `

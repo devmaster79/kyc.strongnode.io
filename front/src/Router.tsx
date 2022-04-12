@@ -1,7 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import DashboardLayout from './layouts/dashboard'
 import Dashboard from './pages/Dashboard'
-import UserProfile from './pages/UserProfile/UserProfile'
 import Profile from './pages/profile'
 import ContactSupport from './pages/contactSupport'
 import { Register } from './pages/auth/Register'
@@ -14,7 +13,7 @@ import PrivateSaleInterestForm from './pages/privatesaleinterestform'
 import AddData from './pages/AddData'
 import * as SHARED_ROUTES from 'shared/routes'
 import NFTDashboard from 'pages/Dashboard/NFTDashboard/NFTDashboard'
-import KYC from 'pages/Dashboard/KYC/KYC'
+import Kyc from 'pages/Dashboard/KYC/KYC'
 
 export const ROUTES = {
   DASHBOARD: {
@@ -51,14 +50,13 @@ export default function Router () {
         <Routes>
           <Route element={<DashboardLayout />}>
             <Route path={ROUTES.DASHBOARD.APP} element={<Dashboard />} />
-            <Route path={ROUTES.DASHBOARD.PROFILE} element={<UserProfile />} />
             <Route path={ROUTES.DASHBOARD.CONTACT_SUPORT} element={<ContactSupport />} />
             <Route path={ROUTES.DASHBOARD.GROWTH} element={<Dashboard />} />
             <Route path={ROUTES.DASHBOARD.SYNC} element={<Dashboard />} />
             <Route path={ROUTES.DASHBOARD.SHIELD} element={<Dashboard />} />
             <Route path={ROUTES.DASHBOARD.ADD_DATA} element={<AddData />} />
             <Route path={ROUTES.DASHBOARD.NFT} element={<NFTDashboard />} />
-            <Route path={ROUTES.DASHBOARD.KYC} element={<KYC />} />
+            <Route path={ROUTES.DASHBOARD.KYC} element={<Kyc />} />
           </Route>
           <Route
             path='*'
