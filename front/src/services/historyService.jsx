@@ -1,32 +1,40 @@
-import axios from 'axios';
-import {
+import axios from 'axios'
+
+export function createHistory (data) {
+  return axios.post('/api/history', data)
+}
+export function updateHistory (id, data) {
+  return axios.put(`/api/history/${id}`, data)
+}
+export function deleteHistory (id) {
+  return axios.delete(`/api/history/${id}`)
+}
+export function findAllVested (userName, page, perPage) {
+  return axios.get(`/api/history/findAllVested?user_name=${userName}&page=${page}&perPage=${perPage}`)
+}
+export function findAllWithdrawn (userName, page, perPage) {
+  return axios.get(`/api/history/findAllWithdrawn?user_name=${userName}&page=${page}&perPage=${perPage}`)
+}
+export function findWithdrawnDetails (userName) {
+  return axios.get(`findWithdrawnDetails?user_name=${userName}`)
+}
+export function findVestedDetails (userName) {
+  return axios.get(`findVestedDetails?user_name=${userName}`)
+}
+
+export {
+
+}
+
+/** @deprecated */
+const HistoryService = {
+  createHistory,
+  updateHistory,
+  deleteHistory,
   findAllVested,
   findAllWithdrawn,
   findWithdrawnDetails,
-  history_url,
   findVestedDetails
-} from '../utils/config';
+}
 
-export default {
-  createHistory(data) {
-    return axios.post(history_url, data);
-  },
-  updateHistory(id, data) {
-    return axios.put(`${history_url}/${id}`, data);
-  },
-  deleteHistory(id) {
-    return axios.delete(`${history_url}/${id}`);
-  },
-  findAllVested(user_name, page, perPage) {
-    return axios.get(`${findAllVested}?user_name=${user_name}&page=${page}&perPage=${perPage}`);
-  },
-  findAllWithdrawn(user_name, page, perPage) {
-    return axios.get(`${findAllWithdrawn}?user_name=${user_name}&page=${page}&perPage=${perPage}`);
-  },
-  findWithdrawnDetails(user_name) {
-    return axios.get(`${findWithdrawnDetails}?user_name=${user_name}`);
-  },
-  findVestedDetails(user_name) {
-    return axios.get(`${findVestedDetails}?user_name=${user_name}`);
-  }
-};
+export default HistoryService

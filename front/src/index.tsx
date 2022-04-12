@@ -12,21 +12,24 @@ import { ChainId, DAppProvider } from '@usedapp/core'
 import { GlobalStyle } from './reset.css'
 import './index.css'
 import 'utils/axios'
+import { StrictMode } from 'react'
 
 const config = {
   readOnlyChainId: ChainId.Mainnet
 }
 
 ReactDOM.render(
-  <DAppProvider config={config}>
-    <SettingsProvider>
-      <CollapseDrawerProvider>
-        <BrowserRouter>
-          <GlobalStyle />
-          <App />
-        </BrowserRouter>
-      </CollapseDrawerProvider>
-    </SettingsProvider>
-  </DAppProvider>,
+  <StrictMode>
+    <DAppProvider config={config}>
+      <SettingsProvider>
+        <CollapseDrawerProvider>
+          <BrowserRouter>
+            <GlobalStyle />
+            <App />
+          </BrowserRouter>
+        </CollapseDrawerProvider>
+      </SettingsProvider>
+    </DAppProvider>
+  </StrictMode>,
   document.getElementById('root')
 )

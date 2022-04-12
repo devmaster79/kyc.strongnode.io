@@ -1,6 +1,5 @@
 import useTheme from '@mui/material/styles/useTheme'
-import { CSSProperties } from 'react'
-import styled from 'styled-components'
+import { CSSProperties, SVGProps } from 'react'
 import { Icons } from './CustomIcons'
 
 export type IconProps = {
@@ -16,7 +15,13 @@ function Icon (props: IconProps) {
   const theme = useTheme()
 
   return (
-    <SvgIcon height={props.height} width={props.width} viewBox={props.viewBox} color={props.color || theme.palette.text.secondary} style={props.style}>
+    <SvgIcon
+      height={props.height}
+      width={props.width}
+      viewBox={props.viewBox}
+      color={props.color || theme.palette.text.secondary}
+      style={props.style}
+    >
       {Icons[props.name]}
     </SvgIcon>
   )
@@ -24,16 +29,17 @@ function Icon (props: IconProps) {
 
 export default Icon
 
-Icon.defaultProps = {
-  height: 16,
-  width: 16,
-  viewBox: '0 0 16 16',
-  style: {}
+export function SvgIcon (props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      {...props}
+      height={props.height || 16}
+      width={props.width || 16}
+      viewBox={props.viewBox || '0 0 16 16'}
+      version={props.version || '1.1'}
+      xmlns={props.xmlns || 'http://www.w3.org/2000/svg'}
+      xmlnsXlink={props.xmlnsXlink || 'http://www.w3.org/1999/xlink'}
+      fill={props.fill || 'none'}
+    />
+  )
 }
-
-const SvgIcon = styled.svg.attrs({
-  version: '1.1',
-  xmlns: 'http://www.w3.org/2000/svg',
-  xmlnsXlink: 'http://www.w3.org/1999/xlink',
-  fill: 'none'
-})``

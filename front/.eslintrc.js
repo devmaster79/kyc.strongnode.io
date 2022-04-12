@@ -1,5 +1,3 @@
-const { off } = require("process");
-
 module.exports = {
   env: {
     browser: true,
@@ -33,6 +31,9 @@ module.exports = {
   ],
   ignorePatterns: ['.eslintrc.js'],
   rules: {
+    'no-console': ["error", { allow: ["warn", "error"] }],
+    'max-len': ["warn", { "code": 120 }],
+    'react/jsx-indent': [2, 2, {checkAttributes: true, indentLogicalExpressions: true}],
     /*
      * turned off lints:
      */
@@ -42,8 +43,13 @@ module.exports = {
     '@typescript-eslint/no-empty-interface': 'off',
     // conflicts with component order
     '@typescript-eslint/no-use-before-define': 'off',
+    'no-use-before-define': 'off',
     // it doesn't make any sense
     'promise/always-return': 'off',
+    // ts validates implicit anys anyways
+    'react/prop-types': 'off',
+    // ts validates no unuseds anyways
+    "no-unused-vars": "off",
 
     /*
      * Lints to enable later:
@@ -87,10 +93,8 @@ module.exports = {
     'object-curly-spacing':'warn',
     'dot-notation':'warn',
     'no-multi-spaces':'warn',
-    'no-use-before-define':'warn',
     'curly':'warn',
     'multiline-ternary':'warn',
-    'no-unused-vars':'warn',
     'sonarjs/cognitive-complexity': 'warn',
     'promise/catch-or-return': 'warn',
     'prefer-promise-reject-errors': 'warn',

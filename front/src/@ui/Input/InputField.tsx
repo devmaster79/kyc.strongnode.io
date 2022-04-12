@@ -1,63 +1,99 @@
 import styled from '@emotion/styled'
 import { Icons } from '@ui/Icon/CustomIcons'
 import Icon from '@ui/Icon/Icon'
-import { HTMLAttributes, ReactNode } from 'react'
+import { ComponentProps, ReactNode } from 'react'
 
 type InputParams = {
+  className?: string,
   children?: ReactNode,
-  inputProps?: HTMLAttributes<HTMLInputElement>,
-  icon?: keyof typeof Icons
+  inputProps?: ComponentProps<typeof StyledInputField>,
+  icon?: keyof typeof Icons,
+  error?: boolean,
+  helpText?: ReactNode
 }
 
-function InputField (props: InputParams) {
+export default function InputField (props: InputParams) {
   return (
-    <StyledInputWrapper>
-      {props.icon && <Icon name={props.icon} />}
+    <InputContainer>
+      <StyledInputWrapper
+        error={props.error || false}
+        className={props.className}
+        disabled={props.inputProps?.disabled || false}
+      >
+        {props.icon && <Icon name={props.icon} />}
 
-      <FloatingLabelWrapper>
-        <StyledInputField {...props.inputProps} placeholder=' ' />
-        <FloatingLabel className='floating-label'>{props.inputProps?.placeholder}</FloatingLabel>
-      </FloatingLabelWrapper>
-    </StyledInputWrapper>
+        <FloatingLabelWrapper>
+          <StyledInputField {...props.inputProps} placeholder=' ' />
+          <FloatingLabel className='floating-label'>{props.inputProps?.placeholder}</FloatingLabel>
+        </FloatingLabelWrapper>
+      </StyledInputWrapper>
+      {props.helpText && <HelpText error={props.error || false}>{props.helpText}</HelpText>}
+    </InputContainer>
   )
 }
 
-export default InputField
+export const InputContainer = styled.div`
+  display: flex;
+  flex-flow: column;
+`
 
-const FloatingLabel = styled.label`
+export const HelpText = styled.div<{error: boolean}>`
+  text-align: left;
+  padding: 0.3em 2em;
+  ${props => props.error && `color: ${props.theme.palette.error.main}`}
+`
+
+export const FloatingLabel = styled.label`
+  display: flex;
+  align-items: center;
   position:absolute;
-  top: 7px;
-  background-color: ${props => props.theme.palette.background.label};
-  padding: 0 10px;
-  font-size: 16px;
+  left: 0;
+  top: ${2.5 / 16}em;
+  padding: 0 ${10 / 16}em;
+  font-size: ${16 / 12}em;
   transition-duration:300ms;
   pointer-events: none;
 `
 
-const FloatingLabelWrapper = styled.div`
+export const FloatingLabelWrapper = styled.div`
   position: relative;
   width: 100%;
 
-  :focus-within > .floating-label, input:not(:placeholder-shown) + .floating-label {
-    transform:translateY(-16px);
+  :focus-within > .floating-label,
+  input:not(:placeholder-shown) + .floating-label,
+  input:-webkit-autofill + .floating-label {
+    padding-top:0;
+    transform:translateY(-1em);
     transition-duration:300ms;
     font-size: 12px;
+    background-color: ${props => props.theme.palette.background.label};
+    left: 3px;
   }
 `
 
-const StyledInputWrapper = styled.div`
+export const StyledInputWrapper = styled.div<{
+  disabled: boolean,
+  error: boolean
+}>`
+  flex:1;
   background: ${props => props.theme.palette.background.light};
-  border: 1px solid ${props => props.theme.palette.border.light};
+  ${props => props.error
+    ? `border: 1px solid ${props.theme.palette.error.light};`
+    : `border: 1px solid ${props.theme.palette.border.light};`}
   box-sizing: border-box;
   border-radius: 8px;
   color: ${props => props.theme.palette.text.secondary};
-  padding-left: 13px;
   display: flex;
   align-items: center;
   min-width: 260px;
+  opacity: ${props => props.disabled ? '0.5' : '1'};
+
+  svg {
+    margin-left: 8px;
+  }
 `
 
-const StyledInputField = styled.input`
+export const StyledInputField = styled.input`
   display:block;
   width:100%;
   height:40px;
@@ -78,5 +114,11 @@ const StyledInputField = styled.input`
 
   ::-ms-input-placeholder { /* Microsoft Edge */
     color: ${props => props.theme.palette.text.secondary};
+  }
+
+  &:-webkit-autofill {
+    -webkit-text-fill-color: #fff;
+    -webkit-box-shadow: 0 0 0px 1000px #2e2e81 inset;
+    border-radius: 7px;
   }
 `

@@ -1,24 +1,37 @@
 import styled from '@emotion/styled'
+import { ComponentProps, ReactNode } from 'react'
 
-function SwitchButton ({ children, ...props }: any) {
+export type SwitchButtonProps = ComponentProps<typeof StyledInput> & {
+  children?: ReactNode,
+  label: string,
+  help?: ReactNode,
+} & ({ name: string} | { id: string });
+
+export default function SwitchButton ({ children, name, label, help, ...props }: SwitchButtonProps) {
   return (
-    <SwitchWrapper style={{ display: 'block' }}>
-      {props.label}
-      <StyledInput type='checkbox' hidden id={props.id} {...props} />
-      <StyledButton className='switch' htmlFor={props.id}>{children}</StyledButton>
-    </SwitchWrapper>
+    <Container>
+      <SwitchWrapper style={{ display: 'block' }}>
+        {label}
+        <StyledInput type='checkbox' hidden id={props.id || name} {...props} />
+        <StyledButton className='switch' htmlFor={props.id || name}>{children}</StyledButton>
+      </SwitchWrapper>
+      {help && <Help>{help}</Help>}
+    </Container>
   )
 }
 
-export default SwitchButton
-
-const SwitchWrapper = styled.label`
-  display:block;
+const Container = styled.div`
+  display: flex;
+  flex-flow: column;
+  gap: 0.5em;
   font-size: 14px;
   font-family: 'Satoshi-Variable';
   font-style: normal;
   font-weight: 900;
-  padding: 14px;
+`
+
+const SwitchWrapper = styled.label`
+  display: block;
 `
 
 const StyledInput = styled.input`
@@ -66,4 +79,10 @@ const StyledButton = styled.label`
     border-radius: 50%;
     transition: left 0.20s cubic-bezier(0.4, 0, 0.2, 1);
   }
+`
+
+const Help = styled.div`
+  font-weight: 500;
+  font-size: 0.9em;
+  color:  ${props => props.theme.palette.primary[75]};
 `

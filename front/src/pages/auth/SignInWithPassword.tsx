@@ -69,7 +69,7 @@ export function SignInWithPassword () {
                 setPassword(e.target.value)}
             />
           </InputGroup>
-          <AuthMsg>{message}</AuthMsg>
+          <AuthMessage>{message}</AuthMessage>
           <Button type='submit' full>
             Confirm
           </Button>
@@ -80,7 +80,7 @@ export function SignInWithPassword () {
   )
 }
 
-const AuthMsg = styled.div``
+const AuthMessage = styled.div``
 
 const Error = styled('p')({
   textAlign: 'center',
