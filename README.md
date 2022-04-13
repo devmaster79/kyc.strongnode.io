@@ -152,4 +152,11 @@ google-chrome --disable-web-security
 "[PATH_TO_CHROME]\chrome.exe" --disable-web-security --disable-gpu --user-data-dir=~/chromeTemp
 ```
 
+## #3 Shared folder permission issue on MacOS
+Sometimes and error can occur on macOS related to the symlinks. Once you get error like: 
+```
+Cannot find module 'shared/routes' or ...
+```
+It's time to fix macOS's folder permission issue. I've tried to fix it via terminal using chmod, but it did not help me. They way I've fixed it was via the macOS GUI.
 
+Simply, locate the folder that is beign symlinked and right click on it, click "Get info". Look down and click on the lock, add read & write privileges in the bottom table and click the settings icons and then "Apply to enclosed items". That fixed the issue.
