@@ -10,6 +10,7 @@ export type GetProfileResult = {
   wallet_address: string
   telegram_id: string
   twitter_id: string
+  profile_img_url: string
   enable_authenticator: boolean
   enable_sms: boolean
   enable_password: boolean
