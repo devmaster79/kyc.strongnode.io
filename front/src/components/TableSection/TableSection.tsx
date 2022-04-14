@@ -29,6 +29,7 @@ function TableSection ({ children, ...props }: any) {
             columns={props.columns}
             overwrittenFields={props.overwrittenFields || {}}
             fetchData={props.fetchData || null}
+            hideHeading={props.hideHeading || false}
           />
         </>}
     </TableSectionWrapper>
@@ -65,7 +66,7 @@ const HeaderWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-bottom: 40px;
+  padding-bottom: 16px;
 `
 
 const ComingSoonWrapper = styled.div`
