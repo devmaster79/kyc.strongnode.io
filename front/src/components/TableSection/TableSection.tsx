@@ -20,8 +20,8 @@ interface TableSectionProps<Item extends Record<string, unknown>> {
   title: string
   subtitle: string
   dataSet: DataSet<Item>
-  hideHeading: boolean
   columns: Column[]
+  hideHeading: boolean
   overwrittenFields?: { [ItemAttributeName in keyof Item]?: () => string }
   fetchData?: string
 }
