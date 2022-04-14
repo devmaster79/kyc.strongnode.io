@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from '@emotion/styled/macro'
-import SidebarButton from './SidebarButton'
+import SidebarButton, { SidebarButtonProps } from './SidebarButton'
 
 interface SidebarButtonWrapperProps {}
 
@@ -65,7 +65,16 @@ class SidebarButtonWrapper extends React.Component<SidebarButtonWrapperProps, Si
     return (
       <ButtonWrapper>
         <VerticalActiveLine style={{ top: this.state.verticaLineTopOffset }} />
-        {buttonItems.map((item, index) => <SidebarButton key={item.tooltipHint} onPress={() => this.handleOnClick(item.path, item.type, index)} icon={item.type} tooltipHint={item.tooltipHint} active={(item.type === this.state.activeButton)} url={item.path} />)}
+        {buttonItems.map((item, index) => (
+          <SidebarButton
+            key={item.tooltipHint}
+            onPress={() => this.handleOnClick(item.path, item.type, index)}
+            icon={item.type as SidebarButtonProps['icon']}
+            tooltipHint={item.tooltipHint}
+            active={(item.type === this.state.activeButton)}
+            url={item.path}
+          />
+        ))}
       </ButtonWrapper>
     )
   }

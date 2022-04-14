@@ -1,10 +1,13 @@
 import axios from 'axios'
 
 /** Get the response data even if the response status is not 2xx */
-export async function getResponseData<Data extends Record<string, unknown>> (
+export async function getResponseData<
+  RequestData,
+  ResponseData
+> (
   route: string,
-  data: Record<string, unknown> = {}
-): Promise<Data> {
+  data: RequestData | Record<never, never> = {}
+): Promise<ResponseData> {
   try {
     const response = await axios.post(route, data)
     return response.data

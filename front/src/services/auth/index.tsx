@@ -1,39 +1,43 @@
 import * as urls from '../../utils/config'
 import { getResponseData, setToken } from './utils'
 import {
-  GenericResponse,
   Success,
+  UnauthorizedError,
   UnexpectedError,
   ValidationError
 } from './responses'
 
-function sendVerificationEmail (
-  email: string
-): Promise<Success | UnexpectedError | ValidationError<'email', undefined>> {
-  return getResponseData(urls.sendVerificationEmail, { email })
+type SendVerificationEmailRequest = { email: string }
+type SendVerificationEmailResponse = Success | UnexpectedError | ValidationError<'email', undefined>
+function sendVerificationEmail (email: string) {
+  return getResponseData<
+    SendVerificationEmailRequest,
+    SendVerificationEmailResponse
+  >(urls.sendVerificationEmail, { email })
 }
 
-type RegisterParams = {
+type RegisterRequest = {
   user_name: string;
   first_name: string;
   last_name: string;
 }
-
-async function register (
-  params: RegisterParams
-): Promise<
-  | GenericResponse
+type RegisterResponse = Success & { token: string }
+  | UnexpectedError
+  | UnauthorizedError
   | ValidationError<'user_name', undefined>
   | ValidationError<'user_name', 'already-taken'>
   | ValidationError<'first_name', undefined>
   | ValidationError<'last_name', undefined>
-> {
-  const data = await getResponseData(urls.register, {
-    user_name: params.user_name,
-    first_name: params.first_name,
-    last_name: params.last_name
-  })
-  if (data.token) {
+async function register (params: RegisterRequest) {
+  const data = await getResponseData<RegisterRequest, RegisterResponse>(
+    urls.register,
+    {
+      user_name: params.user_name,
+      first_name: params.first_name,
+      last_name: params.last_name
+    }
+  )
+  if (data.result === 'success') {
     setToken(data.token)
   }
   return data
@@ -49,7 +53,7 @@ export { setToken, signOut }
 /* login / preRegister  */
 export { sendVerificationEmail }
 /* Register */
-export { RegisterParams, register }
+export { RegisterResponse, register }
 /* Password Auth */
 export * from './passwordAuthService'
 /* SMS Auth */
