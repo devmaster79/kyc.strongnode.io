@@ -19,6 +19,7 @@ interface TableSectionProps<Item extends Record<string, unknown>> {
   comingSoon?: string
   title: string
   subtitle: string
+  hideHeading: boolean
   dataSet: DataSet<Item>
   columns: Column[]
   hideHeading: boolean
