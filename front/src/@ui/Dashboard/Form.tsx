@@ -1,8 +1,9 @@
 import styled from '@emotion/styled'
 import InputField, { FloatingLabelWrapper, StyledInputField, FloatingLabel } from '@ui/Input/InputField'
 import GenericButton from '@ui/Button/Button'
+import { withAttrs } from '@ui/utils/withAttrs'
 
-export const Input = styled(InputField)`
+export const Input = withAttrs(styled(InputField)`
   background: rgba(255, 255, 255, 0.08);
 
   ${props => props.error
@@ -13,15 +14,25 @@ export const Input = styled(InputField)`
     : 'background: rgba(255, 255, 255, 0.08);'}
 
   ${FloatingLabelWrapper} {
-    font-size: 17px;
+    font-size: 14px;
   }
   ${StyledInputField} {
     height: 56px;
   }
   ${FloatingLabel} {
-    padding-top: 7px;
+    background: none;
+    padding-top: 9px;
+    top: 7px;
   }
-`
+`, {
+  floatingLabelWrapperProps: {
+    onFocusStyle: {
+      transform: 'translateY(-17px)',
+      background: '#232361'
+    }
+  }
+})
+
 export const Button = styled(GenericButton)`
   margin: 0 20%;
   height: 56px;
