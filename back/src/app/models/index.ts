@@ -3,6 +3,7 @@ import * as HistoryModel from './history.model';
 import * as InvestorDetailModel from './investordetails.model';
 import * as NewsModel from './news.model';
 import * as SupportRequestModel from './supportrequest.model';
+import * as StrongnodeCoinDataModel from './strongnodecoindata.model';
 import * as Sequelize from 'sequelize';
 
 const dbConfig = require('../config/db.config.js');
@@ -40,6 +41,7 @@ HistoryModel.create(sequelize);
 InvestorDetailModel.create(sequelize);
 NewsModel.create(sequelize);
 SupportRequestModel.create(sequelize);
+StrongnodeCoinDataModel.create(sequelize);
 
 export { Sequelize };
 export const History = HistoryModel.History;
@@ -47,6 +49,7 @@ export const News = NewsModel.News;
 export const User = UserModel.User;
 export const InvestorDetail = InvestorDetailModel.InvestorDetail;
 export const SupportRequest = SupportRequestModel.SupportRequest;
+export const StrongnodeCoinData = StrongnodeCoinDataModel.StrongnodeCoinData;
 
 /** @deprecated */
 export const history = HistoryModel.History;
