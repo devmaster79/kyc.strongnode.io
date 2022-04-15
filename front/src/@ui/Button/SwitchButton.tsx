@@ -51,7 +51,7 @@ const StyledInput = styled.input`
       background: #AA1FEC;
     }
     &:checked + .switch::before {
-        left: 27px;
+        left: 24px;
         background: #fff;
     }
 
@@ -61,7 +61,7 @@ const StyledButton = styled.label`
   display: inline-block;
   position: relative;
   width: 50px;
-  height: 25px;
+  height: 24px;
   border-radius: 20px;
   background:  ${props => props.theme.palette.background.switch};
   vertical-align: middle;
@@ -71,12 +71,12 @@ const StyledButton = styled.label`
   &::before {
     content: '';
     position: absolute;
-    top: 1px;
+    top: 2px;
     left: 2px;
-    width: 22px;
-    height: 22px;
+    width: 24px;
+    height: 20px;
     background: #fafafa;
-    border-radius: 50%;
+    border-radius: 10px;
     transition: left 0.20s cubic-bezier(0.4, 0, 0.2, 1);
   }
 `
