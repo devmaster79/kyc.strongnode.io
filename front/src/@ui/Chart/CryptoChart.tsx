@@ -27,8 +27,7 @@ type CryptoChartProps = {
 }
 
 export const CryptoChart = (props: CryptoChartProps) => {
-  const [chartScopeDays, setChartScopeDays] = useState(7)
-  const [chartScopeFormat, setChartScopeFormat] = useState('weeks')
+  const [chartScopeFormat, setChartScopeFormat] = useState('days')
   const [chartDataTemp, setChartDataTemp] = useState([])
   const [cryptoCurrency, setCryptoCurrency] = useState('SNE')
   const [targetCurrency, setTargetCurrency] = useState('USD')
@@ -36,30 +35,25 @@ export const CryptoChart = (props: CryptoChartProps) => {
   const [valueTrendIndicator, setValueTrendIndicator] = useState({ up: false, value: '20%' })
 
   const onScopeChange = (scope: number, scopeFormat: string) => {
-    setChartScopeDays(scope)
     setChartScopeFormat(scopeFormat)
   }
 
   const chartSelectors = [
     {
       title: 'days',
-      handler: onScopeChange,
-      scope: 7
+      handler: onScopeChange
     },
     {
       title: 'weeks',
-      handler: onScopeChange,
-      scope: 30
+      handler: onScopeChange
     },
     {
       title: 'months',
-      handler: onScopeChange,
-      scope: 365
+      handler: onScopeChange
     },
     {
       title: 'years',
-      handler: onScopeChange,
-      scope: 1095
+      handler: onScopeChange
     }
   ]
 
@@ -69,13 +63,13 @@ export const CryptoChart = (props: CryptoChartProps) => {
 
     const refreshDataInterval = setInterval(() => {
       loadStrongnodeCurrency()
-    }, 5000)
+    }, 10000)
 
     return () => clearInterval(refreshDataInterval)
-  }, [chartScopeDays])
+  }, [chartScopeFormat])
 
   const loadStrongnodeCurrency = async () => {
-    const data: any = await cryptoDataService.getChartDataAsync(chartScopeDays)
+    const data: any = await cryptoDataService.getChartDataAsync(chartScopeFormat)
     const tempData: any = []
 
     data.data.prices.forEach((price: Array<string>) => {

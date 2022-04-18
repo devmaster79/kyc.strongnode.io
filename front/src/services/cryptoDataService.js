@@ -1,17 +1,13 @@
-import axios from 'axios';
+import axios from 'axios'
 
-const baseUrl = 'https://api.coingecko.com/api/v3/';
-const marketChart = 'coins/{ID}/market_chart';
+import { getCryptoChartData, getTokenMetrics } from '../utils/config'
 
 export default {
-  async getChartDataAsync(days = 7, vsCurrency = 'usd', cryptoId = 'strongnode') {
-    const url =
-      baseUrl +
-      marketChart.replace('{ID}', cryptoId) +
-      '?days=' +
-      days +
-      '&vs_currency=' +
-      vsCurrency;
-    return await axios.get(url);
+  async getChartDataAsync (scope = 'days') {
+    const url = getCryptoChartData + '?scope=' + scope
+    return await axios.get(url)
+  },
+  async getTokenMetrics () {
+    return await axios.get(getTokenMetrics)
   }
-};
+}

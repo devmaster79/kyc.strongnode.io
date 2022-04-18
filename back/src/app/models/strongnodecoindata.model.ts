@@ -3,6 +3,7 @@ import { Model, DataTypes, Sequelize } from "sequelize";
 export class StrongnodeCoinData extends Model {
   public id!: number
   public scope!: string
+  public token!: string
   public data!: string
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;

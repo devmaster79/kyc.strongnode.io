@@ -5,9 +5,13 @@ const auth = require("../middleware/auth");
 module.exports = (app) => {
   const router = require("express").Router();
 
-  // Create a new History
-  router.get("/", cryptocurrency.getTokenData);
-  router.get("/chart", auth(MODE_FULL), cryptocurrency.getTokenData)
+  router.get("/", cryptocurrency.refreshTokenDataList);
+
+  // routes for refreshing token data
+  router.get("/refresh-strongnode-token", cryptocurrency.refreshStrongnodeTokenData);
+  router.get("/refresh-tokens", cryptocurrency.refreshTokenDataList);
+  router.get("/chart", auth(MODE_FULL), cryptocurrency.getTokenChartData)
+  router.get("/token-metrics", cryptocurrency.getTokensMetrics)
 
   app.use("/api/cryptocurrency", router);
 };

@@ -2,7 +2,7 @@
  * Token ids for metrics table.
  * @type {string[]}
  */
-const tokensMetricsListIDs = ['strongnode', 'bitcoin', 'ether', 'matic']
+const tokensMetricsListIDs = ['strongnode', 'bitcoin', 'ethereum', 'matic-network']
 
 /**
  * Scopes for Charts.
@@ -35,15 +35,43 @@ class CryptocurrencyDataService {
 
   async getTokenChartData (days = 7, vsCurrency = 'usd', tokenId = 'strongnode') {
     const result = await this.__coingeckoClient.coins.fetchMarketChart(tokenId, {vs_currency: vsCurrency, days: days.toString()})
+
     if (result)
       return result.data
-
     else
       return 'error' // todo error
   }
 
+  /**
+   * Method for getting token price.
+   * @param tokens
+   * @param vsCurrency
+   * @returns {Promise<void>}
+   */
   async getTokenPrice (tokens = 'strongnode', vsCurrency = 'usd') {
-    // todo
+    const result = await this.__coingeckoClient.simple.price({
+      ids: tokens,
+      vs_currencies: vsCurrency,
+      include_24hr_vol: true,
+      include_last_updated_at: true,
+      include_24hr_change: true,
+      include_market_cap: true
+    })
+
+    if (result)
+      return result.data
+    else
+      return 'error' // todo error
+  }
+
+  /**
+   * Method that returns token details.
+   * @param tokenId
+   * @returns {Promise<{code: number, data: (Object|*), message: string, success: boolean}>}
+   */
+  async getTokenDetails (tokenId) {
+    const result = await this.__coingeckoClient.coins.fetch(tokenId);
+    return result
   }
 }
 

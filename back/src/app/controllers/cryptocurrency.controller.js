@@ -3,6 +3,7 @@ const { CryptocurrencyDataService, availableScopes, scopeDays, tokensMetricsList
 const coingecko = require('coingecko-api')
 
 const coinChartData = require('../models').StrongnodeCoinData;
+const coinMetricsData = require('../models').CoinMetricsData;
 
 const cryptocurrencyDataService = new CryptocurrencyDataService(coingecko)
 
@@ -47,7 +48,44 @@ exports.refreshStrongnodeTokenData = async (req, res) => {
  * @returns {Promise<void>}
  */
 exports.refreshTokenDataList = async (req, res) => {
-  const data = await
+  const data = await cryptocurrencyDataService.getTokenPrice(tokensMetricsListIDs)
+
+  console.log(data)
+
+  // save or update each of this token data
+  if (data) {
+    for (const el of Object.keys(data)) {
+      console.log('looping, current index: ' + el)
+
+      const tokenUpdate = await coinMetricsData.update({
+        usd_value: Number(data[el].usd).toFixed(30),
+        market_cap: Number(data[el].usd_market_cap).toFixed(30),
+        day_volume: Number(data[el].usd_24h_vol).toFixed(30),
+        day_change: Number(data[el].usd_24h_change).toFixed(30)
+      }, {where: {token: el}})
+
+      if (!tokenUpdate[0]) {
+        const tokenDetails = await cryptocurrencyDataService.getTokenDetails(el)
+        console.log('creating a new rows!')
+        console.log(tokenDetails)
+        console.log(tokenDetails.image)
+
+        // todo if it does not have a row, fetch the images.
+        await coinMetricsData.create({
+          token: el,
+          usd_value: Number(data[el].usd).toFixed(30),
+          market_cap: Number(data[el].usd_market_cap).toFixed(30),
+          day_volume: Number(data[el].usd_24h_vol).toFixed(30),
+          day_change: Number(data[el].usd_24h_change).toFixed(30),
+          image: tokenDetails.data.image
+        })
+      }
+    }
+  }
+
+  return res.send({
+    message: 'Successfully updated.'
+  })
 }
 
 /**
@@ -56,7 +94,7 @@ exports.refreshTokenDataList = async (req, res) => {
  * @param res
  * @returns {Promise<void>}
  */
-exports.getTokenData = async (req, res) => {
+exports.getTokenChartData = async (req, res) => {
   let token = 'strongnode'
 
   if (!req.query.scope)
@@ -71,4 +109,13 @@ exports.getTokenData = async (req, res) => {
     return res.send(tokenData.data)
   else
     return res.send({status: 'error', message: 'Token data were not found.'})
+}
+
+/**
+ *  Method that returns all of the token metrics data.
+ */
+exports.getTokensMetrics = async (req, res) => {
+  // todo add query option to get only one token
+  const tokenMetrics = await coinMetricsData.findAll()
+  return res.send(tokenMetrics)
 }
