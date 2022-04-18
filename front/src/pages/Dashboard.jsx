@@ -78,7 +78,7 @@ export default function Dashboard () {
 
   return (
     <Container ref={dash} maxWidth='xl' style={{ paddingBottom: 100 }}>
-      <Banner title='StrongNode dVPN coming soon.' description='Stay tuned for more information.' />
+      <Banner title='StrongNode dVPN coming soon.' description='Stay tuned for more information.' soon />
       <h1 style={{ marginTop: '56px' }}>DeFi Dashboard</h1>
       <CryptoChart wrapperStyles={{ marginTop: '16px' }} />
 
