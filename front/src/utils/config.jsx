@@ -18,5 +18,5 @@ export const disableAuthenticatorAuth = '/api/auth/disableAuthenticatorAuth'
 export const getNews = '/api/news'
 
 // CRYPTO
-export const getCryptoChartData = `${base_url}/cryptocurrency/chart/`
-export const getTokenMetrics = `${base_url}/cryptocurrency/token-metrics/`
+export const getCryptoChartData = '/api/cryptocurrency/chart/'
+export const getTokenMetrics = '/api//cryptocurrency/token-metrics/'
