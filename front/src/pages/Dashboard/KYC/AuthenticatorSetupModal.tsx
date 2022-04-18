@@ -66,8 +66,8 @@ export function AuthenticatorSetupModal ({
       onClose={onClose}
       footer={(
         <>
-          <Button type='button' variant='huge' invert onClick={onClose}>Cancel</Button>
-          <Button type='button' variant='huge' onClick={enableAuthenticatorAuth}>Confirm</Button>
+          <Button type='button' variant='medium' color='invert' onClick={onClose}>Cancel</Button>
+          <Button type='button' variant='medium' onClick={enableAuthenticatorAuth}>Confirm</Button>
         </>
       )}
     >

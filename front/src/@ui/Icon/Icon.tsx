@@ -13,6 +13,7 @@ export type IconProps = {
 
 function Icon (props: IconProps) {
   const theme = useTheme()
+  const CurrentIcon = Icons[props.name]
 
   return (
     <SvgIcon
@@ -22,7 +23,7 @@ function Icon (props: IconProps) {
       color={props.color || theme.palette.text.secondary}
       style={props.style}
     >
-      {Icons[props.name]}
+      {CurrentIcon}
     </SvgIcon>
   )
 }
@@ -40,6 +41,7 @@ export function SvgIcon (props: SVGProps<SVGSVGElement>) {
       xmlns={props.xmlns || 'http://www.w3.org/2000/svg'}
       xmlnsXlink={props.xmlnsXlink || 'http://www.w3.org/1999/xlink'}
       fill={props.fill || 'none'}
+      style={{overflow: 'initial'}}
     />
   )
 }
