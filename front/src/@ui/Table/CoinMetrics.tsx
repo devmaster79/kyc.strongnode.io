@@ -97,13 +97,17 @@ export const CoinMetrics = (props: CoinMetricsProps) => {
 
   useEffect(() => {
     loadTokenMetrics()
-    console.log('coin metrics loaded')
+
+    const refreshDataInterval = setInterval(() => {
+      loadTokenMetrics()
+    }, 10000)
+
+    return () => clearInterval(refreshDataInterval)
   }, [])
 
   const loadTokenMetrics = async () => {
     const data: any = await cryptoDataService.getTokenMetrics()
     setTableData(formatTableData(data.data))
-    console.log(formatTableData(data.data))
   }
 
   const formatTableData = (data: any) => {
