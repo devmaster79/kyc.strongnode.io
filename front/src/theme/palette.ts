@@ -131,12 +131,14 @@ const palette = {
     text: {
       primary: NIGHTBLUE[90],
       secondary: NIGHTBLUE[60],
-      disabled: GREY[600]
+      disabled: GREY[600],
+      dark: NIGHTBLUE[90]
     },
     background: {
       primary: WHITE[100],
       secondary: NEW_GREY[30],
       light: WHITE[40],
+      white: WHITE[100],
       label: '#FAFAFE',
       switch: NIGHTBLUE[10],
       default: NEW_GREY[60],
@@ -159,12 +161,14 @@ const palette = {
     text: {
       primary: WHITE[100],
       secondary: WHITE[60],
-      disabled: GREY[600]
+      disabled: GREY[600],
+      dark: NIGHTBLUE[90]
     },
     background: {
       primary: NIGHTBLUE[90],
       secondary: NIGHTBLUE[100],
       light: WHITE[8],
+      white: WHITE[100],
       label: '#262652',
       switch: WHITE[8],
       default: NIGHTBLUE[80],

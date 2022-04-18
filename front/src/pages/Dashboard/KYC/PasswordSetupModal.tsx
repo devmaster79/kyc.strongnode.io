@@ -38,8 +38,8 @@ export function PasswordSetupModal ({ onSuccess, onClose, anim }: PasswordSetupM
       onClose={onClose}
       footer={(
         <>
-          <Button type='button' variant='huge' invert onClick={onClose}>Cancel</Button>
-          <Button type='button' variant='huge' onClick={enablePasswordAuth}>Set Password</Button>
+          <Button type='button' variant='medium' color='invert' onClick={onClose}>Cancel</Button>
+          <Button type='button' variant='medium' onClick={enablePasswordAuth}>Set Password</Button>
         </>
       )}
     >

@@ -14,12 +14,14 @@ import AddData from './pages/AddData'
 import * as SHARED_ROUTES from 'shared/routes'
 import NFTDashboard from 'pages/Dashboard/NFTDashboard/NFTDashboard'
 import Kyc from 'pages/Dashboard/KYC/KYC'
+import Identity from 'pages/Identity/Identity'
 
 export const ROUTES = {
   DASHBOARD: {
     LAYOUT: '/dashboard',
     NFT: '/dashboard/nft',
     KYC: '/dashboard/kyc',
+    IDENTITY: 'dashboard/identity',
     APP: '/dashboard/app',
     PROFILE: '/dashboard/profile',
     CONTACT_SUPORT: 'contact-support',
@@ -57,6 +59,8 @@ export default function Router () {
             <Route path={ROUTES.DASHBOARD.ADD_DATA} element={<AddData />} />
             <Route path={ROUTES.DASHBOARD.NFT} element={<NFTDashboard />} />
             <Route path={ROUTES.DASHBOARD.KYC} element={<Kyc />} />
+            <Route path={ROUTES.DASHBOARD.IDENTITY} element={<Identity />} />
+
           </Route>
           <Route
             path='*'
