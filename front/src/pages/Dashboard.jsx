@@ -15,74 +15,17 @@ import { CoinMetrics } from '../@ui/Table/CoinMetrics'
 
 const SneAddress = '0x32934CB16DA43fd661116468c1B225Fc26CF9A8c'
 
-const columns = [
-  {
-    id: 'nft',
-    label: 'NFT',
-    align: 'left'
-  },
-  {
-    id: 'price_paid',
-    label: 'Price Paid',
-    align: 'left'
-  },
-  {
-    id: 'floor_price',
-    label: 'Floor Price',
-    align: 'left'
-  },
-  {
-    id: 'volume',
-    label: '24H VOLUME',
-    align: 'left'
-  },
-  {
-    id: 'price',
-    label: '24H PRICE',
-    align: 'left'
-  }
-]
-
-const dataSet = {
-  items: [
-    {
-      nft: 'Scary punk #24',
-      price_paid: '44.124',
-      floor_price: '70',
-      volume: '290.7K',
-      price: '290.7K'
-    },
-    {
-      nft: 'Scary punk #24',
-      price_paid: '44.124',
-      floor_price: '70',
-      volume: '290.7K',
-      price: '290.7K'
-    },
-    {
-      nft: 'Scary punk #24',
-      price_paid: '44.124',
-      floor_price: '70',
-      volume: '290.7K',
-      price: '290.7K'
-    },
-    {
-      nft: 'Scary punk #24',
-      price_paid: '44.124',
-      floor_price: '70',
-      volume: '290.7K',
-      price: '290.7K'
-    }
-  ]
-}
-
 export default function Dashboard () {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
-  const { account } = useEthers()
+  const { account, chainId } = useEthers()
+  console.log('this is the chain')
+  console.log(chainId)
   const navigate = useNavigate()
 
   const balance = useEtherBalance(account)
   const accountBalance = balance ? ethers.utils.formatEther(balance) : 0
+  console.log('this is the ballance')
+  console.log(accountBalance)
   const SneBalanceBigNumber = useTokenBalance(SneAddress, account)
   const SneBalance = SneBalanceBigNumber && ethers.utils.formatUnits(SneBalanceBigNumber, 18)
 
@@ -135,16 +78,16 @@ export default function Dashboard () {
 
   return (
     <Container ref={dash} maxWidth='xl' style={{ paddingBottom: 100 }}>
-      <Banner title='Banner lorem ipsum' description='This is the testing description' />
+      <Banner title='StrongNode dVPN coming soon.' description='Stay tuned for more information.' />
       <h1 style={{ marginTop: '56px' }}>DeFi Dashboard</h1>
       <CryptoChart wrapperStyles={{ marginTop: '16px' }} />
 
       <Grid container spacing={4} sx={{ mt: 1 }}>
         <Grid item xs={6}>
-          <CoinMetrics title='Coin Metrics' columns={columns} dataSet={dataSet} hideHeading />
+          <CoinMetrics title='Coin Metrics' hideHeading />
         </Grid>
         <Grid item xs={6}>
-          <TableSection comingSoon title='Farming Metrics' subtitle='NFT 18' columns={columns} dataSet={dataSet} />
+          <TableSection comingSoon title='Farming Metrics' subtitle='NFT 18' />
         </Grid>
       </Grid>
     </Container>
