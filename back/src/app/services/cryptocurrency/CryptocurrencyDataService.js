@@ -34,12 +34,12 @@ class CryptocurrencyDataService {
   }
 
   async getTokenChartData (days = 7, vsCurrency = 'usd', tokenId = 'strongnode') {
-    const result = await this.__coingeckoClient.coins.fetchMarketChart(tokenId, {vs_currency: vsCurrency, days: days.toString()})
-
-    if (result)
+    try {
+      const result = await this.__coingeckoClient.coins.fetchMarketChart(tokenId, {vs_currency: vsCurrency, days: days.toString()})
       return result.data
-    else
-      return 'error' // todo error
+    } catch (err) {
+      throw err
+    }
   }
 
   /**
@@ -49,19 +49,20 @@ class CryptocurrencyDataService {
    * @returns {Promise<void>}
    */
   async getTokenPrice (tokens = 'strongnode', vsCurrency = 'usd') {
-    const result = await this.__coingeckoClient.simple.price({
-      ids: tokens,
-      vs_currencies: vsCurrency,
-      include_24hr_vol: true,
-      include_last_updated_at: true,
-      include_24hr_change: true,
-      include_market_cap: true
-    })
+    try {
+      const result = await this.__coingeckoClient.simple.price({
+        ids: tokens,
+        vs_currencies: vsCurrency,
+        include_24hr_vol: true,
+        include_last_updated_at: true,
+        include_24hr_change: true,
+        include_market_cap: true
+      })
 
-    if (result)
       return result.data
-    else
-      return 'error' // todo error
+    } catch (err) {
+      throw err
+    }
   }
 
   /**

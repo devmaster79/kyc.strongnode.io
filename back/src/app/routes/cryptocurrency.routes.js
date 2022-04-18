@@ -11,7 +11,7 @@ module.exports = (app) => {
   router.get("/refresh-strongnode-token", cryptocurrency.refreshStrongnodeTokenData);
   router.get("/refresh-tokens", cryptocurrency.refreshTokenDataList);
   router.get("/chart", auth(MODE_FULL), cryptocurrency.getTokenChartData)
-  router.get("/token-metrics", cryptocurrency.getTokensMetrics)
+  router.get("/token-metrics", auth(MODE_FULL), cryptocurrency.getTokensMetrics)
 
   app.use("/api/cryptocurrency", router);
 };
