@@ -9,11 +9,12 @@ export type SidebarButtonProps = {
   icon: IconProps['name'],
   tooltipHint: string,
   active: boolean,
+  disabled?: boolean
   onPress?: unknown,
   url?: string
 }
 
-const SidebarButton = ({ icon, tooltipHint, active, onPress, url }: SidebarButtonProps) => {
+const SidebarButton = ({ icon, tooltipHint, active, onPress, url, disabled }: SidebarButtonProps) => {
   const navigate = useNavigate()
   const theme: CustomTheme = useTheme()
 
@@ -27,7 +28,7 @@ const SidebarButton = ({ icon, tooltipHint, active, onPress, url }: SidebarButto
   }
 
   return (
-    <ButtonWrapper onClick={() => { onClick() }} style={active ? buttonActiveStyle : {}}>
+    <ButtonWrapper onClick={(!disabled) ? () => { onClick() } : undefined} style={active ? buttonActiveStyle : { opacity: disabled ? 0.2 : 1 }}>
       <Tooltip tooltip={tooltipHint}>
         <Svg
           name={icon}
