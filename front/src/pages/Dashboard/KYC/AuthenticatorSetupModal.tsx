@@ -62,7 +62,6 @@ export function AuthenticatorSetupModal ({
     <Modal
       anim={anim}
       title='Setup a new password'
-      icon='kyc'
       onClose={onClose}
       footer={(
         <>
@@ -75,7 +74,6 @@ export function AuthenticatorSetupModal ({
         <DashboardForm.Row>
           {qrCode && <Qr src={qrCode} />}
           <DashboardForm.Input
-            icon='lock'
             inputProps={{
               id: 'totp',
               value: totp,

@@ -6,7 +6,6 @@ import * as DashboardForm from '@ui/Dashboard/Form'
 import { useEffect } from 'react'
 import { AuthenticatorSwitch } from './AuthenticatorSwitch'
 import { SMSSwitch } from './SMSSwitch'
-
 interface FormFields {
   firstName: string,
   lastName: string,
@@ -70,7 +69,7 @@ export default function KYC () {
           <DashboardForm.Input inputProps={{ placeholder: 'Email', ...register('email'), disabled: true }} />
         </DashboardForm.InputGroup>
         <DashboardForm.Hr />
-        <DashboardForm.InputGroup>
+        <DashboardForm.ButtonGroup>
           <Controller
             control={control}
             name='enablePasswordAuth'
@@ -92,8 +91,9 @@ export default function KYC () {
               <SMSSwitch isDirty={fieldState.isDirty} registerProps={field} />
             )}
           />
-        </DashboardForm.InputGroup>
+        </DashboardForm.ButtonGroup>
         <DashboardForm.Button
+          variant='large'
           disabled={!formState.isDirty || formState.isSubmitting}
         >
           Update

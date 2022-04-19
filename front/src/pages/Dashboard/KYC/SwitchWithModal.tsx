@@ -17,7 +17,7 @@ export type SwitchWithModalProps = {
     onChange: (value: boolean) => void;
   },
   isDirty: boolean,
-  helpText: ReactNode,
+  helpText?: ReactNode,
   label: string,
 };
 
