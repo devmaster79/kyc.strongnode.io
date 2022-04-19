@@ -1,5 +1,4 @@
 import axios from 'axios'
-
 import { getCryptoChartData, getTokenMetrics } from '../utils/config'
 
 export default {
