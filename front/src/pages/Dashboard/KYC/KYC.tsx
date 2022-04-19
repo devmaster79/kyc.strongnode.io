@@ -53,7 +53,7 @@ export default function KYC () {
       last_name: data.lastName,
       user_name: data.username,
       enable_password: data.enablePasswordAuth,
-      enable_sms: data.enablePasswordAuth,
+      enable_sms: data.enableSMSAuth,
       enable_authenticator: data.enableAuthenticatorAuth
     })
   }

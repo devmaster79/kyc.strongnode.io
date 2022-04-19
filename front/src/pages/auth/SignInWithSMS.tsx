@@ -9,16 +9,15 @@ import InputField from '@ui/Input/InputField'
 import styled from '@emotion/styled'
 import Button from '@ui/Button/Button'
 
-const LENGTH_OF_SMS_CODE = 4
 interface SignInWithSMSFields {
   smsCode: string
 }
 export function SignInWithSMS () {
+  const navigate = useNavigate()
   const { data: sendState, call: sendSMS } = useService(
     authService.sendSMSToUser
   )
-
-  const { data: sendResult, call: authBySMSCode } = useService(
+  const { data: authState, call: authBySMSCode } = useService(
     authService.authBySMSCode
   )
 
@@ -29,7 +28,10 @@ export function SignInWithSMS () {
   })
 
   const onSubmit: SubmitHandler<SignInWithSMSFields> = async (data: SignInWithSMSFields) => {
-    await authBySMSCode(data.smsCode)
+    const response = await authBySMSCode(data.smsCode)
+    if (response.result === 'success') {
+      navigate('/sign-in-with-token')
+    }
   }
 
   // send sms after the component is loaded
@@ -62,19 +64,19 @@ export function SignInWithSMS () {
           </ErrorMessage>
         )}
       </HelpText>
-      {sendResult.result !== 'waiting' && sendResult.result !== sendState.result &&
+      {authState.result !== 'waiting' && authState.result !== sendState.result &&
         <HelpText>
-          {sendResult.result === 'loading' && (<InfoMessage>'Validating...</InfoMessage>)}
-          {sendResult.result === 'validation-error' && (
+          {authState.result === 'loading' && (<InfoMessage>'Validating...</InfoMessage>)}
+          {authState.result === 'validation-error' && (
             <ErrorMessage>Invalid code please try again.</ErrorMessage>
           )}
-          {sendResult.result === 'banned' && (
+          {authState.result === 'banned' && (
             <ErrorMessage>Too many trials, try again later.</ErrorMessage>
           )}
-          {sendResult.result === 'unauthorized-error' && (
+          {authState.result === 'unauthorized-error' && (
             <ErrorMessage>You do not have access to this feature.</ErrorMessage>
           )}
-          {sendResult.result === 'unexpected-error' && (
+          {authState.result === 'unexpected-error' && (
             <ErrorMessage>
               Some error occurred during the authorization. Please try again
               later.
@@ -121,6 +123,6 @@ const Title = styled.h1`
   }
   color: ${props => props.theme.palette.text.primary};
 `
-const HelpText = styled.p`
+const HelpText = styled.div`
   margin: 32px 0 24px 0;
 `

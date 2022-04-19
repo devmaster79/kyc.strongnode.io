@@ -60,7 +60,9 @@ interface FloatingLabelWrapperProps {
   onFocusStyle?: CSSObject
 }
 
-export const FloatingLabelWrapper = styled.div<FloatingLabelWrapperProps>`
+export const FloatingLabelWrapper = styled('div', {
+  shouldForwardProp: prop => prop !== 'onFocusStyle'
+})<FloatingLabelWrapperProps>`
   position: relative;
   width: 100%;
 

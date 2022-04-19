@@ -6,12 +6,14 @@ import { ErrorMessage, InfoMessage } from '@ui/Dashboard/Form'
 import InputField from '@ui/Input/InputField'
 import styled from '@emotion/styled'
 import Button from '@ui/Button/Button'
+import { useNavigate } from 'react-router-dom'
 
 interface SignInWithAuthenticatorFields {
   totp: string
 }
 
 export function SignInWithAuthenticator () {
+  const navigate = useNavigate()
   const { data: authState, call: authByAuthenticator } = useService(authService.authByAuthenticator)
 
   const { register, handleSubmit } = useForm<SignInWithAuthenticatorFields>({
@@ -21,7 +23,10 @@ export function SignInWithAuthenticator () {
   })
 
   const onSubmit: SubmitHandler<SignInWithAuthenticatorFields> = async (data: SignInWithAuthenticatorFields) => {
-    await authByAuthenticator(data.totp)
+    const response = await authByAuthenticator(data.totp)
+    if (response.result === 'success') {
+      navigate('/sign-in-with-token')
+    }
   }
 
   return (
@@ -86,6 +91,6 @@ const Title = styled.h1`
   }
   color: ${props => props.theme.palette.text.primary};
 `
-const HelpText = styled.p`
+const HelpText = styled.div`
   margin: 32px 0 24px 0;
 `

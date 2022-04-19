@@ -120,6 +120,6 @@ const Title = styled.h1`
   }
   color: ${props => props.theme.palette.text.primary};
 `
-const HelpText = styled.p`
+const HelpText = styled.div`
   margin: 32px 0 24px 0;
 `

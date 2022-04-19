@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import userService from 'services/userService'
+import { getProfile } from 'services/userService'
 import { ErrorMessage } from '@ui/Dashboard/Form'
 import styled from '@emotion/styled'
 
@@ -14,7 +14,7 @@ export function SignInWithToken () {
   useEffect(() => {
     (async function () {
       try {
-        const user = await userService.getProfile()
+        const user = await getProfile()
         if (user.data[0]?.email) {
           localStorage.setItem('email', user.data[0].email)
           localStorage.setItem('username', user.data[0].user_name)
@@ -36,7 +36,7 @@ export function SignInWithToken () {
       {showError &&
         <HelpText>
           <ErrorMessage>
-            We could not send you an SMS. Please try again later.
+            We could not query your profile.
           </ErrorMessage>
         </HelpText>}
     </>
@@ -56,6 +56,6 @@ const Title = styled.h1`
   color: ${props => props.theme.palette.text.primary};
 `
 
-const HelpText = styled.p`
+const HelpText = styled.div`
   margin: 32px 0 24px 0;
 `

@@ -12,6 +12,7 @@ interface SignInWithPasswordFields {
 }
 
 export function SignInWithPassword () {
+  const navigate = useNavigate()
   const { data: sendResult, call: authByPassword } = useService(
     authService.authByPassword
   )
@@ -23,7 +24,10 @@ export function SignInWithPassword () {
   })
 
   const onSubmit: SubmitHandler<SignInWithPasswordFields> = async (data: SignInWithPasswordFields) => {
-    await authByPassword(data.password)
+    const response = await authByPassword(data.password)
+    if (response.result === 'success') {
+      navigate('/sign-in-with-token')
+    }
   }
 
   return (
@@ -91,6 +95,6 @@ const Title = styled.h1`
   }
   color: ${props => props.theme.palette.text.primary};
 `
-const HelpText = styled.p`
+const HelpText = styled.div`
   margin: 32px 0 24px 0;
 `
