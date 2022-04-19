@@ -6,6 +6,7 @@ import * as DashboardForm from '@ui/Dashboard/Form'
 import { useEffect } from 'react'
 import { AuthenticatorSwitch } from './AuthenticatorSwitch'
 import { SMSSwitch } from './SMSSwitch'
+import { WalletCarousel } from './WalletCarousel'
 
 interface FormFields {
   firstName: string,
@@ -62,43 +63,46 @@ export default function KYC () {
   return (
     <Container>
       <h1>StrongNode ID and KYC</h1>
-      <DashboardForm.Form onSubmit={handleSubmit(onSubmit)} autoComplete='off'>
-        <DashboardForm.InputGroup>
-          <DashboardForm.Input inputProps={{ placeholder: 'First name', ...register('firstName') }} />
-          <DashboardForm.Input inputProps={{ placeholder: 'Last name', ...register('lastName') }} />
-          <DashboardForm.Input inputProps={{ placeholder: 'Username', ...register('username') }} />
-          <DashboardForm.Input inputProps={{ placeholder: 'Email', ...register('email'), disabled: true }} />
-        </DashboardForm.InputGroup>
-        <DashboardForm.Hr />
-        <DashboardForm.InputGroup>
-          <Controller
-            control={control}
-            name='enablePasswordAuth'
-            render={({ field, fieldState }) => (
-              <PasswordSwitch isDirty={fieldState.isDirty} registerProps={field} />
-            )}
-          />
-          <Controller
-            control={control}
-            name='enableAuthenticatorAuth'
-            render={({ field, fieldState }) => (
-              <AuthenticatorSwitch isDirty={fieldState.isDirty} registerProps={field} />
-            )}
-          />
-          <Controller
-            control={control}
-            name='enableSMSAuth'
-            render={({ field, fieldState }) => (
-              <SMSSwitch isDirty={fieldState.isDirty} registerProps={field} />
-            )}
-          />
-        </DashboardForm.InputGroup>
-        <DashboardForm.Button
-          disabled={!formState.isDirty || formState.isSubmitting}
-        >
-          Update
-        </DashboardForm.Button>
-      </DashboardForm.Form>
+      <FormContainer>
+        <DashboardForm.Form onSubmit={handleSubmit(onSubmit)} autoComplete='off'>
+          <DashboardForm.InputGroup>
+            <DashboardForm.Input inputProps={{ placeholder: 'First name', ...register('firstName') }} />
+            <DashboardForm.Input inputProps={{ placeholder: 'Last name', ...register('lastName') }} />
+            <DashboardForm.Input inputProps={{ placeholder: 'Username', ...register('username') }} />
+            <DashboardForm.Input inputProps={{ placeholder: 'Email', ...register('email'), disabled: true }} />
+          </DashboardForm.InputGroup>
+          <DashboardForm.Hr />
+          <DashboardForm.InputGroup>
+            <Controller
+              control={control}
+              name='enablePasswordAuth'
+              render={({ field, fieldState }) => (
+                <PasswordSwitch isDirty={fieldState.isDirty} registerProps={field} />
+              )}
+            />
+            <Controller
+              control={control}
+              name='enableAuthenticatorAuth'
+              render={({ field, fieldState }) => (
+                <AuthenticatorSwitch isDirty={fieldState.isDirty} registerProps={field} />
+              )}
+            />
+            <Controller
+              control={control}
+              name='enableSMSAuth'
+              render={({ field, fieldState }) => (
+                <SMSSwitch isDirty={fieldState.isDirty} registerProps={field} />
+              )}
+            />
+          </DashboardForm.InputGroup>
+          <DashboardForm.Button
+            disabled={!formState.isDirty || formState.isSubmitting}
+          >
+            Update
+          </DashboardForm.Button>
+        </DashboardForm.Form>
+      </FormContainer>
+      <WalletCarousel />
     </Container>
   )
 }
@@ -111,7 +115,18 @@ export const Container = styled.div`
   justify-content: center;
   align-items: center;
   padding-top: 95px;
+  padding-bottom: 70px;
   gap: 32px;
-  width: 50%;
+  width: 80%;
+  margin:auto;
+`
+
+export const FormContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 32px;
+  width: 65%;
   margin:auto;
 `
