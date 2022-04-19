@@ -143,7 +143,8 @@ const palette = {
       switch: NIGHTBLUE[10],
       default: NEW_GREY[60],
       paper: GREY[800],
-      neutral: GREY['500_16']
+      neutral: GREY['500_16'],
+      gradient: 'linear-gradient(180deg, #FAFAFF 0%, #F3F3FC 100%);'
     },
     border: {
       light: NEW_GREY[60]
@@ -173,7 +174,8 @@ const palette = {
       switch: WHITE[8],
       default: NIGHTBLUE[80],
       paper: GREY[800],
-      neutral: GREY['500_16']
+      neutral: GREY['500_16'],
+      gradient: 'linear-gradient(111.76deg, #14133E 0%, #0B0B77 104.05%)'
     },
     border: {
       light: WHITE[12]

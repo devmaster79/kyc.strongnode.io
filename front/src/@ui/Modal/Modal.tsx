@@ -5,23 +5,24 @@ import { ReactNode } from 'react'
 
 export type ModalProps = {
   children: ReactNode,
-  icon: IconProps['name'],
+  icon?: IconProps['name'],
   iconProps?: IconProps,
   title?: string,
   onClose: () => void,
-  footer: ReactNode
-  anim: IAnim
+  footer: ReactNode,
+  anim: IAnim,
+  scrollable: boolean
 }
 
 export default function Modal (props: ModalProps) {
   return (
     <ModalWrapper anim={props.anim}>
-      <StyledModal>
+      <StyledModal scrollable={props.scrollable}>
         <IconWrapper onClick={props.onClose}>
           <Icon name='close' width={18} height={18} viewBox='0 0 18 18' style={{ cursor: 'pointer' }} />
         </IconWrapper>
-        <Icon {...props.iconProps} name={props.icon} />
-        { props.title && <h1>{props.title}</h1>}
+        {props.icon && <Icon {...props.iconProps} name={props.icon} />}
+        {props.title && <h1>{props.title}</h1>}
         {props.children}
         <Footer>
           {props.footer}
@@ -36,11 +37,16 @@ Modal.defaultProps = {
     height: 64,
     width: 64,
     viewBox: '0 0 64 64'
-  }
+  },
+  scrollable: false
 }
 
 interface ModalWrapperProps {
-  anim: IAnim
+  anim: IAnim,
+}
+
+interface StyledModalProps {
+  scrollable: boolean
 }
 
 const ModalWrapper = styled.div<ModalWrapperProps>`
@@ -64,9 +70,9 @@ const IconWrapper = styled.div`
       display: flex;
       justify-content: end;
 `
-const StyledModal = styled.div`
+const StyledModal = styled.div<StyledModalProps>`
       min-width: 642px;
-      height: 100%;
+      height:  ${({ scrollable }) => scrollable ? '100%' : 'unset'};
       overflow: auto;
       background: ${props => props.theme.palette.background.secondary};
       border: 1px solid ${props => props.theme.palette.border.light};

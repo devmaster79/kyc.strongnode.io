@@ -14,8 +14,7 @@ export const PasswordSwitch = ({ registerProps, isDirty }: PasswordSwitchProps) 
       TurnOnModal={PasswordSetupModal}
       TurnOffModal={TurnOffWarning}
       registerProps={registerProps}
-      helpText='Set an additional password authentication step'
-      label='Use password'
+      label='Password'
     />
   )
 }

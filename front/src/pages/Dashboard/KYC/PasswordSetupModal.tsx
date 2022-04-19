@@ -34,7 +34,6 @@ export function PasswordSetupModal ({ onSuccess, onClose, anim }: PasswordSetupM
     <Modal
       anim={anim}
       title='Setup a new password'
-      icon='kyc'
       onClose={onClose}
       footer={(
         <>
@@ -45,7 +44,6 @@ export function PasswordSetupModal ({ onSuccess, onClose, anim }: PasswordSetupM
     >
       <ModalForm>
         <DashboardForm.Input
-          icon='lock'
           inputProps={{
             autoComplete: 'false',
             type: 'password',
@@ -55,7 +53,6 @@ export function PasswordSetupModal ({ onSuccess, onClose, anim }: PasswordSetupM
           }}
         />
         <DashboardForm.Input
-          icon='lock'
           inputProps={{
             autoComplete: 'false',
             type: 'password',

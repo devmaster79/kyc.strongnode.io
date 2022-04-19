@@ -14,8 +14,7 @@ export const SMSSwitch = ({ registerProps, isDirty }: SMSSwitchProps) => {
       TurnOnModal={SMSSetupModal}
       TurnOffModal={TurnOffWarning}
       registerProps={registerProps}
-      helpText='Set an additional SMS authentication step'
-      label='Use SMS'
+      label='SMS'
     />
   )
 }

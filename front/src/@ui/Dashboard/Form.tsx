@@ -42,13 +42,23 @@ export const Form = styled.form`
   width: 100%;
   display: flex;
   flex-flow: column;
-  gap: 32px;
+  align-items: center;
+  justify-content: center;
 `
 
 export const InputGroup = styled.div`
   display: flex;
   flex-flow: column;
   gap: 16px;
+  width: 530px;
+`
+export const ButtonGroup = styled.div`
+  display: flex;
+  flex-flow: row;
+  gap: 32px;
+  width: 530px;
+  padding-top: 24px;
+  padding-bottom: 40px;
 `
 
 export const Hr = styled.hr`

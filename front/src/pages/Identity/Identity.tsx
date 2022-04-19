@@ -49,6 +49,7 @@ export default function Identity () {
             <Button type='button' variant='large'>Continue</Button>
           </>
         }
+        scrollable
       >
         <IdentityUpload
           icon='passportFront' description='Take picture of your national ID.
@@ -67,6 +68,7 @@ export default function Identity () {
             <Button type='button' variant='large'>Continue</Button>
           </>
         }
+        scrollable
       >
         <IdentityUpload icon='nationalIdFront' description='Take picture of your national ID. Avoid glare and make sure all 4 corners are visible. Take a picture of both sides.' onSelectFile={() => { /* TODO */ }} />
         <Separator />
@@ -82,6 +84,7 @@ export default function Identity () {
             <Button type='button' variant='large'>Continue</Button>
           </>
         }
+        scrollable
       >
         <IdentityUpload icon='drivingLicenseFront' description='Take picture of your Driving license. Avoid glare and make sure all 4 corners are visible. Take a picture of both sides.' onSelectFile={() => { /* TODO */ }} />
         <Separator />
