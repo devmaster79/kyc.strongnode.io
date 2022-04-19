@@ -3,7 +3,7 @@ const { EmailAuthService } = require('../services/auth/EmailAuthService');
 const { PasswordAuthService } = require('../services/auth/PasswordAuthService');
 const { SMSAuthService } = require('../services/auth/SMSAuthService');
 const { AuthenticatorAuthService } = require('../services/auth/AuthenticatorAuthService');
-const { RegistrationService, UserNameIsAlreadyTakenError } = require('../services/auth/RegistrationService');
+const { RegistrationService, UserNameIsAlreadyTakenError, LimitReachedError } = require('../services/auth/RegistrationService');
 const { GravatarService } = require('../services/GravatarService');
 const { EmailService } = require('../services/communication/EmailService');
 const { SmsService } = require('../services/communication/SmsService');
@@ -55,6 +55,8 @@ const withResponse = (controller) => async (req, res) => {
             });
         } else if(e instanceof UnauthorizedError) {
             res.status(401).send({ result: 'unauthorized-error' });
+        } else if(e instanceof LimitReachedError) {
+            res.status(400).send({ result: 'limit-reached-error' });
         } else {
             res.status(500).send({ result: "unexpected-error" });
             console.error(e);

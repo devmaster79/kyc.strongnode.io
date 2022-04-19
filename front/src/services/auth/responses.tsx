@@ -11,6 +11,9 @@ export type BannedError = {
   result: 'banned';
   remainingTimeMs: number;
 };
+export type LimitReachedError = {
+  result: 'limit-reached-error';
+};
 export type ValidationError<Field, Reason> = {
   result: 'validation-error';
   field: Field;

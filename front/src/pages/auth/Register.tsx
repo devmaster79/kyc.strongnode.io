@@ -93,6 +93,12 @@ export function Register () {
               />
               <RegisterMessage>
                 {registerState.result === 'loading' && 'Loading...'}
+                {registerState.result === 'limit-reached-error' && (
+                  <Error>
+                    Sorry, but the maximum number of users limit is reached.
+                    We cannot allow new registrations.
+                  </Error>
+                )}
                 {registerState.result === 'unauthorized-error' && (
                   <Error>You do not have access to this feature.</Error>
                 )}
