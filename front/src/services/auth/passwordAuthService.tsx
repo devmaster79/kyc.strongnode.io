@@ -1,27 +1,41 @@
 import { getResponseData, setToken } from './utils'
 import * as urls from '../../utils/config'
-import { BannedError, GenericResponse, ValidationError } from './responses'
+import { BannedError, GenericResponse, Success, UnauthorizedError, UnexpectedError, ValidationError } from './responses'
 
-export async function enablePasswordAuth (
-  password: string
-): Promise<GenericResponse | ValidationError<'password', undefined>> {
-  return await getResponseData(urls.enablePasswordAuth, { password })
+type EnablePasswordAuthRequest = { password: string }
+type EnablePasswordAuthResponse = GenericResponse | ValidationError<'password', undefined>
+
+export async function enablePasswordAuth (password: string) {
+  return await getResponseData<
+    EnablePasswordAuthRequest,
+    EnablePasswordAuthResponse
+  >(urls.enablePasswordAuth, { password })
 }
 
-export async function disablePasswordAuth (): Promise<GenericResponse> {
-  return await getResponseData(urls.disablePasswordAuth)
+type DisablePasswordAuthRequest = Record<never, never>
+type DisablePasswordAuthResponse = GenericResponse
+
+export async function disablePasswordAuth () {
+  return await getResponseData<
+    DisablePasswordAuthRequest,
+    DisablePasswordAuthResponse
+  >(urls.disablePasswordAuth)
 }
 
-/** Verify password and set token */
-export async function authByPassword (
-  password: string
-): Promise<
-  | GenericResponse
+type AuthByPasswordRequest = { password: string }
+type AuthByPasswordResponse = Success & { token: string }
+  | UnexpectedError
+  | UnauthorizedError
   | BannedError
   | ValidationError<'password', undefined | 'wrong'>
-> {
-  const data = await getResponseData(urls.authByPassword, { password })
-  if (data.token) {
+
+/** Verify password and set token */
+export async function authByPassword (password: string) {
+  const data = await getResponseData<
+    AuthByPasswordRequest,
+    AuthByPasswordResponse
+  >(urls.authByPassword, { password })
+  if (data.result === 'success') {
     setToken(data.token)
   }
   return data

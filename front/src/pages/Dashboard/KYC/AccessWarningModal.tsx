@@ -19,8 +19,8 @@ export function AccessWarningModal ({ title, icon, onClose, onSuccess, anim }: A
       onClose={onClose}
       footer={
         <>
-          <Button type='button' variant='huge' invert onClick={onClose}>Cancel</Button>
-          <Button type='button' variant='huge' onClick={onSuccess}>Approve</Button>
+          <Button type='button' variant='medium' color='invert' onClick={onClose}>Cancel</Button>
+          <Button type='button' variant='medium' onClick={onSuccess}>Approve</Button>
         </>
       }
     >

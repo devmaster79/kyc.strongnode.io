@@ -1,86 +1,89 @@
-import { Form, Formik, FormikHelpers } from 'formik'
-import { EntryPage } from '../style'
-import Button from '../../components/Button'
-import EntryCard from '../../components/EntryCard'
-import ValidatedField from '../../components/ValidatedField'
-import { verifyEmailSchema } from '../../static/formSchemas'
 import * as authState from '../../services/auth'
-import styled from 'styled-components'
+import styled from '@emotion/styled'
 import { useService } from '../../hooks/useService'
-import { Input } from '@mui/material'
+import InputField from '@ui/Input/InputField'
+import Button from '@ui/Button/Button'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import { ErrorMessage, InfoMessage } from '@ui/Dashboard/Form'
+
+interface VerifyEmailFields {
+  email: string
+}
 
 export function VerifyEmail () {
+  const { register, handleSubmit } = useForm<VerifyEmailFields>({
+    defaultValues: {
+      email: ''
+    }
+  })
   const { data: sendResult, call: sendVerificationEmail } = useService(
     authState.sendVerificationEmail
   )
 
-  const formState = {
-    email: ''
-  }
-
-  const handleFormSubmit = async (
-    data: typeof formState,
-    { setSubmitting }: FormikHelpers<typeof formState>
-  ) => {
-    setSubmitting(true)
+  const onSubmit: SubmitHandler<VerifyEmailFields> = async (data) => {
     await sendVerificationEmail(data.email)
   }
 
   return (
-    <EntryPage>
-      <EntryCard>
-        <h2>Sign in / Register</h2>
-        <h5>We will send a magic link to your email</h5>
-        <Formik
-          initialValues={formState}
-          onSubmit={handleFormSubmit}
-          validationSchema={verifyEmailSchema}
-        >
-          {({ handleBlur, isSubmitting, validateField }) => (
-            <Form style={{ marginTop: 30 }}>
-              <ValidatedField
-                as={Input}
-                name='email'
-                onBlur={handleBlur}
-                placeholder='Email'
-                style={{ padding: '16px 20px 16px 40px', width: '100%' }}
-                type='email'
-                validateField={validateField}
-              />
-              {sendResult.result === 'loading' && (
-                <Info>Sending the email...</Info>
-              )}
-              {sendResult.result === 'success' && (
-                <Info>
-                  We have successfully sent you an email. You can close this tab
-                  now.
-                </Info>
-              )}
-              {sendResult.result === 'validation-error' && (
-                <Error>Wrong email. Please try agian.</Error>
-              )}
-              {sendResult.result === 'unexpected-error' && (
-                <Error>Something went wrong. Please try again later.</Error>
-              )}
-              <Button disabled={isSubmitting} type='submit' full>
-                Confirm
-              </Button>
-            </Form>
-          )}
-        </Formik>
-      </EntryCard>
-    </EntryPage>
+    <>
+      <Title>
+        <b>Strongnode</b><br />
+        Sign in / Register
+      </Title>
+      <HelpText>
+        {sendResult.result === 'waiting' && 'We will send a magic link to your email'}
+        {sendResult.result === 'loading' && (
+          <InfoMessage>Sending the email...</InfoMessage>
+        )}
+        {sendResult.result === 'success' && (
+          <InfoMessage>
+            We have successfully sent you an email. You can close this tab
+            now.
+          </InfoMessage>
+        )}
+        {sendResult.result === 'validation-error' && (
+          <ErrorMessage>Wrong email. Please try agian.</ErrorMessage>
+        )}
+        {sendResult.result === 'unexpected-error' && (
+          <ErrorMessage>Something went wrong. Please try again later.</ErrorMessage>
+        )}
+      </HelpText>
+      <Form onSubmit={handleSubmit(onSubmit)}>
+        <InputField
+          inputProps={{
+            type: 'email',
+            placeholder: 'Email',
+            ...register('email')
+          }}
+        />
+        <Button variant='large'>Confirm</Button>
+      </Form>
+    </>
   )
 }
 
-const Error = styled('p')({
-  textAlign: 'center',
-  marginBottom: '10px',
-  color: '#ff6868'
-})
+const Form = styled.form`
+  padding: 0 112px;
+  width: 100%;
+  margin-bottom: 40px;
+  display: flex;
+  flex-flow: column;
+`
 
-const Info = styled('p')({
-  textAlign: 'center',
-  marginBottom: '10px',
-  color: '#dddddd'
-})
+const Title = styled.h1`
+  font-style: normal;
+  font-weight: 100;
+  font-size: 32px !important;
+  line-height: 43.2px;
+  margin:0 !important;
+  padding:0 !important;
+  b {
+    font-weight: 900;
+  }
+
+  color: ${props => props.theme.palette.text.primary};
+`
+
+const HelpText = styled.div`
+  margin: 32px 0 24px 0;
+`

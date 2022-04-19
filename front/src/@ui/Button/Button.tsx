@@ -1,7 +1,9 @@
 import { css } from '@emotion/react'
 import styled from '@emotion/styled'
 interface StyledButtonProps{
-  variant?: 'normal' | 'huge',
+  variant?: 'normal' | 'medium' | 'large' | 'xl',
+  justify?: 'center' | 'space-between',
+  color?: 'default' | 'invert' | 'white',
   invert?: boolean
 }
 
@@ -23,21 +25,48 @@ const Button = styled.button<StyledButtonProps>`
   white-space: nowrap;
 
   ${props => {
-    if (props.variant === 'huge') {
+    if (props.variant === 'medium') {
       return css`
         font-size: 14px;
         padding: 21px;
         min-width: 200px;
         margin: 8px;
       `
+    } else if(props.variant === 'xl') {
+      return css`
+        min-width: 530px;
+        font-size: 14px;
+        padding: 15px 24px;
+      `
+    } else if(props.variant === 'large') {
+    return css`
+      min-width: 360px;
+      font-size: 14px;
+      padding: 21px;
+    `
+  }
+  }}
+  ${props => {
+    if (props.justify === 'space-between') {
+      return css`
+        display: flex;
+        align-items: center;
+        justify-content: space-between
+      `
     }
   }}
   ${props => {
-    if (props.invert) {
+    if (props.color === 'invert') {
       return css`
         background: ${props.theme.palette.background.light};
         border: 1px solid ${props.theme.palette.border.light};
         box-shadow: none;
+      `
+    } else if (props.color === 'white') {
+      return css`
+      background: ${props.theme.palette.background.white};
+      color: ${props.theme.palette.text.dark};
+      box-shadow: none;
       `
     }
   }}
@@ -45,9 +74,7 @@ const Button = styled.button<StyledButtonProps>`
     if (props.disabled) {
       return css`
         cursor: inherit;
-        background: ${props.theme.palette.background.light};
-        color: ${props.theme.palette.text.disabled};
-        box-shadow: none;
+        opacity: 0.4;
       `
     }
   }}

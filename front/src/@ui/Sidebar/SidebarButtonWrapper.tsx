@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from '@emotion/styled/macro'
-import SidebarButton from './SidebarButton'
+import SidebarButton, { SidebarButtonProps } from './SidebarButton'
 
 interface SidebarButtonWrapperProps {}
 
@@ -19,17 +19,26 @@ const buttonItems = [
   {
     type: 'defi',
     tooltipHint: 'Defi',
-    path: '/dashboard/app'
+    path: '/dashboard/app',
+    active: true
   },
   {
     type: 'nft',
     tooltipHint: 'NFT',
-    path: '/dashboard/nft'
+    path: '/dashboard/nft',
+    active: false
   },
   {
     type: 'kyc',
     tooltipHint: 'KYC',
-    path: '/dashboard/kyc'
+    path: '/dashboard/kyc',
+    active: true
+  },
+  {
+    type: 'vpn',
+    tooltipHint: 'VPN',
+    path: '/dashboard/kyc',
+    active: false
   }
 ]
 
@@ -65,7 +74,17 @@ class SidebarButtonWrapper extends React.Component<SidebarButtonWrapperProps, Si
     return (
       <ButtonWrapper>
         <VerticalActiveLine style={{ top: this.state.verticaLineTopOffset }} />
-        {buttonItems.map((item, index) => <SidebarButton key={item.tooltipHint} onPress={() => this.handleOnClick(item.path, item.type, index)} icon={item.type} tooltipHint={item.tooltipHint} active={(item.type === this.state.activeButton)} url={item.path} />)}
+        {buttonItems.map((item, index) => (
+          <SidebarButton
+            key={item.tooltipHint}
+            onPress={item.active ? () => this.handleOnClick(item.path, item.type, index) : undefined}
+            icon={item.type as SidebarButtonProps['icon']}
+            tooltipHint={item.tooltipHint}
+            active={(item.type === this.state.activeButton)}
+            disabled={!item.active}
+            url={item.path}
+          />
+        ))}
       </ButtonWrapper>
     )
   }

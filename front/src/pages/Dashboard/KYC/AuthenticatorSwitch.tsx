@@ -14,8 +14,7 @@ export const AuthenticatorSwitch = ({ registerProps, isDirty }: AuthenticatorSwi
       TurnOnModal={AuthenticatorSetupModal}
       TurnOffModal={TurnOffWarning}
       registerProps={registerProps}
-      helpText='Set an additional Authenticator authentication step'
-      label='Use Authenticator'
+      label='Authenticator'
     />
   )
 }

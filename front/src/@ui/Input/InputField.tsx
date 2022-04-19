@@ -1,4 +1,4 @@
-import styled from '@emotion/styled'
+import styled, { CSSObject } from '@emotion/styled'
 import { Icons } from '@ui/Icon/CustomIcons'
 import Icon from '@ui/Icon/Icon'
 import { ComponentProps, ReactNode } from 'react'
@@ -9,7 +9,8 @@ type InputParams = {
   inputProps?: ComponentProps<typeof StyledInputField>,
   icon?: keyof typeof Icons,
   error?: boolean,
-  helpText?: ReactNode
+  helpText?: ReactNode,
+  floatingLabelWrapperProps?: FloatingLabelWrapperProps
 }
 
 export default function InputField (props: InputParams) {
@@ -22,7 +23,7 @@ export default function InputField (props: InputParams) {
       >
         {props.icon && <Icon name={props.icon} />}
 
-        <FloatingLabelWrapper>
+        <FloatingLabelWrapper {...props.floatingLabelWrapperProps}>
           <StyledInputField {...props.inputProps} placeholder=' ' />
           <FloatingLabel className='floating-label'>{props.inputProps?.placeholder}</FloatingLabel>
         </FloatingLabelWrapper>
@@ -47,15 +48,21 @@ export const FloatingLabel = styled.label`
   display: flex;
   align-items: center;
   position:absolute;
-  left: 0;
-  top: ${2.5 / 16}em;
-  padding: 0 ${10 / 16}em;
-  font-size: ${16 / 12}em;
+  left: ${6 / 14}em;
+  top: ${6 / 14}em;
+  padding: 0 ${10 / 14}em;
+  font-size: 1em;
   transition-duration:300ms;
   pointer-events: none;
 `
 
-export const FloatingLabelWrapper = styled.div`
+interface FloatingLabelWrapperProps {
+  onFocusStyle?: CSSObject
+}
+
+export const FloatingLabelWrapper = styled('div', {
+  shouldForwardProp: prop => prop !== 'onFocusStyle'
+})<FloatingLabelWrapperProps>`
   position: relative;
   width: 100%;
 
@@ -63,11 +70,13 @@ export const FloatingLabelWrapper = styled.div`
   input:not(:placeholder-shown) + .floating-label,
   input:-webkit-autofill + .floating-label {
     padding-top:0;
-    transform:translateY(-1em);
+    padding-bottom:0;
+    transform:translateY(-18px);
     transition-duration:300ms;
     font-size: 12px;
     background-color: ${props => props.theme.palette.background.label};
     left: 3px;
+    ${props => props.onFocusStyle}
   }
 `
 
@@ -117,8 +126,8 @@ export const StyledInputField = styled.input`
   }
 
   &:-webkit-autofill {
-    -webkit-text-fill-color: #fff;
-    -webkit-box-shadow: 0 0 0px 1000px #2e2e81 inset;
+    -webkit-text-fill-color: ${props => props.theme.palette.text.primary};
+    -webkit-box-shadow: 0 0 0px 1000px ${props => props.theme.palette.background.primary} inset;
     border-radius: 7px;
   }
 `

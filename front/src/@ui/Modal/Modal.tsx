@@ -5,38 +5,59 @@ import { ReactNode } from 'react'
 
 export type ModalProps = {
   children: ReactNode,
-  icon: IconProps['name'],
-  title: string,
-  onClose: () => void,
-  footer: ReactNode
-  anim: IAnim
+  icon?: IconProps['name'],
+  iconProps?: IconProps,
+  closeIconHidden: boolean,
+  title?: string,
+  onClose?: () => void,
+  footer?: ReactNode,
+  anim: IAnim,
+  scrollable: boolean,
 }
 
 export default function Modal (props: ModalProps) {
   return (
     <ModalWrapper anim={props.anim}>
-      <StyledModal>
-        <IconWrapper onClick={props.onClose}>
-          <Icon name='close' width={18} height={18} viewBox='0 0 18 18' style={{ cursor: 'pointer' }} />
-        </IconWrapper>
-        <Icon name={props.icon} width={64} height={64} viewBox='0 0 27 27' />
-        <h1>{props.title}</h1>
+      <StyledModal scrollable={props.scrollable}>
+        {!props.closeIconHidden &&
+          <IconWrapper onClick={() => props.onClose && props.onClose()}>
+            <Icon name='close' width={18} height={18} viewBox='0 0 18 18' style={{ cursor: 'pointer' }} />
+          </IconWrapper>}
+        {props.icon && <Icon {...props.iconProps} name={props.icon} />}
+        {props.title && <h1>{props.title}</h1>}
         {props.children}
-        <Footer>
-          {props.footer}
-        </Footer>
+        {props.footer && (
+          <Footer>
+            {props.footer}
+          </Footer>
+        )}
       </StyledModal>
     </ModalWrapper>
   )
 }
 
+Modal.defaultProps = {
+  iconProps: {
+    height: 64,
+    width: 64,
+    viewBox: '0 0 64 64'
+  },
+  closeIconHidden: false,
+  scrollable: false
+}
+
 interface ModalWrapperProps {
-  anim: IAnim
+  anim: IAnim,
+}
+
+interface StyledModalProps {
+  scrollable: boolean
 }
 
 const ModalWrapper = styled.div<ModalWrapperProps>`
       height: 100vh;
       width: 100vw;
+      padding: 8rem;
       background-color: rgba(8, 7, 41, 0.8);
       position: fixed;
       top: 0;
@@ -47,7 +68,6 @@ const ModalWrapper = styled.div<ModalWrapperProps>`
       display: ${({ anim }) => anim.state === 'closed' ? 'none' : 'flex'};
       opacity: ${({ anim }) => anim.state === 'open' || anim.state === 'beforeOpening' ? '1' : '0'};
       transition: opacity ${({ anim }) => anim.delay}ms ease;
-
 `
 const IconWrapper = styled.div`
       width: 100%;
@@ -55,8 +75,10 @@ const IconWrapper = styled.div`
       display: flex;
       justify-content: end;
 `
-const StyledModal = styled.div`
+const StyledModal = styled.div<StyledModalProps>`
       min-width: 642px;
+      height:  ${({ scrollable }) => scrollable ? '100%' : 'unset'};
+      overflow: auto;
       background: ${props => props.theme.palette.background.secondary};
       border: 1px solid ${props => props.theme.palette.border.light};
       box-sizing: border-box;

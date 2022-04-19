@@ -1,3 +1,4 @@
+const { REGISTRATION_LIMIT } = require('app/config/config');
 const { MODE_REGISTRATION } = require('./TokenService');
 
 class RegistrationService {
@@ -34,6 +35,9 @@ class RegistrationService {
         if(await this.__isUserNameRegistered(props.user_name)) {
             throw new UserNameIsAlreadyTakenError();
         }
+        if(await this.__isLimitReached()) {
+            throw new LimitReachedError();
+        }
         const profile_img_url = await this.__gravatarService.getProfileImageURL(props.email);
         const user = await this.__userRepository.create({
             email: props.email,
@@ -67,6 +71,15 @@ class RegistrationService {
         const user = await this.__userRepository.findOne({ where: { user_name } });
         return !!user;
     }
+
+    /**
+     * Check whether the registration limit is reached or not
+     * @returns {Promise<boolean>}
+     */
+    async __isLimitReached() {
+        const number_of_users = await this.__userRepository.count();
+        return number_of_users >= REGISTRATION_LIMIT;
+    }
 }
 
 /**
@@ -90,9 +103,16 @@ class UnableToCreateUserError extends Error {
     }
 }
 
+class LimitReachedError extends Error {
+    constructor() {
+        super("Maximum number of users reached")
+    }
+}
+
 module.exports = {
     RegistrationService,
     EmailIsAlreadyRegisteredError,
     UserNameIsAlreadyTakenError,
-    UnableToCreateUserError
+    UnableToCreateUserError,
+    LimitReachedError
 };

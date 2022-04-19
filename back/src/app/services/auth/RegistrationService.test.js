@@ -4,7 +4,8 @@ const { TokenService } = require('./TokenService');
 const {
     RegistrationService,
     EmailIsAlreadyRegisteredError,
-    UserNameIsAlreadyTakenError
+    UserNameIsAlreadyTakenError,
+    LimitReachedError
 } = require('./RegistrationService');
 
 describe("Registration service", () => {
@@ -31,6 +32,9 @@ describe("Registration service", () => {
             },
             create(_data) {
                 assert.ok(false, "User is created but it should not be created");
+            },
+            async count() {
+                return 20;
             }
         };
         const registrationService = new RegistrationService(
@@ -70,6 +74,9 @@ describe("Registration service", () => {
             },
             create(_data) {
                 assert.ok(false, "User is created but it should not be created");
+            },
+            async count() {
+                return 20;
             }
         };
         const registrationService = new RegistrationService(
@@ -99,6 +106,9 @@ describe("Registration service", () => {
             create(data) {
                 assert.equal(data.profile_img_url, profileURL);
                 return data;
+            },
+            async count() {
+                return 20;
             }
         };
         const registrationService = new RegistrationService(
@@ -122,6 +132,9 @@ describe("Registration service", () => {
             },
             create(data) {
                 return data;
+            },
+            async count() {
+                return 20;
             }
         };
         const registrationService = new RegistrationService(
@@ -137,4 +150,36 @@ describe("Registration service", () => {
         });
         assert.equal(typeof token, 'string');
     });
+
+
+    it("should not create the user when the limit is reached", async () => {
+        const fakeUserRepository = {
+            findOne(_query) {
+                return null;
+            },
+            create(data) {
+                return data;
+            },
+            async count() {
+                return 200000;
+            }
+        };
+        const registrationService = new RegistrationService(
+            fakeUserRepository,
+            tokenService,
+            fakeGravatarService(null)
+        );
+        try {
+            await registrationService.createUser({
+                email: "test2@test2.com",
+                user_name: "test",
+                first_name: "Test",
+                last_name: "Test",
+            });
+            assert.ok(false);
+        } catch(e) {
+            assert.ok(e instanceof LimitReachedError);
+        }
+    });
+
 });

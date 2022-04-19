@@ -41,6 +41,7 @@ const TooltipElement = styled.div`
   transform: translateX(-50%) translateY(-10%);
   top: -56px;
   height: max-content;
+  pointer-events: none;
 
   &:after {
     content: "";

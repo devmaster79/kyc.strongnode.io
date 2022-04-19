@@ -11,3 +11,4 @@ rm -r build
 # run linter on frontend
 cd ../front
 npm run lint || exit 1
+npm run build || exit 1

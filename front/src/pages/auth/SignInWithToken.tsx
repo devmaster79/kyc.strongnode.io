@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import styled from 'styled-components'
-import { EntryPage } from '../style'
-import EntryCard from '../../components/EntryCard'
-import userService from 'services/userService'
+import { getProfile } from 'services/userService'
+import { ErrorMessage } from '@ui/Dashboard/Form'
+import styled from '@emotion/styled'
 
 /**
  * Get user data like email and user_name by the stored token
@@ -15,7 +14,7 @@ export function SignInWithToken () {
   useEffect(() => {
     (async function () {
       try {
-        const user = await userService.getProfile()
+        const user = await getProfile()
         if (user.data[0]?.email) {
           localStorage.setItem('email', user.data[0].email)
           localStorage.setItem('username', user.data[0].user_name)
@@ -29,17 +28,34 @@ export function SignInWithToken () {
   }, [navigate])
 
   return (
-    <EntryPage>
-      <EntryCard>
-        <AuthMessage>
-          {showError && <Error>Something went wrong. Try again later.</Error>}
-        </AuthMessage>
-      </EntryCard>
-    </EntryPage>
+    <>
+      <Title>
+        <b>Strongnode</b><br />
+        TOKEN VERIFICATION
+      </Title>
+      {showError &&
+        <HelpText>
+          <ErrorMessage>
+            We could not query your profile.
+          </ErrorMessage>
+        </HelpText>}
+    </>
   )
 }
 
-const AuthMessage = styled.div``
-const Error = styled.span`
-  color: red;
+const Title = styled.h1`
+  font-style: normal;
+  font-weight: 100;
+  font-size: 32px !important;
+  line-height: 43.2px;
+  margin:0 !important;
+  padding:0 !important;
+  b {
+    font-weight: 900;
+  }
+  color: ${props => props.theme.palette.text.primary};
+`
+
+const HelpText = styled.div`
+  margin: 32px 0 24px 0;
 `

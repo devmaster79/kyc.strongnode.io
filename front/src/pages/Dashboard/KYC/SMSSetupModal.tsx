@@ -44,12 +44,11 @@ export function SMSSetupModal ({ anim, onSuccess, onClose }: SMSSetupModalProps)
     <Modal
       anim={anim}
       title='Setup a new password'
-      icon='kyc'
       onClose={onClose}
       footer={(
         <>
-          <Button type='button' variant='huge' invert onClick={onClose}>Cancel</Button>
-          <Button type='button' variant='huge' onClick={() => verifySMSCode()}>Confirm</Button>
+          <Button type='button' variant='medium' color='invert' onClick={onClose}>Cancel</Button>
+          <Button type='button' variant='medium' onClick={() => verifySMSCode()}>Confirm</Button>
         </>
       )}
     >
@@ -71,7 +70,6 @@ export function SMSSetupModal ({ anim, onSuccess, onClose }: SMSSetupModalProps)
           />
         </DashboardForm.Row>
         <DashboardForm.Input
-          icon='lock'
           inputProps={{
             type: 'number',
             placeholder: 'Enter your SMS code',

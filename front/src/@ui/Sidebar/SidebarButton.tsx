@@ -1,19 +1,20 @@
 import styled from '@emotion/styled/macro'
-import Icon from '../Icon/Icon'
+import Icon, { IconProps } from '../Icon/Icon'
 import { CustomTheme } from '../../theme/index'
 import { useNavigate } from 'react-router'
 import { useTheme } from '@mui/styles'
 import Tooltip from '../Tooltip/Tooltip'
 
-type buttonProps = {
-  icon: string,
+export type SidebarButtonProps = {
+  icon: IconProps['name'],
   tooltipHint: string,
   active: boolean,
+  disabled?: boolean
   onPress?: unknown,
   url?: string
 }
 
-const SidebarButton = ({ icon, tooltipHint, active, onPress, url }: buttonProps) => {
+const SidebarButton = ({ icon, tooltipHint, active, onPress, url, disabled }: SidebarButtonProps) => {
   const navigate = useNavigate()
   const theme: CustomTheme = useTheme()
 
@@ -27,9 +28,15 @@ const SidebarButton = ({ icon, tooltipHint, active, onPress, url }: buttonProps)
   }
 
   return (
-    <ButtonWrapper onClick={() => { onClick() }} style={active ? buttonActiveStyle : {}}>
+    <ButtonWrapper onClick={(!disabled) ? () => { onClick() } : undefined} style={active ? buttonActiveStyle : { opacity: disabled ? 0.2 : 1 }}>
       <Tooltip tooltip={tooltipHint}>
-        <Svg name={icon} height={24} width={24} viewBox='0 0 24 24' color={active ? theme.palette.icon.active : theme.palette.icon.primary}>
+        <Svg
+          name={icon}
+          height={24}
+          width={24}
+          viewBox='0 0 24 24'
+          color={active ? theme.palette.icon.active : theme.palette.icon.primary}
+        >
           {tooltipHint}
         </Svg>
       </Tooltip>

@@ -1,17 +1,18 @@
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
-import { styled, useTheme } from '@mui/material/styles';
+import { useTheme } from '@mui/material/styles';
 import useCollapseDrawer from '../../hooks/useCollapseDrawer';
 import Sidebar from './Sidebar';
 import { Navbar } from './Navbar';
+import styled from '@emotion/styled'
 
-const RootStyle = styled('div')(({ theme }) => ({
-  display: 'flex',
-  minHeight: '100%',
-  overflow: 'hidden',
-  backgroundColor: theme.palette.background.default,
-  backgroundSize: '100% 100%'
-}));
+const RootStyle = styled.div`
+  display: flex;
+  min-height: 100%;
+  overflow: hidden;
+  background: ${props => props.theme.palette.background.gradient};
+  background-size: 100% 100%;
+`
 
 const MainStyle = styled('div')(({ theme }) => ({
   flexGrow: 1,

@@ -51,9 +51,13 @@ module.exports = {
     // ts validates no unuseds anyways
     "no-unused-vars": "off",
 
+    'jsx-a11y/no-noninteractive-element-interactions': 'off',
+    'jsx-a11y/click-events-have-key-events': 'off',
+    'jsx-a11y/alt-text': 'off',
     /*
      * Lints to enable later:
      */
+    'jsx-a11y/anchor-is-valid':'warn',
      'jsx-quotes': 'warn',
      'no-undef': 'warn',
      'react/jsx-boolean-value': 'warn',
