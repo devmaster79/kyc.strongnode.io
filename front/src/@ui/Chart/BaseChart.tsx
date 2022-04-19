@@ -72,7 +72,7 @@ export const BaseChart = (props: BaseChartProps) => {
           <YAxis width={(yAxisWidth) ? yAxisWidth + 42 : yAxisWidth} tickLine={false} axisLine={false} dataKey={props.yKey} />
           <CartesianGrid vertical={false} stroke='rgba(153, 153, 153, 0.12)' />
 
-          <Tooltip wrapperStyle={tooltipWrapperStyle} contentStyle={{}} />
+          <Tooltip wrapperStyle={tooltipWrapperStyle} contentStyle={{ display: 'none' }} />
           <Area
             key={1}
             type='monotone'

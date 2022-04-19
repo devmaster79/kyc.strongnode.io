@@ -132,7 +132,7 @@ export const CoinMetrics = (props: CoinMetricsProps) => {
     const valueTrendObject: any = {}
 
     if (value.charAt(0) == '-') { valueTrendObject.positive = false } else { valueTrendObject.positive = true }
-    valueTrendObject.value = ((valueTrendObject.positive) ? '+' : '') + Number(value).toFixed(2)
+    valueTrendObject.value = ((valueTrendObject.positive) ? '+' : '') + Number(value).toFixed(2) + ' %'
 
     return valueTrendObject
   }
