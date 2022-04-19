@@ -19,4 +19,4 @@ export const getNews = '/api/news'
 
 // CRYPTO
 export const getCryptoChartData = '/api/cryptocurrency/chart/'
-export const getTokenMetrics = '/api//cryptocurrency/token-metrics/'
+export const getTokenMetrics = '/api/cryptocurrency/token-metrics/'
