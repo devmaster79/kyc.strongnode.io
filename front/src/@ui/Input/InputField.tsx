@@ -69,7 +69,7 @@ export const FloatingLabelWrapper = styled.div<FloatingLabelWrapperProps>`
   input:-webkit-autofill + .floating-label {
     padding-top:0;
     padding-bottom:0;
-    transform:translateY(-1em);
+    transform:translateY(-18px);
     transition-duration:300ms;
     font-size: 12px;
     background-color: ${props => props.theme.palette.background.label};
@@ -124,8 +124,8 @@ export const StyledInputField = styled.input`
   }
 
   &:-webkit-autofill {
-    -webkit-text-fill-color: #fff;
-    -webkit-box-shadow: 0 0 0px 1000px #2e2e81 inset;
+    -webkit-text-fill-color: ${props => props.theme.palette.text.primary};
+    -webkit-box-shadow: 0 0 0px 1000px ${props => props.theme.palette.background.primary} inset;
     border-radius: 7px;
   }
 `

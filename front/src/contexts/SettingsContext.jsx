@@ -2,7 +2,7 @@ import { createContext } from 'react';
 import useLocalStorage from '../hooks/useLocalStorage';
 
 const initialState = {
-  themeMode: 'light',
+  themeMode: 'dark',
   onChangeMode: () => {}
 };
 
@@ -10,7 +10,7 @@ const SettingsContext = createContext(initialState);
 
 function SettingsProvider({ children }) {
   const [settings, setSettings] = useLocalStorage('settings', {
-    themeMode: 'light'
+    themeMode: 'dark'
   });
 
   const onChangeMode = (mode) => {

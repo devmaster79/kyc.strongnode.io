@@ -1,96 +1,96 @@
-import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import styled from 'styled-components'
-import { EntryPage } from '../style'
-import Button from '../../components/Button'
-import EntryCard from '../../components/EntryCard'
-import Input from '../../components/Input'
-import InputGroup from '../../components/InputGroup'
-import { ReactComponent as LockIcon } from '../../icons/lock.svg'
 import * as authService from 'services/auth'
-import { OtherOptions } from '../../components/OtherOptions'
 import { useService } from 'hooks/useService'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import { ErrorMessage, InfoMessage } from '@ui/Dashboard/Form'
+import InputField from '@ui/Input/InputField'
+import styled from '@emotion/styled'
+import Button from '@ui/Button/Button'
+import { OtherOptions } from 'components/OtherOptions'
+interface SignInWithPasswordFields {
+  password: string
+}
 
 export function SignInWithPassword () {
-  const navigate = useNavigate()
-  const [password, setPassword] = useState('')
-  const { data: authState, call: authByPassword } = useService(
+  const { data: sendResult, call: authByPassword } = useService(
     authService.authByPassword
   )
 
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault()
-    const state = await authByPassword(password)
-    if (state.result === 'success') {
-      navigate('/sign-in-with-token')
+  const { register, handleSubmit } = useForm<SignInWithPasswordFields>({
+    defaultValues: {
+      password: ''
     }
-  }
+  })
 
-  let message
-  switch (authState.result) {
-    case 'loading':
-      message = <Info>Verifying the password...</Info>
-      break
-    case 'validation-error':
-      message = <Error>Wrong password. Please try agian.</Error>
-      break
-    case 'unexpected-error':
-      message = <Error>Something went wrong. Please try again later.</Error>
-      break
-    case 'unauthorized-error':
-      message = <Error>You do not have access to this feature.</Error>
-      break
-    case 'banned':
-      message = (
-        <Error>
-          Too many trials. You can try it again{' '}
-          {Math.floor(authState.remainingTimeMs / 1000)} seconds later.
-        </Error>
-      )
-      break
-    default:
-      break
+  const onSubmit: SubmitHandler<SignInWithPasswordFields> = async (data: SignInWithPasswordFields) => {
+    await authByPassword(data.password)
   }
 
   return (
-    <EntryPage>
-      <EntryCard>
-        <h2>Welcome</h2>
-        <form onSubmit={handleSubmit} style={{ marginTop: 30 }}>
-          <InputGroup>
-            <LockIcon />
-            <Input
-              type='password'
-              placeholder='Password'
-              id='password'
-              value={password}
-              style={{ padding: '16px 20px 16px 40px' }}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setPassword(e.target.value)}
-            />
-          </InputGroup>
-          <AuthMessage>{message}</AuthMessage>
-          <Button type='submit' full>
-            Confirm
-          </Button>
-          <OtherOptions hidePassword />
-        </form>
-      </EntryCard>
-    </EntryPage>
+    <>
+      <Title>
+        <b>Strongnode</b><br />
+        Welcome
+      </Title>
+      <HelpText>
+        {sendResult.result === 'loading' && (<InfoMessage>Loading...</InfoMessage>)}
+        {sendResult.result === 'validation-error' && (
+          <ErrorMessage>
+            Wrong password. Please try agian.
+          </ErrorMessage>
+        )}
+        {sendResult.result === 'unauthorized-error' && (
+          <ErrorMessage>You do not have access to this feature.</ErrorMessage>
+        )}
+        {sendResult.result === 'unexpected-error' && (
+          <ErrorMessage>Something went wrong.</ErrorMessage>
+        )}
+        {sendResult.result === 'banned' && (
+          <ErrorMessage>
+            Too many trials. You can try it again{' '}
+            {Math.floor(sendResult.remainingTimeMs / 1000)} seconds later.
+          </ErrorMessage>
+        )}
+      </HelpText>
+      <Form onSubmit={handleSubmit(onSubmit)}>
+        <StyledInputField
+          inputProps={{
+            placeholder: 'Password',
+            type: 'password',
+            ...register('password')
+          }}
+        />
+
+        <Button variant='large'>Confirm</Button>
+        <OtherOptions hidePassword />
+      </Form>
+    </>
   )
 }
 
-const AuthMessage = styled.div``
+const Form = styled.form`
+  padding: 0 112px;
+  width: 100%;
+  margin-bottom: 40px;
+  display: flex;
+  flex-flow: column;
+`
 
-const Error = styled('p')({
-  textAlign: 'center',
-  marginBottom: '10px',
-  color: '#ff6868',
-  fontWeight: 'bold'
-})
-
-const Info = styled('p')({
-  textAlign: 'center',
-  marginBottom: '10px',
-  color: '#dddddd'
-})
+const StyledInputField = styled(InputField)`
+  margin: 10px 0;
+`
+const Title = styled.h1`
+  font-style: normal;
+  font-weight: 100;
+  font-size: 32px !important;
+  line-height: 43.2px;
+  margin:0 !important;
+  padding:0 !important;
+  b {
+    font-weight: 900;
+  }
+  color: ${props => props.theme.palette.text.primary};
+`
+const HelpText = styled.p`
+  margin: 32px 0 24px 0;
+`

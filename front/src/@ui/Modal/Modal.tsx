@@ -7,26 +7,30 @@ export type ModalProps = {
   children: ReactNode,
   icon?: IconProps['name'],
   iconProps?: IconProps,
+  closeIconHidden: boolean,
   title?: string,
-  onClose: () => void,
-  footer: ReactNode,
+  onClose?: () => void,
+  footer?: ReactNode,
   anim: IAnim,
-  scrollable: boolean
+  scrollable: boolean,
 }
 
 export default function Modal (props: ModalProps) {
   return (
     <ModalWrapper anim={props.anim}>
       <StyledModal scrollable={props.scrollable}>
-        <IconWrapper onClick={props.onClose}>
-          <Icon name='close' width={18} height={18} viewBox='0 0 18 18' style={{ cursor: 'pointer' }} />
-        </IconWrapper>
+        {!props.closeIconHidden &&
+          <IconWrapper onClick={() => props.onClose && props.onClose()}>
+            <Icon name='close' width={18} height={18} viewBox='0 0 18 18' style={{ cursor: 'pointer' }} />
+          </IconWrapper>}
         {props.icon && <Icon {...props.iconProps} name={props.icon} />}
         {props.title && <h1>{props.title}</h1>}
         {props.children}
-        <Footer>
-          {props.footer}
-        </Footer>
+        {props.footer && (
+          <Footer>
+            {props.footer}
+          </Footer>
+        )}
       </StyledModal>
     </ModalWrapper>
   )
@@ -38,6 +42,7 @@ Modal.defaultProps = {
     width: 64,
     viewBox: '0 0 64 64'
   },
+  closeIconHidden: false,
   scrollable: false
 }
 

@@ -1,130 +1,125 @@
-import { Form, Formik, FormikHelpers } from 'formik'
-import { useNavigate } from 'react-router-dom'
-import styled from 'styled-components'
-import { EntryPage } from '../style'
-import Button from '../../components/Button'
-import EntryCard from '../../components/EntryCard'
-import Input from '../../components/Input'
-import ValidatedField from '../../components/ValidatedField'
-import { signupSchema } from '../../static/formSchemas'
 import * as authService from '../../services/auth'
 import { useService } from 'hooks/useService'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import InputField from '@ui/Input/InputField'
+import styled from '@emotion/styled'
+import Button from '@ui/Button/Button'
+import { ErrorMessage, InfoMessage } from '@ui/Dashboard/Form'
+import { Link } from 'react-router-dom'
+import { useState } from 'react'
+
+interface RegisterFields {
+  first_name: string,
+  last_name: string,
+  user_name: string,
+}
 
 export function Register () {
-  const navigate = useNavigate()
-  const { data: registerState, call: register } = useService(
+  const [agreement, setAgreement] = useState(false)
+  const { data: sendResult, call: registration } = useService(
     authService.register
   )
 
-  const initFormState = {
-    first_name: '',
-    last_name: '',
-    user_name: '',
-    termsAgreement: false
-  }
+  const { register, handleSubmit } = useForm<RegisterFields>({
+    defaultValues: {
+      first_name: '',
+      last_name: '',
+      user_name: ''
+    }
+  })
 
-  const handleFormSubmit = async (data: typeof initFormState, { setErrors }: FormikHelpers<typeof initFormState>) => {
-    const result = await register({
+  const onSubmit: SubmitHandler<RegisterFields> = async (data: RegisterFields) => {
+    await registration({
       first_name: data.first_name,
       last_name: data.last_name,
       user_name: data.user_name
     })
-    if (
-      result.result === 'validation-error' &&
-      result.field === 'user_name' &&
-      result.reason === 'already-taken'
-    ) {
-      setErrors({ user_name: 'This username is alredy taken' })
-    }
-    if (result.result === 'success') {
-      navigate('/sign-in-with-token')
-    }
   }
 
   return (
-    <EntryPage>
-      <EntryCard>
-        <h2 style={{ fontFamily: 'Halyard' }}>CREATE AN ACCOUNT</h2>
-        <Formik
-          initialValues={initFormState}
-          onSubmit={handleFormSubmit}
-          validationSchema={signupSchema}
-        >
-          {({ handleBlur, validateField }) => (
-            <Form style={{ marginTop: 30 }}>
-              <ValidatedField
-                as={Input}
-                name='first_name'
-                onBlur={handleBlur}
-                placeholder='First name'
-                type='input'
-                validateField={validateField}
-              />
-              <ValidatedField
-                as={Input}
-                name='last_name'
-                onBlur={handleBlur}
-                placeholder='Last name'
-                type='input'
-                validateField={validateField}
-              />
-              <ValidatedField
-                as={Input}
-                name='user_name'
-                onBlur={handleBlur}
-                placeholder='Username'
-                style={{ padding: '16px 20px 16px 40px' }}
-                type='text'
-                validateField={validateField}
-              />
-              <ValidatedField
-                as={Input}
-                name='termsAgreement'
-                onBlur={handleBlur}
-                style={{ width: 'auto' }}
-                type='checkbox'
-                wrapperStyle={{
-                  alignItems: 'center',
-                  display: 'flex',
-                  height: '9px!important',
-                  width: '9px!important'
-                }}
-                validateField={validateField}
-              />
-              <RegisterMessage>
-                {registerState.result === 'loading' && 'Loading...'}
-                {registerState.result === 'limit-reached-error' && (
-                  <Error>
-                    Sorry, but the maximum number of users limit is reached.
-                    We cannot allow new registrations.
-                  </Error>
-                )}
-                {registerState.result === 'unauthorized-error' && (
-                  <Error>You do not have access to this feature.</Error>
-                )}
-                {registerState.result === 'unexpected-error' && (
-                  <Error>Something went wrong.</Error>
-                )}
-              </RegisterMessage>
-              <Button
-                disabled={registerState.result === 'loading'}
-                type='submit'
-                full
-              >
-                SIGN UP
-              </Button>
-            </Form>
-          )}
-        </Formik>
-      </EntryCard>
-    </EntryPage>
+    <>
+      <Title>
+        <b>Strongnode</b><br />
+        Register
+      </Title>
+      <HelpText>
+        {sendResult.result === 'loading' && (<InfoMessage>Loading...</InfoMessage>)}
+        {sendResult.result === 'limit-reached-error' && (
+          <ErrorMessage>
+            Sorry, but the maximum number of users limit is reached.
+            We cannot allow new registrations.
+          </ErrorMessage>
+        )}
+        {sendResult.result === 'unauthorized-error' && (
+          <ErrorMessage>You do not have access to this feature.</ErrorMessage>
+        )}
+        {sendResult.result === 'unexpected-error' && (
+          <ErrorMessage>Something went wrong.</ErrorMessage>
+        )}
+      </HelpText>
+      <Form onSubmit={handleSubmit(onSubmit)}>
+        <StyledInputField
+          inputProps={{
+            placeholder: 'Username',
+            ...register('user_name')
+          }}
+        />
+        <StyledInputField
+          inputProps={{
+            placeholder: 'First name',
+            ...register('first_name')
+          }}
+        />
+        <StyledInputField
+          inputProps={{
+            placeholder: 'Last name',
+            ...register('last_name')
+          }}
+        />
+        <span><Checkbox type='checkbox' checked={agreement} onChange={() => setAgreement(!agreement)} />
+          By continuing, you agree to {' '}
+          <Link to='/terms-of-use' target='_blank'>
+            Terms of Use
+          </Link>{' '}
+          <Link to='/privacy-policy' target='_blank'>
+            Privacy Policy
+          </Link>
+          .
+        </span>
+        <Button variant='large' disabled={!agreement}>Confirm</Button>
+      </Form>
+    </>
   )
 }
 
-const RegisterMessage = styled.p`
-  margin-bottom: 10px;
+const Checkbox = styled.input`
+  margin-right: 15px;
 `
 
-const Error = styled.span`
-  color: red;
+const Form = styled.form`
+  padding: 0 112px;
+  width: 100%;
+  margin-bottom: 40px;
+  display: flex;
+  flex-flow: column;
+`
+
+const StyledInputField = styled(InputField)`
+  margin: 10px 0;
+`
+
+const Title = styled.h1`
+  font-style: normal;
+  font-weight: 100;
+  font-size: 32px !important;
+  line-height: 43.2px;
+  margin:0 !important;
+  padding:0 !important;
+  b {
+    font-weight: 900;
+  }
+  color: ${props => props.theme.palette.text.primary};
+`
+const HelpText = styled.p`
+  margin: 32px 0 24px 0;
 `

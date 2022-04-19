@@ -1,90 +1,91 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { EntryPage } from '../style'
-import Button from '../../components/Button'
-import EntryCard from '../../components/EntryCard'
-import Input from '../../components/Input'
-import InputGroup from '../../components/InputGroup'
 import * as authService from 'services/auth'
-import styled from 'styled-components'
 import { OtherOptions } from '../../components/OtherOptions'
 import { useService } from 'hooks/useService'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import { ErrorMessage, InfoMessage } from '@ui/Dashboard/Form'
+import InputField from '@ui/Input/InputField'
+import styled from '@emotion/styled'
+import Button from '@ui/Button/Button'
+
+interface SignInWithAuthenticatorFields {
+  totp: string
+}
 
 export function SignInWithAuthenticator () {
-  const navigate = useNavigate()
-  const [totp, setTOTP] = useState('')
   const { data: authState, call: authByAuthenticator } = useService(authService.authByAuthenticator)
 
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault()
-    await authByAuthenticator(totp)
-    if (authState.result === 'success') {
-      navigate('/sign-in-with-token')
+  const { register, handleSubmit } = useForm<SignInWithAuthenticatorFields>({
+    defaultValues: {
+      totp: ''
     }
-  }
+  })
 
-  const handleTOTPInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.value.length > 6) {
-      event.target.value = event.target.value.slice(0, 6)
-      setTOTP(event.target.value)
-    } else {
-      setTOTP(event.target.value)
-    }
+  const onSubmit: SubmitHandler<SignInWithAuthenticatorFields> = async (data: SignInWithAuthenticatorFields) => {
+    await authByAuthenticator(data.totp)
   }
 
   return (
-    <EntryPage>
-      <EntryCard style={{ width: '454px', padding: '40px 25px' }}>
-        <Title>2-STEP VERIFICATION</Title>
-        <Form onSubmit={handleSubmit}>
-          <InputGroup>
-            <TOTPInput onChange={handleTOTPInputChange} value={totp} />
-          </InputGroup>
-          <AuthMessage>
-            {authState.result === 'loading' && 'Verifying the TOTP...'}
-            {authState.result === 'validation-error' && (
-              <Error>Wrong TOTP. Please try agian.</Error>
-            )}
-            {authState.result === 'unexpected-error' && (
-              <Error>Something went wrong. Please try again later.</Error>
-            )}
-            {authState.result === 'unauthorized-error' && (
-              <Error>You do not have access to this feature.</Error>
-            )}
-            {authState.result === 'banned' && (
-              <Error>
-                Too many trials. You can try it again {Math.floor(authState.remainingTimeMs / 1000)}{' '}
-                seconds later.
-              </Error>
-            )}
-          </AuthMessage>
-          <Button type='submit' full>
-            CONFIRM
-          </Button>
-        </Form>
+    <>
+      <Title>
+        <b>Strongnode</b><br />
+        2-STEP VERIFICATION
+      </Title>
+      <HelpText>
+        {authState.result === 'loading' && (<InfoMessage>Verifying the TOTP...</InfoMessage>)}
+        {authState.result === 'validation-error' && (
+          <ErrorMessage>Wrong TOTP. Please try agian.</ErrorMessage>
+        )}
+        {authState.result === 'unexpected-error' && (
+          <ErrorMessage>Something went wrong. Please try again later.</ErrorMessage>
+        )}
+        {authState.result === 'unauthorized-error' && (
+          <ErrorMessage>You do not have access to this feature.</ErrorMessage>
+        )}
+        {authState.result === 'banned' && (
+          <ErrorMessage>
+            Too many trials. You can try it again {Math.floor(authState.remainingTimeMs / 1000)}{' '}
+            seconds later.
+          </ErrorMessage>
+        )}
+      </HelpText>
+      <Form onSubmit={handleSubmit(onSubmit)}>
+        <StyledInputField
+          inputProps={{
+            placeholder: 'Enter your TOTP',
+            maxLength: 6,
+            ...register('totp')
+          }}
+        />
+        <Button variant='large'>Confirm</Button>
         <OtherOptions hideAuthenticator />
-      </EntryCard>
-    </EntryPage>
+      </Form>
+    </>
   )
 }
 
-const Title = styled.h2`
-  font-weight: bold;
-  font-family: Halyard;
-`
-
-const TOTPInput = styled(Input).attrs({ placeholder: 'Enter your TOTP', type: 'input' })`
-  padding: 16px 20px 16px 30px;
-  color: rgba(255, 255, 255, 0.5);
-`
-
 const Form = styled.form`
-  margin-top: 30px;
-  margin-left: 60px;
-  margin-right: 60px;
+  padding: 0 112px;
+  width: 100%;
+  margin-bottom: 40px;
+  display: flex;
+  flex-flow: column;
 `
 
-const AuthMessage = styled.div``
-const Error = styled.span`
-  color: #e7b3ff;
+const StyledInputField = styled(InputField)`
+  margin: 10px 0;
+`
+const Title = styled.h1`
+  font-style: normal;
+  font-weight: 100;
+  font-size: 32px !important;
+  line-height: 43.2px;
+  margin:0 !important;
+  padding:0 !important;
+  b {
+    font-weight: 900;
+  }
+  color: ${props => props.theme.palette.text.primary};
+`
+const HelpText = styled.p`
+  margin: 32px 0 24px 0;
 `

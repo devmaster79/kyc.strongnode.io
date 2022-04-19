@@ -14,6 +14,7 @@ import AddData from './pages/AddData'
 import * as SHARED_ROUTES from 'shared/routes'
 import NFTDashboard from 'pages/Dashboard/NFTDashboard/NFTDashboard'
 import Kyc from 'pages/Dashboard/KYC/KYC'
+import AuthLayout from 'layouts/auth'
 import Identity from 'pages/Identity/Identity'
 
 export const ROUTES = {
@@ -72,12 +73,14 @@ export default function Router () {
   } else {
     return (
       <Routes>
-        <Route path={ROUTES.AUTH.VERIFY_EMAIL} element={<VerifyEmail />} />
-        <Route path={ROUTES.AUTH.REGISTER} element={<Register />} />
-        <Route path={ROUTES.AUTH.SIGN_IN_WITH_PASSWORD} element={<SignInWithPassword />} />
-        <Route path={ROUTES.AUTH.SIGN_IN_WITH_AUTHENTICATOR} element={<SignInWithAuthenticator />} />
-        <Route path={ROUTES.AUTH.SIGN_IN_WITH_SMS} element={<SignInWithSMS />} />
-        <Route path={ROUTES.AUTH.SIGN_IN_WITH_TOKEN} element={<SignInWithToken />} />
+        <Route element={<AuthLayout />}>
+          <Route path={ROUTES.AUTH.VERIFY_EMAIL} element={<VerifyEmail />} />
+          <Route path={ROUTES.AUTH.REGISTER} element={<Register />} />
+          <Route path={ROUTES.AUTH.SIGN_IN_WITH_PASSWORD} element={<SignInWithPassword />} />
+          <Route path={ROUTES.AUTH.SIGN_IN_WITH_AUTHENTICATOR} element={<SignInWithAuthenticator />} />
+          <Route path={ROUTES.AUTH.SIGN_IN_WITH_SMS} element={<SignInWithSMS />} />
+          <Route path={ROUTES.AUTH.SIGN_IN_WITH_TOKEN} element={<SignInWithToken />} />
+        </Route>
         <Route path={ROUTES.PROFILE} element={<Profile />} />
         <Route path={ROUTES.PRIVATE_SALE_INTEREST_FORM} element={<PrivateSaleInterestForm />} />
         <Route
