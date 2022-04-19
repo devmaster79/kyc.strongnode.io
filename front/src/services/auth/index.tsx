@@ -1,6 +1,7 @@
 import * as urls from '../../utils/config'
 import { getResponseData, setToken } from './utils'
 import {
+  LimitReachedError,
   Success,
   UnauthorizedError,
   UnexpectedError,
@@ -24,6 +25,7 @@ type RegisterRequest = {
 type RegisterResponse = Success & { token: string }
   | UnexpectedError
   | UnauthorizedError
+  | LimitReachedError
   | ValidationError<'user_name', undefined>
   | ValidationError<'user_name', 'already-taken'>
   | ValidationError<'first_name', undefined>

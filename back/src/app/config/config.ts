@@ -1,5 +1,7 @@
 import { ServiceConfigurationOptions } from "aws-sdk/lib/service";
 
+export const REGISTRATION_LIMIT = 1000;
+
 export const EMAIL_CONFIG = {
     source: 'StrongNode Notifications <no-reply@strongnode.io>',
     supportTeamEmail: 'support@strongnode.io',
