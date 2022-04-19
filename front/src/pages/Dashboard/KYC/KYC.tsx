@@ -18,6 +18,24 @@ interface FormFields {
   enableAuthenticatorAuth: boolean,
 }
 
+const walletObject = [
+  {
+    featureIcon: 0,
+    label: 'ADD WALLET',
+    description: ''
+  },
+  {
+    featureIcon: 1,
+    label: 'WALLET 1',
+    description: '(2J33...wM2t)'
+  },
+  {
+    featureIcon: 0,
+    label: 'ADD WALLET',
+    description: ''
+  }
+]
+
 export default function KYC () {
   const { register, handleSubmit, reset, control, formState } = useForm<FormFields>({
     mode: 'all',
@@ -102,7 +120,7 @@ export default function KYC () {
           </DashboardForm.Button>
         </DashboardForm.Form>
       </FormContainer>
-      <WalletCarousel />
+      <WalletCarousel walletProps={walletObject} />
     </Container>
   )
 }

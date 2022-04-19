@@ -4,36 +4,17 @@ import 'swiper/css/navigation'
 import { Navigation } from 'swiper'
 import Box from '@mui/material/Box'
 import styled from '@emotion/styled'
-import { ReactComponent as WalletIcon } from '../../../icons/wallet.svg'
-import { ReactComponent as AddWalletIcon } from '../../../icons/add-wallet.svg'
-import { ReactComponent as EditWalletIcon } from '../../../icons/edit-wallet.svg'
-import { ReactComponent as PrevIcon } from '../../../icons/carousel-prev.svg'
-import { ReactComponent as NextIcon } from '../../../icons/carousel-next.svg'
+import CircleButton from '@ui/Button/CircleButton'
+import Icon from '@ui/Icon/Icon'
 
-export function WalletCarousel() {
-  interface walletObjType {
-    featureIcon: number,
-    label: string,
-    description: string
-  }
+interface WalletInfoType {
+  featureIcon: number,
+  label: string,
+  description: string,
+}
 
-  const walletObjects: walletObjType[] = [
-    {
-      featureIcon: 0,
-      label: 'ADD WALLET',
-      description: ''
-    },
-    {
-      featureIcon: 1,
-      label: 'WALLET 1',
-      description: '(2J33...wM2t)'
-    },
-    {
-      featureIcon: 0,
-      label: 'ADD WALLET',
-      description: ''
-    }
-  ]
+export function WalletCarousel(props: {walletProps: WalletInfoType[]}) {
+  const walletsInfo = props.walletProps
   return (
     <Container>
       <Swiper
@@ -47,7 +28,7 @@ export function WalletCarousel() {
         modules={[Navigation]}
         style={{ width: '100%' }}
       >
-        {walletObjects?.map((data: walletObjType, index: number) => (
+        {walletsInfo?.map((walletInfo: WalletInfoType, index: number) => (
           <SwiperSlide
             key={index}
             style={{
@@ -59,12 +40,12 @@ export function WalletCarousel() {
             }}
           >
             <Box sx={{ paddingLeft: '24px' }}>
-              <WalletIcon />
+              <Icon name='wallet' width={22} height={26} viewBox='0 0 22 22' />
               <Box sx={{ paddingTop: '46px' }}>
                 <Box sx={{ display: 'flex' }}>
-                  {data.featureIcon
-                    ? <EditWalletIcon width={40} height={40} />
-                    : <AddWalletIcon width={40} height={40} />}
+                  {walletInfo.featureIcon
+                    ? <CircleButton name='edit' />
+                    : <CircleButton name='plus' />}
                   <Box sx={{
                     display: 'flex',
                     flexDirection: 'column',
@@ -73,10 +54,10 @@ export function WalletCarousel() {
                   }}
                   >
                     <Box>
-                      {data.label}
+                      {walletInfo.label}
                     </Box>
-                    {data.description
-                      ? <Box sx={{ color: '#f3f3f3' }}>{data.description}</Box>
+                    {walletInfo.description
+                      ? <Box sx={{ color: '#f3f3f3' }}>{walletInfo.description}</Box>
                       : null}
                   </Box>
                 </Box>
@@ -94,10 +75,10 @@ export function WalletCarousel() {
         }}
         >
           <Box className='prev' sx={{ cursor: 'pointer' }}>
-            <PrevIcon width={40} />
+            <CircleButton name='prev' />
           </Box>
           <Box className='next' sx={{ cursor: 'pointer' }}>
-            <NextIcon width={40} />
+            <CircleButton name='next' />
           </Box>
         </Box>
         <Box sx={{
