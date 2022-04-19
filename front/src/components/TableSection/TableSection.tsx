@@ -19,18 +19,17 @@ interface TableSectionProps<Item extends Record<string, unknown>> {
   comingSoon?: string
   title: string
   subtitle: string
-  hideHeading: boolean
   dataSet: DataSet<Item>
   columns: Column[]
   hideHeading: boolean
   overwrittenFields?: { [ItemAttributeName in keyof Item]?: () => string }
   fetchData?: string
+  searchEnabled?: bool
 }
 
-const selectOptions = [{ label: 'First', value: '1' }, { label: 'Second', value: '2' }]
-
 function TableSection<Item extends Record<string, unknown>> (props: TableSectionProps<Item>) {
-  const [selectedOption, setSelectedOption] = useState(selectOptions[0])
+  // const [selectedOption, setSelectedOption] = useState(selectOptions[0])
+
   return (
     <TableSectionWrapper {...props}>
       {props.comingSoon
@@ -45,16 +44,9 @@ function TableSection<Item extends Record<string, unknown>> (props: TableSection
           <>
             <HeaderWrapper>
               <h2>{props.title} <span>{props.subtitle}</span></h2>
-              <InputField icon='search' inputProps={{ placeholder: 'Search' }} />
+              {props.searchEnabled &&
+                <InputField icon='search' inputProps={{ placeholder: 'Search' }} />}
             </HeaderWrapper>
-            <Select
-              value={selectedOption.value}
-              trackBy='value'
-              searchBy='label'
-              options={selectOptions}
-              onChange={(option) => setSelectedOption(option)}
-            />
-
             <MainTable
               dataSet={props.dataSet}
               columns={props.columns}
