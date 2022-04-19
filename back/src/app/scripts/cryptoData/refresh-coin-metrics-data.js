@@ -1,14 +1,16 @@
 const axios = require('axios')
 // let the script updates production and stage envs
 const baseUrls = [
+  // localhost url
+  // 'http://192.168.0.107:8080',
   'https://stage.strongonde.io',
   'https://id.strongnode.io'
 ]
 
-const url = '/api/cryptocurrency/refresh-strongnode-token?scope=days'
+const url = '/api/cryptocurrency/refresh-tokens'
 
 /**
- * This should be called every 5 minutes, since the Coingecko data granuality is 5 minutes for the days interval.
+ * This should be called every 10 seconds.
  * @returns {Promise<void>}
  */
 const refreshChartData = async () => {
@@ -27,4 +29,4 @@ const refreshChartData = async () => {
   }
 }
 
-module.exports.refreshChartData = refreshChartData()
+exports.handler = refreshChartData()
