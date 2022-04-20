@@ -89,7 +89,7 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: '14.17.5'
+          node-version: '17.9.0'
       - name: Install npm dependencies
         run: cd front && npm ci
       - name: Add frontend .env file

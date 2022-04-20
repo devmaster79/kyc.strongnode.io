@@ -96,6 +96,11 @@ const StyledModal = styled.div<StyledModalProps>`
         margin-top: 24px;
         padding-bottom: 8px;
       }
+
+  @media only screen and (max-width: 600px) {
+    min-width: 95vw;
+    max-width: 95vw;
+  }
 `
 const Footer = styled.div`
       padding-top: 23px;

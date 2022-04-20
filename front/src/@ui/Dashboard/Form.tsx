@@ -44,6 +44,10 @@ export const Form = styled.form`
   flex-flow: column;
   align-items: center;
   justify-content: center;
+
+  @media only screen and (max-width: 600px) {
+    width: 100%;
+  }
 `
 
 export const InputGroup = styled.div`
@@ -51,6 +55,10 @@ export const InputGroup = styled.div`
   flex-flow: column;
   gap: 16px;
   width: 530px;
+
+  @media only screen and (max-width: 600px) {
+    width: 100%;
+  }
 `
 export const ButtonGroup = styled.div`
   display: flex;
@@ -59,6 +67,10 @@ export const ButtonGroup = styled.div`
   width: 530px;
   padding-top: 24px;
   padding-bottom: 40px;
+
+  @media only screen and (max-width: 600px) {
+    width: 100%;
+  }
 `
 
 export const Hr = styled.hr`
