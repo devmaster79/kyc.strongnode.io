@@ -116,4 +116,8 @@ export const Container = styled.div`
   gap: 32px;
   width: 50%;
   margin:auto;
+
+  @media only screen and (max-width: 600px) {
+    width: 100%;
+  }
 `
