@@ -54,6 +54,11 @@ export function Register () {
             We cannot allow new registrations.
           </ErrorMessage>
         )}
+        {sendResult.result === 'validation-error' && (
+          <ErrorMessage>
+            This username is already taken.
+          </ErrorMessage>
+        )}
         {sendResult.result === 'unauthorized-error' && (
           <ErrorMessage>You do not have access to this feature.</ErrorMessage>
         )}
@@ -80,7 +85,8 @@ export function Register () {
             ...register('last_name')
           }}
         />
-        <span><Checkbox type='checkbox' checked={agreement} onChange={() => setAgreement(!agreement)} />
+        <span>
+          <Checkbox type='checkbox' checked={agreement} onChange={() => setAgreement(!agreement)} />
           By continuing, you agree to {' '}
           <Link to='/terms-of-use' target='_blank'>
             Terms of Use
@@ -90,6 +96,11 @@ export function Register () {
           </Link>
           .
         </span>
+        <Note>
+          After completing the registration, we will subscribe you to our mailing list.
+          We will only send you emails to let you know
+          when <b>Early Access</b> is available for StrongNode Edge products
+        </Note>
         <Button variant='large' disabled={!agreement}>Confirm</Button>
       </Form>
     </>
@@ -126,4 +137,8 @@ const Title = styled.h1`
 `
 const HelpText = styled.div`
   margin: 32px 0 24px 0;
+`
+
+const Note = styled.p`
+  margin: 20px;
 `
