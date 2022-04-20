@@ -67,7 +67,7 @@ const TableSectionWrapper = styled.div`
   margin-bottom: 200px;
   margin-top: 32px;
 
-  background: ${props => props.theme.palette.background.secondary};
+  background: ${props => props.theme.palette.background.primary};
   border: 1px solid ${props => props.theme.palette.border.light};
   box-sizing: border-box;
   border-radius: 10px;

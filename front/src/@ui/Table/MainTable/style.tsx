@@ -7,7 +7,7 @@ export const TableWrapper = styled.div`
 
 export const Table = styled.table`
   color: ${props => props.theme.palette.text.primary};
-  background-color: ${props => props.theme.palette.background.secondary};
+  background-color: ${props => props.theme.palette.background.primary};
   width: 100%;
   border-collapse: collapse;
 

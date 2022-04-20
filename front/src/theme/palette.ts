@@ -15,6 +15,7 @@ const WHITE = {
 const NIGHTBLUE = {
   100: '#141343',
   90: '#141245',
+  85: 'rgba(8, 7, 41, 0.8)',
   80: '#101054',
   60: alpha('#141245', 0.6),
   40: alpha('#141245', 0.4),
@@ -23,9 +24,12 @@ const NIGHTBLUE = {
 
 const NEW_GREY = {
   70: '#9593C8',
+  65: '#6E6D8F',
   60: 'rgba(153, 153, 153, 0.12)',
   50: '#E5E5E5',
-  30: '#F6F6FD'
+  30: '#F6F6FD',
+  10: 'rgba(110, 109, 143, 0.08)',
+  5: 'rgba(20, 18, 69, 0.12);'
 }
 
 const GREY = {
@@ -140,14 +144,25 @@ const palette = {
       light: WHITE[40],
       white: WHITE[100],
       label: '#FAFAFE',
-      switch: NIGHTBLUE[10],
+      switch: NEW_GREY[5],
+      input: WHITE[100],
       default: NEW_GREY[60],
       paper: GREY[800],
       neutral: GREY['500_16'],
-      gradient: 'linear-gradient(180deg, #FAFAFF 0%, #F3F3FC 100%);'
+      gradient: 'linear-gradient(180deg, #FAFAFF 0%, #F3F3FC 100%);',
+      qr: 'difference',
+      modal: 'rgba(151,151,176,0.8)'
+    },
+    button: {
+      text: WHITE[100],
+      invert: NEW_GREY[65],
+      background: {
+        invert: NEW_GREY[10]
+      }
     },
     border: {
-      light: NEW_GREY[60]
+      light: NEW_GREY[60],
+      button: 'rgba(110, 109, 143, 0.1)'
     },
     action: { active: GREY[500], ...COMMON.action },
     icon: {
@@ -171,14 +186,25 @@ const palette = {
       light: WHITE[8],
       white: WHITE[100],
       label: '#262652',
+      input: WHITE[8],
       switch: WHITE[8],
       default: NIGHTBLUE[80],
       paper: GREY[800],
       neutral: GREY['500_16'],
-      gradient: 'linear-gradient(111.76deg, #14133E 0%, #0B0B77 104.05%)'
+      gradient: 'linear-gradient(111.76deg, #14133E 0%, #0B0B77 104.05%)',
+      qr: 'lighten',
+      modal: NIGHTBLUE[85]
+    },
+    button: {
+      text: WHITE[100],
+      invert: WHITE[100],
+      background: {
+        invert: WHITE[8]
+      }
     },
     border: {
-      light: WHITE[12]
+      light: WHITE[12],
+      button: WHITE[12]
     },
     action: { active: GREY[500], ...COMMON.action },
     icon: {

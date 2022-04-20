@@ -4,7 +4,7 @@ import GenericButton from '@ui/Button/Button'
 import { withAttrs } from '@ui/utils/withAttrs'
 
 export const Input = withAttrs(styled(InputField)`
-  background: rgba(255, 255, 255, 0.08);
+  background: ${props => props.theme.palette.background.input}!important;
 
   ${props => props.error
     ? `border: 1px solid ${props.theme.palette.error.light};`
@@ -27,8 +27,8 @@ export const Input = withAttrs(styled(InputField)`
 `, {
   floatingLabelWrapperProps: {
     onFocusStyle: {
-      transform: 'translateY(-17px)',
-      background: '#232361'
+      transform: 'translateY(-25px)',
+      background: 'transparent'
     }
   }
 })

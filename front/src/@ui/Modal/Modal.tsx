@@ -58,7 +58,7 @@ const ModalWrapper = styled.div<ModalWrapperProps>`
       height: 100vh;
       width: 100vw;
       padding: 8rem;
-      background-color: rgba(8, 7, 41, 0.8);
+      background-color: ${props => props.theme.palette.background.modal};
       position: fixed;
       top: 0;
       left: 0;

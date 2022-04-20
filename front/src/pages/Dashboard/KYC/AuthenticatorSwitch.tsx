@@ -22,7 +22,6 @@ export const AuthenticatorSwitch = ({ registerProps, isDirty }: AuthenticatorSwi
 const TurnOffWarning = (props: Omit<AccessWarningModalProps, 'icon' | 'title'>) => (
   <AccessWarningModal
     title='Without Authenticator'
-    icon='search'
     {...props}
   />
 )
