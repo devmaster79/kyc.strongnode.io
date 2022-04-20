@@ -8,6 +8,9 @@ import { AuthenticatorSwitch } from './AuthenticatorSwitch'
 import { SMSSwitch } from './SMSSwitch'
 import backgroundDark from '../../../assets/images/BG.png'
 import backgroundLight from '../../../assets/images/BG-light.png'
+import { Banner } from '../../../@ui/Banner/Banner'
+import * as React from 'react'
+
 interface FormFields {
   firstName: string,
   lastName: string,
@@ -62,6 +65,8 @@ export default function KYC () {
 
   return (
     <Container>
+      <Banner title='StrongNode dVPN coming soon.' description='Stay tuned for more information.' soon />
+
       <h1>StrongNode ID and KYC</h1>
       <DashboardForm.Form onSubmit={handleSubmit(onSubmit)} autoComplete='off'>
         <DashboardForm.InputGroup>

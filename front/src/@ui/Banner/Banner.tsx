@@ -35,6 +35,10 @@ const BannerWrapper = styled.div`
   height: 112px;
   overflow: hidden;
   position: relative;
+
+  @media only screen and (max-width: 600px) {
+    height: max-content;
+  }
 `
 
 const TextWrapper = styled.div`
@@ -42,6 +46,15 @@ const TextWrapper = styled.div`
   left: 32px;
   top: 50%;
   transform: translateY(-50%);
+
+  @media only screen and (max-width: 600px) {
+    position: static;
+    transform: none;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 16px;
+    text-align: center;
+  }
 `
 
 const Title = styled.p`
@@ -73,5 +86,14 @@ const ComingSoon = styled.div`
   font-weight: 400;
   font-size: 14px;
   line-height: 100%;
-  color: rgba(255, 255, 255, 0.6)
+  color: rgba(255, 255, 255, 0.6);
+
+  @media only screen and (max-width: 600px) {
+    position: static;
+    transform: none;
+    margin-top: 32px;
+    margin-bottom: 16px;
+    margin-left: auto;
+    margin-right: auto;
+  }
 `
