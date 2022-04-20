@@ -19,7 +19,7 @@ export function WalletCarousel(props: {walletProps: WalletInfoType[]}) {
     <Container>
       <Swiper
         slidesPerView={3}
-        spaceBetween={16}
+        spaceBetween={17}
         loop
         navigation={{
           prevEl: '.prev',
@@ -111,10 +111,11 @@ export const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
+  width: 784px;
   margin:auto;
   font-size: 14px;
   font-family: 'Satoshi-Variable';
   font-style: normal;
   font-weight: 900;
+  padding-top: 100px;
 `

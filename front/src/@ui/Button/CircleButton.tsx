@@ -3,10 +3,10 @@ import Icon, { IconProps } from '@ui/Icon/Icon'
 
 const IconInfo = {
   plus: {
-    width: 10,
-    height: 10,
+    width: 12,
+    height: 12,
     color: 'linear-gradient(90.39deg, #AA1FEC 0.24%, #7A3BFE 101.6%);',
-    viewBox: '0 0 10 10'
+    viewBox: '0 0 12 12'
   },
   edit: {
     width: 10,
