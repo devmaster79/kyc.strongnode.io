@@ -13,6 +13,10 @@ const SidebarWrapper = styled.div`
   position: fixed;
   background: ${props => props.theme.palette.background.primary};
   box-shadow: inset -1px 0px 0px rgba(255, 255, 255, 0.12);
+  
+  @media only screen and (max-width: 600px) {
+    display: none;
+  }
 `
 
 const StyledThemedLogo = styled(ThemedLogo)`
