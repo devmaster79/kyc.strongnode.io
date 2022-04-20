@@ -55,7 +55,7 @@ export default function AccountPopover (props: any) {
         />
 
         <AvatarIconWrapper>
-          <Icon name='avatar' width={20} height={20} viewBox='0 0 20 20' color={theme.palette.icon.primary} />
+          <Icon name='avatar' width={20} height={20} viewBox='0 0 20 20' color={theme.palette.icon.active} />
         </AvatarIconWrapper>
       </IconWrapper>
       {showModal && (
