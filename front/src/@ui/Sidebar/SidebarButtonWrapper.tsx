@@ -37,7 +37,7 @@ const buttonItems = [
   {
     type: 'vpn',
     tooltipHint: 'VPN',
-    path: '/dashboard/kyc',
+    path: '/dashboard/vpn',
     active: false
   }
 ]
