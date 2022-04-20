@@ -18,13 +18,13 @@ interface DataSet<Item> {
 interface TableSectionProps<Item extends Record<string, unknown>> {
   comingSoon?: string
   title: string
-  subtitle: string
-  dataSet: DataSet<Item>
+  subtitle: string | undefined
+  dataSet: any
   columns: Column[]
-  hideHeading: boolean
-  overwrittenFields?: { [ItemAttributeName in keyof Item]?: () => string }
+  hideHeading?: boolean
+  overwrittenFields?: any
   fetchData?: string
-  searchEnabled?: bool
+  searchEnabled?: boolean
 }
 
 function TableSection<Item extends Record<string, unknown>> (props: TableSectionProps<Item>) {
