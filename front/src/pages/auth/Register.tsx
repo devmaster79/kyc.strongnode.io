@@ -5,7 +5,7 @@ import InputField from '@ui/Input/InputField'
 import styled from '@emotion/styled'
 import Button from '@ui/Button/Button'
 import { ErrorMessage, InfoMessage } from '@ui/Dashboard/Form'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 
 interface RegisterFields {
@@ -15,6 +15,7 @@ interface RegisterFields {
 }
 
 export function Register () {
+  const navigate = useNavigate()
   const [agreement, setAgreement] = useState(false)
   const { data: sendResult, call: registration } = useService(
     authService.register
@@ -29,11 +30,14 @@ export function Register () {
   })
 
   const onSubmit: SubmitHandler<RegisterFields> = async (data: RegisterFields) => {
-    await registration({
+    const response = await registration({
       first_name: data.first_name,
       last_name: data.last_name,
       user_name: data.user_name
     })
+    if (response.result === 'success') {
+      navigate('/sign-in-with-token')
+    }
   }
 
   return (
