@@ -18,14 +18,10 @@ const SneAddress = '0x32934CB16DA43fd661116468c1B225Fc26CF9A8c'
 export default function Dashboard () {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
   const { account, chainId } = useEthers()
-  console.log('this is the chain')
-  console.log(chainId)
   const navigate = useNavigate()
 
   const balance = useEtherBalance(account)
   const accountBalance = balance ? ethers.utils.formatEther(balance) : 0
-  console.log('this is the ballance')
-  console.log(accountBalance)
   const SneBalanceBigNumber = useTokenBalance(SneAddress, account)
   const SneBalance = SneBalanceBigNumber && ethers.utils.formatUnits(SneBalanceBigNumber, 18)
 
@@ -34,6 +30,7 @@ export default function Dashboard () {
 
   const dash = useRef()
   useEffect(() => {
+    navigate('/dashboard/kyc')
     handleDashboard()
   }, [dash])
 

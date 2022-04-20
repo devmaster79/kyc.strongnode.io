@@ -20,7 +20,7 @@ const buttonItems = [
     type: 'defi',
     tooltipHint: 'Defi',
     path: '/dashboard/app',
-    active: true
+    active: false
   },
   {
     type: 'nft',

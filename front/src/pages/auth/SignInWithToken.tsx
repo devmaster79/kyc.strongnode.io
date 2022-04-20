@@ -19,7 +19,7 @@ export function SignInWithToken () {
           localStorage.setItem('email', user.data[0].email)
           localStorage.setItem('username', user.data[0].user_name)
           localStorage.setItem('loggedin', 'true')
-          navigate('/dashboard/app')
+          navigate('/dashboard/kyc')
         }
       } catch (error) {
         setShowError(true)
