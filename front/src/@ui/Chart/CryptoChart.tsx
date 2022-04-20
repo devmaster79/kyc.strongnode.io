@@ -34,7 +34,7 @@ export const CryptoChart = (props: CryptoChartProps) => {
 
   const [valueTrendIndicator, setValueTrendIndicator] = useState({ up: false, value: '20%' })
 
-  const onScopeChange = (scope: number, scopeFormat: string) => {
+  const onScopeChange = (scopeFormat: string) => {
     setChartScopeFormat(scopeFormat)
   }
 
