@@ -6,8 +6,7 @@ import * as DashboardForm from '@ui/Dashboard/Form'
 import { useEffect } from 'react'
 import { AuthenticatorSwitch } from './AuthenticatorSwitch'
 import { SMSSwitch } from './SMSSwitch'
-import { ProgressBar } from 'components/ProgressBar/ProgressBar'
-import { ProgressLine } from 'components/ProgressLine/ProgressLine'
+import * as ProgressCircleSteps from '@ui/Dashboard/ProgressCircleSteps'
 interface FormFields {
   firstName: string,
   lastName: string,
@@ -63,23 +62,23 @@ export default function KYC () {
   return (
     <Container>
       <h1>StrongNode ID and KYC</h1>
-      <ProgressBarContainer>
-        <ProgressBar
-          label='user registration' progressAmount={60} progressLabel='A' progressBorder={false} disable={false}
+      <ProgressCircleSteps.Container>
+        <ProgressCircleSteps.Step
+          label='user registration' progressAmount={60} progressLabel='A' progressBorder={false} disabled={false}
         />
-        <ProgressLine />
-        <ProgressBar
-          label='KYC' progressAmount={0} progressLabel='B' progressBorder={true} disable={false}
+        <ProgressCircleSteps.Separator />
+        <ProgressCircleSteps.Step
+          label='KYC' progressAmount={0} progressLabel='B' progressBorder={true} disabled={false}
         />
-        <ProgressLine />
-        <ProgressBar
-          label='Socials' progressAmount={0} progressLabel='D' progressBorder={true} disable={true}
+        <ProgressCircleSteps.Separator />
+        <ProgressCircleSteps.Step
+          label='Socials' progressAmount={0} progressLabel='D' progressBorder={true} disabled={true}
         />
-        <ProgressLine />
-        <ProgressBar
-          label='Optional' progressAmount={35} progressLabel='E' progressBorder={false} disable={true}
+        <ProgressCircleSteps.Separator />
+        <ProgressCircleSteps.Step
+          label='Optional' progressAmount={35} progressLabel='E' progressBorder={false} disabled={true}
         />
-      </ProgressBarContainer>
+      </ProgressCircleSteps.Container>
       <DashboardForm.Form onSubmit={handleSubmit(onSubmit)} autoComplete='off'>
         <DashboardForm.InputGroup>
           <DashboardForm.Input inputProps={{ placeholder: 'First name', ...register('firstName') }} />
@@ -133,9 +132,4 @@ export const Container = styled.div`
   gap: 32px;
   width: 50%;
   margin:auto;
-`
-export const ProgressBarContainer = styled.div`
-  display: flex;
-  padding-top: 32px;
-  padding-bottom: 128px;
 `
