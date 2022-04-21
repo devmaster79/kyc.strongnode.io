@@ -6,10 +6,7 @@ import * as DashboardForm from '@ui/Dashboard/Form'
 import { useEffect } from 'react'
 import { AuthenticatorSwitch } from './AuthenticatorSwitch'
 import { SMSSwitch } from './SMSSwitch'
-import backgroundDark from '../../../assets/images/BG.png'
-import backgroundLight from '../../../assets/images/BG-light.png'
 import { Banner } from '../../../@ui/Banner/Banner'
-import * as React from 'react'
 
 interface FormFields {
   firstName: string,
