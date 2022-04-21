@@ -18,7 +18,7 @@ interface FormFields {
   enableAuthenticatorAuth: boolean,
 }
 
-const walletObject = [
+const walletsObject = [
   {
     featureIcon: 0,
     label: 'ADD WALLET',
@@ -84,44 +84,45 @@ export default function KYC () {
 
       <FormContainer>
         <DashboardForm.Form onSubmit={handleSubmit(onSubmit)} autoComplete='off'>
-          <DashboardForm.InputGroup>
-            <DashboardForm.Input inputProps={{ placeholder: 'First name', ...register('firstName') }} />
-            <DashboardForm.Input inputProps={{ placeholder: 'Last name', ...register('lastName') }} />
-            <DashboardForm.Input inputProps={{ placeholder: 'Username', ...register('username') }} />
-            <DashboardForm.Input inputProps={{ placeholder: 'Email', ...register('email'), disabled: true }} />
-          </DashboardForm.InputGroup>
-          <DashboardForm.Hr />
-          <DashboardForm.InputGroup>
-            <Controller
-              control={control}
-              name='enablePasswordAuth'
-              render={({ field, fieldState }) => (
-                <PasswordSwitch isDirty={fieldState.isDirty} registerProps={field} />
-              )}
-            />
-            <Controller
-              control={control}
-              name='enableAuthenticatorAuth'
-              render={({ field, fieldState }) => (
-                <AuthenticatorSwitch isDirty={fieldState.isDirty} registerProps={field} />
-              )}
-            />
-            <Controller
-              control={control}
-              name='enableSMSAuth'
-              render={({ field, fieldState }) => (
-                <SMSSwitch isDirty={fieldState.isDirty} registerProps={field} />
-              )}
-            />
-          </DashboardForm.InputGroup>
-          <DashboardForm.Button
-            disabled={!formState.isDirty || formState.isSubmitting}
-          >
-            Update
-          </DashboardForm.Button>
-        </DashboardForm.Form>
+        <DashboardForm.InputGroup>
+          <DashboardForm.Input inputProps={{ placeholder: 'First name', ...register('firstName') }} />
+          <DashboardForm.Input inputProps={{ placeholder: 'Last name', ...register('lastName') }} />
+          <DashboardForm.Input inputProps={{ placeholder: 'Username', ...register('username') }} />
+          <DashboardForm.Input inputProps={{ placeholder: 'Email', ...register('email'), disabled: true }} />
+        </DashboardForm.InputGroup>
+        <DashboardForm.Hr />
+        <DashboardForm.ButtonGroup>
+          <Controller
+            control={control}
+            name='enablePasswordAuth'
+            render={({ field, fieldState }) => (
+              <PasswordSwitch isDirty={fieldState.isDirty} registerProps={field} />
+            )}
+          />
+          <Controller
+            control={control}
+            name='enableAuthenticatorAuth'
+            render={({ field, fieldState }) => (
+              <AuthenticatorSwitch isDirty={fieldState.isDirty} registerProps={field} />
+            )}
+          />
+          <Controller
+            control={control}
+            name='enableSMSAuth'
+            render={({ field, fieldState }) => (
+              <SMSSwitch isDirty={fieldState.isDirty} registerProps={field} />
+            )}
+          />
+        </DashboardForm.ButtonGroup>
+        <DashboardForm.Button
+          variant='large'
+          disabled={!formState.isDirty || formState.isSubmitting}
+        >
+          Update
+        </DashboardForm.Button>
+      </DashboardForm.Form>
       </FormContainer>
-      <WalletCarousel walletProps={walletObject} />
+      <WalletCarousel walletProps={walletsObject} />
     </Container>
   )
 }
