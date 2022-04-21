@@ -41,7 +41,7 @@ export function SvgIcon (props: SVGProps<SVGSVGElement>) {
       xmlns={props.xmlns || 'http://www.w3.org/2000/svg'}
       xmlnsXlink={props.xmlnsXlink || 'http://www.w3.org/1999/xlink'}
       fill={props.fill || 'none'}
-      style={{overflow: 'initial'}}
+      style={{ ...props.style, overflow: 'initial' }}
     />
   )
 }

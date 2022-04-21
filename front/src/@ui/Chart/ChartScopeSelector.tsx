@@ -3,8 +3,7 @@ import styled from '@emotion/styled/macro'
 
 type SelectorArray = {
   title: string,
-  handler: Function,
-  scope: number
+  handler: Function
 }
 type ChartScopeSelectorProps = {
   selectors: Array<SelectorArray>,
@@ -18,7 +17,7 @@ export const ChartScopeSelector = (props: ChartScopeSelectorProps) => {
   return (
     <SelectorWrapper style={props.style ? props.style : {}}>
       {props.selectors.map((selector, index) =>
-        <SelectorButton key={selector.title} style={activeScope == selector.title ? activeSelectorStyle : {}} onClick={() => { selector.handler(selector.scope, selector.title); setActiveScope(selector.title) }}>{selector.title}
+        <SelectorButton key={selector.title} style={activeScope == selector.title ? activeSelectorStyle : {}} onClick={() => { selector.handler(selector.title); setActiveScope(selector.title) }}>{selector.title}
           <ButtonActiveLine style={activeScope == selector.title ? { opacity: 1 } : {}} />
         </SelectorButton>
       )}

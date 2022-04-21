@@ -7,6 +7,8 @@ import { useEffect } from 'react'
 import { AuthenticatorSwitch } from './AuthenticatorSwitch'
 import { SMSSwitch } from './SMSSwitch'
 import * as ProgressCircleSteps from '@ui/Dashboard/ProgressCircleSteps'
+import { Banner } from '../../../@ui/Banner/Banner'
+
 interface FormFields {
   firstName: string,
   lastName: string,
@@ -61,6 +63,8 @@ export default function KYC () {
 
   return (
     <Container>
+      <Banner title='StrongNode dVPN coming soon.' description='Stay tuned for more information.' soon />
+
       <h1>StrongNode ID and KYC</h1>
       <ProgressCircleSteps.Container>
         <ProgressCircleSteps.Step
@@ -132,4 +136,7 @@ export const Container = styled.div`
   gap: 32px;
   width: 50%;
   margin:auto;
+  @media only screen and (max-width: 600px) {
+    width: 100%;
+  }
 `

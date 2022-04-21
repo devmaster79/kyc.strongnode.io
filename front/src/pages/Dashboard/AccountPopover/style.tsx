@@ -16,7 +16,7 @@ export const AccountPopoverWrapper = styled.div`
   right: 0px;
   display: flex;
   flex-direction: column;
-  background: ${(props) => props.theme.palette.background.secondary};
+  background: ${(props) => props.theme.palette.background.primary};
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-sizing: border-box;
   border-radius: 10px;

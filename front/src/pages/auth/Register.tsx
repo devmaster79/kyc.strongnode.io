@@ -5,7 +5,7 @@ import InputField from '@ui/Input/InputField'
 import styled from '@emotion/styled'
 import Button from '@ui/Button/Button'
 import { ErrorMessage, InfoMessage } from '@ui/Dashboard/Form'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 
 interface RegisterFields {
@@ -15,6 +15,7 @@ interface RegisterFields {
 }
 
 export function Register () {
+  const navigate = useNavigate()
   const [agreement, setAgreement] = useState(false)
   const { data: sendResult, call: registration } = useService(
     authService.register
@@ -29,11 +30,14 @@ export function Register () {
   })
 
   const onSubmit: SubmitHandler<RegisterFields> = async (data: RegisterFields) => {
-    await registration({
+    const response = await registration({
       first_name: data.first_name,
       last_name: data.last_name,
       user_name: data.user_name
     })
+    if (response.result === 'success') {
+      navigate('/sign-in-with-token')
+    }
   }
 
   return (
@@ -48,6 +52,11 @@ export function Register () {
           <ErrorMessage>
             Sorry, but the maximum number of users limit is reached.
             We cannot allow new registrations.
+          </ErrorMessage>
+        )}
+        {sendResult.result === 'validation-error' && (
+          <ErrorMessage>
+            This username is already taken.
           </ErrorMessage>
         )}
         {sendResult.result === 'unauthorized-error' && (
@@ -76,7 +85,8 @@ export function Register () {
             ...register('last_name')
           }}
         />
-        <span><Checkbox type='checkbox' checked={agreement} onChange={() => setAgreement(!agreement)} />
+        <span>
+          <Checkbox type='checkbox' checked={agreement} onChange={() => setAgreement(!agreement)} />
           By continuing, you agree to {' '}
           <Link to='/terms-of-use' target='_blank'>
             Terms of Use
@@ -86,6 +96,11 @@ export function Register () {
           </Link>
           .
         </span>
+        <Note>
+          After completing the registration, we will subscribe you to our mailing list.
+          We will only send you emails to let you know
+          when <b>Early Access</b> is available for StrongNode Edge products
+        </Note>
         <Button variant='large' disabled={!agreement}>Confirm</Button>
       </Form>
     </>
@@ -122,4 +137,8 @@ const Title = styled.h1`
 `
 const HelpText = styled.div`
   margin: 32px 0 24px 0;
+`
+
+const Note = styled.p`
+  margin: 20px;
 `
