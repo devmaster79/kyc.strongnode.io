@@ -106,6 +106,10 @@ const Form = styled.form`
   margin-bottom: 40px;
   display: flex;
   flex-flow: column;
+
+  @media only screen and (max-width: 600px) {
+    padding: 0 10px;
+  }
 `
 
 const StyledInputField = styled(InputField)`
