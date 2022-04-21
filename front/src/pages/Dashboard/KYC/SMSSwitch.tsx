@@ -22,7 +22,6 @@ export const SMSSwitch = ({ registerProps, isDirty }: SMSSwitchProps) => {
 const TurnOffWarning = (props: Omit<AccessWarningModalProps, 'icon' | 'title'>) => (
   <AccessWarningModal
     title='Without SMS'
-    icon='sms'
     {...props}
   />
 )

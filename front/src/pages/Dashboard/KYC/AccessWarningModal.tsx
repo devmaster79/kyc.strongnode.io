@@ -4,7 +4,7 @@ import { IAnim } from '@ui/utils/useAnimated'
 
 export interface AccessWarningModalProps {
   title: string;
-  icon: ModalProps['icon'];
+  icon?: ModalProps['icon'];
   onClose: () => void;
   onSuccess: () => void;
   anim: IAnim

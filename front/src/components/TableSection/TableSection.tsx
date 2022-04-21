@@ -18,13 +18,13 @@ interface DataSet<Item> {
 interface TableSectionProps<Item extends Record<string, unknown>> {
   comingSoon?: string
   title: string
-  subtitle: string
-  dataSet: DataSet<Item>
+  subtitle: string | undefined
+  dataSet: any
   columns: Column[]
-  hideHeading: boolean
-  overwrittenFields?: { [ItemAttributeName in keyof Item]?: () => string }
+  hideHeading?: boolean
+  overwrittenFields?: any
   fetchData?: string
-  searchEnabled?: bool
+  searchEnabled?: boolean
 }
 
 function TableSection<Item extends Record<string, unknown>> (props: TableSectionProps<Item>) {
@@ -37,7 +37,7 @@ function TableSection<Item extends Record<string, unknown>> (props: TableSection
           <ComingSoonWrapper>
             <Icon name='info' height={24} width={24} viewBox='0 0 24 24' />
             <h2>{props.title}</h2>
-            <span>Comming soon</span>
+            <span>Coming soon</span>
           </ComingSoonWrapper>
           )
         : (
@@ -67,7 +67,7 @@ const TableSectionWrapper = styled.div`
   margin-bottom: 200px;
   margin-top: 32px;
 
-  background: ${props => props.theme.palette.background.secondary};
+  background: ${props => props.theme.palette.background.primary};
   border: 1px solid ${props => props.theme.palette.border.light};
   box-sizing: border-box;
   border-radius: 10px;

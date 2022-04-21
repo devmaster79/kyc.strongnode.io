@@ -7,6 +7,10 @@ import { useEffect } from 'react'
 import { AuthenticatorSwitch } from './AuthenticatorSwitch'
 import { SMSSwitch } from './SMSSwitch'
 import { WalletCarousel } from './WalletCarousel'
+import backgroundDark from '../../../assets/images/BG.png'
+import backgroundLight from '../../../assets/images/BG-light.png'
+import { Banner } from '../../../@ui/Banner/Banner'
+import * as React from 'react'
 
 interface FormFields {
   firstName: string,
@@ -80,6 +84,8 @@ export default function KYC () {
 
   return (
     <Container>
+      <Banner title='StrongNode dVPN coming soon.' description='Stay tuned for more information.' soon />
+
       <h1>StrongNode ID and KYC</h1>
 
       <FormContainer>
@@ -149,4 +155,8 @@ export const FormContainer = styled.div`
   gap: 32px;
   width: 65%;
   margin:auto;
+
+  @media only screen and (max-width: 600px) {
+    width: 100%;
+  }
 `

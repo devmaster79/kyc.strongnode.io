@@ -128,12 +128,12 @@ const EnableAuthenticatorAuthMessage = (props: MessageProps<typeof enableAuthent
   )
 }
 
-const Qr = styled('img')({
-  imageRendering: 'pixelated',
-  filter: 'invert(1)',
-  mixBlendMode: 'lighten',
-  transform: 'scale(1.2)'
-})
+const Qr = styled.img`
+  image-rendering: pixelated;
+  filter: invert(1);
+  transform: scale(1.2);
+  mix-blend-mode:${props => props.theme.palette.background.qr}
+`
 
 export const ModalForm = styled('div')({
   display: 'flex',

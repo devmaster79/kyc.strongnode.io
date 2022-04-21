@@ -22,7 +22,6 @@ export const PasswordSwitch = ({ registerProps, isDirty }: PasswordSwitchProps) 
 const TurnOffWarning = (props: Omit<AccessWarningModalProps, 'icon' | 'title'>) => (
   <AccessWarningModal
     title='Without password'
-    icon='kyc'
     {...props}
   />
 )

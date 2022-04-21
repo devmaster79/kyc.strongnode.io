@@ -16,6 +16,8 @@ import NFTDashboard from 'pages/Dashboard/NFTDashboard/NFTDashboard'
 import Kyc from 'pages/Dashboard/KYC/KYC'
 import AuthLayout from 'layouts/auth'
 import Identity from 'pages/Identity/Identity'
+import PrivacyPolicy from './pages/privacyPolicy'
+import TermsOfUse from './pages/termsOfUse'
 
 export const ROUTES = {
   DASHBOARD: {
@@ -41,7 +43,9 @@ export const ROUTES = {
   },
   // TODO: review these routes, and rename/relocate/remove if needed
   PROFILE: '/profile',
-  PRIVATE_SALE_INTEREST_FORM: '/private-sale-interest-form'
+  PRIVATE_SALE_INTEREST_FORM: '/private-sale-interest-form',
+  TERMS_OF_USE: '/terms-of-use',
+  PRIVACY_POLICY: '/privacy-policy'
 }
 
 /* prettier-ignore */
@@ -61,7 +65,8 @@ export default function Router () {
             <Route path={ROUTES.DASHBOARD.NFT} element={<NFTDashboard />} />
             <Route path={ROUTES.DASHBOARD.KYC} element={<Kyc />} />
             <Route path={ROUTES.DASHBOARD.IDENTITY} element={<Identity />} />
-
+            <Route path={ROUTES.PRIVACY_POLICY} element={<PrivacyPolicy />} />
+            <Route path={ROUTES.TERMS_OF_USE} element={<TermsOfUse />} />
           </Route>
           <Route
             path='*'
@@ -83,6 +88,8 @@ export default function Router () {
         </Route>
         <Route path={ROUTES.PROFILE} element={<Profile />} />
         <Route path={ROUTES.PRIVATE_SALE_INTEREST_FORM} element={<PrivateSaleInterestForm />} />
+        <Route path={ROUTES.PRIVACY_POLICY} element={<PrivacyPolicy />} />
+        <Route path={ROUTES.TERMS_OF_USE} element={<TermsOfUse />} />
         <Route
           path='*'
           element={<Navigate to={ROUTES.AUTH.VERIFY_EMAIL} replace />}

@@ -118,6 +118,7 @@ export default function NFTDashboard () {
         columns={columns}
         dataSet={dataSet}
         overwrittenFields={overwrittenFields}
+        hideHeading={false}
       />
     </>
   )

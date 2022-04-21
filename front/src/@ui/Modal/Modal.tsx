@@ -58,7 +58,7 @@ const ModalWrapper = styled.div<ModalWrapperProps>`
       height: 100vh;
       width: 100vw;
       padding: 8rem;
-      background-color: rgba(8, 7, 41, 0.8);
+      background-color: ${props => props.theme.palette.background.modal};
       position: fixed;
       top: 0;
       left: 0;
@@ -96,6 +96,11 @@ const StyledModal = styled.div<StyledModalProps>`
         margin-top: 24px;
         padding-bottom: 8px;
       }
+
+  @media only screen and (max-width: 600px) {
+    min-width: 95vw;
+    max-width: 95vw;
+  }
 `
 const Footer = styled.div`
       padding-top: 23px;
