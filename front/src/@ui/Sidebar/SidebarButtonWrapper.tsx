@@ -47,8 +47,8 @@ class SidebarButtonWrapper extends React.Component<SidebarButtonWrapperProps, Si
     super(props)
 
     // this handles default animation state on refresh
-    const defaultActiveButton = 'kyc'
-    const defaultOffset = (2 * 72) + 'px'
+    let defaultActiveButton = 'kyc'
+    let defaultOffset = (2 * 72) + 'px'
     buttonItems.forEach((item: IButtonItem, index: number) => {
       if (window.location.href.includes(item.path)) {
         // todo temporary disabled until Matthew transforms this into Functional component to useEffect for url updates
