@@ -30,7 +30,7 @@ export default function Dashboard () {
 
   const dash = useRef()
   useEffect(() => {
-    navigate('/dashboard/kyc')
+    // navigate('/dashboard/kyc')
     handleDashboard()
   }, [dash])
 

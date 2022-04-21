@@ -20,7 +20,7 @@ const buttonItems = [
     type: 'defi',
     tooltipHint: 'Defi',
     path: '/dashboard/app',
-    active: false
+    active: true
   },
   {
     type: 'nft',
@@ -52,8 +52,8 @@ class SidebarButtonWrapper extends React.Component<SidebarButtonWrapperProps, Si
     buttonItems.forEach((item: IButtonItem, index: number) => {
       if (window.location.href.includes(item.path)) {
         // todo temporary disabled until Matthew transforms this into Functional component to useEffect for url updates
-        // defaultActiveButton = item.type
-        // defaultOffset = (index * 72) + 'px'
+        defaultActiveButton = item.type
+        defaultOffset = (index * 72) + 'px'
       }
     })
 
