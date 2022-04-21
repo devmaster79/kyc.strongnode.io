@@ -2,7 +2,7 @@ import styled from '@emotion/styled'
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar'
 import 'react-circular-progressbar/dist/styles.css'
 
-interface CircleProgressBarProps {
+interface ProgressCircleProps {
   label: string,
   progressAmount: number,
   progressLabel: string,
@@ -16,7 +16,7 @@ export const Container = styled.div`
   padding-bottom: 128px;
 `
 
-export function Step (props: CircleProgressBarProps) {
+export function Step (props: ProgressCircleProps) {
   const { label, progressAmount, progressLabel, progressBorder, disabled } = props
   const percentage = progressAmount
 
