@@ -8,18 +8,15 @@ export type SwitchButtonProps = ComponentProps<typeof StyledInput> & {
   help?: ReactNode,
 } & ({ name: string} | { id: string });
 
-export default function SwitchButton({ children, name, checked, label, help, ...props }: SwitchButtonProps) {
-  if (checked === null) {
-    checked = false
-  }
+export default function SwitchButton(props: SwitchButtonProps) {
   return (
     <Container>
       <SwitchWrapper style={{ display: 'block' }}>
-        {label}
-        <StyledInput type='checkbox' checked={checked} hidden id={props.id || name} {...props} />
-        <StyledButton className='switch' htmlFor={props.id || name}>{children}</StyledButton>
+        {props.label}
+        <StyledInput type='checkbox' hidden id={props.id || props.name} {...props} />
+        <StyledButton className='switch' htmlFor={props.id || props.name}>{props.children}</StyledButton>
       </SwitchWrapper>
-      {help && <Help>{help}</Help>}
+      {props.help && <Help>{props.help}</Help>}
     </Container>
   )
 }
