@@ -6,10 +6,8 @@ import * as DashboardForm from '@ui/Dashboard/Form'
 import { useEffect } from 'react'
 import { AuthenticatorSwitch } from './AuthenticatorSwitch'
 import { SMSSwitch } from './SMSSwitch'
-import backgroundDark from '../../../assets/images/BG.png'
-import backgroundLight from '../../../assets/images/BG-light.png'
+import * as ProgressCircleSteps from '@ui/Dashboard/ProgressCircleSteps'
 import { Banner } from '../../../@ui/Banner/Banner'
-import * as React from 'react'
 
 interface FormFields {
   firstName: string,
@@ -68,6 +66,23 @@ export default function KYC () {
       <Banner title='StrongNode dVPN coming soon.' description='Stay tuned for more information.' soon />
 
       <h1>StrongNode ID and KYC</h1>
+      <ProgressCircleSteps.Container>
+        <ProgressCircleSteps.Step
+          label='user registration' progressAmount={60} progressLabel='A' progressBorder={false} disabled={false}
+        />
+        <ProgressCircleSteps.Separator />
+        <ProgressCircleSteps.Step
+          label='KYC' progressAmount={0} progressLabel='B' progressBorder={true} disabled={false}
+        />
+        <ProgressCircleSteps.Separator />
+        <ProgressCircleSteps.Step
+          label='Socials' progressAmount={0} progressLabel='D' progressBorder={true} disabled={true}
+        />
+        <ProgressCircleSteps.Separator />
+        <ProgressCircleSteps.Step
+          label='Optional' progressAmount={35} progressLabel='E' progressBorder={false} disabled={true}
+        />
+      </ProgressCircleSteps.Container>
       <DashboardForm.Form onSubmit={handleSubmit(onSubmit)} autoComplete='off'>
         <DashboardForm.InputGroup>
           <DashboardForm.Input inputProps={{ placeholder: 'First name', ...register('firstName') }} />
@@ -121,7 +136,6 @@ export const Container = styled.div`
   gap: 32px;
   width: 50%;
   margin:auto;
-
   @media only screen and (max-width: 600px) {
     width: 100%;
   }
