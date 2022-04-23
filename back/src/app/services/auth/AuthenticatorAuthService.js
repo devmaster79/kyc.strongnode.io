@@ -1,4 +1,4 @@
-const speakeasy = require('speakeasy');
+const speakeasy = require('@levminer/speakeasy');
 const QRCode = require('qrcode');
 const { MODE_2FA } = require('./TokenService');
 
