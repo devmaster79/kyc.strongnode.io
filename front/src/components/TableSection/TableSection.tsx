@@ -1,10 +1,10 @@
 import styled from '@emotion/styled'
 import InputField from '@ui/Input/InputField'
-import Select from '@ui/Select/Select'
 import MainTable from '@ui/Table/MainTable/MainTable'
 import Icon from '@ui/Icon/Icon'
-import { useState } from 'react'
-import { TypeOf } from 'yup'
+import { ChangeEvent, useState } from 'react'
+import { filter, some } from 'lodash';
+
 
 interface Column {
   id: string,
@@ -27,8 +27,19 @@ interface TableSectionProps<Item extends Record<string, unknown>> {
   searchEnabled?: boolean
 }
 
-function TableSection<Item extends Record<string, unknown>> (props: TableSectionProps<Item>) {
-  // const [selectedOption, setSelectedOption] = useState(selectOptions[0])
+function TableSection<Item extends Record<string, unknown>>(props: TableSectionProps<Item>) {
+  const [filteredDataSet, setFilteredDataSet] = useState<any>({});
+
+  const onChangeValue = (event: ChangeEvent<HTMLInputElement>) => {
+    const search = event.target.value.toLowerCase();
+    const filteredData = filter(props.dataSet.items, o => some(o, val => handleFilter(val, search)));
+    setFilteredDataSet({ items: filteredData });
+
+  }
+
+  const handleFilter = (val: any, search: string): boolean => {
+    return typeof val === 'string' ? val.toLowerCase().includes(search) : val.name?.toLowerCase()?.includes(search)
+  }
 
   return (
     <TableSectionWrapper {...props}>
@@ -39,23 +50,23 @@ function TableSection<Item extends Record<string, unknown>> (props: TableSection
             <h2>{props.title}</h2>
             <span>Coming soon</span>
           </ComingSoonWrapper>
-          )
+        )
         : (
           <>
             <HeaderWrapper>
               <h2>{props.title} <span>{props.subtitle}</span></h2>
               {props.searchEnabled &&
-                <InputField icon='search' inputProps={{ placeholder: 'Search' }} />}
+                <InputField icon='search' inputProps={{ placeholder: 'Search', onChange: onChangeValue }} />}
             </HeaderWrapper>
             <MainTable
-              dataSet={props.dataSet}
+              dataSet={filteredDataSet.items?.length > 0 ? filteredDataSet : props.dataSet}
               columns={props.columns}
               overwrittenFields={props.overwrittenFields || {}}
               fetchData={props.fetchData || null}
               hideHeading={props.hideHeading || false}
             />
           </>
-          )}
+        )}
     </TableSectionWrapper>
   )
 }

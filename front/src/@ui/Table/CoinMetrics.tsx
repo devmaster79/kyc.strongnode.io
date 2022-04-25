@@ -40,7 +40,7 @@ const sampleData = {
     {
       icon: {
         url: 'https://icons.iconarchive.com/icons/cjdowner/cryptocurrency-flat/1024/Bitcoin-BTC-icon.png',
-        name: 'BTC'
+        name: 'LTC'
       },
       owned: '50 | 20$',
       value: '2010$',
@@ -49,7 +49,7 @@ const sampleData = {
     {
       icon: {
         url: 'https://icons.iconarchive.com/icons/cjdowner/cryptocurrency-flat/1024/Bitcoin-BTC-icon.png',
-        name: 'BTC'
+        name: 'RTC'
       },
       owned: '50 | 20$',
       value: '2010$',
@@ -82,7 +82,7 @@ interface IDataIcon {
 }
 
 interface IData {
-  [key:string]: object
+  [key: string]: object
 }
 
 type CoinMetricsProps = {
@@ -93,7 +93,7 @@ type CoinMetricsProps = {
 }
 
 export const CoinMetrics = (props: CoinMetricsProps) => {
-  const [tableData, setTableData] = useState({})
+  const [tableData, setTableData] = useState<{ [key: string]: any[] }>({})
 
   useEffect(() => {
     loadTokenMetrics()
@@ -106,7 +106,7 @@ export const CoinMetrics = (props: CoinMetricsProps) => {
   }, [])
 
   const loadTokenMetrics = async () => {
-    const data: any = await cryptoDataService.getTokenMetrics()
+    const data: any = await cryptoDataService.getTokenMetrics();
     setTableData(formatTableData(data.data))
   }
 
@@ -138,7 +138,7 @@ export const CoinMetrics = (props: CoinMetricsProps) => {
   }
 
   return (
-    <TableSection title={props.title} subtitle={props.subtitle} overwrittenFields={overwrittenFields} dataSet={(Object.keys(tableData).length > 0) ? tableData : sampleData} columns={sampleColumns} />
+    <TableSection title={props.title} searchEnabled={true} subtitle={props.subtitle} overwrittenFields={overwrittenFields} dataSet={(tableData.items?.length > 0) ? tableData : sampleData} columns={sampleColumns} />
   )
 }
 
