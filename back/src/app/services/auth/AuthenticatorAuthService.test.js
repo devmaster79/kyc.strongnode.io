@@ -4,8 +4,8 @@ const { AuthenticatorAuthService } = require('./AuthenticatorAuthService');
 const { TokenService } = require('./TokenService');
 
 const OriginalDate = Date;
-const setTime = (t) => {Date = { now() { return t } }};
-const resetTime = () => {Date = OriginalDate};
+const setTime = (t) => { Date = { now() { return t } } };
+const resetTime = () => { Date = OriginalDate };
 
 describe('Authenticator Authentication', () => {
     const tokenService = new TokenService();
@@ -25,7 +25,7 @@ describe('Authenticator Authentication', () => {
             },
             update(data, query) {
                 assert.equal(userRecord.email, query.where.email)
-                if(data.authenticator_qr_secret && data.authenticator_qr_secret.length) {
+                if (data.authenticator_qr_secret && data.authenticator_qr_secret.length) {
                     setTime(1000)
                     data.authenticator_qr_secret = 'GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ';
                     // with this date and secret the token will be this:
@@ -37,21 +37,20 @@ describe('Authenticator Authentication', () => {
             }
         };
 
-        const authenticatorAuthService = new AuthenticatorAuthService(fakeUserRepository, tokenService);
-
-        const preAuthResult = await authenticatorAuthService.authByAuthenticator(userRecord.email, "123");
+        const service = new AuthenticatorAuthService(fakeUserRepository, tokenService);
+        const preAuthResult = await service.authByAuthenticator(userRecord.email, "123123");
         assert.equal(preAuthResult, null);
 
-        const generateResult = await authenticatorAuthService.generateQRCode(userRecord.email);
+        const generateResult = await service.generateQRCode(userRecord.email);
         assert.equal(typeof generateResult, 'string');
 
-        const activateResult = await authenticatorAuthService.activateAuthenticatorAuth(
+        const activateResult = await service.activateAuthenticatorAuth(
             userRecord.email,
             actualToken
         );
         assert.equal(activateResult, true);
 
-        const authResult = await authenticatorAuthService.authByAuthenticator(
+        const authResult = await service.authByAuthenticator(
             userRecord.email,
             actualToken
         );

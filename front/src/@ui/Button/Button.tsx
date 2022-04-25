@@ -32,17 +32,24 @@ const Button = styled.button<StyledButtonProps>`
         min-width: 200px;
         margin: 8px;
       `
-    } else if(props.variant === 'xl') {
+    } else if (props.variant === 'xl') {
       return css`
         min-width: 530px;
         font-size: 14px;
         padding: 15px 24px;
+        @media only screen and (max-width: 550px) {
+          min-width: 85vw;
+        }
       `
-    } else if(props.variant === 'large') {
+    } else if (props.variant === 'large') {
     return css`
       min-width: 360px;
       font-size: 14px;
       padding: 21px;
+
+      @media only screen and (max-width: 400px) {
+        min-width: 85vw;
+      }
     `
   }
   }}
