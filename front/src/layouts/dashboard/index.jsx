@@ -18,6 +18,8 @@ const MainStyle = styled('div')(({ theme }) => ({
   flexGrow: 1,
   overflow: 'auto',
   minHeight: '100%',
+  marginLeft: 'auto',
+  maxWidth: 'calc(100% - 104px - ' + theme.spacing(2) + ')',
   paddingTop: 32,
   paddingLeft: theme.spacing(2),
   paddingRight: theme.spacing(2),
@@ -28,7 +30,7 @@ const MainStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-export default function DashboardLayout() {
+export default function DashboardLayout () {
   const theme = useTheme()
   const { collapseClick } = useCollapseDrawer()
   const [open, setOpen] = useState(false)
@@ -46,7 +48,8 @@ export default function DashboardLayout() {
           ...(collapseClick && {
             ml: '130px'
           })
-        }}>
+        }}
+      >
         <Outlet />
       </MainStyle>
     </RootStyle>
