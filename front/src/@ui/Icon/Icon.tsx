@@ -1,19 +1,19 @@
-import useTheme from '@mui/material/styles/useTheme'
-import { CSSProperties, SVGProps } from 'react'
-import { Icons } from './CustomIcons'
+import useTheme from '@mui/material/styles/useTheme';
+import { CSSProperties, SVGProps } from 'react';
+import { Icons } from './CustomIcons';
 
 export type IconProps = {
-  name: keyof typeof Icons,
-  color?: string,
-  height?: number,
-  width?: number,
-  viewBox?: string,
-  style?: CSSProperties
-}
+  name: keyof typeof Icons;
+  color?: string;
+  height?: number;
+  width?: number;
+  viewBox?: string;
+  style?: CSSProperties;
+};
 
-function Icon (props: IconProps) {
-  const theme = useTheme()
-  const CurrentIcon = Icons[props.name]
+function Icon(props: IconProps) {
+  const theme = useTheme();
+  const CurrentIcon = Icons[props.name];
 
   return (
     <SvgIcon
@@ -25,12 +25,12 @@ function Icon (props: IconProps) {
     >
       {CurrentIcon}
     </SvgIcon>
-  )
+  );
 }
 
-export default Icon
+export default Icon;
 
-export function SvgIcon (props: SVGProps<SVGSVGElement>) {
+export function SvgIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
@@ -43,5 +43,5 @@ export function SvgIcon (props: SVGProps<SVGSVGElement>) {
       fill={props.fill || 'none'}
       style={{ ...props.style, overflow: 'initial' }}
     />
-  )
+  );
 }

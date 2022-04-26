@@ -1,19 +1,19 @@
-import styled from '@emotion/styled'
+import styled from '@emotion/styled';
 
 export const TableWrapper = styled.div`
   overflow: auto;
   height: 400px;
-`
+`;
 
 export const Table = styled.table`
-  color: ${props => props.theme.palette.text.primary};
-  background-color: ${props => props.theme.palette.background.primary};
+  color: ${(props) => props.theme.palette.text.primary};
+  background-color: ${(props) => props.theme.palette.background.primary};
   width: 100%;
   border-collapse: collapse;
 
   tr {
     height: 72px;
-    border-top: 1px solid ${props => props.theme.palette.border.light};
+    border-top: 1px solid ${(props) => props.theme.palette.border.light};
   }
 
   tr:first-child {
@@ -23,6 +23,6 @@ export const Table = styled.table`
   th {
     text-align: left;
     text-transform: uppercase;
-    color: ${props => props.theme.palette.text.secondary};
+    color: ${(props) => props.theme.palette.text.secondary};
   }
-`
+`;

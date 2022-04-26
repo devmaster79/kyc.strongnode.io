@@ -8,6 +8,18 @@
     "preview": "vite preview",
     "lint": "eslint src/"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx}": [
+      "eslint",
+      "pretty-quick — staged",
+      "git add"
+    ]
+  },
   "dependencies": {
     "@emotion/css": "^11.7.1",
     "@emotion/react": "^11.8.2",
@@ -71,14 +83,15 @@
     "eslint": "^8.11.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-config-react-app": "^7.0.0",
-    "eslint-config-standard": "^17.0.0-1",
-    "eslint-config-standard-jsx": "^11.0.0-1",
     "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-promise": "^6.0.0",
     "eslint-plugin-react": "^7.29.4",
     "eslint-plugin-sonarjs": "^0.12.0",
+    "husky": "^7.0.4",
+    "lint-staged": "^12.4.0",
+    "prettier": "2.6.2",
     "typescript": "^4.6.2",
     "vite": "^2.8.6",
     "vite-plugin-svgr": "^1.1.0",

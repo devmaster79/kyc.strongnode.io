@@ -1,11 +1,11 @@
 @import url('/src/assets/fonts/satoshi.css');
 
 @font-face {
-  font-family: "Halyard";
-  src: url("/src/assets/fonts/Halyard Display Bold.ttf");
+  font-family: 'Halyard';
+  src: url('/src/assets/fonts/Halyard Display Bold.ttf');
 }
 
 @font-face {
-  font-family: "Halyard-Book";
-  src: url("/src/assets/fonts/Halyard Display Light.ttf");
+  font-family: 'Halyard-Book';
+  src: url('/src/assets/fonts/Halyard Display Light.ttf');
 }

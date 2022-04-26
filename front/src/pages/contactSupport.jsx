@@ -95,7 +95,8 @@ function ContactSupport() {
           <Button
             variant="contained"
             type="submit"
-            sx={{ width: '20%', marginTop: '24px', cursor: 'pointer' }}>
+            sx={{ width: '20%', marginTop: '24px', cursor: 'pointer' }}
+          >
             {buttonTitle}
           </Button>
         </form>

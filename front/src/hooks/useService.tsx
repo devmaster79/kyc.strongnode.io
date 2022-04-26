@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { useState } from 'react'
+import { useState } from 'react';
 
 export interface ServiceProps<T extends (...args: any) => any> {
   call: T;
@@ -17,17 +17,15 @@ export interface ServiceProps<T extends (...args: any) => any> {
  *  1. does not throw anything
  *  2. and they will return the res.data directly.
  */
-export function useService<T extends (...args: any) => any>(
-  apiCall: T
-): ServiceProps<T> {
-  const [data, setData] = useState<any>({ result: 'waiting' })
+export function useService<T extends (...args: any) => any>(apiCall: T): ServiceProps<T> {
+  const [data, setData] = useState<any>({ result: 'waiting' });
   const call: any = async (...withData: any[]) => {
-    setData({ result: 'loading' })
-    const result = await apiCall(...withData)
-    setData(result)
-    return result
-  }
-  return { call, data }
+    setData({ result: 'loading' });
+    const result = await apiCall(...withData);
+    setData(result);
+    return result;
+  };
+  return { call, data };
 }
 
 type ValueOf<T> = T[keyof T];
@@ -46,38 +44,27 @@ export interface ServicesPropsDescription<Last, Data, DataPerServices> {
   dataPerService: DataPerServices;
 }
 
-export type PossibleServicesPropsDescriptions<
-  Services extends ObjectOfFunctions
-> =
-  | ServicesPropsDescription<
-      null,
-      { result: 'waiting' },
-      DataPerServicesWaiting<Services>
-    >
-  | ValueOf<
-      {
-        [ServiceName in keyof Services]: ServicesPropsDescription<
-          ServiceName,
-          SingleServiceData<Services[ServiceName]>,
-          DataPerServices<Services>
-        >;
-      }
-    >;
+export type PossibleServicesPropsDescriptions<Services extends ObjectOfFunctions> =
+  | ServicesPropsDescription<null, { result: 'waiting' }, DataPerServicesWaiting<Services>>
+  | ValueOf<{
+      [ServiceName in keyof Services]: ServicesPropsDescription<
+        ServiceName,
+        SingleServiceData<Services[ServiceName]>,
+        DataPerServices<Services>
+      >;
+    }>;
 
 /**
  * The return type of useServices hook
  */
-export type ServicesProps<
-  Services extends ObjectOfFunctions
-> = PossibleServicesPropsDescriptions<Services> & Services;
+export type ServicesProps<Services extends ObjectOfFunctions> =
+  PossibleServicesPropsDescriptions<Services> & Services;
 
 export type DataPerServicesWaiting<Services extends ObjectOfFunctions> = {
   [ServiceName in keyof Services]: { result: 'waiting' };
 };
 export type DataPerServices<Services extends ObjectOfFunctions> = {
-  [ServiceName in keyof Services]:
-    | SingleServiceData<Services[ServiceName]>
-    | { result: 'waiting' };
+  [ServiceName in keyof Services]: SingleServiceData<Services[ServiceName]> | { result: 'waiting' };
 };
 
 /**
@@ -89,42 +76,37 @@ export type DataPerServices<Services extends ObjectOfFunctions> = {
  *  1. does not throw anything
  *  2. and they will return the res.data directly.
  */
-export function useServices<S extends ObjectOfFunctions> (
-  apiCalls: S
-): ServicesProps<S> {
-  const [data, setData] = useState<any>({ result: 'waiting' })
+export function useServices<S extends ObjectOfFunctions>(apiCalls: S): ServicesProps<S> {
+  const [data, setData] = useState<any>({ result: 'waiting' });
   const initialDataPerService: DataPerServices<S> = Object.fromEntries(
-    Object.keys(apiCalls).map((apiCallName) => [
-      apiCallName,
-      { result: 'waiting' }
-    ])
-  ) as any
+    Object.keys(apiCalls).map((apiCallName) => [apiCallName, { result: 'waiting' }])
+  ) as any;
 
-  const [dataPerService, setDataPerService] = useState(initialDataPerService)
-  const [last, setLast] = useState<keyof S | null>(null)
-  const call: any = (key: string, apiCall: any) => async (
-    ...withData: any[]
-  ) => {
-    setLast(key)
-    setData({ result: 'loading' })
-    setDataPerService((dataPerService) => ({
-      ...dataPerService,
-      [key]: { result: 'loading' }
-    }))
-    const result = await apiCall(...withData)
-    setData(result)
-    setDataPerService((dataPerService) => ({
-      ...dataPerService,
-      [key]: result
-    }))
-    return result
-  }
+  const [dataPerService, setDataPerService] = useState(initialDataPerService);
+  const [last, setLast] = useState<keyof S | null>(null);
+  const call: any =
+    (key: string, apiCall: any) =>
+    async (...withData: any[]) => {
+      setLast(key);
+      setData({ result: 'loading' });
+      setDataPerService((dataPerService) => ({
+        ...dataPerService,
+        [key]: { result: 'loading' }
+      }));
+      const result = await apiCall(...withData);
+      setData(result);
+      setDataPerService((dataPerService) => ({
+        ...dataPerService,
+        [key]: result
+      }));
+      return result;
+    };
 
-  const calls: any = {}
-  const keys = Object.keys(apiCalls)
+  const calls: any = {};
+  const keys = Object.keys(apiCalls);
   for (const i of keys) {
-    calls[i] = call(i, apiCalls[i])
+    calls[i] = call(i, apiCalls[i]);
   }
 
-  return { last, data, dataPerService, ...calls }
+  return { last, data, dataPerService, ...calls };
 }

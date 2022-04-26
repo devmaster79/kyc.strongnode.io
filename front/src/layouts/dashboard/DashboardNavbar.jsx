@@ -89,7 +89,8 @@ export default function DashboardNavbar({ onOpenSidebar }) {
           width: { lg: `calc(100% - ${COLLAPSE_WIDTH}px + 30px)` },
           transition: { lg: 'width .2s' }
         })
-      }}>
+      }}
+    >
       <Box>
         <Snackbar
           anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
@@ -97,13 +98,15 @@ export default function DashboardNavbar({ onOpenSidebar }) {
           autoHideDuration={6000}
           //onClose={handleClose}
           message="Please complete your KYC registration"
-          action={action}>
+          action={action}
+        >
           <MuiAlert
             variant="filled"
             elevation={6}
             onClose={handleClose}
             severity="warning"
-            sx={{ width: '100%' }}>
+            sx={{ width: '100%' }}
+          >
             Please complete your KYC registration
           </MuiAlert>
         </Snackbar>
@@ -116,13 +119,15 @@ export default function DashboardNavbar({ onOpenSidebar }) {
           //onClose={handleClose}
           message="Please complete your SMS registration"
           action={smsAction}
-          sx={{ marginTop: open[0] ? '60px' : '10px' }}>
+          sx={{ marginTop: open[0] ? '60px' : '10px' }}
+        >
           <MuiAlert
             variant="filled"
             elevation={6}
             onClose={handleSmsClose}
             severity="warning"
-            sx={{ width: '100%' }}>
+            sx={{ width: '100%' }}
+          >
             Please complete your SMS registration
           </MuiAlert>
         </Snackbar>
@@ -150,7 +155,8 @@ export default function DashboardNavbar({ onOpenSidebar }) {
           variant="body2"
           sx={{ ml: 4, display: { xs: 'none', md: 'block' } }}
           color="rgba(255,255,255,0.5)"
-          fontFamily="Halyard-Book">
+          fontFamily="Halyard-Book"
+        >
           Check out the latest SNE token metrics 300+ investors have locked up 20m+ tokens
         </Typography>
         <Box sx={{ flexGrow: 1 }} />

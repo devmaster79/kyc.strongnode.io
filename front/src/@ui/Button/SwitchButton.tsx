@@ -1,5 +1,5 @@
-import styled from '@emotion/styled'
-import { ComponentProps, ReactNode } from 'react'
+import styled from '@emotion/styled';
+import { ComponentProps, ReactNode } from 'react';
 
 export type SwitchButtonProps = ComponentProps<typeof StyledInput> & {
   children?: ReactNode,
@@ -18,7 +18,7 @@ export default function SwitchButton(props: SwitchButtonProps) {
       </SwitchWrapper>
       {props.help && <Help>{props.help}</Help>}
     </Container>
-  )
+  );
 }
 
 const Container = styled.div`
@@ -29,11 +29,11 @@ const Container = styled.div`
   font-family: 'Satoshi-Variable';
   font-style: normal;
   font-weight: 900;
-`
+`;
 
 const SwitchWrapper = styled.label`
   display: block;
-`
+`;
 
 const StyledInput = styled.input<{checked: boolean}>`
     display: inline-block;
@@ -62,7 +62,7 @@ const StyledButton = styled.label`
   width: 50px;
   height: 24px;
   border-radius: 20px;
-  background:  ${props => props.theme.palette.background.switch};
+  background: ${(props) => props.theme.palette.background.switch};
   vertical-align: middle;
   cursor: pointer;
   margin-left: 14px;
@@ -76,12 +76,12 @@ const StyledButton = styled.label`
     height: 20px;
     background: #fafafa;
     border-radius: 10px;
-    transition: left 0.20s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: left 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   }
-`
+`;
 
 const Help = styled.div`
   font-weight: 500;
   font-size: 0.9em;
-  color:  ${props => props.theme.palette.primary[75]};
-`
+  color: ${(props) => props.theme.palette.primary[75]};
+`;

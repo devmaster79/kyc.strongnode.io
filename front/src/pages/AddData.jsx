@@ -97,7 +97,8 @@ export default function Dashboard() {
                 display: { xs: 'flex' },
                 justifyContent: { xs: 'space-evenly' },
                 flexWrap: { xs: 'wrap', md: 'nowrap' }
-              }}>
+              }}
+            >
               <MyStack spacing={3} sx={{ width: '100%' }}>
                 <TextField
                   InputProps={{ style: { color: 'white' } }}
@@ -122,7 +123,8 @@ export default function Dashboard() {
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
                   value={type}
-                  onChange={(event) => setType(event.target.value)}>
+                  onChange={(event) => setType(event.target.value)}
+                >
                   {types.map((data, i) => {
                     return (
                       <MenuItem value={i} key={i}>
