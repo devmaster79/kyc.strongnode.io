@@ -57,8 +57,8 @@ export const SwitchWithModal = ({
     <>
       <SwitchButton
         name={registerProps.name}
-        checked={registerProps.value}
-        onChange={(event) => handleChange(event.target.checked)}
+        checked={registerProps.value === null ? false : registerProps.value}
+        onChange={event => handleChange(event.target.checked)}
         label={label}
         help={helpText}
       />
