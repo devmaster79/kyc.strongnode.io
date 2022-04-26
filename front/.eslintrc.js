@@ -11,8 +11,6 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'plugin:sonarjs/recommended',
     'plugin:promise/recommended',
-    'standard',
-    'standard-jsx',
     'prettier'
   ],
   parser: '@typescript-eslint/parser',
