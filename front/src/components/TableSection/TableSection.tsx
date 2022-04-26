@@ -32,12 +32,12 @@ function TableSection<Item extends Record<string, unknown>>(props: TableSectionP
 
   const onChangeValue = (event: ChangeEvent<HTMLInputElement>) => {
     const search = event.target.value.toLowerCase();
-    const filteredData = filter(props.dataSet.items, o => some(o, val => handleFilter(val, search)));
+    const filteredData = props.dataSet.items.filter((o: any) => Object.values(o).some((val: any) => handleFilter(val, search)));
     setFilteredDataSet({ items: filteredData });
 
   }
 
-  const handleFilter = (val: any, search: string): boolean => {
+  const handleFilter = (val: string | { [key: string]: any }, search: string): boolean => {
     return typeof val === 'string' ? val.toLowerCase().includes(search) : val.name?.toLowerCase()?.includes(search)
   }
 
