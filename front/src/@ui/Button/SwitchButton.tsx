@@ -3,19 +3,20 @@ import { ComponentProps, ReactNode } from 'react'
 
 export type SwitchButtonProps = ComponentProps<typeof StyledInput> & {
   children?: ReactNode,
+  checked: boolean,
   label: string,
   help?: ReactNode,
 } & ({ name: string} | { id: string });
 
-export default function SwitchButton ({ children, name, label, help, ...props }: SwitchButtonProps) {
+export default function SwitchButton(props: SwitchButtonProps) {
   return (
     <Container>
       <SwitchWrapper style={{ display: 'block' }}>
-        {label}
-        <StyledInput type='checkbox' hidden id={props.id || name} {...props} />
-        <StyledButton className='switch' htmlFor={props.id || name}>{children}</StyledButton>
+        {props.label}
+        <StyledInput type='checkbox' hidden id={props.id || props.name} {...props} />
+        <StyledButton className='switch' htmlFor={props.id || props.name}>{props.children}</StyledButton>
       </SwitchWrapper>
-      {help && <Help>{help}</Help>}
+      {props.help && <Help>{props.help}</Help>}
     </Container>
   )
 }
@@ -34,7 +35,7 @@ const SwitchWrapper = styled.label`
   display: block;
 `
 
-const StyledInput = styled.input`
+const StyledInput = styled.input<{checked: boolean}>`
     display: inline-block;
     position: absolute;
     margin-top: 2px;
@@ -46,15 +47,13 @@ const StyledInput = styled.input`
     transition: background 0.28s cubic-bezier(0.4, 0, 0.2, 1);
     opacity: 0;
     margin-left: 14px;
-
-    &:checked + .switch {
+    ${props => props.checked && `+ .switch {
       background: #AA1FEC;
-    }
-    &:checked + .switch::before {
-        left: 24px;
-        background: #fff;
-    }
-
+    }`}
+    ${props => props.checked && `+ .switch::before {
+      left: 24px;
+      background: #fff;
+    }`}
 `
 
 const StyledButton = styled.label`
