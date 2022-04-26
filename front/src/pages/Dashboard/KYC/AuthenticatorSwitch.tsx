@@ -1,11 +1,11 @@
-import { AccessWarningModal, AccessWarningModalProps } from './AccessWarningModal'
-import { AuthenticatorSetupModal } from './AuthenticatorSetupModal'
-import { SwitchWithModal, SwitchWithModalProps } from './SwitchWithModal'
+import { AccessWarningModal, AccessWarningModalProps } from './AccessWarningModal';
+import { AuthenticatorSetupModal } from './AuthenticatorSetupModal';
+import { SwitchWithModal, SwitchWithModalProps } from './SwitchWithModal';
 
 export type AuthenticatorSwitchProps = {
-  registerProps: SwitchWithModalProps['registerProps']
-  isDirty: SwitchWithModalProps['isDirty']
-}
+  registerProps: SwitchWithModalProps['registerProps'];
+  isDirty: SwitchWithModalProps['isDirty'];
+};
 
 export const AuthenticatorSwitch = ({ registerProps, isDirty }: AuthenticatorSwitchProps) => {
   return (
@@ -14,14 +14,11 @@ export const AuthenticatorSwitch = ({ registerProps, isDirty }: AuthenticatorSwi
       TurnOnModal={AuthenticatorSetupModal}
       TurnOffModal={TurnOffWarning}
       registerProps={registerProps}
-      label='Authenticator'
+      label="Authenticator"
     />
-  )
-}
+  );
+};
 
 const TurnOffWarning = (props: Omit<AccessWarningModalProps, 'icon' | 'title'>) => (
-  <AccessWarningModal
-    title='Without Authenticator'
-    {...props}
-  />
-)
+  <AccessWarningModal title="Without Authenticator" {...props} />
+);

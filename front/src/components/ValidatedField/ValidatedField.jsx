@@ -36,7 +36,8 @@ const TermsText = () => (
       paddingLeft: '12px',
       color: 'white',
       fontFamily: 'Halyard-Book'
-    }}>
+    }}
+  >
     By continuing, you agree to{' '}
     <Link to="/terms-of-use" target="_blank">
       Terms of Use

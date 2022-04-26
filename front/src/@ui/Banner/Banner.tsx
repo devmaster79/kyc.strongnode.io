@@ -1,12 +1,12 @@
-import React from 'react'
-import styled from '@emotion/styled/macro'
-import background from '../../assets/images/banner_background.png'
+import React from 'react';
+import styled from '@emotion/styled/macro';
+import background from '../../assets/images/banner_background.png';
 
 export type BannerProps = {
-  title: string,
-  description: string,
-  soon?: boolean
-}
+  title: string;
+  description: string;
+  soon?: boolean;
+};
 
 export const Banner = (props: BannerProps) => {
   // todo
@@ -16,16 +16,13 @@ export const Banner = (props: BannerProps) => {
         <Title>{props.title}</Title>
         <Description>{props.description}</Description>
       </TextWrapper>
-      {props.soon &&
-        <ComingSoon>
-          Soon
-        </ComingSoon>}
+      {props.soon && <ComingSoon>Soon</ComingSoon>}
     </BannerWrapper>
-  )
-}
+  );
+};
 
 const BannerWrapper = styled.div`
-  background-image: url("${background}");
+  background-image: url('${background}');
   background-repeat: no-repeat;
   background-size: cover;
   border: 1px solid rgba(255, 255, 255, 0.12);
@@ -39,7 +36,7 @@ const BannerWrapper = styled.div`
   @media only screen and (max-width: 600px) {
     height: max-content;
   }
-`
+`;
 
 const TextWrapper = styled.div`
   position: absolute;
@@ -55,20 +52,20 @@ const TextWrapper = styled.div`
     margin-top: 16px;
     text-align: center;
   }
-`
+`;
 
 const Title = styled.p`
   font-weight: bold;
   font-size: 24px;
   line-height: 100%;
   color: white;
-`
+`;
 
 const Description = styled.p`
   font-size: 24px;
-  color: #FFFFFF;
+  color: #ffffff;
   color: white;
-`
+`;
 
 const ComingSoon = styled.div`
   position: absolute;
@@ -96,4 +93,4 @@ const ComingSoon = styled.div`
     margin-left: auto;
     margin-right: auto;
   }
-`
+`;

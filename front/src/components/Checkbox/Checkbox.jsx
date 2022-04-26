@@ -1,10 +1,5 @@
-import React from "react";
-import {
-  CheckboxContainer,
-  HiddenCheckbox,
-  StyledCheckbox,
-  Icon,
-} from "./style";
+import React from 'react';
+import { CheckboxContainer, HiddenCheckbox, StyledCheckbox, Icon } from './style';
 
 const Checkbox = ({ className, checked, ...props }) => (
   <CheckboxContainer className={className}>

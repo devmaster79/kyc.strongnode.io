@@ -80,7 +80,8 @@ export default function AccountPopover() {
         }}
         alignItems="center"
         onClick={handleClick}
-        justifyContent="space-between">
+        justifyContent="space-between"
+      >
         <Avatar src={avatar} alt="avatar" />
 
         <Stack sx={{ color: 'black', ml: 2, mr: 2 }}>
@@ -111,7 +112,8 @@ export default function AccountPopover() {
         }}
         sx={{
           top: { xs: '-2vh', md: -12, lg: -3 }
-        }}>
+        }}
+      >
         <Stack
           sx={{
             height: 320,
@@ -122,7 +124,8 @@ export default function AccountPopover() {
             borderRadius: '30px',
             pl: 1,
             pr: 1
-          }}>
+          }}
+        >
           <Stack alignItems="center">
             <Avatar sx={{ mt: 2 }} src={avatar} alt="avatar" />
             <Typography color="white" sx={{ fontSize: 18 }}>
@@ -140,13 +143,15 @@ export default function AccountPopover() {
           <Typography
             onClick={toProfile}
             color="white"
-            sx={{ cursor: 'pointer', fontSize: 18, ml: 3 }}>
+            sx={{ cursor: 'pointer', fontSize: 18, ml: 3 }}
+          >
             My account
           </Typography>
           <Typography
             onClick={toPasswordChange}
             color="white"
-            sx={{ cursor: 'pointer', fontSize: 18, ml: 3 }}>
+            sx={{ cursor: 'pointer', fontSize: 18, ml: 3 }}
+          >
             Change password
           </Typography>
           <Typography color="white" sx={{ fontSize: 18, ml: 3 }}>

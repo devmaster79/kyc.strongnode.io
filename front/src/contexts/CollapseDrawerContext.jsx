@@ -52,7 +52,8 @@ function CollapseDrawerProvider({ children }) {
         onToggleCollapse: handleToggleCollapse,
         onHoverEnter: handleHoverEnter,
         onHoverLeave: handleHoverLeave
-      }}>
+      }}
+    >
       {children}
     </CollapseDrawerContext.Provider>
   );

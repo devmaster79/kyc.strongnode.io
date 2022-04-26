@@ -136,18 +136,15 @@ function PrivateSaleInterestForm() {
     setInvestorFundWebsite(event.target.value);
   };
 
-
   const handleCreateInvestor = useCallback(async (data) => {
     try {
       const res = await userService.createInvestor(data);
       if (res.data) {
-        if (res.data.status == 'created')
-          setFormSubmitted(1)
+        if (res.data.status == 'created') setFormSubmitted(1);
         else {
-          alert('this is TEMP error')
-          console.error(res.data)
+          alert('this is TEMP error');
+          console.error(res.data);
         }
-
       }
     } catch (err) {
       console.error('Error for create password', err);
@@ -172,28 +169,30 @@ function PrivateSaleInterestForm() {
 
   return (
     <EntryPage>
-      { formSubmitted &&
+      {formSubmitted && (
         <EntryCard>
           <MagicImg />
           <h2 style={{ marginTop: 25, marginBottom: 20 }}>Form submitted!</h2>
-          <P>We&apos;ve sent a magic login link. Please check your email to login to StrongNodeID.</P>
+          <P>
+            We&apos;ve sent a magic login link. Please check your email to login to StrongNodeID.
+          </P>
           <Button style={{ width: '30%' }} full onClick={() => navigate('/')}>
             OK
           </Button>
         </EntryCard>
-      }
+      )}
 
-      { !formSubmitted &&
+      {!formSubmitted && (
         <Wrapper>
           <h2 style={{ fontFamily: 'Halyard' }}>StrongNode Private Sale Interest Form</h2>
           <p>
             This form is for investors interested in participating in the private sale round for the
-            StrongNode token. Your responses will be kept private and will not be distributed without
-            prior consent.
+            StrongNode token. Your responses will be kept private and will not be distributed
+            without prior consent.
           </p>
           <p>
-            A representative from StrongNode will reach out to you after your submittion is reviewed.
-            KYC will be required for all StrongNode private sale participants.
+            A representative from StrongNode will reach out to you after your submittion is
+            reviewed. KYC will be required for all StrongNode private sale participants.
           </p>
 
           <Line full />
@@ -203,11 +202,11 @@ function PrivateSaleInterestForm() {
                 <InputGroup>
                   <h5>Name *</h5>
                   <Input
-                      type="text"
-                      placeholder="Name"
-                      id="name"
-                      value={investorName}
-                      onChange={handleInvestorNameInputChange}
+                    type="text"
+                    placeholder="Name"
+                    id="name"
+                    value={investorName}
+                    onChange={handleInvestorNameInputChange}
                   />
                 </InputGroup>
               </InputCol>
@@ -216,11 +215,11 @@ function PrivateSaleInterestForm() {
                 <InputGroup>
                   <h5>Telegram Handle(@username)</h5>
                   <Input
-                      type="text"
-                      placeholder="@username"
-                      id="telegram"
-                      value={investorTelegramId}
-                      onChange={handleInvestorTelegramIdInputChange}
+                    type="text"
+                    placeholder="@username"
+                    id="telegram"
+                    value={investorTelegramId}
+                    onChange={handleInvestorTelegramIdInputChange}
                   />
                 </InputGroup>
               </InputCol>
@@ -231,11 +230,11 @@ function PrivateSaleInterestForm() {
                 <InputGroup>
                   <h5>Country of Residence*</h5>
                   <Input
-                      type="text"
-                      placeholder="USA"
-                      id="country"
-                      value={investorCountry}
-                      onChange={handleInvestorCountryInputChange}
+                    type="text"
+                    placeholder="USA"
+                    id="country"
+                    value={investorCountry}
+                    onChange={handleInvestorCountryInputChange}
                   />
                 </InputGroup>
               </InputCol>
@@ -244,11 +243,11 @@ function PrivateSaleInterestForm() {
                 <InputGroup>
                   <h5>Commitment amount (Minimum $500) *</h5>
                   <Input
-                      type="text"
-                      placeholder="500"
-                      id="amount"
-                      value={investorCommitmentAmount}
-                      onChange={handleInvestorCommitmentAmountInputChange}
+                    type="text"
+                    placeholder="500"
+                    id="amount"
+                    value={investorCommitmentAmount}
+                    onChange={handleInvestorCommitmentAmountInputChange}
                   />
                 </InputGroup>
               </InputCol>
@@ -259,11 +258,11 @@ function PrivateSaleInterestForm() {
                 <InputGroup>
                   <h5>Wallet address</h5>
                   <Input
-                      type="text"
-                      placeholder="Wallet address"
-                      id="wallet-address"
-                      value={investorWalletAddress}
-                      onChange={handleInvestorWalletAddressInputChange}
+                    type="text"
+                    placeholder="Wallet address"
+                    id="wallet-address"
+                    value={investorWalletAddress}
+                    onChange={handleInvestorWalletAddressInputChange}
                   />
                 </InputGroup>
               </InputCol>
@@ -272,11 +271,11 @@ function PrivateSaleInterestForm() {
                 <InputGroup>
                   <h5>Email *</h5>
                   <Input
-                      type="text"
-                      placeholder="Email address"
-                      id="email"
-                      value={investorEmail}
-                      onChange={handleInvestorEmailInputChange}
+                    type="text"
+                    placeholder="Email address"
+                    id="email"
+                    value={investorEmail}
+                    onChange={handleInvestorEmailInputChange}
                   />
                 </InputGroup>
               </InputCol>
@@ -287,11 +286,11 @@ function PrivateSaleInterestForm() {
                 <InputGroup>
                   <h5>Fund name</h5>
                   <Input
-                      type="text"
-                      placeholder="Fund name"
-                      id="fund-name"
-                      value={investorFundName}
-                      onChange={handleInvestorFundNameInputChange}
+                    type="text"
+                    placeholder="Fund name"
+                    id="fund-name"
+                    value={investorFundName}
+                    onChange={handleInvestorFundNameInputChange}
                   />
                 </InputGroup>
               </InputCol>
@@ -300,11 +299,11 @@ function PrivateSaleInterestForm() {
                 <InputGroup>
                   <h5>Fund website(if applicable)</h5>
                   <Input
-                      type="text"
-                      placeholder="https://www.google.com"
-                      id="fund-website"
-                      value={investorFundWebsite}
-                      onChange={handleInvestorFundWebsiteInputChange}
+                    type="text"
+                    placeholder="https://www.google.com"
+                    id="fund-website"
+                    value={investorFundWebsite}
+                    onChange={handleInvestorFundWebsiteInputChange}
                   />
                 </InputGroup>
               </InputCol>
@@ -314,7 +313,7 @@ function PrivateSaleInterestForm() {
             </SubmitButtonWrapper>
           </form>
         </Wrapper>
-      }
+      )}
     </EntryPage>
   );
 }

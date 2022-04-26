@@ -1,8 +1,8 @@
 // ----------------------------------------------------------------------
 
-import { Theme } from '@mui/material/styles'
+import { Theme } from '@mui/material/styles';
 
-export default function Lists (theme: Theme) {
+export default function Lists(theme: Theme) {
   return {
     MuiListItemIcon: {
       styleOverrides: {
@@ -42,5 +42,5 @@ export default function Lists (theme: Theme) {
         }
       }
     }
-  }
+  };
 }

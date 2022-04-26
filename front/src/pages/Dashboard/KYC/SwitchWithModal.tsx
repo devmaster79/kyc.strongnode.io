@@ -1,24 +1,24 @@
-import SwitchButton from '@ui/Button/SwitchButton'
-import { IAnim, useAnimated } from '@ui/utils/useAnimated'
-import { FunctionComponent, ReactNode, useState } from 'react'
+import SwitchButton from '@ui/Button/SwitchButton';
+import { IAnim, useAnimated } from '@ui/utils/useAnimated';
+import { FunctionComponent, ReactNode, useState } from 'react';
 
 export interface ModalProps {
-    onSuccess: () => void,
-    onClose: () => void,
-    anim: IAnim
+  onSuccess: () => void;
+  onClose: () => void;
+  anim: IAnim;
 }
 
 export type SwitchWithModalProps = {
-  TurnOnModal: FunctionComponent<ModalProps>,
-  TurnOffModal: FunctionComponent<ModalProps>,
+  TurnOnModal: FunctionComponent<ModalProps>;
+  TurnOffModal: FunctionComponent<ModalProps>;
   registerProps: {
     name: string;
     value: boolean;
     onChange: (value: boolean) => void;
-  },
-  isDirty: boolean,
-  helpText?: ReactNode,
-  label: string,
+  };
+  isDirty: boolean;
+  helpText?: ReactNode;
+  label: string;
 };
 
 export const SwitchWithModal = ({
@@ -29,43 +29,45 @@ export const SwitchWithModal = ({
   label,
   isDirty
 }: SwitchWithModalProps) => {
-  const [showTurnOnModal, setShowTurnOnModal] = useState(false)
-  const [showTurnOffModal, setShowTurnOffModal] = useState(false)
-  const turnOnModalAnim = useAnimated(showTurnOnModal, 500)
-  const turnOffModalAnim = useAnimated(showTurnOffModal, 500)
+  const [showTurnOnModal, setShowTurnOnModal] = useState(false);
+  const [showTurnOffModal, setShowTurnOffModal] = useState(false);
+  const turnOnModalAnim = useAnimated(showTurnOnModal, 500);
+  const turnOffModalAnim = useAnimated(showTurnOffModal, 500);
 
   const handleChange = (checked: boolean) => {
-    const isChange = !isDirty
+    const isChange = !isDirty;
     if (isChange) {
       if (checked) {
-        setShowTurnOnModal(true)
+        setShowTurnOnModal(true);
       } else {
-        setShowTurnOffModal(true)
+        setShowTurnOffModal(true);
       }
     } else {
       // no modal needed since the user is setting back to the original value
-      registerProps.onChange(checked)
+      registerProps.onChange(checked);
     }
-  }
+  };
 
   const handleSuccessfulSetup = () => {
-    setShowTurnOnModal(false)
-    registerProps.onChange(true)
-  }
+    setShowTurnOnModal(false);
+    registerProps.onChange(true);
+  };
 
   return (
     <>
       <SwitchButton
         name={registerProps.name}
         checked={registerProps.value}
-        onChange={event => handleChange(event.target.checked)}
+        onChange={(event) => handleChange(event.target.checked)}
         label={label}
         help={helpText}
       />
       {turnOnModalAnim.state !== 'closed' && (
         <TurnOnModal
           onSuccess={handleSuccessfulSetup}
-          onClose={() => { setShowTurnOnModal(false) }}
+          onClose={() => {
+            setShowTurnOnModal(false);
+          }}
           anim={turnOnModalAnim}
         />
       )}
@@ -73,14 +75,14 @@ export const SwitchWithModal = ({
         <TurnOffModal
           anim={turnOffModalAnim}
           onClose={() => {
-            setShowTurnOffModal(false)
+            setShowTurnOffModal(false);
           }}
           onSuccess={() => {
-            setShowTurnOffModal(false)
-            registerProps.onChange(false)
+            setShowTurnOffModal(false);
+            registerProps.onChange(false);
           }}
         />
       )}
     </>
-  )
-}
+  );
+};

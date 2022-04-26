@@ -42,7 +42,8 @@ export default function CarouselControlsPaging1({ color, ...other }) {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center'
-        }}>
+        }}
+      >
         <Box
           component="span"
           sx={{
