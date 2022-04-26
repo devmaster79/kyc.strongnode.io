@@ -180,13 +180,8 @@ export const FormContainer = styled.div`
   justify-content: center;
   align-items: center;
   gap: 32px;
-<<<<<<< HEAD
-  width: 50%;
-  margin: auto;
-=======
   width: 65%;
-  margin:auto;
->>>>>>> dev
+  margin: auto;
   @media only screen and (max-width: 600px) {
     width: 100%;
   }
