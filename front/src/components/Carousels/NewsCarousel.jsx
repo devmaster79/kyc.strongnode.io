@@ -51,7 +51,8 @@ function CarouselItem({ item }) {
           <Box display="flex" justifyContent="right">
             <SB2Button
               onClick={() => setOpen(!open)}
-              endIcon={<SvgIconStyle src="/icons/arrow-right.svg" sx={{ width: 8, height: 12 }} />}>
+              endIcon={<SvgIconStyle src="/icons/arrow-right.svg" sx={{ width: 8, height: 12 }} />}
+            >
               {open ? 'Read Less' : 'Read More'}
             </SB2Button>
           </Box>

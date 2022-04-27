@@ -1,23 +1,21 @@
-import React from 'react'
-import styled from '@emotion/styled/macro'
+import React from 'react';
+import styled from '@emotion/styled/macro';
 
 type tooltipProps = {
-  tooltip: string,
-  children?: React.ReactNode
-}
+  tooltip: string;
+  children?: React.ReactNode;
+};
 
 const Tooltip = (props: tooltipProps) => {
   return (
     <TooltipContentWrapper>
       {props.children}
-      <TooltipElement>
-        {props.tooltip}
-      </TooltipElement>
+      <TooltipElement>{props.tooltip}</TooltipElement>
     </TooltipContentWrapper>
-  )
-}
+  );
+};
 
-export default Tooltip
+export default Tooltip;
 
 const TooltipElement = styled.div`
   display: block;
@@ -44,7 +42,7 @@ const TooltipElement = styled.div`
   pointer-events: none;
 
   &:after {
-    content: "";
+    content: '';
     position: absolute;
     top: 100%;
     left: 50%;
@@ -54,7 +52,7 @@ const TooltipElement = styled.div`
     border-style: solid;
     border-color: #000000 transparent transparent transparent;
   }
-`
+`;
 
 const TooltipContentWrapper = styled.div`
   position: relative;
@@ -63,4 +61,4 @@ const TooltipContentWrapper = styled.div`
     opacity: 1;
     transform: translateX(-50%) translateY(0%);
   }
-`
+`;

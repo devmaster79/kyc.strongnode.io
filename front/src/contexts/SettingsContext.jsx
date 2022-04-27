@@ -25,7 +25,8 @@ function SettingsProvider({ children }) {
       value={{
         ...settings,
         onChangeMode
-      }}>
+      }}
+    >
       {children}
     </SettingsContext.Provider>
   );

@@ -1,82 +1,89 @@
-import InputField from '@ui/Input/InputField'
-import React, { ChangeEvent, useState, MouseEvent } from 'react'
-import styled from '@emotion/styled'
+import InputField from '@ui/Input/InputField';
+import React, { ChangeEvent, useState, MouseEvent } from 'react';
+import styled from '@emotion/styled';
 
 export type AutocompleteProps<
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   Option extends Record<string, any>,
   TrackBy extends keyof Option,
-  Category extends Record<string, Option[]>> = {
-  options: Category,
+  Category extends Record<string, Option[]>
+> = {
+  options: Category;
   /** the column that the Autocomplete will use as value */
-  trackBy: TrackBy,
+  trackBy: TrackBy;
   /** the column that the Autocomplete will show */
-  searchBy: keyof Option,
+  searchBy: keyof Option;
   /** function that will fetch new options */
-  fetchOptions: (searchQuery: string) => void,
-  onSelectValue?: (selectedOption: EventTarget) => void,
-  customStyle?: (option: Option) => React.ReactNode
-}
+  fetchOptions: (searchQuery: string) => void;
+  onSelectValue?: (selectedOption: EventTarget) => void;
+  customStyle?: (option: Option) => React.ReactNode;
+};
 
 function Autocomplete<
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   Option extends Record<string, any>,
   TrackBy extends keyof Option,
   Category extends Record<string, Option[]>
-> (props: AutocompleteProps<Option, TrackBy, Category>) {
-  const [search, setSearch] = useState('')
+>(props: AutocompleteProps<Option, TrackBy, Category>) {
+  const [search, setSearch] = useState('');
 
-  function onChangeValue (event: ChangeEvent<HTMLInputElement>) {
-    props.fetchOptions(event.target.value)
-    setSearch(event.target.value)
+  function onChangeValue(event: ChangeEvent<HTMLInputElement>) {
+    props.fetchOptions(event.target.value);
+    setSearch(event.target.value);
   }
 
-  function onSelectValue (event: MouseEvent<HTMLLIElement>): void {
-    if (!props.onSelectValue) return
-    props.onSelectValue(event.target)
+  function onSelectValue(event: MouseEvent<HTMLLIElement>): void {
+    if (!props.onSelectValue) return;
+    props.onSelectValue(event.target);
   }
 
   return (
     <>
-      <InputField icon='search' inputProps={{ placeholder: 'Search', value: search, onChange: onChangeValue }} />
-      {props.options &&
+      <InputField
+        icon="search"
+        inputProps={{ placeholder: 'Search', value: search, onChange: onChangeValue }}
+      />
+      {props.options && (
         <OptionsWrapper>
           <ul>
-            {
-            Object.keys(props.options).map((key, index) =>
+            {Object.keys(props.options).map((key, index) => (
               <li key={index}>
                 {key}
                 <ul>
-                  {props.options[key].map((option) =>
-                    <li key={option[props.trackBy]} value={option[props.trackBy]} onClick={onSelectValue}>
-                      {props.customStyle ? (props.customStyle(option)) : option[props.searchBy]}
+                  {props.options[key].map((option) => (
+                    <li
+                      key={option[props.trackBy]}
+                      value={option[props.trackBy]}
+                      onClick={onSelectValue}
+                    >
+                      {props.customStyle ? props.customStyle(option) : option[props.searchBy]}
                     </li>
-                  )}
+                  ))}
                 </ul>
               </li>
-            )
-          }
+            ))}
           </ul>
-        </OptionsWrapper>}
+        </OptionsWrapper>
+      )}
     </>
-  )
+  );
 }
 
-export default Autocomplete
+export default Autocomplete;
 
 Autocomplete.defaultProps = {
   trackBy: 'value',
   searchBy: 'label'
-}
+};
 
 const OptionsWrapper = styled.div`
-  background: ${props => props.theme.palette.background.secondary};
-  border: 1px solid ${props => props.theme.palette.border.light};
+  background: ${(props) => props.theme.palette.background.secondary};
+  border: 1px solid ${(props) => props.theme.palette.border.light};
   box-sizing: border-box;
   border-radius: 10px;
   min-width: 483px;
 
-  color:  ${props => props.theme.palette.text.secondary};
+  color: ${(props) => props.theme.palette.text.secondary};
   text-align: left;
   padding: 24px;
 
@@ -98,7 +105,7 @@ const OptionsWrapper = styled.div`
       font-style: normal;
       font-weight: 900;
       text-transform: none;
-      color:  ${props => props.theme.palette.text.primary};
+      color: ${(props) => props.theme.palette.text.primary};
       padding-top: 16px;
 
       li {
@@ -111,4 +118,4 @@ const OptionsWrapper = styled.div`
       cursor: pointer;
     }
   }
-`
+`;

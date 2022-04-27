@@ -1,6 +1,6 @@
-import { NavLink } from 'react-router-dom'
-import { ROUTES } from 'Router'
-import styled from 'styled-components'
+import { NavLink } from 'react-router-dom';
+import { ROUTES } from 'Router';
+import styled from 'styled-components';
 
 interface OtherOptionsProps {
   hideSMS?: boolean;
@@ -8,11 +8,7 @@ interface OtherOptionsProps {
   hidePassword?: boolean;
 }
 
-export const OtherOptions = ({
-  hideSMS,
-  hideAuthenticator,
-  hidePassword
-}: OtherOptionsProps) => (
+export const OtherOptions = ({ hideSMS, hideAuthenticator, hidePassword }: OtherOptionsProps) => (
   <div>
     <h5>Try another method?</h5>
     <Options>
@@ -33,8 +29,8 @@ export const OtherOptions = ({
       )}
     </Options>
   </div>
-)
+);
 
 const Options = styled.ul`
   list-style-type: none;
-`
+`;

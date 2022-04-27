@@ -1,15 +1,15 @@
-import NFTCard from './NFTCard/NFTCard'
-import styled from '@emotion/styled'
-import TableSection from 'components/TableSection/TableSection'
-import Autocomplete from '@ui/Autocomplete/Autocomplete'
-import Icon from '@ui/Icon/Icon'
+import NFTCard from './NFTCard/NFTCard';
+import styled from '@emotion/styled';
+import TableSection from 'components/TableSection/TableSection';
+import Autocomplete from '@ui/Autocomplete/Autocomplete';
+import Icon from '@ui/Icon/Icon';
 
 const CardWrapper = styled.div`
   display: flex;
   flex-flow: wrap;
-`
-export default function NFTDashboard () {
-  const cards = ['1', '2', '3', '4', '5', '6', '7']
+`;
+export default function NFTDashboard() {
+  const cards = ['1', '2', '3', '4', '5', '6', '7'];
 
   const columns = [
     {
@@ -37,7 +37,7 @@ export default function NFTDashboard () {
       label: '24H PRICE',
       align: 'left'
     }
-  ]
+  ];
 
   const dataSet = {
     items: [
@@ -70,39 +70,44 @@ export default function NFTDashboard () {
         price: '290.7K'
       }
     ]
-  }
+  };
 
   const overwrittenFields = {
     price: () => {
-      return 'Vested'
+      return 'Vested';
     }
-  }
+  };
 
   const customStyle = (option: any) => {
     // TODO: set type after finishing backend part
     return (
       <AutocompleteStyle>
         <TitleWrapper>
-          <img src='https://nftcalendar.io/storage/uploads/2021/12/23/4_1223202109373161c4435bdc931.png' />
+          <img src="https://nftcalendar.io/storage/uploads/2021/12/23/4_1223202109373161c4435bdc931.png" />
           {option.label}
         </TitleWrapper>
         <span>
-          <Icon name='eth' height={8} width={13} viewBox='0 0 8 13' />
+          <Icon name="eth" height={8} width={13} viewBox="0 0 8 13" />
           9000
         </span>
       </AutocompleteStyle>
-    )
-  }
+    );
+  };
 
   return (
     <>
       <AutocompleteWrapper>
         <Autocomplete
           options={{
-            collections: [{ value: '1', label: 'Rubber bubbler dolor' },
-              { value: '2', label: 'Rubber bubbler dolor' }, { value: '1', label: 'Rubber bubbler dolor' }]
+            collections: [
+              { value: '1', label: 'Rubber bubbler dolor' },
+              { value: '2', label: 'Rubber bubbler dolor' },
+              { value: '1', label: 'Rubber bubbler dolor' }
+            ]
           }}
-          fetchOptions={() => { /* TODO */ }}
+          fetchOptions={() => {
+            /* TODO */
+          }}
           customStyle={customStyle}
         />
       </AutocompleteWrapper>
@@ -122,12 +127,12 @@ export default function NFTDashboard () {
         hideHeading={false}
       />
     </>
-  )
+  );
 }
 
 const AutocompleteWrapper = styled.div`
   max-width: 320px;
-`
+`;
 const AutocompleteStyle = styled.div`
   display: flex;
   align-items: center;
@@ -138,9 +143,9 @@ const AutocompleteStyle = styled.div`
     font-weight: 400;
     font-size: 14px;
     line-height: 19px;
-    color: ${props => props.theme.palette.text.secondary};
+    color: ${(props) => props.theme.palette.text.secondary};
   }
-`
+`;
 const TitleWrapper = styled.div`
   display: flex;
   align-items: center;
@@ -151,4 +156,4 @@ const TitleWrapper = styled.div`
     border-radius: 10px;
     margin-right: 16px;
   }
-`
+`;

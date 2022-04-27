@@ -1,18 +1,20 @@
-import styled from '@emotion/styled'
-import InputField from '@ui/Input/InputField'
-import MainTable from '@ui/Table/MainTable/MainTable'
-import Icon from '@ui/Icon/Icon'
-import { ChangeEvent, useState } from 'react'
+import styled from '@emotion/styled';
+import InputField from '@ui/Input/InputField';
+import Select from '@ui/Select/Select';
+import MainTable from '@ui/Table/MainTable/MainTable';
+import Icon from '@ui/Icon/Icon';
+import { ChangeEvent, useState } from 'react';
+import { TypeOf } from 'yup';
 
 
 interface Column {
-  id: string,
-  label: string,
-  align: string,
+  id: string;
+  label: string;
+  align: string;
 }
 
 interface DataSet<Item> {
-  items: Item[]
+  items: Item[];
 }
 
 interface Finder {
@@ -80,41 +82,41 @@ function TableSection<Item extends Record<string, unknown>>(props: TableSectionP
           </>
         )}
     </TableSectionWrapper>
-  )
+  );
 }
 
-export default TableSection
+export default TableSection;
 
 const TableSectionWrapper = styled.div`
   width: 100%;
   margin-bottom: 200px;
   margin-top: 32px;
 
-  background: ${props => props.theme.palette.background.primary};
-  border: 1px solid ${props => props.theme.palette.border.light};
+  background: ${(props) => props.theme.palette.background.primary};
+  border: 1px solid ${(props) => props.theme.palette.border.light};
   box-sizing: border-box;
   border-radius: 10px;
   padding: 32px;
 
   h2 {
     font-size: 18px;
-    color: ${props => props.theme.palette.text.primary};
+    color: ${(props) => props.theme.palette.text.primary};
     font-weight: 900;
 
     span {
       font-family: 'Satoshi-Regular';
       font-size: 14px;
-      color: ${props => props.theme.palette.text.secondary};
+      color: ${(props) => props.theme.palette.text.secondary};
       padding-left: 7px;
     }
   }
-`
+`;
 const HeaderWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding-bottom: 16px;
-`
+`;
 
 const ComingSoonWrapper = styled.div`
   display: flex;
@@ -132,6 +134,6 @@ const ComingSoonWrapper = styled.div`
   span {
     font-family: 'Satoshi-Regular';
     font-size: 14px;
-    color: ${props => props.theme.palette.text.secondary};
+    color: ${(props) => props.theme.palette.text.secondary};
   }
-`
+`;

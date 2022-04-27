@@ -58,7 +58,7 @@ const IOSSwitch = styled((props) => (
 const SunIcon = styled(SvgIconStyle)`
   position: absolute;
   left: 20px;
-`
+`;
 
 export default function ThemeSwitch({ sx, color }) {
   const { themeMode, onChangeMode } = useSettings();

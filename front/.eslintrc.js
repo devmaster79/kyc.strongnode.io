@@ -6,13 +6,12 @@ module.exports = {
   extends: [
     'eslint:recommended',
     'plugin:react/recommended',
-    "react-app",
-    "plugin:jsx-a11y/recommended",
+    'react-app',
+    'plugin:jsx-a11y/recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:sonarjs/recommended',
     'plugin:promise/recommended',
-    'standard',
-    'standard-jsx'
+    'prettier'
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -20,20 +19,14 @@ module.exports = {
       jsx: true
     },
     ecmaVersion: 'latest',
-    sourceType: 'module',
+    sourceType: 'module'
   },
-  plugins: [
-    'react',
-    '@typescript-eslint',
-    'sonarjs',
-    'promise',
-    "jsx-a11y",
-  ],
+  plugins: ['react', '@typescript-eslint', 'sonarjs', 'promise', 'jsx-a11y'],
   ignorePatterns: ['.eslintrc.js'],
   rules: {
-    'no-console': ["error", { allow: ["warn", "error"] }],
-    'max-len': ["warn", { "code": 120 }],
-    'react/jsx-indent': [2, 2, {checkAttributes: true, indentLogicalExpressions: true}],
+    'no-console': ['error', { allow: ['warn', 'error'] }],
+    'max-len': ['warn', { code: 120 }],
+    'react/jsx-indent': [2, 2, { checkAttributes: true, indentLogicalExpressions: true }],
     /*
      * turned off lints:
      */
@@ -49,7 +42,7 @@ module.exports = {
     // ts validates implicit anys anyways
     'react/prop-types': 'off',
     // ts validates no unuseds anyways
-    "no-unused-vars": "off",
+    'no-unused-vars': 'true',
 
     'jsx-a11y/no-noninteractive-element-interactions': 'off',
     'jsx-a11y/click-events-have-key-events': 'off',
@@ -58,62 +51,62 @@ module.exports = {
      * Lints to enable later:
      */
     'jsx-a11y/anchor-is-valid':'warn',
-     'jsx-quotes': 'warn',
-     'no-undef': 'warn',
-     'react/jsx-boolean-value': 'warn',
-     'react/jsx-closing-bracket-location': 'warn',
-     'react/jsx-closing-tag-location': 'warn',
-     'react/jsx-curly-brace-presence': 'warn',
-     'react/jsx-curly-newline': 'warn',
-     'react/jsx-curly-spacing': 'warn',
-     'react/jsx-indent': 'warn',
-     'react/jsx-indent-props': 'warn',
-     'react/jsx-pascal-case': 'warn',
-     'react/jsx-props-no-multi-spaces': 'warn',
-     'react/jsx-tag-spacing': 'warn',
-     'react/jsx-wrap-multilines': 'warn',
-     'react/self-closing-comp': 'warn',
-    '@typescript-eslint/ban-types':'warn',
-    'array-bracket-spacing':'warn',
-    'operator-linebreak':'warn',
-    'sonarjs/no-duplicate-string':'warn',
-    'object-curly-newline':'warn',
-    'keyword-spacing':'warn',
-    'comma-spacing':'warn',
-    'block-spacing':'warn',
-    'no-multiple-empty-lines':'warn',
-    'array-callback-return':'warn',
-    'eqeqeq':'warn',
-    'import/no-duplicates':'warn',
-    'semi':'warn',
-    'space-infix-ops':'warn',
-    'indent':'warn',
-    'camelcase':'warn',
-    'key-spacing':'warn',
-    'eol-last':'warn',
-    'quotes':'warn',
-    'space-before-function-paren':'warn',
-    'comma-dangle':'warn',
-    'object-curly-spacing':'warn',
-    'dot-notation':'warn',
-    'no-multi-spaces':'warn',
-    'curly':'warn',
-    'multiline-ternary':'warn',
+    'jsx-quotes': 'warn',
+    'no-undef': 'warn',
+    'react/jsx-boolean-value': 'warn',
+    'react/jsx-closing-bracket-location': 'warn',
+    'react/jsx-closing-tag-location': 'warn',
+    'react/jsx-curly-brace-presence': 'warn',
+    'react/jsx-curly-newline': 'warn',
+    'react/jsx-curly-spacing': 'warn',
+    'react/jsx-indent': 'warn',
+    'react/jsx-indent-props': 'warn',
+    'react/jsx-pascal-case': 'warn',
+    'react/jsx-props-no-multi-spaces': 'warn',
+    'react/jsx-tag-spacing': 'warn',
+    'react/jsx-wrap-multilines': 'warn',
+    'react/self-closing-comp': 'warn',
+    '@typescript-eslint/ban-types': 'warn',
+    'array-bracket-spacing': 'warn',
+    'operator-linebreak': 'warn',
+    'sonarjs/no-duplicate-string': 'warn',
+    'object-curly-newline': 'warn',
+    'keyword-spacing': 'warn',
+    'comma-spacing': 'warn',
+    'block-spacing': 'warn',
+    'no-multiple-empty-lines': 'warn',
+    'array-callback-return': 'warn',
+    eqeqeq: 'warn',
+    'import/no-duplicates': 'warn',
+    semi: 'warn',
+    'space-infix-ops': 'warn',
+    indent: 'warn',
+    camelcase: 'warn',
+    'key-spacing': 'warn',
+    'eol-last': 'warn',
+    quotes: 'warn',
+    'space-before-function-paren': 'warn',
+    'comma-dangle': 'warn',
+    'object-curly-spacing': 'warn',
+    'dot-notation': 'warn',
+    'no-multi-spaces': 'warn',
+    curly: 'warn',
+    'multiline-ternary': 'warn',
     'sonarjs/cognitive-complexity': 'warn',
     'promise/catch-or-return': 'warn',
     'prefer-promise-reject-errors': 'warn',
     'jsx-a11y/click-events-have-key-events': 'warn',
     'jsx-a11y/no-noninteractive-element-interactions': 'warn',
-    'jsx-a11y/alt-text': 'warn',
+    'jsx-a11y/alt-text': 'warn'
   },
-  'settings': {
-    'react': {
-      'version': 'detect',
+  settings: {
+    react: {
+      version: 'detect'
     },
-    'propWrapperFunctions': [
-        // for rules that check exact prop wrappers
-        {'property': 'forbidExtraProps', 'exact': true}
-    ],
+    propWrapperFunctions: [
+      // for rules that check exact prop wrappers
+      { property: 'forbidExtraProps', exact: true }
+    ]
     //'formComponents': [
     //  // Components used as alternatives to <form> for forms, eg. <Form endpoint={ url } />
     //  'CustomForm',

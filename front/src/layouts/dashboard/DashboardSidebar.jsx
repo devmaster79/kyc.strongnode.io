@@ -46,7 +46,8 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
           backgroundColor: '#2a274e',
           transition: 'width 15s'
         }
-      }}>
+      }}
+    >
       <Stack direction="row" alignItems="center" justifyContent="center" sx={{ height: 80 }}>
         <Box component={RouterLink} to="/dashboard/app" sx={{ display: 'inline-flex' }}>
           <Logo sx={{ width: '65px', height: '65px', marginTop: '25px' }} />
@@ -67,7 +68,8 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
         ...(collapseClick && {
           position: 'absolute'
         })
-      }}>
+      }}
+    >
       <Hidden lgUp>
         <Drawer
           open={isOpenSidebar}
@@ -87,7 +89,8 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
                 bgcolor: '#2D405A'
               })
             }
-          }}>
+          }}
+        >
           {renderContent}
         </Drawer>
       </Hidden>
@@ -112,7 +115,8 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
                 bgcolor: '#2D405A'
               })
             }
-          }}>
+          }}
+        >
           {renderContent}
         </Drawer>
       </Hidden>
