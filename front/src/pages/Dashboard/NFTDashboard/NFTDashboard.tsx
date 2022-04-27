@@ -113,6 +113,7 @@ export default function NFTDashboard () {
         ))}
       </CardWrapper>
       <TableSection
+        searchColumn={'name'}
         title='Metrics'
         subtitle='NFT 18'
         columns={columns}

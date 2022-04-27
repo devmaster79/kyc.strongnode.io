@@ -3,7 +3,6 @@ import InputField from '@ui/Input/InputField'
 import MainTable from '@ui/Table/MainTable/MainTable'
 import Icon from '@ui/Icon/Icon'
 import { ChangeEvent, useState } from 'react'
-import { filter, some } from 'lodash';
 
 
 interface Column {
@@ -15,6 +14,11 @@ interface Column {
 interface DataSet<Item> {
   items: Item[]
 }
+
+interface Finder {
+  onChange: (keyword: string) => void;
+  rowCount?: number;
+}
 interface TableSectionProps<Item extends Record<string, unknown>> {
   comingSoon?: string
   title: string
@@ -24,21 +28,29 @@ interface TableSectionProps<Item extends Record<string, unknown>> {
   hideHeading?: boolean
   overwrittenFields?: any
   fetchData?: string
-  searchEnabled?: boolean
+  searchEnabled?: boolean;
+  searchColumn: string;
+  finder?: Finder; // if backend search implemented
 }
 
 function TableSection<Item extends Record<string, unknown>>(props: TableSectionProps<Item>) {
-  const [filteredDataSet, setFilteredDataSet] = useState<any>({});
+  const [filteredDataSet, setFilteredDataSet] = useState<any>(null);
 
   const onChangeValue = (event: ChangeEvent<HTMLInputElement>) => {
     const search = event.target.value.toLowerCase();
+    // Check backend search function 
+    if (props.finder?.onChange) {
+      // emit onChange
+      props.finder.onChange(search);
+      return;
+    }
+    // if no backend search implemented.
     const filteredData = props.dataSet.items.filter((o: any) => Object.values(o).some((val: any) => handleFilter(val, search)));
     setFilteredDataSet({ items: filteredData });
-
   }
 
-  const handleFilter = (val: string | { [key: string]: any }, search: string): boolean => {
-    return typeof val === 'string' ? val.toLowerCase().includes(search) : val.name?.toLowerCase()?.includes(search)
+  const handleFilter = (val: string | Record<string, any>, search: string): boolean => {
+    return typeof val === 'string' ? val.toLowerCase().includes(search) : val[props.searchColumn]?.toLowerCase()?.includes(search)
   }
 
   return (
@@ -55,11 +67,11 @@ function TableSection<Item extends Record<string, unknown>>(props: TableSectionP
           <>
             <HeaderWrapper>
               <h2>{props.title} <span>{props.subtitle}</span></h2>
-              {props.searchEnabled &&
+              {true &&
                 <InputField icon='search' inputProps={{ placeholder: 'Search', onChange: onChangeValue }} />}
             </HeaderWrapper>
             <MainTable
-              dataSet={filteredDataSet.items?.length > 0 ? filteredDataSet : props.dataSet}
+              dataSet={filteredDataSet?filteredDataSet:props.dataSet}
               columns={props.columns}
               overwrittenFields={props.overwrittenFields || {}}
               fetchData={props.fetchData || null}

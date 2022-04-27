@@ -125,6 +125,7 @@ export const CoinMetrics = (props: CoinMetricsProps) => {
       }
       temporaryData.push(tokenObject)
     })
+
     return { items: temporaryData }
   }
 
@@ -137,8 +138,13 @@ export const CoinMetrics = (props: CoinMetricsProps) => {
     return valueTrendObject
   }
 
+  const addKeywords = async (keywords: string) => {
+  //  To Do 
+  // implement backend search
+  }
+
   return (
-    <TableSection title={props.title} searchEnabled={true} subtitle={props.subtitle} overwrittenFields={overwrittenFields} dataSet={(tableData.items?.length > 0) ? tableData : sampleData} columns={sampleColumns} />
+    <TableSection searchColumn={'name'} title={props.title} subtitle={props.subtitle} overwrittenFields={overwrittenFields} dataSet={(tableData.items?.length > 0) ? tableData : sampleData} columns={sampleColumns} />
   )
 }
 
