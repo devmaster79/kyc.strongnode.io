@@ -424,6 +424,25 @@ export const Icons = {
       </defs>
     </g>
   ),
+  plus: (<g>
+    <path d="M6 1V11" stroke="white" stroke-width="1.42857" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M1 6H11" stroke="white" stroke-width="1.42857" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>),
+  edit: (<g>
+    <path d="M5.0625 2.1875L0.1875 7.0625C0.0625 7.1875 0 7.3125 0 7.5V9.375C0 9.75 0.25 10 0.625 10H2.5C2.6875 10 2.8125 9.9375 2.9375 9.8125L7.8125 4.9375L5.0625 2.1875Z" fill="white" fill-opacity="0.64"/>
+    <path d="M9.8125 2.0625L7.9375 0.1875C7.6875 -0.0625 7.3125 -0.0625 7.0625 0.1875L5.9375 1.3125L8.6875 4.0625L9.8125 2.9375C10.0625 2.6875 10.0625 2.3125 9.8125 2.0625Z" fill="white" fill-opacity="0.64"/>
+  </g>),
+  prev: (<g>
+    <path d="M1.24807 4.83205C0.654342 4.43623 0.654342 3.56377 1.24808 3.16795L4.4453 1.03647C5.10985 0.59343 6 1.06982 6 1.86852L6 6.13148C6 6.93018 5.10985 7.40657 4.4453 6.96353L1.24807 4.83205Z" fill="#111055"/>
+  </g>),
+  next: (<g>
+    <path d="M4.75193 4.83205C5.34566 4.43623 5.34566 3.56377 4.75192 3.16795L1.5547 1.03647C0.890145 0.59343 3.02928e-07 1.06982 2.68016e-07 1.86852L8.16755e-08 6.13148C4.67634e-08 6.93018 0.890145 7.40657 1.5547 6.96353L4.75193 4.83205Z" fill="#111055"/>
+  </g>),
+  wallet: (<g>
+    <path d="M21 12V5H3C1.895 5 1 4.105 1 3V20C1 21.657 2.343 23 4 23H21V16" stroke="white" stroke-width="2" stroke-miterlimit="10" stroke-linecap="square"/>
+    <path d="M17 2V1H3C1.895 1 1 1.895 1 3C1 4.105 1.895 5 3 5" stroke="white" stroke-width="2" stroke-miterlimit="10" stroke-linecap="square"/>
+    <path d="M23 16H18C16.895 16 16 15.105 16 14C16 12.895 16.895 12 18 12H23V16Z" stroke="white" stroke-width="2" stroke-miterlimit="10" stroke-linecap="square"/>
+  </g>),
   passport: (
     <g>
       <path
