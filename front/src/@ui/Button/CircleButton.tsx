@@ -1,5 +1,5 @@
-import styled from '@emotion/styled'
-import Icon, { IconProps } from '@ui/Icon/Icon'
+import styled from '@emotion/styled';
+import Icon, { IconProps } from '@ui/Icon/Icon';
 
 const IconInfo = {
   plus: {
@@ -26,10 +26,10 @@ const IconInfo = {
     color: 'white',
     viewBox: '0 0 6 8'
   }
-}
+};
 
-export default function CircleButton(props: {name: IconProps['name']}) {
-  const data = Object.entries(IconInfo).find(obj => obj[0] === props.name)?.[1];
+export default function CircleButton(props: { name: IconProps['name'] }) {
+  const data = Object.entries(IconInfo).find((obj) => obj[0] === props.name)?.[1];
 
   const Container = styled.div`
     display: flex;
@@ -40,10 +40,10 @@ export default function CircleButton(props: {name: IconProps['name']}) {
     justify-content: center;
     align-items: center;
     border-radius: 50%;
-  `
+  `;
   return (
     <Container>
       <Icon name={props.name} width={data?.width} height={data?.height} viewBox={data?.viewBox} />
     </Container>
-  )
+  );
 }

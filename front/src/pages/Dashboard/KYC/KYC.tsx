@@ -1,5 +1,3 @@
-
-
 import { PasswordSwitch } from './PasswordSwitch';
 import styled from '@emotion/styled';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
@@ -14,7 +12,6 @@ import backgroundLight from '../../../assets/images/BG-light.png';
 import * as ProgressCircleSteps from '@ui/Dashboard/ProgressCircleSteps';
 import { Banner } from '../../../@ui/Banner/Banner';
 
-
 interface FormFields {
   firstName: string;
   lastName: string;
@@ -24,7 +21,6 @@ interface FormFields {
   enableSMSAuth: boolean;
   enableAuthenticatorAuth: boolean;
 }
-
 
 const walletsObject = [
   {
@@ -42,9 +38,9 @@ const walletsObject = [
     label: 'ADD WALLET',
     description: ''
   }
-]
+];
 
-export default function KYC () {
+export default function KYC() {
   const { register, handleSubmit, reset, control, formState } = useForm<FormFields>({
     mode: 'all',
     defaultValues: {
@@ -101,54 +97,78 @@ export default function KYC () {
       <FormContainer>
         <ProgressCircleSteps.Container>
           <ProgressCircleSteps.Step
-            label='user registration' progressAmount={60} progressLabel='A' progressBorder={false} disabled={false}
+            label="user registration"
+            progressAmount={60}
+            progressLabel="A"
+            progressBorder={false}
+            disabled={false}
           />
           <ProgressCircleSteps.Separator />
           <ProgressCircleSteps.Step
-            label='KYC' progressAmount={0} progressLabel='B' progressBorder={true} disabled={false}
+            label="KYC"
+            progressAmount={0}
+            progressLabel="B"
+            progressBorder={true}
+            disabled={false}
           />
           <ProgressCircleSteps.Separator />
           <ProgressCircleSteps.Step
-            label='Socials' progressAmount={0} progressLabel='D' progressBorder={true} disabled={true}
+            label="Socials"
+            progressAmount={0}
+            progressLabel="D"
+            progressBorder={true}
+            disabled={true}
           />
           <ProgressCircleSteps.Separator />
           <ProgressCircleSteps.Step
-            label='Optional' progressAmount={35} progressLabel='E' progressBorder={false} disabled={true}
+            label="Optional"
+            progressAmount={35}
+            progressLabel="E"
+            progressBorder={false}
+            disabled={true}
           />
         </ProgressCircleSteps.Container>
-        <DashboardForm.Form onSubmit={handleSubmit(onSubmit)} autoComplete='off'>
+        <DashboardForm.Form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
           <DashboardForm.InputGroup>
-            <DashboardForm.Input inputProps={{ placeholder: 'First name', ...register('firstName') }} />
-            <DashboardForm.Input inputProps={{ placeholder: 'Last name', ...register('lastName') }} />
-            <DashboardForm.Input inputProps={{ placeholder: 'Username', ...register('username') }} />
-            <DashboardForm.Input inputProps={{ placeholder: 'Email', ...register('email'), disabled: true }} />
+            <DashboardForm.Input
+              inputProps={{ placeholder: 'First name', ...register('firstName') }}
+            />
+            <DashboardForm.Input
+              inputProps={{ placeholder: 'Last name', ...register('lastName') }}
+            />
+            <DashboardForm.Input
+              inputProps={{ placeholder: 'Username', ...register('username') }}
+            />
+            <DashboardForm.Input
+              inputProps={{ placeholder: 'Email', ...register('email'), disabled: true }}
+            />
           </DashboardForm.InputGroup>
           <DashboardForm.Hr />
           <DashboardForm.ButtonGroup>
             <Controller
               control={control}
-              name='enablePasswordAuth'
+              name="enablePasswordAuth"
               render={({ field, fieldState }) => (
                 <PasswordSwitch isDirty={fieldState.isDirty} registerProps={field} />
               )}
             />
             <Controller
               control={control}
-              name='enableAuthenticatorAuth'
+              name="enableAuthenticatorAuth"
               render={({ field, fieldState }) => (
                 <AuthenticatorSwitch isDirty={fieldState.isDirty} registerProps={field} />
               )}
             />
             <Controller
               control={control}
-              name='enableSMSAuth'
+              name="enableSMSAuth"
               render={({ field, fieldState }) => (
                 <SMSSwitch isDirty={fieldState.isDirty} registerProps={field} />
               )}
             />
           </DashboardForm.ButtonGroup>
           <DashboardForm.Button
-            variant='large'
+            variant="large"
             disabled={!formState.isDirty || formState.isSubmitting}
           >
             Update
@@ -171,8 +191,8 @@ export const Container = styled.div`
   padding-bottom: 70px;
   gap: 32px;
   width: 80%;
-  margin:auto;
-`
+  margin: auto;
+`;
 
 export const FormContainer = styled.div`
   display: flex;
