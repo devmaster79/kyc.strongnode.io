@@ -144,11 +144,6 @@ export const CoinMetrics = (props: CoinMetricsProps) => {
     return valueTrendObject;
   };
 
-  const addKeywords = async (keywords: string) => {
-  //  To Do 
-  // implement backend search
-  }
-
   return (
     <TableSection
       searchColumn={'name'}
