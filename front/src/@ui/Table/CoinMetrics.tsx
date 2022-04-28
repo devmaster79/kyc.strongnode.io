@@ -78,6 +78,8 @@ const overwrittenFields = {
   }
 };
 
+let searchTimeout: any = null;
+
 interface IDataIcon {
   name: string;
   url: any;
@@ -95,7 +97,7 @@ type CoinMetricsProps = {
 };
 
 export const CoinMetrics = (props: CoinMetricsProps) => {
-  const [tableData, setTableData] = useState<{ [key: string]: any[] }>({});
+  const [tableData, setTableData] = useState<{ [key: string]: Array<any> }>({});
 
   useEffect(() => {
     loadTokenMetrics();
@@ -144,15 +146,22 @@ export const CoinMetrics = (props: CoinMetricsProps) => {
     return valueTrendObject;
   };
 
+  const addKeywords = async (keyword: string) => {
+    // clear old timeout
+    if (searchTimeout) {
+      clearTimeout(searchTimeout)
+    }
+
+    // add delay while user typing
+    searchTimeout = setTimeout(() => {
+
+      //  To Do 
+      // implement backend search
+    }, 2000);
+  }
+
   return (
-    <TableSection
-      searchColumn={'name'}
-      title={props.title}
-      subtitle={props.subtitle}
-      overwrittenFields={overwrittenFields}
-      dataSet={(tableData.items?.length > 0) ? tableData : sampleData}
-      columns={sampleColumns}
-    />
+    <TableSection finder={{ onChange: addKeywords, searchMaxRow: 5 }} searchColumn={'name'} title={props.title} subtitle={props.subtitle} overwrittenFields={overwrittenFields} dataSet={(tableData.items?.length > 0) ? tableData : sampleData} columns={sampleColumns} />
   );
 };
 

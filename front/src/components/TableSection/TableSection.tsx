@@ -1,10 +1,8 @@
 import styled from '@emotion/styled';
 import InputField from '@ui/Input/InputField';
-import Select from '@ui/Select/Select';
 import MainTable from '@ui/Table/MainTable/MainTable';
 import Icon from '@ui/Icon/Icon';
 import { ChangeEvent, useState } from 'react';
-import { TypeOf } from 'yup';
 
 
 interface Column {
@@ -19,19 +17,23 @@ interface DataSet<Item> {
 
 interface Finder {
   onChange: (keyword: string) => void;
-  rowCount?: number;
+  searchMaxRow?: number;
+}
+
+interface FilterData {
+  [key:string]: string;
 }
 interface TableSectionProps<Item extends Record<string, unknown>> {
-  comingSoon?: string
-  title: string
-  subtitle: string | undefined
-  dataSet: any
-  columns: Column[]
-  hideHeading?: boolean
-  overwrittenFields?: any
-  fetchData?: string
+  comingSoon?: string;
+  title: string;
+  subtitle: string | undefined;
+  dataSet: any;
+  columns: Column[];
+  hideHeading?: boolean;
+  overwrittenFields?: any;
+  fetchData?: string;
   searchEnabled?: boolean;
-  searchColumn: string;
+  searchColumn?: string;
   finder?: Finder; // if backend search implemented
 }
 
@@ -41,7 +43,7 @@ function TableSection<Item extends Record<string, unknown>>(props: TableSectionP
   const onChangeValue = (event: ChangeEvent<HTMLInputElement>) => {
     const search = event.target.value.toLowerCase();
     // Check backend search function 
-    if (props.finder?.onChange) {
+    if (props.finder?.onChange && props.dataSet?.items?.length > (props.finder.searchMaxRow || 10)) {
       // emit onChange
       props.finder.onChange(search);
       return;
@@ -51,8 +53,8 @@ function TableSection<Item extends Record<string, unknown>>(props: TableSectionP
     setFilteredDataSet({ items: filteredData });
   }
 
-  const handleFilter = (val: string | Record<string, any>, search: string): boolean => {
-    return typeof val === 'string' ? val.toLowerCase().includes(search) : val[props.searchColumn]?.toLowerCase()?.includes(search)
+  const handleFilter = (val: string | FilterData, search: string): boolean => {
+    return typeof val === 'string' ? val.toLowerCase().includes(search) : val[props.searchColumn || 'name']?.toLowerCase()?.includes(search)
   }
 
   return (
@@ -73,7 +75,7 @@ function TableSection<Item extends Record<string, unknown>>(props: TableSectionP
                 <InputField icon='search' inputProps={{ placeholder: 'Search', onChange: onChangeValue }} />}
             </HeaderWrapper>
             <MainTable
-              dataSet={filteredDataSet?filteredDataSet:props.dataSet}
+              dataSet={filteredDataSet ? filteredDataSet : props.dataSet}
               columns={props.columns}
               overwrittenFields={props.overwrittenFields || {}}
               fetchData={props.fetchData || null}
