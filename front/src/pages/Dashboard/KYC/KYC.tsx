@@ -22,6 +22,7 @@ interface FormFields {
   enableAuthenticatorAuth: boolean;
 }
 
+
 const walletsObject = [
   {
     featureIcon: 0,
