@@ -2,19 +2,21 @@ import styled from '@emotion/styled';
 import { ComponentProps, ReactNode } from 'react';
 
 export type SwitchButtonProps = ComponentProps<typeof StyledInput> & {
-  children?: ReactNode,
-  checked: boolean,
-  label: string,
-  help?: ReactNode,
-} & ({ name: string} | { id: string });
+  children?: ReactNode;
+  checked: boolean;
+  label: string;
+  help?: ReactNode;
+} & ({ name: string } | { id: string });
 
 export default function SwitchButton(props: SwitchButtonProps) {
   return (
     <Container>
       <SwitchWrapper style={{ display: 'block' }}>
         {props.label}
-        <StyledInput type='checkbox' hidden id={props.id || props.name} {...props} />
-        <StyledButton className='switch' htmlFor={props.id || props.name}>{props.children}</StyledButton>
+        <StyledInput type="checkbox" hidden id={props.id || props.name} {...props} />
+        <StyledButton className="switch" htmlFor={props.id || props.name}>
+          {props.children}
+        </StyledButton>
       </SwitchWrapper>
       {props.help && <Help>{props.help}</Help>}
     </Container>
@@ -35,26 +37,30 @@ const SwitchWrapper = styled.label`
   display: block;
 `;
 
-const StyledInput = styled.input<{checked: boolean}>`
-    display: inline-block;
-    position: absolute;
-    margin-top: 2px;
-    width: 50px;
-    height: 22px;
-    border-radius: 20px;
-    vertical-align: middle;
-    cursor: pointer;
-    transition: background 0.28s cubic-bezier(0.4, 0, 0.2, 1);
-    opacity: 0;
-    margin-left: 14px;
-    ${props => props.checked && `+ .switch {
+const StyledInput = styled.input<{ checked: boolean }>`
+  display: inline-block;
+  position: absolute;
+  margin-top: 2px;
+  width: 50px;
+  height: 22px;
+  border-radius: 20px;
+  vertical-align: middle;
+  cursor: pointer;
+  transition: background 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0;
+  margin-left: 14px;
+  ${(props) =>
+    props.checked &&
+    `+ .switch {
       background: #AA1FEC;
     }`}
-    ${props => props.checked && `+ .switch::before {
+  ${(props) =>
+    props.checked &&
+    `+ .switch::before {
       left: 24px;
       background: #fff;
     }`}
-`
+`;
 
 const StyledButton = styled.label`
   display: inline-block;

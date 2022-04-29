@@ -8,16 +8,12 @@
     "preview": "vite preview",
     "lint": "eslint src/"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
   "lint-staged": {
-    "src/**/*.{js,jsx}": [
-      "eslint",
-      "pretty-quick — staged",
-      "git add"
+    "*.+(js|jsx)": [
+      "prettier --write --ignore-unknown"
+    ],
+    "*.+(json|css|md)": [
+      "prettier --write"
     ]
   },
   "dependencies": {

@@ -11,7 +11,8 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'plugin:sonarjs/recommended',
     'plugin:promise/recommended',
-    'prettier'
+    'prettier',
+    'plugin:prettier/recommended'
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -21,7 +22,7 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module'
   },
-  plugins: ['react', '@typescript-eslint', 'sonarjs', 'promise', 'jsx-a11y'],
+  plugins: ['react', 'prettier', '@typescript-eslint', 'sonarjs', 'promise', 'jsx-a11y'],
   ignorePatterns: ['.eslintrc.js'],
   rules: {
     'no-console': ['error', { allow: ['warn', 'error'] }],
@@ -42,7 +43,7 @@ module.exports = {
     // ts validates implicit anys anyways
     'react/prop-types': 'off',
     // ts validates no unuseds anyways
-    'no-unused-vars': 'true',
+    'no-unused-vars': 1,
 
     'jsx-a11y/no-noninteractive-element-interactions': 'off',
     'jsx-a11y/click-events-have-key-events': 'off',
@@ -50,7 +51,7 @@ module.exports = {
     /*
      * Lints to enable later:
      */
-    'jsx-a11y/anchor-is-valid':'warn',
+    'jsx-a11y/anchor-is-valid': 'warn',
     'jsx-quotes': 'warn',
     'no-undef': 'warn',
     'react/jsx-boolean-value': 'warn',
@@ -97,7 +98,13 @@ module.exports = {
     'prefer-promise-reject-errors': 'warn',
     'jsx-a11y/click-events-have-key-events': 'warn',
     'jsx-a11y/no-noninteractive-element-interactions': 'warn',
-    'jsx-a11y/alt-text': 'warn'
+    'jsx-a11y/alt-text': 'warn',
+
+    // prettier
+    'prettier/prettier': 'error',
+    'linebreak-style': ['error', 'unix'],
+    'arrow-body-style': 'off',
+    'prefer-arrow-callback': 'off'
   },
   settings: {
     react: {
