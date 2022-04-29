@@ -42,21 +42,18 @@ export function WalletCarousel(props: { walletProps: WalletInfoType[] }) {
                 }}
               >
                 <div style={{ paddingLeft: '24px' }}>
-                  <Icon name="wallet" width={22} height={26} viewBox="0 0 22 22" />
+                  <Icon name={'wallet'} width={22} height={26} viewBox='0 0 22 22' />
                   <div style={{ paddingTop: '46px' }}>
                     <div style={{ display: 'flex' }}>
-                      {walletInfo.featureIcon ? (
-                        <CircleButton name="edit" />
-                      ) : (
-                        <CircleButton name="plus" />
-                      )}
-                      <div
-                        style={{
-                          display: 'flex',
-                          flexDirection: 'column',
-                          justifyContent: 'center',
-                          paddingLeft: '16px'
-                        }}
+                      {walletInfo.featureIcon
+                        ? <CircleButton name={'edit'} />
+                        : <CircleButton name={'plus'} />}
+                      <div style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        paddingLeft: '16px'
+                      }}
                       >
                         <div>{walletInfo.label}</div>
                         {walletInfo.description ? (

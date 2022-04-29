@@ -1,10 +1,9 @@
 import styled from '@emotion/styled';
 import InputField from '@ui/Input/InputField';
-import Select from '@ui/Select/Select';
 import MainTable from '@ui/Table/MainTable/MainTable';
 import Icon from '@ui/Icon/Icon';
-import { useState } from 'react';
-import { TypeOf } from 'yup';
+import { ChangeEvent, useState } from 'react';
+
 
 interface Column {
   id: string;
@@ -14,6 +13,15 @@ interface Column {
 
 interface DataSet<Item> {
   items: Item[];
+}
+
+interface Finder {
+  onChange: (keyword: string) => void;
+  searchMaxRow?: number;
+}
+
+interface FilterData {
+  [key:string]: string;
 }
 interface TableSectionProps<Item extends Record<string, unknown>> {
   comingSoon?: string;
@@ -25,38 +33,56 @@ interface TableSectionProps<Item extends Record<string, unknown>> {
   overwrittenFields?: any;
   fetchData?: string;
   searchEnabled?: boolean;
+  searchColumn?: string;
+  finder?: Finder; // if backend search implemented
 }
 
 function TableSection<Item extends Record<string, unknown>>(props: TableSectionProps<Item>) {
-  // const [selectedOption, setSelectedOption] = useState(selectOptions[0])
+  const [filteredDataSet, setFilteredDataSet] = useState<any>(null);
+
+  const onChangeValue = (event: ChangeEvent<HTMLInputElement>) => {
+    const search = event.target.value.toLowerCase();
+    // Check backend search function 
+    if (props.finder?.onChange && props.dataSet?.items?.length > (props.finder.searchMaxRow || 10)) {
+      // emit onChange
+      props.finder.onChange(search);
+      return;
+    }
+    // if no backend search implemented.
+    const filteredData = props.dataSet.items.filter((o: any) => Object.values(o).some((val: any) => handleFilter(val, search)));
+    setFilteredDataSet({ items: filteredData });
+  }
+
+  const handleFilter = (val: string | FilterData, search: string): boolean => {
+    return typeof val === 'string' ? val.toLowerCase().includes(search) : val[props.searchColumn || 'name']?.toLowerCase()?.includes(search)
+  }
 
   return (
     <TableSectionWrapper {...props}>
-      {props.comingSoon ? (
-        <ComingSoonWrapper>
-          <Icon name="info" height={24} width={24} viewBox="0 0 24 24" />
-          <h2>{props.title}</h2>
-          <span>Coming soon</span>
-        </ComingSoonWrapper>
-      ) : (
-        <>
-          <HeaderWrapper>
-            <h2>
-              {props.title} <span>{props.subtitle}</span>
-            </h2>
-            {props.searchEnabled && (
-              <InputField icon="search" inputProps={{ placeholder: 'Search' }} />
-            )}
-          </HeaderWrapper>
-          <MainTable
-            dataSet={props.dataSet}
-            columns={props.columns}
-            overwrittenFields={props.overwrittenFields || {}}
-            fetchData={props.fetchData || null}
-            hideHeading={props.hideHeading || false}
-          />
-        </>
-      )}
+      {props.comingSoon
+        ? (
+          <ComingSoonWrapper>
+            <Icon name='info' height={24} width={24} viewBox='0 0 24 24' />
+            <h2>{props.title}</h2>
+            <span>Coming soon</span>
+          </ComingSoonWrapper>
+        )
+        : (
+          <>
+            <HeaderWrapper>
+              <h2>{props.title} <span>{props.subtitle}</span></h2>
+              {true &&
+                <InputField icon='search' inputProps={{ placeholder: 'Search', onChange: onChangeValue }} />}
+            </HeaderWrapper>
+            <MainTable
+              dataSet={filteredDataSet ? filteredDataSet : props.dataSet}
+              columns={props.columns}
+              overwrittenFields={props.overwrittenFields || {}}
+              fetchData={props.fetchData || null}
+              hideHeading={props.hideHeading || false}
+            />
+          </>
+        )}
     </TableSectionWrapper>
   );
 }
