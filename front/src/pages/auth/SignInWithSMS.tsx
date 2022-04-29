@@ -60,7 +60,7 @@ export function SignInWithSMS() {
       </HelpText>
       {authState.result !== 'waiting' && authState.result !== sendState.result && (
         <HelpText>
-          {authState.result === 'loading' && <InfoMessage>'Validating...</InfoMessage>}
+          {authState.result === 'loading' && <InfoMessage>Validating...</InfoMessage>}
           {authState.result === 'validation-error' && (
             <ErrorMessage>Invalid code please try again.</ErrorMessage>
           )}
