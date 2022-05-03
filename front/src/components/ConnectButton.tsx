@@ -21,12 +21,12 @@ export const ConnectButton = () => {
           <Button variant='normal' onClick={() => { deactivate() }}>
             {shortenIfAddress(account)}
           </Button>
-          )
+        )
         : (
           <Button variant='normal' onClick={() => { ConnectWallet(activate) }}>
             Connect Wallet
           </Button>
-          )}
+        )}
     </>
   )
 }
