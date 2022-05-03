@@ -140,7 +140,7 @@ function PrivateSaleInterestForm() {
     try {
       const res = await userService.createInvestor(data)
       if (res.data) {
-        if (res.data.status == 'created') setFormSubmitted(1)
+        if (res.data.status === 'created') setFormSubmitted(1)
         else {
           alert('this is TEMP error')
           console.error(res.data)

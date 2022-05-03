@@ -78,7 +78,11 @@ export default function NFTDashboard() {
     }
   }
 
-  const customStyle = (option: any) => {
+  interface Option {
+    label: string
+  }
+
+  const customStyle = (option: Option) => {
     // TODO: set type after finishing backend part
     return (
       <AutocompleteStyle>
