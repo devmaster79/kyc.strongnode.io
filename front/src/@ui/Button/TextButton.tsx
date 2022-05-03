@@ -11,7 +11,20 @@ const StyledButton = styled.button`
   cursor: pointer;
 `
 
-function TextButton({ children, ...props }: any) {
+interface TextButtonProps {
+  children: string
+  props: {
+    theme: {
+      palette: {
+        text: {
+          secondary: string
+        }
+      }
+    }
+  }
+}
+
+function TextButton({ children, ...props }: TextButtonProps) {
   return <StyledButton {...props}>{children}</StyledButton>
 }
 
