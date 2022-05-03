@@ -19,14 +19,11 @@ interface Finder {
   searchMaxRow?: number
 }
 
-interface FilterData {
-  [key: string]: string
-}
 interface TableSectionProps<Item extends Record<string, unknown>> {
   comingSoon?: string
   title: string
   subtitle: string | undefined
-  dataSet: any
+  dataSet: DataSet<Item>
   columns: Column[]
   hideHeading?: boolean
   overwrittenFields?: any
@@ -39,7 +36,9 @@ interface TableSectionProps<Item extends Record<string, unknown>> {
 function TableSection<Item extends Record<string, unknown>>(
   props: TableSectionProps<Item>
 ) {
-  const [filteredDataSet, setFilteredDataSet] = useState<any>(null)
+  const [filteredDataSet, setFilteredDataSet] = useState<DataSet<Item> | null>(
+    null
+  )
 
   const onChangeValue = (event: ChangeEvent<HTMLInputElement>) => {
     const search = event.target.value.toLowerCase()
@@ -53,16 +52,14 @@ function TableSection<Item extends Record<string, unknown>>(
       return
     }
     // if no backend search implemented.
-    const filteredData = props.dataSet.items.filter((o: any) =>
-      Object.values(o).some((val: any) => handleFilter(val, search))
+    const filteredData = props.dataSet.items.filter((o) =>
+      Object.values(o).some((val) => {
+        if (typeof val === 'string') {
+          return val.toLowerCase().includes(search)
+        }
+      })
     )
     setFilteredDataSet({ items: filteredData })
-  }
-
-  const handleFilter = (val: string | FilterData, search: string): boolean => {
-    return typeof val === 'string'
-      ? val.toLowerCase().includes(search)
-      : val[props.searchColumn || 'name']?.toLowerCase()?.includes(search)
   }
 
   return (

@@ -100,8 +100,18 @@ type CoinMetricsProps = {
   columns: Array<IData>
 }
 
+interface TokenObject {
+  owned: string
+  value: string
+  value_trend: string
+  icon: {
+    url: string
+    name: string
+  }
+}
+
 export const CoinMetrics = (props: CoinMetricsProps) => {
-  const [tableData, setTableData] = useState<{ [key: string]: Array<any> }>({})
+  const [tableData, setTableData] = useState<{ items: any[] }>({ items: [] })
 
   useEffect(() => {
     loadTokenMetrics()
@@ -119,7 +129,7 @@ export const CoinMetrics = (props: CoinMetricsProps) => {
   }
 
   const formatTableData = (data: any) => {
-    const temporaryData: any = []
+    const temporaryData: TokenObject[] = []
 
     data.forEach((token: any) => {
       const tokenObject = {
