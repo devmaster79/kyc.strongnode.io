@@ -1,14 +1,14 @@
-import React, { useState, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
-import EntryCard from '../components/EntryCard';
-import InputGroup from '../components/InputGroup';
-import Input from '../components/Input';
-import Button from '../components/Button';
-import { ReactComponent as TelegramIcon } from '../icons/telegram.svg';
-import { ReactComponent as TwitterIcon } from '../icons/twitter.svg';
-import { EntryPage } from './style';
-import userService from '../services/userService';
+import React, { useState, useCallback } from 'react'
+import { useNavigate } from 'react-router-dom'
+import styled from 'styled-components'
+import EntryCard from '../components/EntryCard'
+import InputGroup from '../components/InputGroup'
+import Input from '../components/Input'
+import Button from '../components/Button'
+import { ReactComponent as TelegramIcon } from '../icons/telegram.svg'
+import { ReactComponent as TwitterIcon } from '../icons/twitter.svg'
+import { EntryPage } from './style'
+import userService from '../services/userService'
 
 export const Container = styled.div`
   display: flex;
@@ -16,7 +16,7 @@ export const Container = styled.div`
   justify-content: center;
   flex-direction: column;
   background: #f3f3f5;
-`;
+`
 
 const ProgressBarWrapper = styled.div`
   margin: 0;
@@ -49,7 +49,7 @@ const ProgressBarWrapper = styled.div`
       background: transparent;
     }
   }
-`;
+`
 
 const InputWrapper = styled.div`
   text-align: left;
@@ -58,47 +58,47 @@ const InputWrapper = styled.div`
     color: white;
     font-size: 12px;
   }
-`;
+`
 
 function Profile() {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
-  const [telegramUserName, setTelegramUserName] = useState('');
-  const [twitterUserName, setTwitterUserName] = useState('');
-  const [walletAddress, setWalletAddress] = useState('');
+  const [telegramUserName, setTelegramUserName] = useState('')
+  const [twitterUserName, setTwitterUserName] = useState('')
+  const [walletAddress, setWalletAddress] = useState('')
 
   const handleCreateProfile = useCallback(async (data) => {
     try {
-      const res = await userService.createProfile(data);
+      const res = await userService.createProfile(data)
       if (res.data) {
-        navigate('/private-sale-interest-form');
+        navigate('/private-sale-interest-form')
       }
     } catch (err) {
-      console.error('Error for create password', err);
+      console.error('Error for create password', err)
     }
-  }, []);
+  }, [])
 
   const handleTGUserNameInputChange = (event) => {
-    setTelegramUserName(event.target.value);
-  };
+    setTelegramUserName(event.target.value)
+  }
 
   const handleTwitterUserNameInputChange = (event) => {
-    setTwitterUserName(event.target.value);
-  };
+    setTwitterUserName(event.target.value)
+  }
 
   const handleWalletAddressInputChange = (event) => {
-    setWalletAddress(event.target.value);
-  };
+    setWalletAddress(event.target.value)
+  }
 
   const handleSubmit = (event) => {
-    event.preventDefault();
+    event.preventDefault()
     const data = {
       telegram_id: telegramUserName,
       twitter_id: twitterUserName,
       wallet_address: walletAddress
-    };
-    handleCreateProfile(data);
-  };
+    }
+    handleCreateProfile(data)
+  }
 
   return (
     <EntryPage>
@@ -158,7 +158,7 @@ function Profile() {
         </form>
       </EntryCard>
     </EntryPage>
-  );
+  )
 }
 
-export default Profile;
+export default Profile

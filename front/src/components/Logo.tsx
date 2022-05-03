@@ -1,9 +1,9 @@
-import { Box, SxProps } from '@mui/material';
+import { Box, SxProps } from '@mui/material'
 
 interface LogoProps {
-  sx: SxProps;
+  sx: SxProps
 }
 
 export default function Logo({ sx }: LogoProps) {
-  return <Box component="img" src="/images/logo.png" sx={{ ...sx }} />;
+  return <Box component="img" src="/images/logo.png" sx={{ ...sx }} />
 }

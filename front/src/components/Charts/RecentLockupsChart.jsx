@@ -1,14 +1,14 @@
-import merge from 'lodash/merge';
-import ReactApexChart from 'react-apexcharts';
-import Stack from '@mui/material/Stack';
-import { useTheme } from '@mui/material/styles';
-import BaseOptionChart from './BaseOptionChart';
+import merge from 'lodash/merge'
+import ReactApexChart from 'react-apexcharts'
+import Stack from '@mui/material/Stack'
+import { useTheme } from '@mui/material/styles'
+import BaseOptionChart from './BaseOptionChart'
 
-const Lockup1 = [80];
-const Lockup2 = [65];
+const Lockup1 = [80]
+const Lockup2 = [65]
 
 export default function AppCurrentDownload() {
-  const theme = useTheme();
+  const theme = useTheme()
 
   const chartOptions1 = merge(BaseOptionChart(), {
     colors: ['#26A5C0'],
@@ -42,7 +42,7 @@ export default function AppCurrentDownload() {
         }
       }
     }
-  });
+  })
 
   const chartOptions2 = merge(BaseOptionChart(), {
     colors: ['#5137FA'],
@@ -76,7 +76,7 @@ export default function AppCurrentDownload() {
         }
       }
     }
-  });
+  })
 
   const chartOptions3 = merge(BaseOptionChart(), {
     colors: ['#604BE8'],
@@ -110,7 +110,7 @@ export default function AppCurrentDownload() {
         }
       }
     }
-  });
+  })
 
   return (
     <Stack direction="row" justifyContent="space-around">
@@ -136,5 +136,5 @@ export default function AppCurrentDownload() {
         height={140}
       />
     </Stack>
-  );
+  )
 }

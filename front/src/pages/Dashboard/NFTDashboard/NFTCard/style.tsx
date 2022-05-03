@@ -1,4 +1,4 @@
-import styled from '@emotion/styled';
+import styled from '@emotion/styled'
 
 export const Card = styled.div`
   background: ${(props) => props.theme.palette.background.light};
@@ -21,7 +21,7 @@ export const Card = styled.div`
     height: 240px;
     border-radius: 10px;
   }
-`;
+`
 
 export const CardContent = styled.div`
   display: flex;
@@ -37,4 +37,4 @@ export const CardContent = styled.div`
     font-family: 'Satoshi-Regular';
     color: ${(props) => props.theme.palette.text.secondary};
   }
-`;
+`

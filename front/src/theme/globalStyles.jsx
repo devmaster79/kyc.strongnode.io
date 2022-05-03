@@ -1,4 +1,4 @@
-import { withStyles } from '@mui/styles';
+import { withStyles } from '@mui/styles'
 
 // ----------------------------------------------------------------------
 
@@ -76,6 +76,6 @@ const GlobalStyles = withStyles((theme) => ({
       border: '3px solid #AA1FEC'
     }
   }
-}))(() => null);
+}))(() => null)
 
-export default GlobalStyles;
+export default GlobalStyles

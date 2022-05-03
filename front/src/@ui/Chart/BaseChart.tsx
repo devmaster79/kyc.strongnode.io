@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import styled from '@emotion/styled/macro';
+import { useState, useEffect } from 'react'
+import styled from '@emotion/styled/macro'
 import {
   AreaChart,
   YAxis,
@@ -8,62 +8,82 @@ import {
   Tooltip,
   Area,
   ResponsiveContainer
-} from 'recharts';
+} from 'recharts'
 
 const ChartWrapper = styled.div`
   width: 100%;
   height: 400px;
-`;
+`
 
-type BaseChartProps = {
-  data: Array<Object>;
-  xKey: string;
-  xAxisFormat?: string;
-  yKey: string;
-  chartKey: string;
-};
+export type RechartCompatibleKey<Data> = Exclude<keyof Data, symbol>
+export type XAxisFormat = 'days' | 'weeks' | 'months' | 'years'
+export type BaseChartProps<
+  Item extends Record<string, unknown>,
+  ChartKey extends RechartCompatibleKey<Item>
+> = {
+  data: (Item & { [i in ChartKey]: { toString: () => string } })[]
+  xKey: RechartCompatibleKey<Item>
+  xAxisFormat?: XAxisFormat
+  yKey: RechartCompatibleKey<Item>
+  chartKey: ChartKey
+}
 
-export const BaseChart = (props: BaseChartProps) => {
-  const [yAxisWidth, setYAxisWidth] = useState(undefined);
+export const BaseChart = <
+  Item extends Record<string, unknown>,
+  ChartKey extends RechartCompatibleKey<Item>
+>(
+  props: BaseChartProps<Item, ChartKey>
+) => {
+  const [yAxisWidth, setYAxisWidth] = useState<number | undefined>(undefined)
 
-  const formatTimestamp = (tickItem: any) => {
-    if (!props.xAxisFormat || isNaN(tickItem)) {
-      return tickItem;
+  const formatTimestamp = (tickItem: string) => {
+    if (!props.xAxisFormat || isNaN(parseInt(tickItem))) {
+      return tickItem
     }
 
     switch (props.xAxisFormat) {
       case 'days':
-        return new Intl.DateTimeFormat('en-Us', { weekday: 'short' }).format(new Date(tickItem));
-
       case 'weeks':
-        return new Intl.DateTimeFormat('en-Us', { weekday: 'short' }).format(new Date(tickItem));
+        return new Intl.DateTimeFormat('en-Us', { weekday: 'short' }).format(
+          new Date(tickItem)
+        )
 
       case 'months':
-        return new Intl.DateTimeFormat('en-Us', { month: 'short' }).format(new Date(tickItem));
+        return new Intl.DateTimeFormat('en-Us', { month: 'short' }).format(
+          new Date(tickItem)
+        )
 
       case 'years':
-        return new Intl.DateTimeFormat('en-Us', { year: 'numeric' }).format(new Date(tickItem));
+        return new Intl.DateTimeFormat('en-Us', { year: 'numeric' }).format(
+          new Date(tickItem)
+        )
     }
-  };
+  }
 
-  const calculateYAxisWidth = (data: any) => {
+  const calculateYAxisWidth = (data: Item[]) => {
     return data
-      .map((c: { value: any }) => c.value.toString())
-      .reduce((acc: number, cur: string | any[]) => (cur.length > acc ? cur.length : acc), 0);
-  };
+      .map((c) => (c[props.chartKey] as typeof toString).toString())
+      .reduce(
+        (acc: number, cur: string | string[]) =>
+          cur.length > acc ? cur.length : acc,
+        0
+      )
+  }
 
   useEffect(() => {
-    setYAxisWidth(calculateYAxisWidth(props.data));
-  }, [props.data]);
+    setYAxisWidth(calculateYAxisWidth(props.data))
+  }, [props.data])
 
   const tooltipWrapperStyle = {
     background: 'red'
-  };
+  }
 
   return (
     <ChartWrapper>
       <ResponsiveContainer>
-        <AreaChart data={props.data} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+        <AreaChart
+          data={props.data}
+          margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
           <defs>
             <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
               <stop offset="5%" stopColor="#AA1FEC" stopOpacity={1} />
@@ -86,7 +106,10 @@ export const BaseChart = (props: BaseChartProps) => {
           />
           <CartesianGrid vertical={false} stroke="rgba(153, 153, 153, 0.12)" />
 
-          <Tooltip wrapperStyle={tooltipWrapperStyle} contentStyle={{ display: 'none' }} />
+          <Tooltip
+            wrapperStyle={tooltipWrapperStyle}
+            contentStyle={{ display: 'none' }}
+          />
           <Area
             key={1}
             type="monotone"
@@ -98,5 +121,5 @@ export const BaseChart = (props: BaseChartProps) => {
         </AreaChart>
       </ResponsiveContainer>
     </ChartWrapper>
-  );
-};
+  )
+}

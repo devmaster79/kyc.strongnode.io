@@ -1,4 +1,4 @@
-import Box from '@mui/material/Box';
+import Box from '@mui/material/Box'
 
 export default function SvgIconStyle({ src, color = 'inherit', sx }) {
   return (
@@ -17,5 +17,5 @@ export default function SvgIconStyle({ src, color = 'inherit', sx }) {
         ...sx
       }}
     />
-  );
+  )
 }

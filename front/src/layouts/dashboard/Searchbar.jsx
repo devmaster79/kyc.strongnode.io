@@ -1,10 +1,16 @@
-import { useState } from 'react';
-import { styled, alpha } from '@mui/material/styles';
-import { Input, Slide, Button, InputAdornment, ClickAwayListener } from '@mui/material';
-import IconButton from '@mui/material/IconButton';
+import { useState } from 'react'
+import { styled, alpha } from '@mui/material/styles'
+import {
+  Input,
+  Slide,
+  Button,
+  InputAdornment,
+  ClickAwayListener
+} from '@mui/material'
+import IconButton from '@mui/material/IconButton'
 
-const APPBAR_MOBILE = 64;
-const APPBAR_DESKTOP = 92;
+const APPBAR_MOBILE = 64
+const APPBAR_DESKTOP = 92
 
 const SearchbarStyle = styled('div')(({ theme }) => ({
   top: 0,
@@ -24,20 +30,20 @@ const SearchbarStyle = styled('div')(({ theme }) => ({
     height: APPBAR_DESKTOP,
     padding: theme.spacing(0, 5)
   }
-}));
+}))
 
 // ----------------------------------------------------------------------
 
 export default function Searchbar() {
-  const [isOpen, setOpen] = useState(false);
+  const [isOpen, setOpen] = useState(false)
 
   const handleOpen = () => {
-    setOpen((prev) => !prev);
-  };
+    setOpen((prev) => !prev)
+  }
 
   const handleClose = () => {
-    setOpen(false);
-  };
+    setOpen(false)
+  }
 
   return (
     <ClickAwayListener onClickAway={handleClose}>
@@ -69,5 +75,5 @@ export default function Searchbar() {
         </Slide>
       </div>
     </ClickAwayListener>
-  );
+  )
 }

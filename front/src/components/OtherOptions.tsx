@@ -1,14 +1,18 @@
-import { NavLink } from 'react-router-dom';
-import { ROUTES } from 'Router';
-import styled from 'styled-components';
+import { NavLink } from 'react-router-dom'
+import { ROUTES } from 'Router'
+import styled from 'styled-components'
 
 interface OtherOptionsProps {
-  hideSMS?: boolean;
-  hideAuthenticator?: boolean;
-  hidePassword?: boolean;
+  hideSMS?: boolean
+  hideAuthenticator?: boolean
+  hidePassword?: boolean
 }
 
-export const OtherOptions = ({ hideSMS, hideAuthenticator, hidePassword }: OtherOptionsProps) => (
+export const OtherOptions = ({
+  hideSMS,
+  hideAuthenticator,
+  hidePassword
+}: OtherOptionsProps) => (
   <div>
     <h5>Try another method?</h5>
     <Options>
@@ -19,18 +23,22 @@ export const OtherOptions = ({ hideSMS, hideAuthenticator, hidePassword }: Other
       )}
       {!hideAuthenticator && (
         <li>
-          <NavLink to={ROUTES.AUTH.SIGN_IN_WITH_AUTHENTICATOR}>Sign in with Authenticator</NavLink>
+          <NavLink to={ROUTES.AUTH.SIGN_IN_WITH_AUTHENTICATOR}>
+            Sign in with Authenticator
+          </NavLink>
         </li>
       )}
       {!hidePassword && (
         <li>
-          <NavLink to={ROUTES.AUTH.SIGN_IN_WITH_PASSWORD}>Sign in with Password</NavLink>
+          <NavLink to={ROUTES.AUTH.SIGN_IN_WITH_PASSWORD}>
+            Sign in with Password
+          </NavLink>
         </li>
       )}
     </Options>
   </div>
-);
+)
 
 const Options = styled.ul`
   list-style-type: none;
-`;
+`

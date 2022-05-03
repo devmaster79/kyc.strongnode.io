@@ -1,11 +1,11 @@
-import styled from '@emotion/styled';
+import styled from '@emotion/styled'
 import InputField, {
   FloatingLabelWrapper,
   StyledInputField,
   FloatingLabel
-} from '@ui/Input/InputField';
-import GenericButton from '@ui/Button/Button';
-import { withAttrs } from '@ui/utils/withAttrs';
+} from '@ui/Input/InputField'
+import GenericButton from '@ui/Button/Button'
+import { withAttrs } from '@ui/utils/withAttrs'
 
 export const Input = withAttrs(
   styled(InputField)`
@@ -40,12 +40,12 @@ export const Input = withAttrs(
       }
     }
   }
-);
+)
 
 export const Button = styled(GenericButton)`
   margin: 0 20%;
   height: 56px;
-`;
+`
 
 export const Form = styled.form`
   width: 100%;
@@ -57,7 +57,7 @@ export const Form = styled.form`
   @media only screen and (max-width: 600px) {
     width: 100%;
   }
-`;
+`
 
 export const InputGroup = styled.div`
   display: flex;
@@ -68,7 +68,7 @@ export const InputGroup = styled.div`
   @media only screen and (max-width: 600px) {
     width: 100%;
   }
-`;
+`
 export const ButtonGroup = styled.div`
   display: flex;
   flex-flow: row;
@@ -80,7 +80,7 @@ export const ButtonGroup = styled.div`
   @media only screen and (max-width: 600px) {
     width: 100%;
   }
-`;
+`
 
 export const Hr = styled.hr`
   border: 0;
@@ -91,19 +91,19 @@ export const Hr = styled.hr`
     rgba(255, 255, 255, 0.5),
     rgba(255, 255, 255, 0)
   );
-`;
+`
 
 export const InfoMessage = styled('p')((props) => ({
   textAlign: 'center',
   marginBottom: '10px',
   color: props.theme.palette.info.main
-}));
+}))
 
 export const ErrorMessage = styled(InfoMessage)((props) => ({
   color: props.theme.palette.error.main
-}));
+}))
 
 export const Row = styled('div')({
   display: 'flex',
   gap: '1em'
-});
+})

@@ -1,6 +1,6 @@
 // ----------------------------------------------------------------------
 
-import { Theme } from '@mui/material/styles';
+import { Theme } from '@mui/material/styles'
 
 export default function Lists(theme: Theme) {
   return {
@@ -42,5 +42,5 @@ export default function Lists(theme: Theme) {
         }
       }
     }
-  };
+  }
 }

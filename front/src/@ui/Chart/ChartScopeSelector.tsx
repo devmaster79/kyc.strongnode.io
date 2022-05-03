@@ -1,37 +1,39 @@
-import React, { useState } from 'react';
-import styled from '@emotion/styled/macro';
+import React, { useState } from 'react'
+import styled from '@emotion/styled/macro'
+import { XAxisFormat } from './BaseChart'
 
-type SelectorArray = {
-  title: string;
-  handler: Function;
-};
+export type SelectorItem = {
+  title: XAxisFormat
+  handler: (value: XAxisFormat) => void
+}
 type ChartScopeSelectorProps = {
-  selectors: Array<SelectorArray>;
-  style?: object;
-  className?: string;
-};
+  selectors: SelectorItem[]
+  style?: object
+  className?: string
+}
 
 export const ChartScopeSelector = (props: ChartScopeSelectorProps) => {
-  const [activeScope, setActiveScope] = useState(props.selectors[0].title);
+  const [activeScope, setActiveScope] = useState(props.selectors[0].title)
 
   return (
     <SelectorWrapper style={props.style ? props.style : {}}>
       {props.selectors.map((selector, index) => (
         <SelectorButton
           key={selector.title}
-          style={activeScope == selector.title ? activeSelectorStyle : {}}
+          style={activeScope === selector.title ? activeSelectorStyle : {}}
           onClick={() => {
-            selector.handler(selector.title);
-            setActiveScope(selector.title);
-          }}
-        >
+            selector.handler(selector.title)
+            setActiveScope(selector.title)
+          }}>
           {selector.title}
-          <ButtonActiveLine style={activeScope == selector.title ? { opacity: 1 } : {}} />
+          <ButtonActiveLine
+            style={activeScope === selector.title ? { opacity: 1 } : {}}
+          />
         </SelectorButton>
       ))}
     </SelectorWrapper>
-  );
-};
+  )
+}
 
 const ButtonActiveLine = styled.div`
   width: 50%;
@@ -43,7 +45,7 @@ const ButtonActiveLine = styled.div`
   transform: translateX(-50%);
   opacity: 0;
   transition: 250ms ease;
-`;
+`
 
 const SelectorButton = styled.div`
   position: relative;
@@ -64,7 +66,7 @@ const SelectorButton = styled.div`
   &:hover ${ButtonActiveLine} {
     opacity: 1;
   }
-`;
+`
 
 const SelectorWrapper = styled.div`
   width: max-content;
@@ -76,8 +78,8 @@ const SelectorWrapper = styled.div`
   ${SelectorButton}:first-child {
     margin-left: 0px;
   }
-`;
+`
 
 const activeSelectorStyle = {
   opacity: 1
-};
+}

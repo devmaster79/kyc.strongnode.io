@@ -1,4 +1,4 @@
-import styled from '@emotion/styled';
+import styled from '@emotion/styled'
 
 const StyledButton = styled.button`
   font-style: normal;
@@ -9,10 +9,10 @@ const StyledButton = styled.button`
   background: transparent;
   border: 0px;
   cursor: pointer;
-`;
+`
 
 function TextButton({ children, ...props }: any) {
-  return <StyledButton {...props}>{children}</StyledButton>;
+  return <StyledButton {...props}>{children}</StyledButton>
 }
 
-export default TextButton;
+export default TextButton

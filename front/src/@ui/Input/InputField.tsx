@@ -1,17 +1,17 @@
-import styled, { CSSObject } from '@emotion/styled';
-import { Icons } from '@ui/Icon/CustomIcons';
-import Icon from '@ui/Icon/Icon';
-import { ComponentProps, ReactNode } from 'react';
+import styled, { CSSObject } from '@emotion/styled'
+import { Icons } from '@ui/Icon/CustomIcons'
+import Icon from '@ui/Icon/Icon'
+import { ComponentProps, ReactNode } from 'react'
 
 type InputParams = {
-  className?: string;
-  children?: ReactNode;
-  inputProps?: ComponentProps<typeof StyledInputField>;
-  icon?: keyof typeof Icons;
-  error?: boolean;
-  helpText?: ReactNode;
-  floatingLabelWrapperProps?: FloatingLabelWrapperProps;
-};
+  className?: string
+  children?: ReactNode
+  inputProps?: ComponentProps<typeof StyledInputField>
+  icon?: keyof typeof Icons
+  error?: boolean
+  helpText?: ReactNode
+  floatingLabelWrapperProps?: FloatingLabelWrapperProps
+}
 
 export default function InputField(props: InputParams) {
   return (
@@ -19,30 +19,33 @@ export default function InputField(props: InputParams) {
       <StyledInputWrapper
         error={props.error || false}
         className={props.className}
-        disabled={props.inputProps?.disabled || false}
-      >
+        disabled={props.inputProps?.disabled || false}>
         {props.icon && <Icon name={props.icon} />}
 
         <FloatingLabelWrapper {...props.floatingLabelWrapperProps}>
           <StyledInputField {...props.inputProps} placeholder=" " />
-          <FloatingLabel className="floating-label">{props.inputProps?.placeholder}</FloatingLabel>
+          <FloatingLabel className="floating-label">
+            {props.inputProps?.placeholder}
+          </FloatingLabel>
         </FloatingLabelWrapper>
       </StyledInputWrapper>
-      {props.helpText && <HelpText error={props.error || false}>{props.helpText}</HelpText>}
+      {props.helpText && (
+        <HelpText error={props.error || false}>{props.helpText}</HelpText>
+      )}
     </InputContainer>
-  );
+  )
 }
 
 export const InputContainer = styled.div`
   display: flex;
   flex-flow: column;
-`;
+`
 
 export const HelpText = styled.div<{ error: boolean }>`
   text-align: left;
   padding: 0.3em 2em;
   ${(props) => props.error && `color: ${props.theme.palette.error.main}`}
-`;
+`
 
 export const FloatingLabel = styled.label`
   display: flex;
@@ -54,10 +57,10 @@ export const FloatingLabel = styled.label`
   font-size: 1em;
   transition-duration: 300ms;
   pointer-events: none;
-`;
+`
 
 interface FloatingLabelWrapperProps {
-  onFocusStyle?: CSSObject;
+  onFocusStyle?: CSSObject
 }
 
 export const FloatingLabelWrapper = styled('div', {
@@ -78,11 +81,11 @@ export const FloatingLabelWrapper = styled('div', {
     left: 3px;
     ${(props) => props.onFocusStyle}
   }
-`;
+`
 
 export const StyledInputWrapper = styled.div<{
-  disabled: boolean;
-  error: boolean;
+  disabled: boolean
+  error: boolean
 }>`
   flex: 1;
   background: ${(props) => props.theme.palette.background.light};
@@ -101,7 +104,7 @@ export const StyledInputWrapper = styled.div<{
   svg {
     margin-left: 8px;
   }
-`;
+`
 
 export const StyledInputField = styled.input`
   display: block;
@@ -131,7 +134,8 @@ export const StyledInputField = styled.input`
 
   &:-webkit-autofill {
     -webkit-text-fill-color: ${(props) => props.theme.palette.text.primary};
-    -webkit-box-shadow: 0 0 0px 1000px ${(props) => props.theme.palette.background.primary} inset;
+    -webkit-box-shadow: 0 0 0px 1000px
+      ${(props) => props.theme.palette.background.primary} inset;
     border-radius: 7px;
   }
-`;
+`

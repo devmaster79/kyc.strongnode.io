@@ -1,67 +1,72 @@
-import { useState, useEffect, useCallback } from 'react';
-import Avatar from '@mui/material/Avatar';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
-import SvgIconStyle from 'components/SvgIconStyle';
-import ConnectButton, { SneBalance } from 'components/ConnectButton';
-import * as React from 'react';
-import Popover from '@mui/material/Popover';
-import Divider from '@mui/material/Divider';
-import Button from '../../@ui/Button/Button';
-import styled from '@mui/material/styles/styled';
-import { useNavigate } from 'react-router-dom';
-import userService from 'services/userService';
-import * as authService from 'services/auth';
+import { useState, useEffect, useCallback } from 'react'
+import Avatar from '@mui/material/Avatar'
+import Stack from '@mui/material/Stack'
+import Typography from '@mui/material/Typography'
+import SvgIconStyle from 'components/SvgIconStyle'
+import ConnectButton, { SneBalance } from 'components/ConnectButton'
+import * as React from 'react'
+import Popover from '@mui/material/Popover'
+import Divider from '@mui/material/Divider'
+import Button from '../../@ui/Button/Button'
+import styled from '@mui/material/styles/styled'
+import { useNavigate } from 'react-router-dom'
+import userService from 'services/userService'
+import * as authService from 'services/auth'
 
 const MyPopover = styled(Popover)`
   > div {
     border-radius: 30px !important;
   }
-`;
+`
 export default function AccountPopover() {
-  const navigate = useNavigate();
-  const [userName, setUserName] = useState('');
-  const [email, setEmail] = useState('');
-  const [avatar, setAvatar] = useState('');
+  const navigate = useNavigate()
+  const [userName, setUserName] = useState('')
+  const [email, setEmail] = useState('')
+  const [avatar, setAvatar] = useState('')
 
   useEffect(() => {
-    handleDashboard();
-  }, []);
+    handleDashboard()
+  }, [])
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = React.useState(null)
   const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
+    setAnchorEl(event.currentTarget)
+  }
   const handleClose = () => {
-    setAnchorEl(null);
-  };
-  const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
+    setAnchorEl(null)
+  }
+  const open = Boolean(anchorEl)
+  const id = open ? 'simple-popover' : undefined
 
   const handleDashboard = useCallback(async () => {
     try {
       if (localStorage.getItem('username') && localStorage.getItem('email')) {
-        setUserName(localStorage.getItem('username'));
-        setEmail(localStorage.getItem('email'));
+        setUserName(localStorage.getItem('username'))
+        setEmail(localStorage.getItem('email'))
 
-        userService.getProfile().then((r) => {
-          setAvatar(r.data[0].profile_img_url);
-        });
+        userService
+          .getProfile()
+          .then((r) => {
+            setAvatar(r.data[0].profile_img_url)
+          })
+          .catch(() => {
+            // Do nothing
+          })
       }
     } catch (err) {
-      console.error('Error for email verification', err);
+      console.error('Error for email verification', err)
     }
-  }, []);
+  }, [])
   const signOut = () => {
-    authService.signOut();
-    navigate('/verify-email');
-  };
+    authService.signOut()
+    navigate('/verify-email')
+  }
   const toProfile = () => {
-    navigate('/dashboard/profile');
-  };
+    navigate('/dashboard/profile')
+  }
   const toPasswordChange = () => {
-    navigate('/dashboard/change-password');
-  };
+    navigate('/dashboard/change-password')
+  }
 
   return (
     <>
@@ -80,15 +85,18 @@ export default function AccountPopover() {
         }}
         alignItems="center"
         onClick={handleClick}
-        justifyContent="space-between"
-      >
+        justifyContent="space-between">
         <Avatar src={avatar} alt="avatar" />
 
         <Stack sx={{ color: 'black', ml: 2, mr: 2 }}>
-          <Typography color="white" sx={{ fontSize: { md: 18, xs: 12 }, textAlign: 'center' }}>
+          <Typography
+            color="white"
+            sx={{ fontSize: { md: 18, xs: 12 }, textAlign: 'center' }}>
             {userName}
           </Typography>
-          <Typography color="white" sx={{ fontSize: { md: 12, xs: 8 }, textAlign: 'center' }}>
+          <Typography
+            color="white"
+            sx={{ fontSize: { md: 12, xs: 8 }, textAlign: 'center' }}>
             {email}
           </Typography>
         </Stack>
@@ -112,8 +120,7 @@ export default function AccountPopover() {
         }}
         sx={{
           top: { xs: '-2vh', md: -12, lg: -3 }
-        }}
-      >
+        }}>
         <Stack
           sx={{
             height: 320,
@@ -124,8 +131,7 @@ export default function AccountPopover() {
             borderRadius: '30px',
             pl: 1,
             pr: 1
-          }}
-        >
+          }}>
           <Stack alignItems="center">
             <Avatar sx={{ mt: 2 }} src={avatar} alt="avatar" />
             <Typography color="white" sx={{ fontSize: 18 }}>
@@ -143,15 +149,13 @@ export default function AccountPopover() {
           <Typography
             onClick={toProfile}
             color="white"
-            sx={{ cursor: 'pointer', fontSize: 18, ml: 3 }}
-          >
+            sx={{ cursor: 'pointer', fontSize: 18, ml: 3 }}>
             My account
           </Typography>
           <Typography
             onClick={toPasswordChange}
             color="white"
-            sx={{ cursor: 'pointer', fontSize: 18, ml: 3 }}
-          >
+            sx={{ cursor: 'pointer', fontSize: 18, ml: 3 }}>
             Change password
           </Typography>
           <Typography color="white" sx={{ fontSize: 18, ml: 3 }}>
@@ -165,5 +169,5 @@ export default function AccountPopover() {
         </Stack>
       </MyPopover>
     </>
-  );
+  )
 }

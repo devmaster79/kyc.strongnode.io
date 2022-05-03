@@ -1,34 +1,36 @@
-import { useNavigate } from 'react-router-dom';
-import * as authService from 'services/auth';
-import { useService } from 'hooks/useService';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import { ErrorMessage, InfoMessage } from '@ui/Dashboard/Form';
-import InputField from '@ui/Input/InputField';
-import styled from '@emotion/styled';
-import Button from '@ui/Button/Button';
-import { OtherOptions } from 'components/OtherOptions';
+import { useNavigate } from 'react-router-dom'
+import * as authService from 'services/auth'
+import { useService } from 'hooks/useService'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import { ErrorMessage, InfoMessage } from '@ui/Dashboard/Form'
+import InputField from '@ui/Input/InputField'
+import styled from '@emotion/styled'
+import Button from '@ui/Button/Button'
+import { OtherOptions } from 'components/OtherOptions'
 interface SignInWithPasswordFields {
-  password: string;
+  password: string
 }
 
 export function SignInWithPassword() {
-  const navigate = useNavigate();
-  const { data: sendResult, call: authByPassword } = useService(authService.authByPassword);
+  const navigate = useNavigate()
+  const { data: sendResult, call: authByPassword } = useService(
+    authService.authByPassword
+  )
 
   const { register, handleSubmit } = useForm<SignInWithPasswordFields>({
     defaultValues: {
       password: ''
     }
-  });
+  })
 
   const onSubmit: SubmitHandler<SignInWithPasswordFields> = async (
     data: SignInWithPasswordFields
   ) => {
-    const response = await authByPassword(data.password);
+    const response = await authByPassword(data.password)
     if (response.result === 'success') {
-      navigate('/sign-in-with-token');
+      navigate('/sign-in-with-token')
     }
-  };
+  }
 
   return (
     <>
@@ -38,7 +40,9 @@ export function SignInWithPassword() {
         Welcome
       </Title>
       <HelpText>
-        {sendResult.result === 'loading' && <InfoMessage>Loading...</InfoMessage>}
+        {sendResult.result === 'loading' && (
+          <InfoMessage>Loading...</InfoMessage>
+        )}
         {sendResult.result === 'validation-error' && (
           <ErrorMessage>Wrong password. Please try agian.</ErrorMessage>
         )}
@@ -50,8 +54,8 @@ export function SignInWithPassword() {
         )}
         {sendResult.result === 'banned' && (
           <ErrorMessage>
-            Too many trials. You can try it again {Math.floor(sendResult.remainingTimeMs / 1000)}{' '}
-            seconds later.
+            Too many trials. You can try it again{' '}
+            {Math.floor(sendResult.remainingTimeMs / 1000)} seconds later.
           </ErrorMessage>
         )}
       </HelpText>
@@ -68,7 +72,7 @@ export function SignInWithPassword() {
         <OtherOptions hidePassword />
       </Form>
     </>
-  );
+  )
 }
 
 const Form = styled.form`
@@ -81,11 +85,11 @@ const Form = styled.form`
   @media only screen and (max-width: 600px) {
     padding: 0 10px;
   }
-`;
+`
 
 const StyledInputField = styled(InputField)`
   margin: 10px 0;
-`;
+`
 const Title = styled.h1`
   font-style: normal;
   font-weight: 100;
@@ -97,7 +101,7 @@ const Title = styled.h1`
     font-weight: 900;
   }
   color: ${(props) => props.theme.palette.text.primary};
-`;
+`
 const HelpText = styled.div`
   margin: 32px 0 24px 0;
-`;
+`

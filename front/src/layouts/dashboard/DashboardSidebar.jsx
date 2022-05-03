@@ -1,18 +1,18 @@
-import { useEffect } from 'react';
-import { Link as RouterLink, useLocation } from 'react-router-dom';
-import styled from '@mui/material/styles/styled';
-import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
-import Drawer from '@mui/material/Drawer';
-import Hidden from '@mui/material/Hidden';
-import useCollapseDrawer from '../../hooks/useCollapseDrawer';
-import Logo from '../../components/Logo';
-import Scrollbar from '../../components/Scrollbar';
-import NavSection from '../../components/NavSection';
-import sidebarConfig from './SidebarConfig';
+import { useEffect } from 'react'
+import { Link as RouterLink, useLocation } from 'react-router-dom'
+import styled from '@mui/material/styles/styled'
+import Box from '@mui/material/Box'
+import Stack from '@mui/material/Stack'
+import Drawer from '@mui/material/Drawer'
+import Hidden from '@mui/material/Hidden'
+import useCollapseDrawer from '../../hooks/useCollapseDrawer'
+import Logo from '../../components/Logo'
+import Scrollbar from '../../components/Scrollbar'
+import NavSection from '../../components/NavSection'
+import sidebarConfig from './SidebarConfig'
 
-const DRAWER_WIDTH = 280;
-const COLLAPSE_WIDTH = 130;
+const DRAWER_WIDTH = 280
+const COLLAPSE_WIDTH = 130
 
 const RootStyle = styled('div')(({ theme }) => ({
   [theme.breakpoints.up('lg')]: {
@@ -21,19 +21,24 @@ const RootStyle = styled('div')(({ theme }) => ({
       duration: theme.transitions.duration.complex
     })
   }
-}));
+}))
 
 export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
-  const { pathname } = useLocation();
+  const { pathname } = useLocation()
 
-  const { isCollapse, collapseClick, collapseHover, onHoverEnter, onHoverLeave } =
-    useCollapseDrawer();
+  const {
+    isCollapse,
+    collapseClick,
+    collapseHover,
+    onHoverEnter,
+    onHoverLeave
+  } = useCollapseDrawer()
 
   useEffect(() => {
     if (isOpenSidebar) {
-      onCloseSidebar();
+      onCloseSidebar()
     }
-  }, [pathname]);
+  }, [pathname])
 
   const renderContent = (
     <Scrollbar
@@ -46,17 +51,23 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
           backgroundColor: '#2a274e',
           transition: 'width 15s'
         }
-      }}
-    >
-      <Stack direction="row" alignItems="center" justifyContent="center" sx={{ height: 80 }}>
-        <Box component={RouterLink} to="/dashboard/app" sx={{ display: 'inline-flex' }}>
+      }}>
+      <Stack
+        direction="row"
+        alignItems="center"
+        justifyContent="center"
+        sx={{ height: 80 }}>
+        <Box
+          component={RouterLink}
+          to="/dashboard/app"
+          sx={{ display: 'inline-flex' }}>
           <Logo sx={{ width: '65px', height: '65px', marginTop: '25px' }} />
         </Box>
       </Stack>
 
       <NavSection navConfig={sidebarConfig} isShow={!isCollapse} />
     </Scrollbar>
-  );
+  )
 
   return (
     <RootStyle
@@ -68,8 +79,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
         ...(collapseClick && {
           position: 'absolute'
         })
-      }}
-    >
+      }}>
       <Hidden lgUp>
         <Drawer
           open={isOpenSidebar}
@@ -89,8 +99,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
                 bgcolor: '#2D405A'
               })
             }
-          }}
-        >
+          }}>
           {renderContent}
         </Drawer>
       </Hidden>
@@ -115,11 +124,10 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
                 bgcolor: '#2D405A'
               })
             }
-          }}
-        >
+          }}>
           {renderContent}
         </Drawer>
       </Hidden>
     </RootStyle>
-  );
+  )
 }

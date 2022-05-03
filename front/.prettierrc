@@ -1,15 +1,1 @@
-{
-  "semi": true,
-  "tabWidth": 2,
-  "printWidth": 100,
-  "singleQuote": true,
-  "trailingComma": "none",
-  "jsxBracketSameLine": true,
-  "endOfLine": "lf",
-  "prettier/prettier": [
-    "error",
-    {
-      "endOfLine": "lf"
-    }
-  ]
-}
+"prettier-config-standard"

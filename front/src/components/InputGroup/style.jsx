@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from 'styled-components'
 
 export const StyledInputGroup = styled.div`
   margin-bottom: 20px;
@@ -16,4 +16,4 @@ export const StyledInputGroup = styled.div`
     left: 15px;
     transform: translateY(-50%);
   }
-`;
+`

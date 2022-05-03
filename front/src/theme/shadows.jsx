@@ -1,13 +1,13 @@
-import { alpha } from '@mui/material/styles';
-import palette from './palette';
+import { alpha } from '@mui/material/styles'
+import palette from './palette'
 
-const LIGHT_MODE = palette.light.grey[500];
-const DARK_MODE = '#000000';
+const LIGHT_MODE = palette.light.grey[500]
+const DARK_MODE = '#000000'
 
 const createShadow = (color) => {
-  const transparent1 = alpha(color, 0.2);
-  const transparent2 = alpha(color, 0.14);
-  const transparent3 = alpha(color, 0.12);
+  const transparent1 = alpha(color, 0.2)
+  const transparent2 = alpha(color, 0.14)
+  const transparent3 = alpha(color, 0.12)
   return [
     'none',
     `0px 2px 1px -1px ${transparent1},0px 1px 1px 0px ${transparent2},0px 1px 3px 0px ${transparent3}`,
@@ -34,11 +34,11 @@ const createShadow = (color) => {
     `0px 10px 14px -6px ${transparent1},0px 22px 35px 3px ${transparent2},0px 8px 42px 7px ${transparent3}`,
     `0px 11px 14px -7px ${transparent1},0px 23px 36px 3px ${transparent2},0px 9px 44px 8px ${transparent3}`,
     `0px 11px 15px -7px ${transparent1},0px 24px 38px 3px ${transparent2},0px 9px 46px 8px ${transparent3}`
-  ];
-};
+  ]
+}
 
 const createCustomShadow = (color) => {
-  const transparent = alpha(color, 0.24);
+  const transparent = alpha(color, 0.24)
 
   return {
     z1: `0 1px 2px 0 ${transparent}`,
@@ -53,17 +53,17 @@ const createCustomShadow = (color) => {
     success: `0 8px 16px 0 ${alpha(palette.light.success.main, 0.24)}`,
     warning: `0 8px 16px 0 ${alpha(palette.light.warning.main, 0.24)}`,
     error: `0 8px 16px 0 ${alpha(palette.light.error.main, 0.24)}`
-  };
-};
+  }
+}
 
 export const customShadows = {
   light: createCustomShadow(LIGHT_MODE),
   dark: createCustomShadow(DARK_MODE)
-};
+}
 
 const shadows = {
   light: createShadow(LIGHT_MODE),
   dark: createShadow(DARK_MODE)
-};
+}
 
-export default shadows;
+export default shadows

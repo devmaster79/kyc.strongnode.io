@@ -1,42 +1,42 @@
-import styled from '@emotion/styled';
-import Icon from '@ui/Icon/Icon';
-import { MouseEvent, useState } from 'react';
-import { useTheme } from '@mui/styles';
-import { CustomTheme } from 'theme';
+import styled from '@emotion/styled'
+import Icon from '@ui/Icon/Icon'
+import { MouseEvent, useState } from 'react'
+import { useTheme } from '@mui/styles'
+import { CustomTheme } from 'theme'
 
 export type SelectProps<
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   Option extends Record<string, any>,
   TrackBy extends keyof Option
 > = {
-  options: Option[];
+  options: Option[]
   /** the column that the Select will use as value */
-  trackBy: TrackBy;
+  trackBy: TrackBy
   /** the column that the Select will show */
-  searchBy: keyof Option;
-  value: Option[TrackBy];
-  onChange: (selectedValue: Option) => void;
-};
+  searchBy: keyof Option
+  value: Option[TrackBy]
+  onChange: (selectedValue: Option) => void
+}
 
 function Select<
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   Option extends Record<string, any>,
   TrackBy extends keyof Option
 >(props: SelectProps<Option, TrackBy>) {
-  const [opened, setOpened] = useState(false);
+  const [opened, setOpened] = useState(false)
 
   function onSelectValue(event: MouseEvent<HTMLLIElement>): void {
     const selectedOption = props.options.find((option) => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const target: { value: Option[TrackBy] } = event.target as any;
-      return option[props.trackBy] === target.value.toString();
-    });
+      const target: { value: Option[TrackBy] } = event.target as any
+      return option[props.trackBy] === target.value.toString()
+    })
     if (selectedOption) {
-      props.onChange(selectedOption);
+      props.onChange(selectedOption)
     }
-    setOpened(false);
+    setOpened(false)
   }
-  const theme: CustomTheme = useTheme();
+  const theme: CustomTheme = useTheme()
 
   return (
     <SelectWrapper>
@@ -63,12 +63,12 @@ function Select<
                 key={option[props.trackBy]}
                 value={option[props.trackBy]}
                 className={
-                  props.value && option[props.trackBy] === props.value[props.trackBy]
+                  props.value &&
+                  option[props.trackBy] === props.value[props.trackBy]
                     ? 'active'
                     : ''
                 }
-                onClick={onSelectValue}
-              >
+                onClick={onSelectValue}>
                 {option[props.searchBy]}
               </li>
             ))}
@@ -76,18 +76,18 @@ function Select<
         </OptionsWrapper>
       )}
     </SelectWrapper>
-  );
+  )
 }
-export default Select;
+export default Select
 
 Select.defaultProps = {
   trackBy: 'value',
   searchBy: 'label'
-};
+}
 
 const SelectWrapper = styled.div`
   width: fit-content;
-`;
+`
 
 const HeaderWrapper = styled.div`
   display: flex;
@@ -98,7 +98,7 @@ const HeaderWrapper = styled.div`
   span {
     padding-right: 8px;
   }
-`;
+`
 
 const OptionsWrapper = styled.div`
   background: ${(props) => props.theme.palette.background.secondary};
@@ -124,4 +124,4 @@ const OptionsWrapper = styled.div`
       cursor: pointer;
     }
   }
-`;
+`

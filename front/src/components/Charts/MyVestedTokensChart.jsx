@@ -1,12 +1,12 @@
-import merge from 'lodash/merge';
-import ReactApexChart from 'react-apexcharts';
-import { useTheme, styled } from '@mui/material/styles';
-import BaseOptionChart from './BaseOptionChart';
+import merge from 'lodash/merge'
+import ReactApexChart from 'react-apexcharts'
+import { useTheme, styled } from '@mui/material/styles'
+import BaseOptionChart from './BaseOptionChart'
 
-const CHART_DATA = [10, 10];
+const CHART_DATA = [10, 10]
 
 export default function AppCurrentDownload(props) {
-  const theme = useTheme();
+  const theme = useTheme()
 
   const chartOptions = merge(BaseOptionChart(), {
     colors: ['#604BE8', '#DA50CA'],
@@ -39,7 +39,7 @@ export default function AppCurrentDownload(props) {
         }
       }
     }
-  });
+  })
 
   return (
     <ReactApexChart
@@ -49,5 +49,5 @@ export default function AppCurrentDownload(props) {
       width={140}
       height={140 + Math.random()}
     />
-  );
+  )
 }

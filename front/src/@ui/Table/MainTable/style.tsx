@@ -1,9 +1,9 @@
-import styled from '@emotion/styled';
+import styled from '@emotion/styled'
 
 export const TableWrapper = styled.div`
   overflow: auto;
   height: 400px;
-`;
+`
 
 export const Table = styled.table`
   color: ${(props) => props.theme.palette.text.primary};
@@ -25,4 +25,4 @@ export const Table = styled.table`
     text-transform: uppercase;
     color: ${(props) => props.theme.palette.text.secondary};
   }
-`;
+`

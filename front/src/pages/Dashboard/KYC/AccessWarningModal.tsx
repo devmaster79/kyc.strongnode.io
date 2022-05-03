@@ -1,13 +1,13 @@
-import Button from '@ui/Button/Button';
-import Modal, { ModalProps } from '@ui/Modal/Modal';
-import { IAnim } from '@ui/utils/useAnimated';
+import Button from '@ui/Button/Button'
+import Modal, { ModalProps } from '@ui/Modal/Modal'
+import { IAnim } from '@ui/utils/useAnimated'
 
 export interface AccessWarningModalProps {
-  title: string;
-  icon?: ModalProps['icon'];
-  onClose: () => void;
-  onSuccess: () => void;
-  anim: IAnim;
+  title: string
+  icon?: ModalProps['icon']
+  onClose: () => void
+  onSuccess: () => void
+  anim: IAnim
 }
 
 export function AccessWarningModal({
@@ -25,17 +25,20 @@ export function AccessWarningModal({
       onClose={onClose}
       footer={
         <>
-          <Button type="button" variant="medium" color="invert" onClick={onClose}>
+          <Button
+            type="button"
+            variant="medium"
+            color="invert"
+            onClick={onClose}>
             Cancel
           </Button>
           <Button type="button" variant="medium" onClick={onSuccess}>
             Approve
           </Button>
         </>
-      }
-    >
+      }>
       Unauthorized access to your account can occur.
       <br /> Are you sure you want to disable this?
     </Modal>
-  );
+  )
 }

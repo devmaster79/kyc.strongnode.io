@@ -1,5 +1,5 @@
-import styled, { css } from 'styled-components';
-import { Link } from 'react-router-dom';
+import styled, { css } from 'styled-components'
+import { Link } from 'react-router-dom'
 
 export const StyledNavbar = styled.nav`
   display: flex;
@@ -12,7 +12,7 @@ export const StyledNavbar = styled.nav`
   color: #000000;
   background-color: #ffffff;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-`;
+`
 
 export const NavItemLink = styled(Link)`
   color: #000000;
@@ -32,14 +32,14 @@ export const NavItemLink = styled(Link)`
         background-color: #0072ff;
       }
     `}
-`;
+`
 
 export const NavItem = styled.div`
   display: flex;
   justify-content: flex-start;
   flex-direction: row;
   align-items: center;
-`;
+`
 
 export const UserInfoWrapper = styled.div`
   margin: 0 12px;
@@ -61,4 +61,4 @@ export const UserInfoWrapper = styled.div`
     line-height: 18px;
     font-weight: 400;
   }
-`;
+`

@@ -1,7 +1,7 @@
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
 // material
-import styled from '@mui/material/styles/styled';
-import Box from '@mui/material/Box';
+import styled from '@mui/material/styles/styled'
+import Box from '@mui/material/Box'
 
 // ----------------------------------------------------------------------
 
@@ -19,13 +19,13 @@ const RootStyle = styled('ul')(({ theme }) => ({
     cursor: 'pointer',
     '&.slick-active': { opacity: 1 }
   }
-}));
+}))
 
 // ----------------------------------------------------------------------
 
 CarouselControlsPaging1.propTypes = {
   color: PropTypes.string
-};
+}
 
 export default function CarouselControlsPaging1({ color, ...other }) {
   return {
@@ -42,8 +42,7 @@ export default function CarouselControlsPaging1({ color, ...other }) {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center'
-        }}
-      >
+        }}>
         <Box
           component="span"
           sx={{
@@ -55,5 +54,5 @@ export default function CarouselControlsPaging1({ color, ...other }) {
         />
       </Box>
     )
-  };
+  }
 }

@@ -1,43 +1,43 @@
-import { useState, useEffect } from 'react';
-import TextButton from '../../../@ui/Button/TextButton';
-import { AccountPopoverWrapper, AvatarIconWrapper, IconWrapper } from './style';
-import ConnectButton from 'components/ConnectButton';
-import { useNavigate } from 'react-router-dom';
-import userService from 'services/userService';
-import * as authService from 'services/auth';
-import Icon from '@ui/Icon/Icon';
-import { useTheme } from '@mui/styles';
+import { useState, useEffect } from 'react'
+import TextButton from '../../../@ui/Button/TextButton'
+import { AccountPopoverWrapper, AvatarIconWrapper, IconWrapper } from './style'
+import ConnectButton from 'components/ConnectButton'
+import { useNavigate } from 'react-router-dom'
+import userService from 'services/userService'
+import * as authService from 'services/auth'
+import Icon from '@ui/Icon/Icon'
+import { useTheme } from '@mui/styles'
 
 export default function AccountPopover(props: any) {
-  const navigate = useNavigate();
-  const [userName, setUserName] = useState('');
-  const [email, setEmail] = useState('');
-  const [avatar, setAvatar] = useState('');
-  const [showModal, setShowModal] = useState(false);
+  const navigate = useNavigate()
+  const [userName, setUserName] = useState('')
+  const [email, setEmail] = useState('')
+  const [avatar, setAvatar] = useState('')
+  const [showModal, setShowModal] = useState(false)
 
   useEffect(() => {
-    setEmail(localStorage.getItem('email') || '');
+    setEmail(localStorage.getItem('email') || '')
     userService
       .getProfile()
       .then((r) => {
-        setUserName(r.data[0].first_name + ' ' + r.data[0].last_name);
-        setAvatar(r.data[0].profile_img_url || '');
+        setUserName(r.data[0].first_name + ' ' + r.data[0].last_name)
+        setAvatar(r.data[0].profile_img_url || '')
       })
-      .catch((error) => console.error(error));
-  }, []);
+      .catch((error) => console.error(error))
+  }, [])
 
   const signOut = () => {
-    authService.signOut();
-    setShowModal(false);
-    navigate('/verify-email');
-  };
+    authService.signOut()
+    setShowModal(false)
+    navigate('/verify-email')
+  }
 
   const navigateToKyc = () => {
-    setShowModal(false);
-    navigate('/dashboard/kyc');
-  };
+    setShowModal(false)
+    navigate('/dashboard/kyc')
+  }
 
-  const theme: any = useTheme();
+  const theme: any = useTheme()
 
   return (
     <>
@@ -80,5 +80,5 @@ export default function AccountPopover(props: any) {
         </AccountPopoverWrapper>
       )}
     </>
-  );
+  )
 }

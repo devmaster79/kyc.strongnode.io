@@ -1,31 +1,31 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { getProfile } from 'services/userService';
-import { ErrorMessage } from '@ui/Dashboard/Form';
-import styled from '@emotion/styled';
+import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { getProfile } from 'services/userService'
+import { ErrorMessage } from '@ui/Dashboard/Form'
+import styled from '@emotion/styled'
 
 /**
  * Get user data like email and user_name by the stored token
  */
 export function SignInWithToken() {
-  const navigate = useNavigate();
-  const [showError, setShowError] = useState(false);
+  const navigate = useNavigate()
+  const [showError, setShowError] = useState(false)
 
   useEffect(() => {
-    (async function () {
+    ;(async function () {
       try {
-        const user = await getProfile();
+        const user = await getProfile()
         if (user.data[0]?.email) {
-          localStorage.setItem('email', user.data[0].email);
-          localStorage.setItem('username', user.data[0].user_name);
-          localStorage.setItem('loggedin', 'true');
-          navigate('/dashboard/kyc');
+          localStorage.setItem('email', user.data[0].email)
+          localStorage.setItem('username', user.data[0].user_name)
+          localStorage.setItem('loggedin', 'true')
+          navigate('/dashboard/kyc')
         }
       } catch (error) {
-        setShowError(true);
+        setShowError(true)
       }
-    })();
-  }, [navigate]);
+    })()
+  }, [navigate])
 
   return (
     <>
@@ -40,7 +40,7 @@ export function SignInWithToken() {
         </HelpText>
       )}
     </>
-  );
+  )
 }
 
 const Title = styled.h1`
@@ -54,8 +54,8 @@ const Title = styled.h1`
     font-weight: 900;
   }
   color: ${(props) => props.theme.palette.text.primary};
-`;
+`
 
 const HelpText = styled.div`
   margin: 32px 0 24px 0;
-`;
+`

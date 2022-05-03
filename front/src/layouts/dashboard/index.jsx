@@ -1,10 +1,10 @@
-import { useState } from 'react';
-import { Outlet } from 'react-router-dom';
-import { useTheme } from '@mui/material/styles';
-import useCollapseDrawer from '../../hooks/useCollapseDrawer';
-import Sidebar from './Sidebar';
-import { Navbar } from './Navbar';
-import styled from '@emotion/styled';
+import { useState } from 'react'
+import { Outlet } from 'react-router-dom'
+import { useTheme } from '@mui/material/styles'
+import useCollapseDrawer from '../../hooks/useCollapseDrawer'
+import Sidebar from './Sidebar'
+import { Navbar } from './Navbar'
+import styled from '@emotion/styled'
 
 const RootStyle = styled.div`
   display: flex;
@@ -12,7 +12,7 @@ const RootStyle = styled.div`
   overflow: hidden;
   background: ${(props) => props.theme.palette.background.gradient};
   background-size: 100% 100%;
-`;
+`
 
 const MainStyle = styled('div')(({ theme }) => ({
   flexGrow: 1,
@@ -24,14 +24,14 @@ const MainStyle = styled('div')(({ theme }) => ({
   [theme.breakpoints.up('lg')]: {
     paddingTop: 32
   }
-}));
+}))
 
 // ----------------------------------------------------------------------
 
 export default function DashboardLayout() {
-  const theme = useTheme();
-  const { collapseClick } = useCollapseDrawer();
-  const [open, setOpen] = useState(false);
+  const theme = useTheme()
+  const { collapseClick } = useCollapseDrawer()
+  const [open, setOpen] = useState(false)
 
   return (
     <RootStyle>
@@ -46,10 +46,9 @@ export default function DashboardLayout() {
           ...(collapseClick && {
             ml: '130px'
           })
-        }}
-      >
+        }}>
         <Outlet />
       </MainStyle>
     </RootStyle>
-  );
+  )
 }

@@ -1,22 +1,22 @@
-import styled from '@emotion/styled';
-import Button from '@ui/Button/Button';
-import Icon from '@ui/Icon/Icon';
-import Modal from '@ui/Modal/Modal';
-import { useAnimated } from '@ui/utils/useAnimated';
-import { useState } from 'react';
-import IdentityUpload from './IdentityUpload/IdentityUpload';
+import styled from '@emotion/styled'
+import Button from '@ui/Button/Button'
+import Icon from '@ui/Icon/Icon'
+import Modal from '@ui/Modal/Modal'
+import { useAnimated } from '@ui/utils/useAnimated'
+import { useState } from 'react'
+import IdentityUpload from './IdentityUpload/IdentityUpload'
 
 export default function Identity() {
-  const [showModal, setShowModal] = useState(true);
+  const [showModal, setShowModal] = useState(true)
 
-  const [showPassportModal, setShowPassportModal] = useState(false);
-  const [showNationalIDModal, setShowNationalIDModal] = useState(false);
-  const [showDrivingLicenseModal, setShowDrivingLicenseModal] = useState(false);
+  const [showPassportModal, setShowPassportModal] = useState(false)
+  const [showNationalIDModal, setShowNationalIDModal] = useState(false)
+  const [showDrivingLicenseModal, setShowDrivingLicenseModal] = useState(false)
 
-  const showModalAnim = useAnimated(showModal, 500);
-  const showPassportModalAnim = useAnimated(showPassportModal, 500);
-  const showNationalIDModalAnim = useAnimated(showNationalIDModal, 500);
-  const showDrivingLicenseModalAnim = useAnimated(showDrivingLicenseModal, 500);
+  const showModalAnim = useAnimated(showModal, 500)
+  const showPassportModalAnim = useAnimated(showPassportModal, 500)
+  const showNationalIDModalAnim = useAnimated(showNationalIDModal, 500)
+  const showDrivingLicenseModalAnim = useAnimated(showDrivingLicenseModal, 500)
 
   return (
     <>
@@ -26,39 +26,49 @@ export default function Identity() {
         onClose={() => {
           /* TODO */
         }}
-        footer={<></>}
-      >
+        footer={<></>}>
         <IdentityWrapper>
           <h1>
             Strongnode
             <span>Web Identity</span>
           </h1>
           Register options
-          <Button variant="xl" onClick={() => setShowPassportModal(true)} justify="space-between">
-            Passport <Icon name="passport" width={24} height={24} viewBox="0 0 24 24" />
+          <Button
+            variant="xl"
+            onClick={() => setShowPassportModal(true)}
+            justify="space-between">
+            Passport{' '}
+            <Icon name="passport" width={24} height={24} viewBox="0 0 24 24" />
           </Button>
           <Button
             variant="xl"
             onClick={() => {
-              setShowNationalIDModal(true);
+              setShowNationalIDModal(true)
             }}
-            justify="space-between"
-          >
-            National ID <Icon name="nationalID" width={24} height={24} viewBox="0 0 24 24" />
+            justify="space-between">
+            National ID{' '}
+            <Icon
+              name="nationalID"
+              width={24}
+              height={24}
+              viewBox="0 0 24 24"
+            />
           </Button>
           <Button
             variant="xl"
             onClick={() => {
-              setShowDrivingLicenseModal(true);
+              setShowDrivingLicenseModal(true)
             }}
-            justify="space-between"
-          >
+            justify="space-between">
             Driving licence{' '}
-            <Icon name="drivingLicense" width={24} height={24} viewBox="0 0 24 24" />
+            <Icon
+              name="drivingLicense"
+              width={24}
+              height={24}
+              viewBox="0 0 24 24"
+            />
           </Button>
-          <p>
-            See the list of <a href="#">supported documents</a>
-          </p>
+          <p>See the list of supported documents</p>
         </IdentityWrapper>
       </Modal>
       <Modal
@@ -73,8 +83,7 @@ export default function Identity() {
             </Button>
           </>
         }
-        scrollable
-      >
+        scrollable>
         <IdentityUpload
           icon="passportFront"
           description="Take picture of your national ID.
@@ -106,8 +115,7 @@ export default function Identity() {
             </Button>
           </>
         }
-        scrollable
-      >
+        scrollable>
         <IdentityUpload
           icon="nationalIdFront"
           description="Take picture of your national ID. Avoid glare and make sure all 4 corners are visible. Take a picture of both sides."
@@ -138,8 +146,7 @@ export default function Identity() {
             </Button>
           </>
         }
-        scrollable
-      >
+        scrollable>
         <IdentityUpload
           icon="drivingLicenseFront"
           description="Take picture of your Driving license. Avoid glare and make sure all 4 corners are visible. Take a picture of both sides."
@@ -158,7 +165,7 @@ export default function Identity() {
         <Separator />
       </Modal>
     </>
-  );
+  )
 }
 
 const IdentityWrapper = styled.div`
@@ -186,10 +193,10 @@ const IdentityWrapper = styled.div`
       text-decoration: underline;
     }
   }
-`;
+`
 
 const Separator = styled.hr`
   width: 354px;
   border: 1px solid ${(props) => props.theme.palette.border.light};
   margin: 32px 0;
-`;
+`

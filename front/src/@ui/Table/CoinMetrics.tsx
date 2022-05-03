@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import styled from '@emotion/styled/macro';
-import TableSection from 'components/TableSection/TableSection';
-import cryptoDataService from '../../services/cryptoDataService';
+import React, { useEffect, useState } from 'react'
+import styled from '@emotion/styled/macro'
+import TableSection from 'components/TableSection/TableSection'
+import cryptoDataService from '../../services/cryptoDataService'
 
 const sampleColumns = [
   {
@@ -24,7 +24,7 @@ const sampleColumns = [
     label: 'growth',
     align: 'left'
   }
-];
+]
 
 const sampleData = {
   items: [
@@ -56,16 +56,20 @@ const sampleData = {
       value_trend: '+20%'
     }
   ]
-};
+}
 
 const overwrittenFields = {
   icon: (icon: IDataIcon) => {
     return (
       <CryptoWrapper>
-        <img style={{ width: 40, height: 40 }} src={icon.url.large} alt={icon.name + ' icon'} />
+        <img
+          style={{ width: 40, height: 40 }}
+          src={icon.url.large}
+          alt={icon.name + ' icon'}
+        />
         <p>{icon.name}</p>
       </CryptoWrapper>
-    );
+    )
   },
   value_trend: (value: IData) => {
     return (
@@ -74,48 +78,48 @@ const overwrittenFields = {
           {value.value}
         </GrowthWrapper>
       </div>
-    );
+    )
   }
-};
+}
 
-let searchTimeout: any = null;
+let searchTimeout: any = null
 
 interface IDataIcon {
-  name: string;
-  url: any;
+  name: string
+  url: any
 }
 
 interface IData {
-  [key: string]: object;
+  [key: string]: object
 }
 
 type CoinMetricsProps = {
-  title: string;
-  subtitle?: string;
-  dataSet: Array<IData>;
-  columns: Array<IData>;
-};
+  title: string
+  subtitle?: string
+  dataSet: Array<IData>
+  columns: Array<IData>
+}
 
 export const CoinMetrics = (props: CoinMetricsProps) => {
-  const [tableData, setTableData] = useState<{ [key: string]: Array<any> }>({});
+  const [tableData, setTableData] = useState<{ [key: string]: Array<any> }>({})
 
   useEffect(() => {
-    loadTokenMetrics();
+    loadTokenMetrics()
 
     const refreshDataInterval = setInterval(() => {
-      loadTokenMetrics();
-    }, 10000);
+      loadTokenMetrics()
+    }, 10000)
 
-    return () => clearInterval(refreshDataInterval);
-  }, []);
+    return () => clearInterval(refreshDataInterval)
+  }, [])
 
   const loadTokenMetrics = async () => {
-    const data: any = await cryptoDataService.getTokenMetrics();
-    setTableData(formatTableData(data.data));
-  };
+    const data: any = await cryptoDataService.getTokenMetrics()
+    setTableData(formatTableData(data.data))
+  }
 
   const formatTableData = (data: any) => {
-    const temporaryData: any = [];
+    const temporaryData: any = []
 
     data.forEach((token: any) => {
       const tokenObject = {
@@ -126,25 +130,25 @@ export const CoinMetrics = (props: CoinMetricsProps) => {
           url: token.image,
           name: token.token.toUpperCase()
         }
-      };
-      temporaryData.push(tokenObject);
-    });
-    return { items: temporaryData };
-  };
+      }
+      temporaryData.push(tokenObject)
+    })
+    return { items: temporaryData }
+  }
 
   const createValueTrendObject = (value: string) => {
-    const valueTrendObject: any = {};
+    const valueTrendObject: any = {}
 
     if (value.charAt(0) == '-') {
-      valueTrendObject.positive = false;
+      valueTrendObject.positive = false
     } else {
-      valueTrendObject.positive = true;
+      valueTrendObject.positive = true
     }
     valueTrendObject.value =
-      (valueTrendObject.positive ? '+' : '') + Number(value).toFixed(2) + ' %';
+      (valueTrendObject.positive ? '+' : '') + Number(value).toFixed(2) + ' %'
 
-    return valueTrendObject;
-  };
+    return valueTrendObject
+  }
 
   const addKeywords = async (keyword: string) => {
     // clear old timeout
@@ -154,16 +158,23 @@ export const CoinMetrics = (props: CoinMetricsProps) => {
 
     // add delay while user typing
     searchTimeout = setTimeout(() => {
-
-      //  To Do 
+      //  To Do
       // implement backend search
-    }, 2000);
+    }, 2000)
   }
 
   return (
-    <TableSection finder={{ onChange: addKeywords, searchMaxRow: 5 }} searchColumn={'name'} title={props.title} subtitle={props.subtitle} overwrittenFields={overwrittenFields} dataSet={(tableData.items?.length > 0) ? tableData : sampleData} columns={sampleColumns} />
-  );
-};
+    <TableSection
+      finder={{ onChange: addKeywords, searchMaxRow: 5 }}
+      searchColumn={'name'}
+      title={props.title}
+      subtitle={props.subtitle}
+      overwrittenFields={overwrittenFields}
+      dataSet={tableData.items?.length > 0 ? tableData : sampleData}
+      columns={sampleColumns}
+    />
+  )
+}
 
 const CryptoWrapper = styled.div`
   height: max-content;
@@ -179,10 +190,10 @@ const CryptoWrapper = styled.div`
     display: inline-block;
     vertical-align: middle;
   }
-`;
+`
 
 const GrowthWrapper = styled.div`
   text-align: right;
   text-transform: uppercase;
   color: #54c093;
-`;
+`

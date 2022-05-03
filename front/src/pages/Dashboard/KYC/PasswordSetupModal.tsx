@@ -1,34 +1,38 @@
-import styled from '@emotion/styled';
-import { useState } from 'react';
-import { ServicesProps, useServices } from 'hooks/useService';
-import { enablePasswordAuth } from 'services/auth';
-import * as DashboardForm from '@ui/Dashboard/Form';
+import styled from '@emotion/styled'
+import { useState } from 'react'
+import { ServicesProps, useServices } from 'hooks/useService'
+import { enablePasswordAuth } from 'services/auth'
+import * as DashboardForm from '@ui/Dashboard/Form'
 
-import Modal from '@ui/Modal/Modal';
-import Button from '@ui/Button/Button';
-import { IAnim } from '@ui/utils/useAnimated';
+import Modal from '@ui/Modal/Modal'
+import Button from '@ui/Button/Button'
+import { IAnim } from '@ui/utils/useAnimated'
 
 const authServices = {
   enablePasswordAuth
-};
-
-export interface PasswordSetupModalProps {
-  onClose: () => void;
-  onSuccess: () => void;
-  anim: IAnim;
 }
 
-export function PasswordSetupModal({ onSuccess, onClose, anim }: PasswordSetupModalProps) {
-  const [password1, setPassword1] = useState('');
-  const [password2, setPassword2] = useState('');
-  const authService = useServices(authServices);
+export interface PasswordSetupModalProps {
+  onClose: () => void
+  onSuccess: () => void
+  anim: IAnim
+}
+
+export function PasswordSetupModal({
+  onSuccess,
+  onClose,
+  anim
+}: PasswordSetupModalProps) {
+  const [password1, setPassword1] = useState('')
+  const [password2, setPassword2] = useState('')
+  const authService = useServices(authServices)
 
   const enablePasswordAuth = async () => {
-    const data = await authService.enablePasswordAuth(password1);
+    const data = await authService.enablePasswordAuth(password1)
     if (data.result === 'success') {
-      onSuccess();
+      onSuccess()
     }
-  };
+  }
 
   return (
     <Modal
@@ -37,15 +41,18 @@ export function PasswordSetupModal({ onSuccess, onClose, anim }: PasswordSetupMo
       onClose={onClose}
       footer={
         <>
-          <Button type="button" variant="medium" color="invert" onClick={onClose}>
+          <Button
+            type="button"
+            variant="medium"
+            color="invert"
+            onClick={onClose}>
             Cancel
           </Button>
           <Button type="button" variant="medium" onClick={enablePasswordAuth}>
             Set Password
           </Button>
         </>
-      }
-    >
+      }>
       <ModalForm>
         <DashboardForm.Input
           inputProps={{
@@ -65,39 +72,45 @@ export function PasswordSetupModal({ onSuccess, onClose, anim }: PasswordSetupMo
             onChange: (event) => setPassword2(event.target.value)
           }}
           error={password1 !== password2}
-          helpText={password1 && password1 !== password2 && 'Passwords do not match'}
+          helpText={
+            password1 && password1 !== password2 && 'Passwords do not match'
+          }
         />
         <Messages authService={authService} />
       </ModalForm>
     </Modal>
-  );
+  )
 }
 
-const Messages = (props: { authService: ServicesProps<typeof authServices> }) => {
-  if (props.authService.data.result === 'waiting') return <></>;
+const Messages = (props: {
+  authService: ServicesProps<typeof authServices>
+}) => {
+  if (props.authService.data.result === 'waiting') return <></>
   if (props.authService.data.result === 'loading') {
-    return <Info>Verifying the password...</Info>;
+    return <Info>Verifying the password...</Info>
   }
   if (props.authService.data.result === 'validation-error') {
-    return <Error>Wrong password.</Error>;
+    return <Error>Wrong password.</Error>
   }
   if (props.authService.data.result === 'success') {
-    return <Info>Password has been set successfully!</Info>;
+    return <Info>Password has been set successfully!</Info>
   }
-  return <Error>We could not verify your password. Please try again later.</Error>;
-};
+  return (
+    <Error>We could not verify your password. Please try again later.</Error>
+  )
+}
 
 const Error = styled('p')({
   textAlign: 'center',
   marginBottom: '10px',
   color: '#d74646'
-});
+})
 
 const Info = styled('p')({
   textAlign: 'center',
   marginBottom: '10px',
   color: '#dddddd'
-});
+})
 
 const ModalForm = styled('div')({
   width: '100%',
@@ -105,4 +118,4 @@ const ModalForm = styled('div')({
   flexFlow: 'column',
   gap: '1em',
   padding: '2em'
-});
+})

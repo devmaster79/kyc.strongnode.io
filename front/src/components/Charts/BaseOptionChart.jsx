@@ -1,5 +1,5 @@
-import { createStyles, makeStyles } from '@mui/styles';
-import useTheme from '@mui/material/styles/useTheme';
+import { createStyles, makeStyles } from '@mui/styles'
+import useTheme from '@mui/material/styles/useTheme'
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -16,7 +16,10 @@ const useStyles = makeStyles((theme) =>
         border: '0 !important',
         fontWeight: theme.typography.fontWeightBold,
         backgroundColor: `${theme.palette.grey[500_16]} !important`,
-        color: theme.palette.text[theme.palette.mode === 'light' ? 'secondary' : 'primary']
+        color:
+          theme.palette.text[
+            theme.palette.mode === 'light' ? 'secondary' : 'primary'
+          ]
       },
       '.apexcharts-xaxistooltip-bottom': {
         '&:before': {
@@ -45,25 +48,25 @@ const useStyles = makeStyles((theme) =>
       }
     }
   })
-);
+)
 
 export default function BaseOptionChart() {
-  useStyles();
-  const theme = useTheme();
+  useStyles()
+  const theme = useTheme()
 
   const LABEL_TOTAL = {
     show: false,
     label: 'Total',
     color: theme.palette.typography.main,
     ...theme.typography.subtitle2
-  };
+  }
 
   const LABEL_VALUE = {
     show: false,
     offsetY: 8,
     color: theme.palette.typography.main,
     ...theme.typography.h3
-  };
+  }
 
   return {
     // Colors
@@ -226,5 +229,5 @@ export default function BaseOptionChart() {
         }
       }
     ]
-  };
+  }
 }

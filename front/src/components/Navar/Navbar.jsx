@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { StyledNavbar, NavItemLink, NavItem, UserInfoWrapper } from './style';
-import { ReactComponent as AvatarIcon } from '../../icons/avatar.svg';
-import { ReactComponent as DropdownIcon } from '../../icons/dropdown.svg';
+import React, { useState, useEffect } from 'react'
+import { StyledNavbar, NavItemLink, NavItem, UserInfoWrapper } from './style'
+import { ReactComponent as AvatarIcon } from '../../icons/avatar.svg'
+import { ReactComponent as DropdownIcon } from '../../icons/dropdown.svg'
 
 function Navbar({ children, ...props }) {
-  const [userName, setUserName] = useState('');
-  const [email, setEmail] = useState('');
+  const [userName, setUserName] = useState('')
+  const [email, setEmail] = useState('')
 
   useEffect(() => {
-    setUserName(localStorage.getItem('user_name'));
-    setEmail(localStorage.getItem('email'));
-  }, []);
+    setUserName(localStorage.getItem('user_name'))
+    setEmail(localStorage.getItem('email'))
+  }, [])
 
   return (
     <StyledNavbar {...props}>
@@ -24,7 +24,7 @@ function Navbar({ children, ...props }) {
         <DropdownIcon />
       </NavItem>
     </StyledNavbar>
-  );
+  )
 }
 
-export default Navbar;
+export default Navbar

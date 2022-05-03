@@ -1,6 +1,14 @@
-import { DropzoneOptions, useDropzone } from 'react-dropzone';
+import { DropzoneOptions, useDropzone } from 'react-dropzone'
 // material
-import { Box, Typography, Paper, SxProps, Theme, alpha, styled } from '@mui/material';
+import {
+  Box,
+  Typography,
+  Paper,
+  SxProps,
+  Theme,
+  alpha,
+  styled
+} from '@mui/material'
 // utils
 // ----------------------------------------------------------------------
 
@@ -25,12 +33,12 @@ const DropZoneStyle = styled('div')(({ theme }) => ({
     cursor: 'pointer'
   },
   [theme.breakpoints.up('md')]: { flexDirection: 'row' }
-}));
+}))
 
 export interface UploadSingleFileProps extends DropzoneOptions {
-  error?: boolean;
-  file?: { preview: string };
-  sx?: SxProps<Theme>;
+  error?: boolean
+  file?: { preview: string }
+  sx?: SxProps<Theme>
 }
 
 export default function UploadSingleFile({
@@ -39,10 +47,16 @@ export default function UploadSingleFile({
   sx,
   ...other
 }: UploadSingleFileProps) {
-  const { getRootProps, getInputProps, isDragActive, isDragReject, fileRejections } = useDropzone({
+  const {
+    getRootProps,
+    getInputProps,
+    isDragActive,
+    isDragReject,
+    fileRejections
+  } = useDropzone({
     multiple: false,
     ...other
-  });
+  })
 
   const ShowRejectionItems = () => (
     <Paper
@@ -53,8 +67,7 @@ export default function UploadSingleFile({
         mt: 3,
         borderColor: 'error.light',
         bgcolor: (theme) => alpha(theme.palette.error.main, 0.08)
-      }}
-    >
+      }}>
       {fileRejections.map(({ file, errors }) => {
         return (
           <Box key={file.name} sx={{ my: 1 }}>
@@ -67,10 +80,10 @@ export default function UploadSingleFile({
               </Typography>
             ))}
           </Box>
-        );
+        )
       })}
     </Paper>
-  );
+  )
 
   return (
     <Box sx={{ ...sx }}>
@@ -84,8 +97,7 @@ export default function UploadSingleFile({
             bgcolor: 'error.lighter'
           }),
           ...(file && { padding: '12% 0' })
-        }}
-      >
+        }}>
         <input {...getInputProps()} />
 
         {!file && (
@@ -115,5 +127,5 @@ export default function UploadSingleFile({
 
       {fileRejections.length > 0 && <ShowRejectionItems />}
     </Box>
-  );
+  )
 }

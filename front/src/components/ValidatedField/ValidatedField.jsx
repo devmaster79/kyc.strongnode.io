@@ -1,14 +1,14 @@
-import { Field, useField } from 'formik';
-import React from 'react';
-import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import { Field, useField } from 'formik'
+import React from 'react'
+import { Link } from 'react-router-dom'
+import styled from 'styled-components'
 
-import { ReactComponent as ErrorIcon } from '../../icons/error.svg';
-import { ReactComponent as MailIcon } from '../../icons/message.svg';
-import { ReactComponent as ProfileIcon } from '../../icons/profile.svg';
-import { ReactComponent as LockIcon } from '../../icons/lock.svg';
-import { ReactComponent as UserIcon } from '../../icons/username.svg';
-import InputGroup from '../InputGroup';
+import { ReactComponent as ErrorIcon } from '../../icons/error.svg'
+import { ReactComponent as MailIcon } from '../../icons/message.svg'
+import { ReactComponent as ProfileIcon } from '../../icons/profile.svg'
+import { ReactComponent as LockIcon } from '../../icons/lock.svg'
+import { ReactComponent as UserIcon } from '../../icons/username.svg'
+import InputGroup from '../InputGroup'
 
 const ErrorWrapper = styled.div`
   display: ${(props) => (props.show ? 'flex' : 'none')};
@@ -27,7 +27,7 @@ const ErrorWrapper = styled.div`
   > svg > path {
     fill: white;
   }
-`;
+`
 
 const TermsText = () => (
   <p
@@ -36,8 +36,7 @@ const TermsText = () => (
       paddingLeft: '12px',
       color: 'white',
       fontFamily: 'Halyard-Book'
-    }}
-  >
+    }}>
     By continuing, you agree to{' '}
     <Link to="/terms-of-use" target="_blank">
       Terms of Use
@@ -47,13 +46,13 @@ const TermsText = () => (
     </Link>
     .
   </p>
-);
+)
 
 const ValidatedField = (props) => {
-  const { as, validateField, placeholder, style, type, wrapperStyle } = props;
+  const { as, validateField, placeholder, style, type, wrapperStyle } = props
 
-  const [field, meta] = useField(props);
-  const { error, touched } = meta;
+  const [field, meta] = useField(props)
+  const { error, touched } = meta
 
   return (
     <>
@@ -61,7 +60,9 @@ const ValidatedField = (props) => {
         {field.name === 'email' && <MailIcon style={{ marginLeft: '10px' }} />}
         {field.name === 'username' && <ProfileIcon />}
         {type === 'password' && <LockIcon />}
-        {field.name === 'user_name' && <UserIcon style={{ marginLeft: '10px' }} />}
+        {field.name === 'user_name' && (
+          <UserIcon style={{ marginLeft: '10px' }} />
+        )}
         <div style={wrapperStyle}>
           <Field
             as={as}
@@ -82,7 +83,7 @@ const ValidatedField = (props) => {
         </ErrorWrapper>
       )}
     </>
-  );
-};
+  )
+}
 
-export default ValidatedField;
+export default ValidatedField

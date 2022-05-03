@@ -1,18 +1,18 @@
-import React from 'react';
-import styled from '@emotion/styled/macro';
-import SidebarButton, { SidebarButtonProps } from './SidebarButton';
+import React from 'react'
+import styled from '@emotion/styled/macro'
+import SidebarButton, { SidebarButtonProps } from './SidebarButton'
 
 interface SidebarButtonWrapperProps {}
 
 type SidebarButtonWrapperState = {
-  activeButton: string;
-  verticaLineTopOffset: string;
-};
+  activeButton: string
+  verticaLineTopOffset: string
+}
 
 interface IButtonItem {
-  type: string;
-  tooltipHint: string;
-  path: string;
+  type: string
+  tooltipHint: string
+  path: string
 }
 
 const buttonItems = [
@@ -40,38 +40,40 @@ const buttonItems = [
     path: '/dashboard/vpn',
     active: false
   }
-];
+]
 
 class SidebarButtonWrapper extends React.Component<
   SidebarButtonWrapperProps,
   SidebarButtonWrapperState
 > {
-  constructor(props: SidebarButtonWrapperProps | Readonly<SidebarButtonWrapperProps>) {
-    super(props);
+  constructor(
+    props: SidebarButtonWrapperProps | Readonly<SidebarButtonWrapperProps>
+  ) {
+    super(props)
 
     // this handles default animation state on refresh
-    let defaultActiveButton = 'kyc';
-    let defaultOffset = 2 * 72 + 'px';
+    let defaultActiveButton = 'kyc'
+    let defaultOffset = 2 * 72 + 'px'
     buttonItems.forEach((item: IButtonItem, index: number) => {
       if (window.location.href.includes(item.path)) {
         // todo temporary disabled until Matthew transforms this into Functional component to useEffect for url updates
-        defaultActiveButton = item.type;
-        defaultOffset = index * 72 + 'px';
+        defaultActiveButton = item.type
+        defaultOffset = index * 72 + 'px'
       }
-    });
+    })
 
     // default state definition
     this.state = {
       activeButton: defaultActiveButton,
       verticaLineTopOffset: defaultOffset
-    };
+    }
   }
 
   handleOnClick(path: string, activeType: string, index: number) {
     this.setState({
       activeButton: activeType,
       verticaLineTopOffset: index * 72 + 'px'
-    });
+    })
   }
 
   render() {
@@ -82,7 +84,9 @@ class SidebarButtonWrapper extends React.Component<
           <SidebarButton
             key={item.tooltipHint}
             onPress={
-              item.active ? () => this.handleOnClick(item.path, item.type, index) : undefined
+              item.active
+                ? () => this.handleOnClick(item.path, item.type, index)
+                : undefined
             }
             icon={item.type as SidebarButtonProps['icon']}
             tooltipHint={item.tooltipHint}
@@ -92,17 +96,17 @@ class SidebarButtonWrapper extends React.Component<
           />
         ))}
       </ButtonWrapper>
-    );
+    )
   }
 }
 
-export default SidebarButtonWrapper;
+export default SidebarButtonWrapper
 
 const ButtonWrapper = styled.div`
   width: 100%;
   height: max-content;
   position: relative;
-`;
+`
 
 const VerticalActiveLine = styled.div`
   position: absolute;
@@ -112,4 +116,4 @@ const VerticalActiveLine = styled.div`
   height: 72px;
   background: #aa1fec;
   transition: 250ms ease;
-`;
+`

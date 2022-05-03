@@ -1,10 +1,10 @@
-import React from 'react';
-import styled from '@emotion/styled/macro';
+import React from 'react'
+import styled from '@emotion/styled/macro'
 
 type ValueTrendIndicatorProps = {
-  value: string;
-  up: boolean;
-};
+  value: string
+  up: boolean
+}
 
 export const ValueTrendIndicator = (props: ValueTrendIndicatorProps) => {
   return (
@@ -15,8 +15,7 @@ export const ValueTrendIndicator = (props: ValueTrendIndicatorProps) => {
         height="16"
         viewBox="0 0 16 16"
         fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
+        xmlns="http://www.w3.org/2000/svg">
         <path
           d="M8 15.5C12.1421 15.5 15.5 12.1421 15.5 8C15.5 3.85786 12.1421 0.5 8 0.5C3.85786 0.5 0.5 3.85786 0.5 8C0.5 12.1421 3.85786 15.5 8 15.5Z"
           fill="#C4C4C4"
@@ -32,8 +31,8 @@ export const ValueTrendIndicator = (props: ValueTrendIndicatorProps) => {
         />
       </CustomSvg>
     </ValueIndicatorWrapper>
-  );
-};
+  )
+}
 
 const CustomSvg = styled.svg`
   path {
@@ -45,7 +44,7 @@ const CustomSvg = styled.svg`
   path:nth-child(3) {
     fill: ${(props) => props.theme.palette.icon.active};
   }
-`;
+`
 
 const ValueIndicatorWrapper = styled.div`
   width: max-content;
@@ -65,9 +64,9 @@ const ValueIndicatorWrapper = styled.div`
     vertical-align: middle;
     margin-left: 8px;
   }
-`;
+`
 
 const arrowDownStyle = {
   transform: 'rotate(180deg)',
   transformOrigin: 'center'
-};
+}

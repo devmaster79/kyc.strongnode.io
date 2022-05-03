@@ -56,7 +56,12 @@ export const Icons = {
   ),
   defi: (
     <g>
-      <path d="M7 13H1V1H19V9.171" stroke="CurrentColor" strokeWidth="2" strokeMiterlimit="10" />
+      <path
+        d="M7 13H1V1H19V9.171"
+        stroke="CurrentColor"
+        strokeWidth="2"
+        strokeMiterlimit="10"
+      />
       <path
         stroke="CurrentColor"
         d="M11 12V16C11 17.657 13.686 19 17 19C20.314 19 23 17.657 23 16V12"
@@ -169,7 +174,12 @@ export const Icons = {
         strokeWidth="2"
         strokeMiterlimit="10"
       />
-      <path d="M13 14H1V23H13V14Z" stroke="#9593C8" strokeWidth="2" strokeMiterlimit="10" />
+      <path
+        d="M13 14H1V23H13V14Z"
+        stroke="#9593C8"
+        strokeWidth="2"
+        strokeMiterlimit="10"
+      />
       <path
         d="M4 14V10C4 8.343 5.343 7 7 7C8.657 7 10 8.343 10 10V14"
         stroke="#9593C8"
@@ -245,8 +255,7 @@ export const Icons = {
           y1="8.42858"
           x2="44.4887"
           y2="8.64892"
-          gradientUnits="userSpaceOnUse"
-        >
+          gradientUnits="userSpaceOnUse">
           <stop stopColor="#AA1FEC" />
           <stop offset="1" stopColor="#7A3BFE" />
         </linearGradient>
@@ -256,8 +265,7 @@ export const Icons = {
           y1="40.1429"
           x2="56.977"
           y2="40.6095"
-          gradientUnits="userSpaceOnUse"
-        >
+          gradientUnits="userSpaceOnUse">
           <stop stopColor="#AA1FEC" />
           <stop offset="1" stopColor="#7A3BFE" />
         </linearGradient>
@@ -267,8 +275,7 @@ export const Icons = {
           y1="50.1429"
           x2="33.0204"
           y2="50.144"
-          gradientUnits="userSpaceOnUse"
-        >
+          gradientUnits="userSpaceOnUse">
           <stop stopColor="#AA1FEC" />
           <stop offset="1" stopColor="#7A3BFE" />
         </linearGradient>
@@ -278,8 +285,7 @@ export const Icons = {
           y1="40.2857"
           x2="38.2448"
           y2="40.3684"
-          gradientUnits="userSpaceOnUse"
-        >
+          gradientUnits="userSpaceOnUse">
           <stop stopColor="#AA1FEC" />
           <stop offset="1" stopColor="#7A3BFE" />
         </linearGradient>
@@ -316,8 +322,7 @@ export const Icons = {
           y1="27.5"
           x2="63.0605"
           y2="27.88"
-          gradientUnits="userSpaceOnUse"
-        >
+          gradientUnits="userSpaceOnUse">
           <stop stopColor="#AA1FEC" />
           <stop offset="1" stopColor="#7A3BFE" />
         </linearGradient>
@@ -327,8 +332,7 @@ export const Icons = {
           y1="7.71429"
           x2="11.0204"
           y2="7.71472"
-          gradientUnits="userSpaceOnUse"
-        >
+          gradientUnits="userSpaceOnUse">
           <stop stopColor="#AA1FEC" />
           <stop offset="1" stopColor="#7A3BFE" />
         </linearGradient>
@@ -338,8 +342,7 @@ export const Icons = {
           y1="10.3571"
           x2="18.139"
           y2="12.0997"
-          gradientUnits="userSpaceOnUse"
-        >
+          gradientUnits="userSpaceOnUse">
           <stop stopColor="#AA1FEC" />
           <stop offset="1" stopColor="#7A3BFE" />
         </linearGradient>
@@ -383,8 +386,7 @@ export const Icons = {
           y1="19.5714"
           x2="37.204"
           y2="19.6403"
-          gradientUnits="userSpaceOnUse"
-        >
+          gradientUnits="userSpaceOnUse">
           <stop stopColor="#AA1FEC" />
           <stop offset="1" stopColor="#7A3BFE" />
         </linearGradient>
@@ -394,8 +396,7 @@ export const Icons = {
           y1="33.9286"
           x2="43.4457"
           y2="34.2315"
-          gradientUnits="userSpaceOnUse"
-        >
+          gradientUnits="userSpaceOnUse">
           <stop stopColor="#AA1FEC" />
           <stop offset="1" stopColor="#7A3BFE" />
         </linearGradient>
@@ -405,8 +406,7 @@ export const Icons = {
           y1="23.7143"
           x2="56.9799"
           y2="23.9879"
-          gradientUnits="userSpaceOnUse"
-        >
+          gradientUnits="userSpaceOnUse">
           <stop stopColor="#AA1FEC" />
           <stop offset="1" stopColor="#7A3BFE" />
         </linearGradient>
@@ -416,8 +416,7 @@ export const Icons = {
           y1="20.4286"
           x2="50.7339"
           y2="20.7075"
-          gradientUnits="userSpaceOnUse"
-        >
+          gradientUnits="userSpaceOnUse">
           <stop stopColor="#AA1FEC" />
           <stop offset="1" stopColor="#7A3BFE" />
         </linearGradient>
@@ -566,8 +565,7 @@ export const Icons = {
           y1="26.3571"
           x2="45.5875"
           y2="31.5699"
-          gradientUnits="userSpaceOnUse"
-        >
+          gradientUnits="userSpaceOnUse">
           <stop stopColor="#AA1FEC" />
           <stop offset="1" stopColor="#7A3BFE" />
         </linearGradient>
@@ -577,8 +575,7 @@ export const Icons = {
           y1="22"
           x2="46.5712"
           y2="22.1928"
-          gradientUnits="userSpaceOnUse"
-        >
+          gradientUnits="userSpaceOnUse">
           <stop stopColor="#AA1FEC" />
           <stop offset="1" stopColor="#7A3BFE" />
         </linearGradient>
@@ -588,8 +585,7 @@ export const Icons = {
           y1="22"
           x2="38.2452"
           y2="22.0354"
-          gradientUnits="userSpaceOnUse"
-        >
+          gradientUnits="userSpaceOnUse">
           <stop stopColor="#AA1FEC" />
           <stop offset="1" stopColor="#7A3BFE" />
         </linearGradient>
@@ -599,8 +595,7 @@ export const Icons = {
           y1="50.3571"
           x2="38.1656"
           y2="51.3423"
-          gradientUnits="userSpaceOnUse"
-        >
+          gradientUnits="userSpaceOnUse">
           <stop stopColor="#AA1FEC" />
           <stop offset="1" stopColor="#7A3BFE" />
         </linearGradient>
@@ -610,8 +605,7 @@ export const Icons = {
           y1="23.4286"
           x2="56.98"
           y2="23.693"
-          gradientUnits="userSpaceOnUse"
-        >
+          gradientUnits="userSpaceOnUse">
           <stop stopColor="#AA1FEC" />
           <stop offset="1" stopColor="#7A3BFE" />
         </linearGradient>
@@ -662,8 +656,7 @@ export const Icons = {
           y1="30.3571"
           x2="52.1599"
           y2="31.6949"
-          gradientUnits="userSpaceOnUse"
-        >
+          gradientUnits="userSpaceOnUse">
           <stop stopColor="#AA1FEC" />
           <stop offset="1" stopColor="#7A3BFE" />
         </linearGradient>
@@ -673,8 +666,7 @@ export const Icons = {
           y1="40.3571"
           x2="52.1599"
           y2="41.6949"
-          gradientUnits="userSpaceOnUse"
-        >
+          gradientUnits="userSpaceOnUse">
           <stop stopColor="#AA1FEC" />
           <stop offset="1" stopColor="#7A3BFE" />
         </linearGradient>
@@ -684,8 +676,7 @@ export const Icons = {
           y1="26.8571"
           x2="24.1632"
           y2="26.9122"
-          gradientUnits="userSpaceOnUse"
-        >
+          gradientUnits="userSpaceOnUse">
           <stop stopColor="#AA1FEC" />
           <stop offset="1" stopColor="#7A3BFE" />
         </linearGradient>
@@ -695,8 +686,7 @@ export const Icons = {
           y1="39.8571"
           x2="30.4031"
           y2="40.2014"
-          gradientUnits="userSpaceOnUse"
-        >
+          gradientUnits="userSpaceOnUse">
           <stop stopColor="#AA1FEC" />
           <stop offset="1" stopColor="#7A3BFE" />
         </linearGradient>
@@ -706,8 +696,7 @@ export const Icons = {
           y1="25.1429"
           x2="63.2224"
           y2="25.6593"
-          gradientUnits="userSpaceOnUse"
-        >
+          gradientUnits="userSpaceOnUse">
           <stop stopColor="#AA1FEC" />
           <stop offset="1" stopColor="#7A3BFE" />
         </linearGradient>
@@ -762,8 +751,7 @@ export const Icons = {
           y1="39.6412"
           x2="27.5958"
           y2="39.7437"
-          gradientUnits="userSpaceOnUse"
-        >
+          gradientUnits="userSpaceOnUse">
           <stop stopColor="#AA1FEC" />
           <stop offset="1" stopColor="#7A3BFE" />
         </linearGradient>
@@ -773,8 +761,7 @@ export const Icons = {
           y1="39.6412"
           x2="56.3634"
           y2="39.7437"
-          gradientUnits="userSpaceOnUse"
-        >
+          gradientUnits="userSpaceOnUse">
           <stop stopColor="#AA1FEC" />
           <stop offset="1" stopColor="#7A3BFE" />
         </linearGradient>
@@ -784,8 +771,7 @@ export const Icons = {
           y1="22.6218"
           x2="53.3602"
           y2="32.0323"
-          gradientUnits="userSpaceOnUse"
-        >
+          gradientUnits="userSpaceOnUse">
           <stop stopColor="#AA1FEC" />
           <stop offset="1" stopColor="#7A3BFE" />
         </linearGradient>
@@ -795,8 +781,7 @@ export const Icons = {
           y1="23.4286"
           x2="63.224"
           y2="23.8418"
-          gradientUnits="userSpaceOnUse"
-        >
+          gradientUnits="userSpaceOnUse">
           <stop stopColor="#AA1FEC" />
           <stop offset="1" stopColor="#7A3BFE" />
         </linearGradient>
@@ -806,8 +791,7 @@ export const Icons = {
           y1="25.1429"
           x2="56.9792"
           y2="25.4734"
-          gradientUnits="userSpaceOnUse"
-        >
+          gradientUnits="userSpaceOnUse">
           <stop stopColor="#AA1FEC" />
           <stop offset="1" stopColor="#7A3BFE" />
         </linearGradient>
@@ -817,8 +801,7 @@ export const Icons = {
           y1="33.2857"
           x2="38.2448"
           y2="33.3684"
-          gradientUnits="userSpaceOnUse"
-        >
+          gradientUnits="userSpaceOnUse">
           <stop stopColor="#AA1FEC" />
           <stop offset="1" stopColor="#7A3BFE" />
         </linearGradient>
@@ -842,8 +825,24 @@ export const Icons = {
   passportFront: (
     <g>
       <rect width="354" height="196" rx="8" fill="white" fillOpacity="0.08" />
-      <rect x="0.5" y="0.5" width="353" height="195" rx="7.5" stroke="white" strokeOpacity="0.1" />
-      <rect x="18" y="21" width="135" height="154" rx="8" fill="white" fillOpacity="0.08" />
+      <rect
+        x="0.5"
+        y="0.5"
+        width="353"
+        height="195"
+        rx="7.5"
+        stroke="white"
+        strokeOpacity="0.1"
+      />
+      <rect
+        x="18"
+        y="21"
+        width="135"
+        height="154"
+        rx="8"
+        fill="white"
+        fillOpacity="0.08"
+      />
       <rect
         x="18.5"
         y="21.5"
@@ -863,17 +862,65 @@ export const Icons = {
         fill="white"
         fillOpacity="0.32"
       />
-      <rect x="177" y="35" width="135" height="10" rx="5" fill="white" fillOpacity="0.12" />
-      <rect x="177" y="53" width="135" height="10" rx="5" fill="white" fillOpacity="0.12" />
-      <rect x="177" y="100" width="90" height="10" rx="5" fill="white" fillOpacity="0.12" />
-      <rect x="177" y="118" width="109" height="10" rx="5" fill="white" fillOpacity="0.12" />
-      <rect x="177" y="136" width="76" height="10" rx="5" fill="white" fillOpacity="0.12" />
+      <rect
+        x="177"
+        y="35"
+        width="135"
+        height="10"
+        rx="5"
+        fill="white"
+        fillOpacity="0.12"
+      />
+      <rect
+        x="177"
+        y="53"
+        width="135"
+        height="10"
+        rx="5"
+        fill="white"
+        fillOpacity="0.12"
+      />
+      <rect
+        x="177"
+        y="100"
+        width="90"
+        height="10"
+        rx="5"
+        fill="white"
+        fillOpacity="0.12"
+      />
+      <rect
+        x="177"
+        y="118"
+        width="109"
+        height="10"
+        rx="5"
+        fill="white"
+        fillOpacity="0.12"
+      />
+      <rect
+        x="177"
+        y="136"
+        width="76"
+        height="10"
+        rx="5"
+        fill="white"
+        fillOpacity="0.12"
+      />
     </g>
   ),
   passportHold: (
     <g>
       <rect width="354" height="196" rx="8" fill="white" fillOpacity="0.08" />
-      <rect x="0.5" y="0.5" width="353" height="195" rx="7.5" stroke="white" strokeOpacity="0.1" />
+      <rect
+        x="0.5"
+        y="0.5"
+        width="353"
+        height="195"
+        rx="7.5"
+        stroke="white"
+        strokeOpacity="0.1"
+      />
       <path
         opacity="0.12"
         d="M137.772 148.713C127.925 145.515 123.125 137.235 120.783 130.068C115.11 132.878 108.747 134.5 102 134.5C95.25 134.5 88.8875 132.878 83.215 130.065C80.87 137.235 76.07 145.518 66.2275 148.713C46.1325 155.238 29.5 162.997 29.5 192C29.5 193.38 30.62 194.5 32 194.5H172C173.38 194.5 174.5 193.38 174.5 192C174.5 162.997 157.867 155.238 137.772 148.713Z"
@@ -884,7 +931,14 @@ export const Icons = {
         d="M102 39.5C81.3225 39.5 64.5 56.3225 64.5 77V92C64.5 112.677 81.3225 129.5 102 129.5C122.677 129.5 139.5 112.677 139.5 92V77C139.5 56.3225 122.677 39.5 102 39.5Z"
         fill="white"
       />
-      <rect x="127" y="91" width="158.939" height="88" rx="8.14815" fill="#141343" />
+      <rect
+        x="127"
+        y="91"
+        width="158.939"
+        height="88"
+        rx="8.14815"
+        fill="#141343"
+      />
       <rect
         x="127.407"
         y="91.4074"
@@ -986,8 +1040,24 @@ export const Icons = {
   nationalIdFront: (
     <g>
       <rect width="354" height="196" rx="8" fill="white" fillOpacity="0.08" />
-      <rect x="0.5" y="0.5" width="353" height="195" rx="7.5" stroke="white" strokeOpacity="0.1" />
-      <rect x="18" y="21" width="135" height="154" rx="8" fill="white" fillOpacity="0.08" />
+      <rect
+        x="0.5"
+        y="0.5"
+        width="353"
+        height="195"
+        rx="7.5"
+        stroke="white"
+        strokeOpacity="0.1"
+      />
+      <rect
+        x="18"
+        y="21"
+        width="135"
+        height="154"
+        rx="8"
+        fill="white"
+        fillOpacity="0.08"
+      />
       <rect
         x="18.5"
         y="21.5"
@@ -1007,19 +1077,83 @@ export const Icons = {
         fill="white"
         fillOpacity="0.32"
       />
-      <rect x="177" y="35" width="135" height="10" rx="5" fill="white" fillOpacity="0.32" />
-      <rect x="177" y="151" width="33" height="10" rx="5" fill="white" fillOpacity="0.32" />
-      <rect x="215" y="151" width="33" height="10" rx="5" fill="white" fillOpacity="0.12" />
-      <rect x="253" y="151" width="71" height="10" rx="5" fill="white" fillOpacity="0.12" />
-      <rect x="177" y="58" width="90" height="10" rx="5" fill="white" fillOpacity="0.12" />
-      <rect x="177" y="76" width="109" height="10" rx="5" fill="white" fillOpacity="0.12" />
-      <rect x="177" y="94" width="76" height="10" rx="5" fill="white" fillOpacity="0.12" />
+      <rect
+        x="177"
+        y="35"
+        width="135"
+        height="10"
+        rx="5"
+        fill="white"
+        fillOpacity="0.32"
+      />
+      <rect
+        x="177"
+        y="151"
+        width="33"
+        height="10"
+        rx="5"
+        fill="white"
+        fillOpacity="0.32"
+      />
+      <rect
+        x="215"
+        y="151"
+        width="33"
+        height="10"
+        rx="5"
+        fill="white"
+        fillOpacity="0.12"
+      />
+      <rect
+        x="253"
+        y="151"
+        width="71"
+        height="10"
+        rx="5"
+        fill="white"
+        fillOpacity="0.12"
+      />
+      <rect
+        x="177"
+        y="58"
+        width="90"
+        height="10"
+        rx="5"
+        fill="white"
+        fillOpacity="0.12"
+      />
+      <rect
+        x="177"
+        y="76"
+        width="109"
+        height="10"
+        rx="5"
+        fill="white"
+        fillOpacity="0.12"
+      />
+      <rect
+        x="177"
+        y="94"
+        width="76"
+        height="10"
+        rx="5"
+        fill="white"
+        fillOpacity="0.12"
+      />
     </g>
   ),
   nationalIdBack: (
     <g>
       <rect width="354" height="196" rx="8" fill="white" fillOpacity="0.08" />
-      <rect x="0.5" y="0.5" width="353" height="195" rx="7.5" stroke="white" strokeOpacity="0.1" />
+      <rect
+        x="0.5"
+        y="0.5"
+        width="353"
+        height="195"
+        rx="7.5"
+        stroke="white"
+        strokeOpacity="0.1"
+      />
       <rect
         x="216.5"
         y="117.5"
@@ -1029,23 +1163,119 @@ export const Icons = {
         stroke="white"
         strokeOpacity="0.1"
       />
-      <rect x="32" y="155" width="33" height="10" rx="5" fill="white" fillOpacity="0.32" />
-      <rect x="70" y="155" width="33" height="10" rx="5" fill="white" fillOpacity="0.12" />
-      <rect x="108" y="155" width="71" height="10" rx="5" fill="white" fillOpacity="0.12" />
-      <rect x="32" y="36" width="90" height="10" rx="5" fill="white" fillOpacity="0.12" />
-      <rect x="183" y="36" width="130" height="10" rx="5" fill="white" fillOpacity="0.12" />
-      <rect x="32" y="54" width="109" height="10" rx="5" fill="white" fillOpacity="0.12" />
-      <rect x="183" y="54" width="48" height="10" rx="5" fill="white" fillOpacity="0.12" />
-      <rect x="237" y="54" width="48" height="10" rx="5" fill="white" fillOpacity="0.12" />
-      <rect x="32" y="72" width="76" height="10" rx="5" fill="white" fillOpacity="0.12" />
-      <rect x="183" y="72" width="107" height="10" rx="5" fill="white" fillOpacity="0.12" />
+      <rect
+        x="32"
+        y="155"
+        width="33"
+        height="10"
+        rx="5"
+        fill="white"
+        fillOpacity="0.32"
+      />
+      <rect
+        x="70"
+        y="155"
+        width="33"
+        height="10"
+        rx="5"
+        fill="white"
+        fillOpacity="0.12"
+      />
+      <rect
+        x="108"
+        y="155"
+        width="71"
+        height="10"
+        rx="5"
+        fill="white"
+        fillOpacity="0.12"
+      />
+      <rect
+        x="32"
+        y="36"
+        width="90"
+        height="10"
+        rx="5"
+        fill="white"
+        fillOpacity="0.12"
+      />
+      <rect
+        x="183"
+        y="36"
+        width="130"
+        height="10"
+        rx="5"
+        fill="white"
+        fillOpacity="0.12"
+      />
+      <rect
+        x="32"
+        y="54"
+        width="109"
+        height="10"
+        rx="5"
+        fill="white"
+        fillOpacity="0.12"
+      />
+      <rect
+        x="183"
+        y="54"
+        width="48"
+        height="10"
+        rx="5"
+        fill="white"
+        fillOpacity="0.12"
+      />
+      <rect
+        x="237"
+        y="54"
+        width="48"
+        height="10"
+        rx="5"
+        fill="white"
+        fillOpacity="0.12"
+      />
+      <rect
+        x="32"
+        y="72"
+        width="76"
+        height="10"
+        rx="5"
+        fill="white"
+        fillOpacity="0.12"
+      />
+      <rect
+        x="183"
+        y="72"
+        width="107"
+        height="10"
+        rx="5"
+        fill="white"
+        fillOpacity="0.12"
+      />
     </g>
   ),
   drivingLicenseFront: (
     <g>
       <rect width="354" height="196" rx="8" fill="white" fillOpacity="0.08" />
-      <rect x="0.5" y="0.5" width="353" height="195" rx="7.5" stroke="white" strokeOpacity="0.1" />
-      <rect x="18" y="65.4889" width="96" height="109.511" rx="8" fill="white" fillOpacity="0.08" />
+      <rect
+        x="0.5"
+        y="0.5"
+        width="353"
+        height="195"
+        rx="7.5"
+        stroke="white"
+        strokeOpacity="0.1"
+      />
+      <rect
+        x="18"
+        y="65.4889"
+        width="96"
+        height="109.511"
+        rx="8"
+        fill="white"
+        fillOpacity="0.08"
+      />
       <rect
         x="18.5"
         y="65.9889"
@@ -1074,13 +1304,69 @@ export const Icons = {
         fill="white"
         fillOpacity="0.32"
       />
-      <rect x="162" y="35" width="76" height="10" rx="5" fill="white" fillOpacity="0.32" />
-      <rect x="244" y="35" width="46" height="10" rx="5" fill="white" fillOpacity="0.32" />
-      <rect x="162" y="58" width="86" height="10" rx="5" fill="white" fillOpacity="0.12" />
-      <rect x="162" y="112" width="86" height="10" rx="5" fill="white" fillOpacity="0.12" />
-      <rect x="162" y="76" width="80" height="10" rx="5" fill="white" fillOpacity="0.12" />
-      <rect x="162" y="130" width="109" height="10" rx="5" fill="white" fillOpacity="0.12" />
-      <rect x="162" y="94" width="109" height="10" rx="5" fill="white" fillOpacity="0.12" />
+      <rect
+        x="162"
+        y="35"
+        width="76"
+        height="10"
+        rx="5"
+        fill="white"
+        fillOpacity="0.32"
+      />
+      <rect
+        x="244"
+        y="35"
+        width="46"
+        height="10"
+        rx="5"
+        fill="white"
+        fillOpacity="0.32"
+      />
+      <rect
+        x="162"
+        y="58"
+        width="86"
+        height="10"
+        rx="5"
+        fill="white"
+        fillOpacity="0.12"
+      />
+      <rect
+        x="162"
+        y="112"
+        width="86"
+        height="10"
+        rx="5"
+        fill="white"
+        fillOpacity="0.12"
+      />
+      <rect
+        x="162"
+        y="76"
+        width="80"
+        height="10"
+        rx="5"
+        fill="white"
+        fillOpacity="0.12"
+      />
+      <rect
+        x="162"
+        y="130"
+        width="109"
+        height="10"
+        rx="5"
+        fill="white"
+        fillOpacity="0.12"
+      />
+      <rect
+        x="162"
+        y="94"
+        width="109"
+        height="10"
+        rx="5"
+        fill="white"
+        fillOpacity="0.12"
+      />
       <rect
         x="161.953"
         y="148.422"
@@ -1093,4 +1379,4 @@ export const Icons = {
       />
     </g>
   )
-};
+}

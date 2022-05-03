@@ -1,22 +1,22 @@
 export type Success = {
-  result: 'success';
-};
+  result: 'success'
+}
 export type UnexpectedError = {
-  result: 'unexpected-error';
-};
+  result: 'unexpected-error'
+}
 export type UnauthorizedError = {
-  result: 'unauthorized-error';
-};
+  result: 'unauthorized-error'
+}
 export type BannedError = {
-  result: 'banned';
-  remainingTimeMs: number;
-};
+  result: 'banned'
+  remainingTimeMs: number
+}
 export type LimitReachedError = {
-  result: 'limit-reached-error';
-};
+  result: 'limit-reached-error'
+}
 export type ValidationError<Field, Reason> = {
-  result: 'validation-error';
-  field: Field;
-  reason: Reason;
-};
-export type GenericResponse = Success | UnexpectedError | UnauthorizedError;
+  result: 'validation-error'
+  field: Field
+  reason: Reason
+}
+export type GenericResponse = Success | UnexpectedError | UnauthorizedError

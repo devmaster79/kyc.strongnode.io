@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import Container from '@mui/material/Container';
-import styled from '@mui/material/styles/styled';
-import { useForm } from 'react-hook-form';
-import Box from '@mui/material/Box';
-import userService from '../services/userService';
-import Button from '@mui/material/Button';
+import React, { useState } from 'react'
+import Container from '@mui/material/Container'
+import styled from '@mui/material/styles/styled'
+import { useForm } from 'react-hook-form'
+import Box from '@mui/material/Box'
+import userService from '../services/userService'
+import Button from '@mui/material/Button'
 
 const CardStyle = styled(Box)(({ theme }) => ({
   background:
@@ -15,7 +15,7 @@ const CardStyle = styled(Box)(({ theme }) => ({
   padding: theme.spacing(4),
   width: '90%',
   margin: 'auto'
-}));
+}))
 
 const inputStyle = {
   display: 'block',
@@ -33,7 +33,7 @@ const inputStyle = {
   boxSizing: 'border-box',
   boxShadow: 'inset 0px 10px 10px rgb(0 0 0 / 25%)',
   marginTop: '12px'
-};
+}
 
 const textAreaStyle = {
   display: 'block',
@@ -52,7 +52,7 @@ const textAreaStyle = {
   boxShadow: 'inset 0px 10px 10px rgb(0 0 0 / 25%)',
   marginTop: '24px',
   resize: 'none'
-};
+}
 
 function ContactSupport() {
   const {
@@ -60,20 +60,25 @@ function ContactSupport() {
     handleSubmit,
     reset,
     formState: { errors }
-  } = useForm();
+  } = useForm()
 
-  const [buttonTitle, setButtonTitle] = useState('Send');
+  const [buttonTitle, setButtonTitle] = useState('Send')
 
   const onSubmit = (data) => {
-    userService.createSupportRequest(data).then((r) => {
-      if (r.data.result === 'Success') {
-        setButtonTitle('Success!');
-        reset({ subject: '', message: '' });
-      } else {
-        setButtonTitle('Error! Try sending it later');
-      }
-    });
-  };
+    userService
+      .createSupportRequest(data)
+      .then((r) => {
+        if (r.data.result === 'Success') {
+          setButtonTitle('Success!')
+          reset({ subject: '', message: '' })
+        } else {
+          setButtonTitle('Error! Try sending it later')
+        }
+      })
+      .catch(() => {
+        // Do nothing
+      })
+  }
 
   return (
     <Container>
@@ -81,7 +86,11 @@ function ContactSupport() {
         <h2 style={{ color: 'white' }}>Contact support</h2>
         <form onSubmit={handleSubmit(onSubmit)}>
           {/* register your input into the hook by invoking the "register" function */}
-          <input placeholder={'Subject'} {...register('subject')} style={inputStyle} />
+          <input
+            placeholder={'Subject'}
+            {...register('subject')}
+            style={inputStyle}
+          />
 
           {/* include validation with required or other standard HTML validation rules */}
           <textarea
@@ -95,14 +104,13 @@ function ContactSupport() {
           <Button
             variant="contained"
             type="submit"
-            sx={{ width: '20%', marginTop: '24px', cursor: 'pointer' }}
-          >
+            sx={{ width: '20%', marginTop: '24px', cursor: 'pointer' }}>
             {buttonTitle}
           </Button>
         </form>
       </CardStyle>
     </Container>
-  );
+  )
 }
 
-export default ContactSupport;
+export default ContactSupport

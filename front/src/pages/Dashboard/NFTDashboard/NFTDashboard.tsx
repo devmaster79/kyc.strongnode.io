@@ -1,15 +1,15 @@
-import NFTCard from './NFTCard/NFTCard';
-import styled from '@emotion/styled';
-import TableSection from 'components/TableSection/TableSection';
-import Autocomplete from '@ui/Autocomplete/Autocomplete';
-import Icon from '@ui/Icon/Icon';
+import NFTCard from './NFTCard/NFTCard'
+import styled from '@emotion/styled'
+import TableSection from 'components/TableSection/TableSection'
+import Autocomplete from '@ui/Autocomplete/Autocomplete'
+import Icon from '@ui/Icon/Icon'
 
 const CardWrapper = styled.div`
   display: flex;
   flex-flow: wrap;
-`;
+`
 export default function NFTDashboard() {
-  const cards = ['1', '2', '3', '4', '5', '6', '7'];
+  const cards = ['1', '2', '3', '4', '5', '6', '7']
 
   const columns = [
     {
@@ -37,7 +37,7 @@ export default function NFTDashboard() {
       label: '24H PRICE',
       align: 'left'
     }
-  ];
+  ]
 
   const dataSet = {
     items: [
@@ -70,13 +70,13 @@ export default function NFTDashboard() {
         price: '290.7K'
       }
     ]
-  };
+  }
 
   const overwrittenFields = {
     price: () => {
-      return 'Vested';
+      return 'Vested'
     }
-  };
+  }
 
   const customStyle = (option: any) => {
     // TODO: set type after finishing backend part
@@ -91,8 +91,8 @@ export default function NFTDashboard() {
           9000
         </span>
       </AutocompleteStyle>
-    );
-  };
+    )
+  }
 
   return (
     <>
@@ -119,20 +119,20 @@ export default function NFTDashboard() {
       </CardWrapper>
       <TableSection
         searchColumn={'name'}
-        title='Metrics'
-        subtitle='NFT 18'
+        title="Metrics"
+        subtitle="NFT 18"
         columns={columns}
         dataSet={dataSet}
         overwrittenFields={overwrittenFields}
         hideHeading={false}
       />
     </>
-  );
+  )
 }
 
 const AutocompleteWrapper = styled.div`
   max-width: 320px;
-`;
+`
 const AutocompleteStyle = styled.div`
   display: flex;
   align-items: center;
@@ -145,7 +145,7 @@ const AutocompleteStyle = styled.div`
     line-height: 19px;
     color: ${(props) => props.theme.palette.text.secondary};
   }
-`;
+`
 const TitleWrapper = styled.div`
   display: flex;
   align-items: center;
@@ -156,4 +156,4 @@ const TitleWrapper = styled.div`
     border-radius: 10px;
     margin-right: 16px;
   }
-`;
+`

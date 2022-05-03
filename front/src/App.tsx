@@ -1,20 +1,20 @@
-import React, { Suspense } from 'react';
-import Router from './Router';
-import { SnackbarProvider } from 'notistack';
-import { useSearchParams } from 'react-router-dom';
-import * as authService from 'services/auth';
+import React, { Suspense } from 'react'
+import Router from './Router'
+import { SnackbarProvider } from 'notistack'
+import { useSearchParams } from 'react-router-dom'
+import * as authService from 'services/auth'
 
 const ThemeConfig = React.lazy(async () => ({
   default: (await import('./theme')).ThemeConfig
-}));
+}))
 
 function App() {
   // Setup token given in the URL.
   // Used by authentication.
-  const [searchParams] = useSearchParams();
-  const token = searchParams.get('token');
+  const [searchParams] = useSearchParams()
+  const token = searchParams.get('token')
   if (token) {
-    authService.setToken(token);
+    authService.setToken(token)
   }
 
   return (
@@ -25,15 +25,14 @@ function App() {
             vertical: 'top',
             horizontal: 'right'
           }}
-          maxSnack={2}
-        >
+          maxSnack={2}>
           <div className="App">
             <Router />
           </div>
         </SnackbarProvider>
       </ThemeConfig>
     </Suspense>
-  );
+  )
 }
 
-export default App;
+export default App

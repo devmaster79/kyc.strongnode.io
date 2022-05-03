@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from 'styled-components'
 
 export const StyledButton = styled.button`
   width: ${(props) => (props.full ? '100%' : null)};
@@ -18,4 +18,4 @@ export const StyledButton = styled.button`
   &:hover {
     box-shadow: 0px 5px 5px rgba(255, 255, 255, 0.25);
   }
-`;
+`

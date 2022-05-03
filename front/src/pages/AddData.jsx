@@ -1,14 +1,22 @@
-import { useSnackbar } from 'notistack';
-import { Container, Box, Stack, Button, Select, TextField, MenuItem } from '@mui/material';
-import styled from '@mui/material/styles/styled';
-import { useState, useEffect } from 'react';
-import * as Yup from 'yup';
-import { useFormik, FormikProvider } from 'formik';
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import DateTimePicker from '@mui/lab/DateTimePicker';
-import userService from '../services/userService';
-import historyService from '../services/historyService';
+import { useSnackbar } from 'notistack'
+import {
+  Container,
+  Box,
+  Stack,
+  Button,
+  Select,
+  TextField,
+  MenuItem
+} from '@mui/material'
+import styled from '@mui/material/styles/styled'
+import { useState, useEffect } from 'react'
+import * as Yup from 'yup'
+import { useFormik, FormikProvider } from 'formik'
+import AdapterDateFns from '@mui/lab/AdapterDateFns'
+import LocalizationProvider from '@mui/lab/LocalizationProvider'
+import DateTimePicker from '@mui/lab/DateTimePicker'
+import userService from '../services/userService'
+import historyService from '../services/historyService'
 
 const CardStyle = styled(Box)(({ theme }) => ({
   background: 'rgba(255, 255, 255, 0.1)',
@@ -18,30 +26,30 @@ const CardStyle = styled(Box)(({ theme }) => ({
   padding: theme.spacing(4),
   width: '90%',
   margin: 'auto'
-}));
+}))
 const MyStack = styled(Stack)`
   @media (max-width: 1024px) {
     margin-left: 0 !important;
   }
-`;
+`
 export default function Dashboard() {
-  const types = ['earned', 'unlocked', 'vested', 'withdrawn'];
+  const types = ['earned', 'unlocked', 'vested', 'withdrawn']
 
-  const [user, setUser] = useState();
-  const [value, setValue] = useState(0);
-  const [type, setType] = useState(0);
-  const [date, setDate] = useState(new Date());
+  const [user, setUser] = useState()
+  const [value, setValue] = useState(0)
+  const [type, setType] = useState(0)
+  const [date, setDate] = useState(new Date())
 
-  const { enqueueSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar()
 
   // Fetch value from local storage
-  const token = localStorage.getItem('token');
-  const useremail = localStorage.getItem('email');
+  const token = localStorage.getItem('token')
+  const useremail = localStorage.getItem('email')
 
   const ProfileSchema = Yup.object().shape({
     value: Yup.string().required('TokenAmount is required'),
     type: Yup.string().required('Type is required')
-  });
+  })
 
   const formik = useFormik({
     initialValues: {
@@ -56,33 +64,33 @@ export default function Dashboard() {
           token_amount: value / 1,
           action_type: types[type],
           date: date
-        };
+        }
 
-        historyService.createHistory(data).then((r) => {
+        await historyService.createHistory(data).then((r) => {
           if (r.status === 200) {
             enqueueSnackbar('Data added successfully1', {
               variant: 'success'
-            });
+            })
           } else {
-            enqueueSnackbar('Failed to Add Data', { variant: 'error' });
+            enqueueSnackbar('Failed to Add Data', { variant: 'error' })
           }
-        });
+        })
       } catch (error) {
-        console.error(error);
+        console.error(error)
         // enqueueSnackbar("Oops! An error occured", { variant: "success" });
-        setSubmitting(false);
+        setSubmitting(false)
       }
     }
-  });
+  })
 
   useEffect(() => {
     async function fetch() {
-      const result = await userService.getProfile();
-      setUser(result.data[0]);
+      const result = await userService.getProfile()
+      setUser(result.data[0])
     }
 
-    fetch();
-  }, [token, useremail, value]);
+    fetch()
+  }, [token, useremail, value])
 
   return (
     <Container maxWidth="xl" style={{ height: '100vh' }}>
@@ -97,8 +105,7 @@ export default function Dashboard() {
                 display: { xs: 'flex' },
                 justifyContent: { xs: 'space-evenly' },
                 flexWrap: { xs: 'wrap', md: 'nowrap' }
-              }}
-            >
+              }}>
               <MyStack spacing={3} sx={{ width: '100%' }}>
                 <TextField
                   InputProps={{ style: { color: 'white' } }}
@@ -123,14 +130,13 @@ export default function Dashboard() {
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
                   value={type}
-                  onChange={(event) => setType(event.target.value)}
-                >
+                  onChange={(event) => setType(event.target.value)}>
                   {types.map((data, i) => {
                     return (
                       <MenuItem value={i} key={i}>
                         {data}
                       </MenuItem>
-                    );
+                    )
                   })}
                 </Select>
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -140,7 +146,7 @@ export default function Dashboard() {
                     label="Ignore date and time"
                     value={date}
                     onChange={(newValue) => {
-                      setDate(newValue);
+                      setDate(newValue)
                     }}
                     minDateTime={new Date()}
                   />
@@ -154,5 +160,5 @@ export default function Dashboard() {
         </FormikProvider>
       </CardStyle>
     </Container>
-  );
+  )
 }

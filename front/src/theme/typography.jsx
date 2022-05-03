@@ -1,7 +1,7 @@
 // ----------------------------------------------------------------------
 
 function pxToRem(value) {
-  return `${value / 16}rem`;
+  return `${value / 16}rem`
 }
 
 function responsiveFontSizes({ sm, md, lg }) {
@@ -15,7 +15,7 @@ function responsiveFontSizes({ sm, md, lg }) {
     '@media (min-width:1200px)': {
       fontSize: pxToRem(lg)
     }
-  };
+  }
 }
 
 const typography = {
@@ -94,6 +94,6 @@ const typography = {
     fontSize: pxToRem(14),
     textTransform: 'capitalize'
   }
-};
+}
 
-export default typography;
+export default typography

@@ -1,11 +1,11 @@
-import React from 'react';
-import { useTimer } from 'react-timer-hook';
+import React from 'react'
+import { useTimer } from 'react-timer-hook'
 
 export default function WithdrawTimer({ expiryTimestamp, setWithdrawable }) {
   const { seconds, minutes, hours, days } = useTimer({
     expiryTimestamp,
     onExpire: () => setWithdrawable(true)
-  });
+  })
 
   return (
     <div style={{ textAlign: 'center' }}>
@@ -15,5 +15,5 @@ export default function WithdrawTimer({ expiryTimestamp, setWithdrawable }) {
         </span>
       </div>
     </div>
-  );
+  )
 }

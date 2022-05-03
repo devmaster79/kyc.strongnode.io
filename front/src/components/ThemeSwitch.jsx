@@ -1,8 +1,8 @@
-import Switch from '@mui/material/Switch';
-import Stack from '@mui/material/Stack';
-import styled from '@mui/material/styles/styled';
-import SvgIconStyle from './SvgIconStyle';
-import useSettings from '../hooks/useSettings';
+import Switch from '@mui/material/Switch'
+import Stack from '@mui/material/Stack'
+import styled from '@mui/material/styles/styled'
+import SvgIconStyle from './SvgIconStyle'
+import useSettings from '../hooks/useSettings'
 
 const IOSSwitch = styled((props) => (
   <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
@@ -33,7 +33,10 @@ const IOSSwitch = styled((props) => (
       border: '6px solid #fff'
     },
     '&.Mui-disabled .MuiSwitch-thumb': {
-      color: theme.palette.mode === 'light' ? theme.palette.grey[100] : theme.palette.grey[600]
+      color:
+        theme.palette.mode === 'light'
+          ? theme.palette.grey[100]
+          : theme.palette.grey[600]
     },
     '&.Mui-disabled + .MuiSwitch-track': {
       opacity: theme.palette.mode === 'light' ? 0.7 : 0.3
@@ -53,22 +56,25 @@ const IOSSwitch = styled((props) => (
       duration: 500
     })
   }
-}));
+}))
 
 const SunIcon = styled(SvgIconStyle)`
   position: absolute;
   left: 20px;
-`;
+`
 
 export default function ThemeSwitch({ sx, color }) {
-  const { themeMode, onChangeMode } = useSettings();
+  const { themeMode, onChangeMode } = useSettings()
   const handleChange = (event) => {
-    onChangeMode(event.target.checked ? 'dark' : 'light');
-  };
+    onChangeMode(event.target.checked ? 'dark' : 'light')
+  }
   return (
     <div style={sx}>
-      <SunIcon src="/icons/sun.svg" sx={{ width: 24, height: 24, background: 'white' }} />
+      <SunIcon
+        src="/icons/sun.svg"
+        sx={{ width: 24, height: 24, background: 'white' }}
+      />
       <IOSSwitch onChange={handleChange} checked={themeMode === 'dark'} />
     </div>
-  );
+  )
 }

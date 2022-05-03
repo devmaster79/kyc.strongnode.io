@@ -1,11 +1,14 @@
-import { AccessWarningModal, AccessWarningModalProps } from './AccessWarningModal';
-import { SMSSetupModal } from './SMSSetupModal';
-import { SwitchWithModal, SwitchWithModalProps } from './SwitchWithModal';
+import {
+  AccessWarningModal,
+  AccessWarningModalProps
+} from './AccessWarningModal'
+import { SMSSetupModal } from './SMSSetupModal'
+import { SwitchWithModal, SwitchWithModalProps } from './SwitchWithModal'
 
 export type SMSSwitchProps = {
-  registerProps: SwitchWithModalProps['registerProps'];
-  isDirty: SwitchWithModalProps['isDirty'];
-};
+  registerProps: SwitchWithModalProps['registerProps']
+  isDirty: SwitchWithModalProps['isDirty']
+}
 
 export const SMSSwitch = ({ registerProps, isDirty }: SMSSwitchProps) => {
   return (
@@ -16,9 +19,9 @@ export const SMSSwitch = ({ registerProps, isDirty }: SMSSwitchProps) => {
       registerProps={registerProps}
       label="SMS"
     />
-  );
-};
+  )
+}
 
-const TurnOffWarning = (props: Omit<AccessWarningModalProps, 'icon' | 'title'>) => (
-  <AccessWarningModal title="Without SMS" {...props} />
-);
+const TurnOffWarning = (
+  props: Omit<AccessWarningModalProps, 'icon' | 'title'>
+) => <AccessWarningModal title="Without SMS" {...props} />

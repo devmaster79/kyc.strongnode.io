@@ -1,15 +1,16 @@
-import { css } from '@emotion/react';
-import styled from '@emotion/styled';
+import { css } from '@emotion/react'
+import styled from '@emotion/styled'
 interface StyledButtonProps {
-  variant?: 'normal' | 'medium' | 'large' | 'xl';
-  justify?: 'center' | 'space-between';
-  color?: 'default' | 'invert' | 'white';
-  invert?: boolean;
+  variant?: 'normal' | 'medium' | 'large' | 'xl'
+  justify?: 'center' | 'space-between'
+  color?: 'default' | 'invert' | 'white'
+  invert?: boolean
 }
 
 const Button = styled.button<StyledButtonProps>`
   background: linear-gradient(90.39deg, #aa1fec 0.24%, #7a3bfe 101.6%);
-  box-shadow: 0px 16px 40px rgba(170, 31, 236, 0.32), inset 0px 1px 1px rgba(255, 255, 255, 0.4);
+  box-shadow: 0px 16px 40px rgba(170, 31, 236, 0.32),
+    inset 0px 1px 1px rgba(255, 255, 255, 0.4);
   border-radius: 92px;
   font-family: 'Satoshi-Variable';
   font-style: normal;
@@ -31,7 +32,7 @@ const Button = styled.button<StyledButtonProps>`
         padding: 21px;
         min-width: 200px;
         margin: 8px;
-      `;
+      `
     } else if (props.variant === 'xl') {
       return css`
         min-width: 530px;
@@ -40,7 +41,7 @@ const Button = styled.button<StyledButtonProps>`
         @media only screen and (max-width: 550px) {
           min-width: 85vw;
         }
-      `;
+      `
     } else if (props.variant === 'large') {
       return css`
         min-width: 360px;
@@ -50,7 +51,7 @@ const Button = styled.button<StyledButtonProps>`
         @media only screen and (max-width: 400px) {
           min-width: 85vw;
         }
-      `;
+      `
     }
   }}
   ${(props) => {
@@ -59,7 +60,7 @@ const Button = styled.button<StyledButtonProps>`
         display: flex;
         align-items: center;
         justify-content: space-between;
-      `;
+      `
     }
   }}
   ${(props) => {
@@ -69,13 +70,13 @@ const Button = styled.button<StyledButtonProps>`
         border: 1px solid ${props.theme.palette.border.button};
         box-shadow: none;
         color: ${props.theme.palette.button.invert};
-      `;
+      `
     } else if (props.color === 'white') {
       return css`
         background: ${props.theme.palette.background.white};
         color: ${props.theme.palette.text.dark};
         box-shadow: none;
-      `;
+      `
     }
   }}
   ${(props) => {
@@ -83,9 +84,9 @@ const Button = styled.button<StyledButtonProps>`
       return css`
         cursor: inherit;
         opacity: 0.4;
-      `;
+      `
     }
   }}
-`;
+`
 
-export default Button;
+export default Button

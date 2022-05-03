@@ -1,27 +1,26 @@
-import { PasswordSwitch } from './PasswordSwitch';
-import styled from '@emotion/styled';
-import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import * as userService from 'services/userService';
-import * as DashboardForm from '@ui/Dashboard/Form';
-import { useEffect } from 'react';
-import { AuthenticatorSwitch } from './AuthenticatorSwitch';
-import { SMSSwitch } from './SMSSwitch';
-import { WalletCarousel } from './WalletCarousel';
-import backgroundDark from '../../../assets/images/BG.png';
-import backgroundLight from '../../../assets/images/BG-light.png';
-import * as ProgressCircleSteps from '@ui/Dashboard/ProgressCircleSteps';
-import { Banner } from '../../../@ui/Banner/Banner';
+import { PasswordSwitch } from './PasswordSwitch'
+import styled from '@emotion/styled'
+import { Controller, SubmitHandler, useForm } from 'react-hook-form'
+import * as userService from 'services/userService'
+import * as DashboardForm from '@ui/Dashboard/Form'
+import { useEffect } from 'react'
+import { AuthenticatorSwitch } from './AuthenticatorSwitch'
+import { SMSSwitch } from './SMSSwitch'
+import { WalletCarousel } from './WalletCarousel'
+import backgroundDark from '../../../assets/images/BG.png'
+import backgroundLight from '../../../assets/images/BG-light.png'
+import * as ProgressCircleSteps from '@ui/Dashboard/ProgressCircleSteps'
+import { Banner } from '../../../@ui/Banner/Banner'
 
 interface FormFields {
-  firstName: string;
-  lastName: string;
-  username: string;
-  email: string;
-  enablePasswordAuth: boolean;
-  enableSMSAuth: boolean;
-  enableAuthenticatorAuth: boolean;
+  firstName: string
+  lastName: string
+  username: string
+  email: string
+  enablePasswordAuth: boolean
+  enableSMSAuth: boolean
+  enableAuthenticatorAuth: boolean
 }
-
 
 const walletsObject = [
   {
@@ -39,27 +38,28 @@ const walletsObject = [
     label: 'ADD WALLET',
     description: ''
   }
-];
+]
 
 export default function KYC() {
-  const { register, handleSubmit, reset, control, formState } = useForm<FormFields>({
-    mode: 'all',
-    defaultValues: {
-      firstName: '',
-      lastName: '',
-      username: '',
-      email: '',
-      enablePasswordAuth: false,
-      enableSMSAuth: false,
-      enableAuthenticatorAuth: false
-    }
-  });
+  const { register, handleSubmit, reset, control, formState } =
+    useForm<FormFields>({
+      mode: 'all',
+      defaultValues: {
+        firstName: '',
+        lastName: '',
+        username: '',
+        email: '',
+        enablePasswordAuth: false,
+        enableSMSAuth: false,
+        enableAuthenticatorAuth: false
+      }
+    })
 
   useEffect(() => {
     userService
       .getProfile()
       .then((result) => {
-        const data = result.data[0];
+        const data = result.data[0]
         reset({
           firstName: data.first_name,
           lastName: data.last_name,
@@ -68,12 +68,12 @@ export default function KYC() {
           enablePasswordAuth: data.enable_password,
           enableSMSAuth: data.enable_sms,
           enableAuthenticatorAuth: data.enable_authenticator
-        });
+        })
       })
       .catch((err) => {
-        console.error(err);
-      });
-  }, [reset]);
+        console.error(err)
+      })
+  }, [reset])
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     await userService.updateProfile({
@@ -83,8 +83,8 @@ export default function KYC() {
       enable_password: data.enablePasswordAuth,
       enable_sms: data.enableSMSAuth,
       enable_authenticator: data.enableAuthenticatorAuth
-    });
-  };
+    })
+  }
 
   return (
     <Container>
@@ -129,10 +129,15 @@ export default function KYC() {
             disabled={true}
           />
         </ProgressCircleSteps.Container>
-        <DashboardForm.Form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
+        <DashboardForm.Form
+          onSubmit={handleSubmit(onSubmit)}
+          autoComplete="off">
           <DashboardForm.InputGroup>
             <DashboardForm.Input
-              inputProps={{ placeholder: 'First name', ...register('firstName') }}
+              inputProps={{
+                placeholder: 'First name',
+                ...register('firstName')
+              }}
             />
             <DashboardForm.Input
               inputProps={{ placeholder: 'Last name', ...register('lastName') }}
@@ -141,7 +146,11 @@ export default function KYC() {
               inputProps={{ placeholder: 'Username', ...register('username') }}
             />
             <DashboardForm.Input
-              inputProps={{ placeholder: 'Email', ...register('email'), disabled: true }}
+              inputProps={{
+                placeholder: 'Email',
+                ...register('email'),
+                disabled: true
+              }}
             />
           </DashboardForm.InputGroup>
           <DashboardForm.Hr />
@@ -150,14 +159,20 @@ export default function KYC() {
               control={control}
               name="enablePasswordAuth"
               render={({ field, fieldState }) => (
-                <PasswordSwitch isDirty={fieldState.isDirty} registerProps={field} />
+                <PasswordSwitch
+                  isDirty={fieldState.isDirty}
+                  registerProps={field}
+                />
               )}
             />
             <Controller
               control={control}
               name="enableAuthenticatorAuth"
               render={({ field, fieldState }) => (
-                <AuthenticatorSwitch isDirty={fieldState.isDirty} registerProps={field} />
+                <AuthenticatorSwitch
+                  isDirty={fieldState.isDirty}
+                  registerProps={field}
+                />
               )}
             />
             <Controller
@@ -170,18 +185,17 @@ export default function KYC() {
           </DashboardForm.ButtonGroup>
           <DashboardForm.Button
             variant="large"
-            disabled={!formState.isDirty || formState.isSubmitting}
-          >
+            disabled={!formState.isDirty || formState.isSubmitting}>
             Update
           </DashboardForm.Button>
         </DashboardForm.Form>
       </FormContainer>
       <WalletCarousel walletProps={walletsObject} />
     </Container>
-  );
+  )
 }
 
-export const PasswordSetupModal = () => <div>Settings</div>;
+export const PasswordSetupModal = () => <div>Settings</div>
 
 export const Container = styled.div`
   display: flex;
@@ -193,7 +207,7 @@ export const Container = styled.div`
   gap: 32px;
   width: 80%;
   margin: auto;
-`;
+`
 
 export const FormContainer = styled.div`
   display: flex;
@@ -206,4 +220,4 @@ export const FormContainer = styled.div`
   @media only screen and (max-width: 600px) {
     width: 100%;
   }
-`;
+`

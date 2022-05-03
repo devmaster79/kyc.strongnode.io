@@ -1,1 +1,1 @@
-export { default } from './ValidatedField';
+export { default } from './ValidatedField'

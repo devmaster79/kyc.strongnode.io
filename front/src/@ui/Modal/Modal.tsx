@@ -1,19 +1,19 @@
-import styled from '@emotion/styled';
-import Icon, { IconProps } from '@ui/Icon/Icon';
-import { IAnim } from '@ui/utils/useAnimated';
-import { ReactNode } from 'react';
+import styled from '@emotion/styled'
+import Icon, { IconProps } from '@ui/Icon/Icon'
+import { IAnim } from '@ui/utils/useAnimated'
+import { ReactNode } from 'react'
 
 export type ModalProps = {
-  children: ReactNode;
-  icon?: IconProps['name'];
-  iconProps?: IconProps;
-  closeIconHidden: boolean;
-  title?: string;
-  onClose?: () => void;
-  footer?: ReactNode;
-  anim: IAnim;
-  scrollable: boolean;
-};
+  children: ReactNode
+  icon?: IconProps['name']
+  iconProps?: IconProps
+  closeIconHidden: boolean
+  title?: string
+  onClose?: () => void
+  footer?: ReactNode
+  anim: IAnim
+  scrollable: boolean
+}
 
 export default function Modal(props: ModalProps) {
   return (
@@ -36,7 +36,7 @@ export default function Modal(props: ModalProps) {
         {props.footer && <Footer>{props.footer}</Footer>}
       </StyledModal>
     </ModalWrapper>
-  );
+  )
 }
 
 Modal.defaultProps = {
@@ -47,14 +47,14 @@ Modal.defaultProps = {
   },
   closeIconHidden: false,
   scrollable: false
-};
+}
 
 interface ModalWrapperProps {
-  anim: IAnim;
+  anim: IAnim
 }
 
 interface StyledModalProps {
-  scrollable: boolean;
+  scrollable: boolean
 }
 
 const ModalWrapper = styled.div<ModalWrapperProps>`
@@ -69,15 +69,16 @@ const ModalWrapper = styled.div<ModalWrapperProps>`
   justify-content: center;
   z-index: 1300;
   display: ${({ anim }) => (anim.state === 'closed' ? 'none' : 'flex')};
-  opacity: ${({ anim }) => (anim.state === 'open' || anim.state === 'beforeOpening' ? '1' : '0')};
+  opacity: ${({ anim }) =>
+    anim.state === 'open' || anim.state === 'beforeOpening' ? '1' : '0'};
   transition: opacity ${({ anim }) => anim.delay}ms ease;
-`;
+`
 const IconWrapper = styled.div`
   width: 100%;
   padding: 16px;
   display: flex;
   justify-content: end;
-`;
+`
 const StyledModal = styled.div<StyledModalProps>`
   min-width: 642px;
   height: ${({ scrollable }) => (scrollable ? '100%' : 'unset')};
@@ -104,8 +105,8 @@ const StyledModal = styled.div<StyledModalProps>`
     min-width: 95vw;
     max-width: 95vw;
   }
-`;
+`
 const Footer = styled.div`
   padding-top: 23px;
   padding-bottom: 40px;
-`;
+`

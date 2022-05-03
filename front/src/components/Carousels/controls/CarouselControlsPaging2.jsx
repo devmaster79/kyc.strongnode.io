@@ -1,7 +1,7 @@
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
 // material
-import styled from '@mui/material/styles/styled';
-import Box from '@mui/material/Box';
+import styled from '@mui/material/styles/styled'
+import Box from '@mui/material/Box'
 
 // ----------------------------------------------------------------------
 
@@ -22,7 +22,7 @@ const RootStyle = styled('ul')({
       }
     }
   }
-});
+})
 
 const DotStyle = styled('span')(({ theme }) => ({
   width: 8,
@@ -32,13 +32,13 @@ const DotStyle = styled('span')(({ theme }) => ({
     easing: theme.transitions.easing.easeInOut,
     duration: 360
   })
-}));
+}))
 
 // ----------------------------------------------------------------------
 
 CarouselControlsPaging2.propTypes = {
   color: PropTypes.string
-};
+}
 
 export default function CarouselControlsPaging2({ color, ...other }) {
   return {
@@ -55,8 +55,7 @@ export default function CarouselControlsPaging2({ color, ...other }) {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center'
-        }}
-      >
+        }}>
         <DotStyle
           className="dotActive"
           sx={{
@@ -65,5 +64,5 @@ export default function CarouselControlsPaging2({ color, ...other }) {
         />
       </Box>
     )
-  };
+  }
 }
