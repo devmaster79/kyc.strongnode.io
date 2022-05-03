@@ -52,19 +52,7 @@ export const getUserWallets = async (req: UserRequest, res: Response) => {
 
   const userDetails = await User.findOne({ where: { email: email } })
 
-  if (userDetails) {
-    const response: GetUserWalletResponse = { email: email, wallets: [] }
-    const userWallets = await UserWallets.findAll({ where: { user_id: userDetails.id } })
-
-    userWallets.forEach((wallet: any) => {
-      response.wallets.push(wallet.wallet)
-    })
-
-    return res.send(response)
-  } else {
-    return res.status(500).send({ message: 'Error getting the wallet data for user.' })
-  }
-}
+type UserRequest = Request & { user: { email: string, user_name: string }};
 
 /** Create and Save a User profile */
 export const createProfile = (req: UserRequest, res: Response) => {
