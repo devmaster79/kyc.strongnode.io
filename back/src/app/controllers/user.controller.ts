@@ -1,4 +1,4 @@
-import { User, SupportRequest, InvestorDetail } from "../models";
+import { User, SupportRequest, InvestorDetail, UserWallets } from "../models";
 import AWS  from "aws-sdk";
 import { EmailService }  from "app/services/communication/EmailService";
 import { AWS_CONFIG, EMAIL_CONFIG }  from "app/config/config";
@@ -6,6 +6,63 @@ import { SupportRequestTemplate }  from "app/services/communication/templates/Su
 import { Request, Response } from "express";
 
 type UserRequest = Request & { user: { email: string, user_name: string }};
+type GetUserWalletResponse = { email: string, wallets: Array<string> }
+
+/**
+ * Method that is used for adding or updating user wallets.
+ * @param req
+ * @param res
+ */
+export const addOrUpdateWallet = async (req: UserRequest, res: Response) => {
+  const { email } = req.user
+
+  if (!req.body.wallet)
+    return res.status(400).send({ message: 'Required parameter wallet is not present.' })
+
+  const userDetails = await User.findOne({ where: { email: email } })
+
+  if (userDetails) {
+    const userWallets = await UserWallets.findAll({ where: { user_id: userDetails.id, wallet: req.body.wallet } })
+
+    if (userWallets.length > 0) {
+      await UserWallets.update({ wallet: req.body.wallet }, { where: { user_id: userDetails.id, wallet: req.body.wallet } })
+      return res.send({message: 'Wallets successfully updated.'})
+    } else {
+      const createdWallet = await UserWallets.create({ wallet: req.body.wallet, user_id: userDetails.id })
+      return res.send({message: 'Wallet successfully created.'})
+    }
+
+  } else {
+    res.status(500).send({ message: 'Error getting the wallet data for user.' })
+  }
+
+  // can I get id directly from the user object?
+  return res.send(req.user)
+}
+
+/**
+ * Method that gets all user wallets.
+ * @param req
+ * @param res
+ */
+export const getUserWallets = async (req: UserRequest, res: Response) => {
+  const { email } = req.user
+
+  const userDetails = await User.findOne({ where: { email: email } })
+
+  if (userDetails) {
+    const response: GetUserWalletResponse = { email: email, wallets: [] }
+    const userWallets = await UserWallets.findAll({ where: { user_id: userDetails.id } })
+
+    userWallets.forEach((wallet: any) => {
+      response.wallets.push(wallet.wallet)
+    })
+
+    return res.send(response)
+  } else {
+    return res.status(500).send({ message: 'Error getting the wallet data for user.' })
+  }
+}
 
 /** Create and Save a User profile */
 export const createProfile = (req: UserRequest, res: Response) => {
