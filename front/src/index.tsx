@@ -8,19 +8,16 @@ import App from './App'
 import { SettingsProvider } from './contexts/SettingsContext'
 import { CollapseDrawerProvider } from './contexts/CollapseDrawerContext'
 import { BrowserRouter } from 'react-router-dom'
-import { ChainId, DAppProvider } from '@usedapp/core'
+import { DAppProvider } from '@usedapp/core'
 import { GlobalStyle } from './reset.css'
 import './index.css'
 import 'utils/axios'
 import { StrictMode } from 'react'
-
-const config = {
-  readOnlyChainId: ChainId.Mainnet
-}
+import { DAppProviderConfig } from './services/walletService'
 
 ReactDOM.render(
   <StrictMode>
-    <DAppProvider config={config}>
+    <DAppProvider config={DAppProviderConfig}>
       <SettingsProvider>
         <CollapseDrawerProvider>
           <BrowserRouter>
