@@ -8,6 +8,7 @@ import { ErrorMessage, InfoMessage } from '@ui/Dashboard/Form'
 import InputField from '@ui/Input/InputField'
 import styled from '@emotion/styled'
 import Button from '@ui/Button/Button'
+import { getFieldIssues } from 'utils/FormUtils'
 
 interface SignInWithSMSFields {
   smsCode: string
@@ -21,11 +22,12 @@ export function SignInWithSMS() {
     authService.authBySMSCode
   )
 
-  const { register, handleSubmit } = useForm<SignInWithSMSFields>({
-    defaultValues: {
-      smsCode: ''
-    }
-  })
+  const { register, handleSubmit, setError, formState } =
+    useForm<SignInWithSMSFields>({
+      defaultValues: {
+        smsCode: ''
+      }
+    })
 
   const onSubmit: SubmitHandler<SignInWithSMSFields> = async (
     data: SignInWithSMSFields
@@ -33,12 +35,23 @@ export function SignInWithSMS() {
     const response = await authBySMSCode(data.smsCode)
     if (response.result === 'success') {
       navigate('/sign-in-with-token')
+    } else if (response.result === 'validation-error') {
+      getFieldIssues(response).forEach((val) => {
+        const path = {
+          smscode: 'smsCode' as const
+        }[val.path]
+        setError(path, {
+          message: val.message
+        })
+      })
     }
   }
 
   // send sms after the component is loaded
   useEffect(() => {
     sendSMS()
+    // sendSMS is declared once and it is not changing so it is safe:
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
@@ -60,7 +73,7 @@ export function SignInWithSMS() {
         {sendState.result === 'unauthorized-error' && (
           <ErrorMessage>You do not have access to this feature.</ErrorMessage>
         )}
-        {sendState.result === 'banned' && (
+        {sendState.result === 'banned-error' && (
           <ErrorMessage>
             We have sent you an SMS already. You can try it again{' '}
             {Math.floor(sendState.remainingTimeMs / 1000)} seconds later.
@@ -72,10 +85,7 @@ export function SignInWithSMS() {
           {authState.result === 'loading' && (
             <InfoMessage>Validating...</InfoMessage>
           )}
-          {authState.result === 'validation-error' && (
-            <ErrorMessage>Invalid code please try again.</ErrorMessage>
-          )}
-          {authState.result === 'banned' && (
+          {authState.result === 'banned-error' && (
             <ErrorMessage>Too many trials, try again later.</ErrorMessage>
           )}
           {authState.result === 'unauthorized-error' && (
@@ -92,6 +102,8 @@ export function SignInWithSMS() {
 
       <Form onSubmit={handleSubmit(onSubmit)}>
         <StyledInputField
+          error={!!formState.errors.smsCode}
+          helpText={formState.errors.smsCode?.message}
           inputProps={{
             placeholder: 'SMS Code',
             maxLength: 4,

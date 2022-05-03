@@ -8,7 +8,7 @@ import svgrPlugin from 'vite-plugin-svgr';
 export default defineConfig({
   build: {
     commonjsOptions: {
-      include: [/shared/, /node_modules/]
+      include: [/node_modules/]
     }
   },
   plugins: [

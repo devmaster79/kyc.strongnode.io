@@ -7,6 +7,7 @@ import Button from '@ui/Button/Button'
 import { ErrorMessage, InfoMessage } from '@ui/Dashboard/Form'
 import { Link, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
+import { getFieldIssues } from 'utils/FormUtils'
 
 interface RegisterFields {
   first_name: string
@@ -21,13 +22,14 @@ export function Register() {
     authService.register
   )
 
-  const { register, handleSubmit } = useForm<RegisterFields>({
-    defaultValues: {
-      first_name: '',
-      last_name: '',
-      user_name: ''
-    }
-  })
+  const { register, handleSubmit, setError, formState } =
+    useForm<RegisterFields>({
+      defaultValues: {
+        first_name: '',
+        last_name: '',
+        user_name: ''
+      }
+    })
 
   const onSubmit: SubmitHandler<RegisterFields> = async (
     data: RegisterFields
@@ -39,6 +41,12 @@ export function Register() {
     })
     if (response.result === 'success') {
       navigate('/sign-in-with-token')
+    } else if (response.result === 'validation-error') {
+      getFieldIssues(response).forEach((val) => {
+        setError(val.path, {
+          message: val.message
+        })
+      })
     }
   }
 
@@ -59,9 +67,6 @@ export function Register() {
             allow new registrations.
           </ErrorMessage>
         )}
-        {sendResult.result === 'validation-error' && (
-          <ErrorMessage>This username is already taken.</ErrorMessage>
-        )}
         {sendResult.result === 'unauthorized-error' && (
           <ErrorMessage>You do not have access to this feature.</ErrorMessage>
         )}
@@ -71,18 +76,24 @@ export function Register() {
       </HelpText>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <StyledInputField
+          error={!!formState.errors.user_name}
+          helpText={formState.errors.user_name?.message}
           inputProps={{
             placeholder: 'Username',
             ...register('user_name')
           }}
         />
         <StyledInputField
+          error={!!formState.errors.first_name}
+          helpText={formState.errors.first_name?.message}
           inputProps={{
             placeholder: 'First name',
             ...register('first_name')
           }}
         />
         <StyledInputField
+          error={!!formState.errors.last_name}
+          helpText={formState.errors.last_name?.message}
           inputProps={{
             placeholder: 'Last name',
             ...register('last_name')

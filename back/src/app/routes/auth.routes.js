@@ -1,5 +1,5 @@
 const { MODE_REGISTRATION, MODE_FULL, MODE_2FA } = require("../services/auth/TokenService.js");
-const authController = require("../controllers/auth.controller.js");
+const authController = require("../controllers/auth.controller");
 const auth = require("../middleware/auth");
 const { sendSMSLimit, authOTPLimit, authPasswordLimit } = require("../middleware/limits.js");
 

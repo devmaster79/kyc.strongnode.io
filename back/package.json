@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Node.js Rest Apis with Express, Sequelize & MySQL",
   "scripts": {
-    "start": "NODE_PATH=./src NODE_ENV=development nodemon src/server.ts",
+    "start": "NODE_PATH=./src NODE_ENV=development nodemon -x \"node -r ts-node/register --preserve-symlinks src/server.ts\"",
     "build": "swc src --copy-files -d build",
     "test": "NODE_PATH=./src mocha -r ts-node/register $(find ./src/app -name '*.test.js') --exit",
     "test-watch": "NODE_PATH=./src mocha -r ts-node/register $(find ./src/app -name '*.test.js') --watch",
@@ -48,16 +48,18 @@
     "qrcode": "^1.4.4",
     "sequelize": "^5.21.2",
     "sequelize-cli": "^6.3.0",
-    "shared": "file:../shared",
     "ts-node": "^10.7.0",
     "umzug": "^3.0.0",
-    "validator": "13.7.0"
+    "validator": "13.7.0",
+    "zod": "^3.14.4"
   },
   "devDependencies": {
     "@swc/cli": "^0.1.55",
     "@swc/core": "^1.2.157",
     "@types/bluebird": "^3.5.36",
     "@types/connect-livereload": "^0.6.0",
+    "@types/livereload": "^0.9.2",
+    "@types/mocha": "^9.1.1",
     "@types/multer": "^1.4.7",
     "@types/node": "^17.0.22",
     "@types/validator": "^13.7.1",

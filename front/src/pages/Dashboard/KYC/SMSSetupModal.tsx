@@ -130,7 +130,7 @@ const SendSMSAndSaveNumberMessage = (
       </DashboardForm.InfoMessage>
     )
   }
-  if (props.data.result === 'banned') {
+  if (props.data.result === 'banned-error') {
     return (
       <DashboardForm.ErrorMessage>
         We have sent you an SMS already. You can try it again

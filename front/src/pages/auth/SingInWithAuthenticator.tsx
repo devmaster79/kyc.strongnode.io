@@ -7,6 +7,7 @@ import InputField from '@ui/Input/InputField'
 import styled from '@emotion/styled'
 import Button from '@ui/Button/Button'
 import { useNavigate } from 'react-router-dom'
+import { getFieldIssues } from 'utils/FormUtils'
 
 interface SignInWithAuthenticatorFields {
   totp: string
@@ -18,11 +19,12 @@ export function SignInWithAuthenticator() {
     authService.authByAuthenticator
   )
 
-  const { register, handleSubmit } = useForm<SignInWithAuthenticatorFields>({
-    defaultValues: {
-      totp: ''
-    }
-  })
+  const { register, handleSubmit, setError, formState } =
+    useForm<SignInWithAuthenticatorFields>({
+      defaultValues: {
+        totp: ''
+      }
+    })
 
   const onSubmit: SubmitHandler<SignInWithAuthenticatorFields> = async (
     data: SignInWithAuthenticatorFields
@@ -30,6 +32,15 @@ export function SignInWithAuthenticator() {
     const response = await authByAuthenticator(data.totp)
     if (response.result === 'success') {
       navigate('/sign-in-with-token')
+    } else if (response.result === 'validation-error') {
+      getFieldIssues(response).forEach((val) => {
+        const path = {
+          token: 'totp' as const
+        }[val.path]
+        setError(path, {
+          message: val.message
+        })
+      })
     }
   }
 
@@ -44,9 +55,6 @@ export function SignInWithAuthenticator() {
         {authState.result === 'loading' && (
           <InfoMessage>Verifying the TOTP...</InfoMessage>
         )}
-        {authState.result === 'validation-error' && (
-          <ErrorMessage>Wrong TOTP. Please try agian.</ErrorMessage>
-        )}
         {authState.result === 'unexpected-error' && (
           <ErrorMessage>
             Something went wrong. Please try again later.
@@ -55,7 +63,7 @@ export function SignInWithAuthenticator() {
         {authState.result === 'unauthorized-error' && (
           <ErrorMessage>You do not have access to this feature.</ErrorMessage>
         )}
-        {authState.result === 'banned' && (
+        {authState.result === 'banned-error' && (
           <ErrorMessage>
             Too many trials. You can try it again{' '}
             {Math.floor(authState.remainingTimeMs / 1000)} seconds later.
@@ -64,6 +72,8 @@ export function SignInWithAuthenticator() {
       </HelpText>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <StyledInputField
+          error={!!formState.errors.totp}
+          helpText={formState.errors.totp?.message}
           inputProps={{
             placeholder: 'Enter your TOTP',
             maxLength: 6,

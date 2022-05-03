@@ -4,7 +4,8 @@ import { RegistrationTemplate } from '../communication/templates/RegistrationTem
 import { SignInTemplate } from '../communication/templates/SignInTemplate';
 import type { EmailService } from '../communication/EmailService';
 import type { TokenService } from './TokenService';
-class EmailAuthService {
+
+export class EmailAuthService {
     /**
      * dbiro: this will be migrated correctly to typescript later
      * @param {typeof import('sequelize').Model} userRepository
@@ -84,6 +85,7 @@ class EmailAuthService {
     }
 }
 
+/** @deprecated */
 module.exports = {
     EmailAuthService
 };

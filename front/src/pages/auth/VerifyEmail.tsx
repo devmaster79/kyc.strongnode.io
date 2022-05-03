@@ -5,23 +5,32 @@ import InputField from '@ui/Input/InputField'
 import Button from '@ui/Button/Button'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { ErrorMessage, InfoMessage } from '@ui/Dashboard/Form'
+import { getFieldIssues } from 'utils/FormUtils'
 
 interface VerifyEmailFields {
   email: string
 }
 
 export function VerifyEmail() {
-  const { register, handleSubmit } = useForm<VerifyEmailFields>({
-    defaultValues: {
-      email: ''
-    }
-  })
+  const { register, handleSubmit, setError, formState } =
+    useForm<VerifyEmailFields>({
+      defaultValues: {
+        email: ''
+      }
+    })
   const { data: sendResult, call: sendVerificationEmail } = useService(
     authState.sendVerificationEmail
   )
 
   const onSubmit: SubmitHandler<VerifyEmailFields> = async (data) => {
-    await sendVerificationEmail(data.email)
+    const response = await sendVerificationEmail(data.email)
+    if (response.result === 'validation-error') {
+      getFieldIssues(response).forEach((val) => {
+        setError(val.path, {
+          message: val.message
+        })
+      })
+    }
   }
 
   return (
@@ -42,9 +51,6 @@ export function VerifyEmail() {
             We have successfully sent you an email. You can close this tab now.
           </InfoMessage>
         )}
-        {sendResult.result === 'validation-error' && (
-          <ErrorMessage>Wrong email. Please try agian.</ErrorMessage>
-        )}
         {sendResult.result === 'unexpected-error' && (
           <ErrorMessage>
             Something went wrong. Please try again later.
@@ -53,6 +59,8 @@ export function VerifyEmail() {
       </HelpText>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <InputField
+          error={!!formState.errors.email}
+          helpText={formState.errors.email?.message}
           inputProps={{
             type: 'email',
             placeholder: 'Email',

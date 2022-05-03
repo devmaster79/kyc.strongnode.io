@@ -7,8 +7,6 @@ import { useEffect } from 'react'
 import { AuthenticatorSwitch } from './AuthenticatorSwitch'
 import { SMSSwitch } from './SMSSwitch'
 import { WalletCarousel } from './WalletCarousel'
-import backgroundDark from '../../../assets/images/BG.png'
-import backgroundLight from '../../../assets/images/BG-light.png'
 import * as ProgressCircleSteps from '@ui/Dashboard/ProgressCircleSteps'
 import { Banner } from '../../../@ui/Banner/Banner'
 

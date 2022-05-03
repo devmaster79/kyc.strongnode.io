@@ -7,6 +7,8 @@ import InputField from '@ui/Input/InputField'
 import styled from '@emotion/styled'
 import Button from '@ui/Button/Button'
 import { OtherOptions } from 'components/OtherOptions'
+import { getFieldIssues } from 'utils/FormUtils'
+
 interface SignInWithPasswordFields {
   password: string
 }
@@ -17,11 +19,12 @@ export function SignInWithPassword() {
     authService.authByPassword
   )
 
-  const { register, handleSubmit } = useForm<SignInWithPasswordFields>({
-    defaultValues: {
-      password: ''
-    }
-  })
+  const { register, handleSubmit, setError, formState } =
+    useForm<SignInWithPasswordFields>({
+      defaultValues: {
+        password: ''
+      }
+    })
 
   const onSubmit: SubmitHandler<SignInWithPasswordFields> = async (
     data: SignInWithPasswordFields
@@ -29,6 +32,12 @@ export function SignInWithPassword() {
     const response = await authByPassword(data.password)
     if (response.result === 'success') {
       navigate('/sign-in-with-token')
+    } else if (response.result === 'validation-error') {
+      getFieldIssues(response).forEach((val) => {
+        setError(val.path, {
+          message: val.message
+        })
+      })
     }
   }
 
@@ -43,16 +52,13 @@ export function SignInWithPassword() {
         {sendResult.result === 'loading' && (
           <InfoMessage>Loading...</InfoMessage>
         )}
-        {sendResult.result === 'validation-error' && (
-          <ErrorMessage>Wrong password. Please try agian.</ErrorMessage>
-        )}
         {sendResult.result === 'unauthorized-error' && (
           <ErrorMessage>You do not have access to this feature.</ErrorMessage>
         )}
         {sendResult.result === 'unexpected-error' && (
           <ErrorMessage>Something went wrong.</ErrorMessage>
         )}
-        {sendResult.result === 'banned' && (
+        {sendResult.result === 'banned-error' && (
           <ErrorMessage>
             Too many trials. You can try it again{' '}
             {Math.floor(sendResult.remainingTimeMs / 1000)} seconds later.
@@ -61,6 +67,8 @@ export function SignInWithPassword() {
       </HelpText>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <StyledInputField
+          error={!!formState.errors.password}
+          helpText={formState.errors.password?.message}
           inputProps={{
             placeholder: 'Password',
             type: 'password',

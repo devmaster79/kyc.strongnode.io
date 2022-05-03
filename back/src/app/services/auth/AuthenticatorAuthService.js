@@ -17,7 +17,7 @@ class AuthenticatorAuthService {
      * when he is registering a new authenticator
      *
      * @param {string} email
-     * @returns {Promise<string|null>} qrcode image
+     * @returns {Promise<string>} qrcode image
      */
     async generateQRCode(email) {
         const secret = speakeasy.generateSecret({ name: "StrongNode" });

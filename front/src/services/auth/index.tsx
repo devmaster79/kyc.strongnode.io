@@ -1,41 +1,16 @@
 import * as urls from '../../utils/config'
 import { getResponseData, setToken } from './utils'
-import {
-  LimitReachedError,
-  Success,
-  UnauthorizedError,
-  UnexpectedError,
-  ValidationError
-} from './responses'
+import { Register, SendVerificationEmail } from 'shared/endpoints/auth'
 
-type SendVerificationEmailRequest = { email: string }
-type SendVerificationEmailResponse =
-  | Success
-  | UnexpectedError
-  | ValidationError<'email', undefined>
 function sendVerificationEmail(email: string) {
   return getResponseData<
-    SendVerificationEmailRequest,
-    SendVerificationEmailResponse
+    SendVerificationEmail.Request,
+    SendVerificationEmail.Response
   >(urls.sendVerificationEmail, { email })
 }
 
-type RegisterRequest = {
-  user_name: string
-  first_name: string
-  last_name: string
-}
-type RegisterResponse =
-  | (Success & { token: string })
-  | UnexpectedError
-  | UnauthorizedError
-  | LimitReachedError
-  | ValidationError<'user_name', undefined>
-  | ValidationError<'user_name', 'already-taken'>
-  | ValidationError<'first_name', undefined>
-  | ValidationError<'last_name', undefined>
-async function register(params: RegisterRequest) {
-  const data = await getResponseData<RegisterRequest, RegisterResponse>(
+async function register(params: Register.Request['body']) {
+  const data = await getResponseData<Register.Request, Register.Response>(
     urls.register,
     {
       user_name: params.user_name,
@@ -59,7 +34,7 @@ export { setToken, signOut }
 /* login / preRegister  */
 export { sendVerificationEmail }
 /* Register */
-export { RegisterResponse, register }
+export { register }
 /* Password Auth */
 export * from './passwordAuthService'
 /* SMS Auth */
