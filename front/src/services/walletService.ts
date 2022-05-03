@@ -52,7 +52,7 @@ export const DAppProviderConfig = {
  * When force parameters is set to true, we log out current wallet and then let user log with a different wallet.
  * @param force
  */
-export const ConnectWallet = async (activate: any, force = false) => {
+export const connectWallet = async (activate: any, force = false) => {
   // todo make the force force work
   try {
     const provider = new WalletConnectProvider({
@@ -61,18 +61,6 @@ export const ConnectWallet = async (activate: any, force = false) => {
       },
       chainId: Polygon.chainId
     })
-
-    /*const provider = new WalletConnectProvider({
-      host: networksRpcDictionary.polygon,
-      callbacks: {
-        onConnect: (err: any, payload: any) => {
-          // todo, callbacks does not work, but provider returns true on .isConnected()
-        },
-        onDisconnect: () => {
-          // todo, callbacks does not work, but provider returns true on .isConnected()
-        }
-      }
-    })*/
 
     // opens up the QR code
     await provider.enable()
