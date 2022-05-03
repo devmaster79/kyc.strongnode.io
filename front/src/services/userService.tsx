@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from 'axios'
+import { userWallets } from '../utils/config'
 
 export type GetProfileResult = {
   email: string
@@ -104,6 +105,21 @@ export interface CreateSupportRequestDTO {
 
 export function createSupportRequest(data: CreateSupportRequestDTO) {
   return axios.post('/api/users/support/create-request', data)
+}
+
+/**
+ * Method that gets list of wallets from BE of logged user.
+ */
+export function getUserWallet () {
+  return axios.get(userWallets)
+}
+
+/**
+ * Method that adds or updates wallet of logged user.
+ * @param wallet
+ */
+export function addOrUpdateUserWallet (wallet: string) {
+  return axios.post(userWallets, { wallet })
 }
 
 /** @deprecated */
