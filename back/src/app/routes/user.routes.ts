@@ -1,8 +1,9 @@
 import type { Express } from 'express'
-import { MODE_FULL } from '../services/auth/TokenService.js'
-import * as users from '../controllers/user.controller'
-import auth from '../middleware/auth'
+import { MODE_FULL } from "../services/auth/TokenService.js"
+import * as users from "../controllers/user.controller"
+import auth from "../middleware/auth"
 import multer from 'multer'
+import { addOrUpdateWallet } from "../controllers/user.controller"
 
 module.exports = (app: Express) => {
   const upload = multer({ dest: '../uploads/' })
@@ -33,6 +34,10 @@ module.exports = (app: Express) => {
     upload.single('image_data'),
     users.uploadImg
   )
+
+  // wallets
+  router.get('/wallets', auth(MODE_FULL), users.getUserWallets)
+  router.post('/wallets', auth(MODE_FULL), users.addOrUpdateWallet)
 
   app.use('/api/users', router)
 }
