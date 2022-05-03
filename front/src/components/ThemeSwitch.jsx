@@ -1,5 +1,4 @@
 import Switch from '@mui/material/Switch'
-import Stack from '@mui/material/Stack'
 import styled from '@mui/material/styles/styled'
 import SvgIconStyle from './SvgIconStyle'
 import useSettings from '../hooks/useSettings'
@@ -63,7 +62,7 @@ const SunIcon = styled(SvgIconStyle)`
   left: 20px;
 `
 
-export default function ThemeSwitch({ sx, color }) {
+export default function ThemeSwitch({ sx }) {
   const { themeMode, onChangeMode } = useSettings()
   const handleChange = (event) => {
     onChangeMode(event.target.checked ? 'dark' : 'light')
