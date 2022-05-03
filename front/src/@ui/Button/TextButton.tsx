@@ -12,8 +12,8 @@ const StyledButton = styled.button`
 `
 
 interface TextButtonProps {
-  children: string
-  props: {
+  children?: string,
+  props?: {
     theme: {
       palette: {
         text: {
@@ -21,7 +21,8 @@ interface TextButtonProps {
         }
       }
     }
-  }
+  },
+  onClick: () => void
 }
 
 function TextButton({ children, ...props }: TextButtonProps) {

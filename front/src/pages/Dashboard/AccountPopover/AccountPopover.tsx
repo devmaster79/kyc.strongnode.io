@@ -8,7 +8,7 @@ import * as authService from 'services/auth'
 import Icon from '@ui/Icon/Icon'
 import { useTheme } from '@mui/styles'
 
-export default function AccountPopover(props: any) {
+export default function AccountPopover() {
   const navigate = useNavigate()
   const [userName, setUserName] = useState('')
   const [email, setEmail] = useState('')
@@ -37,7 +37,16 @@ export default function AccountPopover(props: any) {
     navigate('/dashboard/kyc')
   }
 
-  const theme: any = useTheme()
+  interface Theme {
+    palette: {
+      icon: {
+        secondary?: string
+        active?: string
+      }
+    }
+  }
+
+  const theme: Theme = useTheme()
 
   return (
     <>
