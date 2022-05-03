@@ -29,8 +29,8 @@ type CryptoChartProps = {
 export const CryptoChart = (props: CryptoChartProps) => {
   const [chartScopeFormat, setChartScopeFormat] = useState<XAxisFormat>('days')
   const [chartDataTemp, setChartDataTemp] = useState([])
-  const [cryptoCurrency, setCryptoCurrency] = useState('SNE')
-  const [targetCurrency, setTargetCurrency] = useState('USD')
+  const [cryptoCurrency] = useState('SNE')
+  const [targetCurrency] = useState('USD')
 
   const [valueTrendIndicator, setValueTrendIndicator] = useState({
     up: false,

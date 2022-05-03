@@ -3,7 +3,7 @@ import { StyledNavbar, NavItemLink, NavItem, UserInfoWrapper } from './style'
 import { ReactComponent as AvatarIcon } from '../../icons/avatar.svg'
 import { ReactComponent as DropdownIcon } from '../../icons/dropdown.svg'
 
-function Navbar({ children, ...props }) {
+function Navbar({ ...props }) {
   const [userName, setUserName] = useState('')
   const [email, setEmail] = useState('')
 

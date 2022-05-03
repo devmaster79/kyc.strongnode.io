@@ -7,7 +7,7 @@ import { useState } from 'react'
 import IdentityUpload from './IdentityUpload/IdentityUpload'
 
 export default function Identity() {
-  const [showModal, setShowModal] = useState(true)
+  const [showModal] = useState(true)
 
   const [showPassportModal, setShowPassportModal] = useState(false)
   const [showNationalIDModal, setShowNationalIDModal] = useState(false)

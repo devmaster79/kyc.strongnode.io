@@ -57,7 +57,7 @@ export default function Dashboard() {
       type: 0
     },
     validationSchema: ProfileSchema,
-    onSubmit: async (values, { setErrors, setSubmitting, resetForm }) => {
+    onSubmit: async (values, { setSubmitting }) => {
       try {
         const data = {
           user_name: user.user_name,

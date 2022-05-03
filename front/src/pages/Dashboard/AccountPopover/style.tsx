@@ -1,5 +1,4 @@
 import styled from '@emotion/styled'
-import Icon from '../../../@ui/Icon/Icon'
 
 export const IconWrapper = styled.div`
   display: flex;
