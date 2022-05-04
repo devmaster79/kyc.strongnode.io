@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import styled from '@emotion/styled/macro'
 import TableSection from 'components/TableSection/TableSection'
 import cryptoDataService from '../../services/cryptoDataService'
+import { IData, IDataIcon } from 'constants/table.constants'
 
 const sampleColumns = [
   {
@@ -82,16 +83,7 @@ const overwrittenFields = {
   }
 }
 
-let searchTimeout: any = null
-
-interface IDataIcon {
-  name: string
-  url: any
-}
-
-interface IData {
-  [key: string]: object
-}
+let searchTimeout: ReturnType<typeof setTimeout>;
 
 type CoinMetricsProps = {
   title: string

@@ -1,25 +1,34 @@
 import { useRef, useState } from 'react'
 import { Table, TableWrapper } from './style'
 import { fDate } from '../../../utils/formatTime'
+import { Column, DataSet } from 'constants/table.constants'
 
-export default function MainTable({
+interface MainTableProps<Item> {
+  dataSet: DataSet<Item>
+  columns: Column[]
+  fetchData?: (p: number, p2: number) => void | null
+  overwrittenFields: Record<string, unknown>
+  hideHeading?: boolean
+}
+
+export default function MainTable<Item extends Record<string, unknown>>({
   dataSet,
   columns,
   fetchData,
   overwrittenFields,
   hideHeading
-}: any) {
+}: MainTableProps<Item>) {
   const [page, setPage] = useState(0)
 
   const listInnerRef = useRef() as React.MutableRefObject<HTMLInputElement>
 
   const onScroll = () => {
     if (listInnerRef.current) {
-      if (dataSet.total === dataSet.items.length) return
+      if (dataSet?.total === dataSet.items.length) return
       const { scrollTop, scrollHeight, clientHeight } = listInnerRef.current
       if (Math.abs(scrollHeight - clientHeight - scrollTop) < 1) {
         setPage(page + 1)
-        fetchData(page + 1, 5)
+        fetchData && fetchData(page + 1, 5)
       }
     }
   }
@@ -42,7 +51,7 @@ export default function MainTable({
                   {columns.map((column: any) => (
                     <td key={column.id}>
                       {overwrittenFields[column.id] ? (
-                        overwrittenFields[column.id](row[column.id])
+                        (overwrittenFields as any)[column.id](row[column.id])
                       ) : (
                         <p>
                           {column.id === 'date'
