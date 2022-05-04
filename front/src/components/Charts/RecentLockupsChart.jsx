@@ -1,15 +1,12 @@
 import merge from 'lodash/merge'
 import ReactApexChart from 'react-apexcharts'
 import Stack from '@mui/material/Stack'
-import { useTheme } from '@mui/material/styles'
 import BaseOptionChart from './BaseOptionChart'
 
 const Lockup1 = [80]
 const Lockup2 = [65]
 
 export default function AppCurrentDownload() {
-  const theme = useTheme()
-
   const chartOptions1 = merge(BaseOptionChart(), {
     colors: ['#26A5C0'],
     labels: 'Mens',

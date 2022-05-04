@@ -29,9 +29,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
   const {
     isCollapse,
     collapseClick,
-    collapseHover,
-    onHoverEnter,
-    onHoverLeave
+    collapseHover
   } = useCollapseDrawer()
 
   useEffect(() => {

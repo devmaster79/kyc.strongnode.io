@@ -83,7 +83,7 @@ const overwrittenFields = {
   }
 }
 
-let searchTimeout: ReturnType<typeof setTimeout>;
+let searchTimeout: ReturnType<typeof setTimeout>
 
 type CoinMetricsProps = {
   title: string
