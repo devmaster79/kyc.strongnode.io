@@ -26,11 +26,7 @@ const RootStyle = styled('div')(({ theme }) => ({
 export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
   const { pathname } = useLocation()
 
-  const {
-    isCollapse,
-    collapseClick,
-    collapseHover
-  } = useCollapseDrawer()
+  const { isCollapse, collapseClick, collapseHover } = useCollapseDrawer()
 
   useEffect(() => {
     if (isOpenSidebar) {
