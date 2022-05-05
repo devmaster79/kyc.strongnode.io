@@ -1,11 +1,8 @@
-import * as React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
 import Container from '@mui/material/Container'
 import Grid from '@mui/material/Grid'
 import { useState, useEffect, useCallback, useRef } from 'react'
-import { useEthers, useEtherBalance, useTokenBalance } from '@usedapp/core'
-import { ethers } from 'ethers'
 import userService from '../services/userService'
 import { Banner } from '../@ui/Banner/Banner'
 import { CryptoChart } from '../@ui/Chart/CryptoChart'
@@ -13,18 +10,9 @@ import * as authService from 'services/auth'
 import TableSection from 'components/TableSection/TableSection'
 import { CoinMetrics } from '../@ui/Table/CoinMetrics'
 
-const SneAddress = '0x32934CB16DA43fd661116468c1B225Fc26CF9A8c'
-
 export default function Dashboard() {
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar()
-  const { account, chainId } = useEthers()
+  const { enqueueSnackbar } = useSnackbar()
   const navigate = useNavigate()
-
-  const balance = useEtherBalance(account)
-  const accountBalance = balance ? ethers.utils.formatEther(balance) : 0
-  const SneBalanceBigNumber = useTokenBalance(SneAddress, account)
-  const SneBalance =
-    SneBalanceBigNumber && ethers.utils.formatUnits(SneBalanceBigNumber, 18)
 
   const [availableToken, setAvailableToken] = useState(0)
   const [lockedToken, setLockedToken] = useState(0)
