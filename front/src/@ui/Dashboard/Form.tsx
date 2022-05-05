@@ -107,3 +107,9 @@ export const Row = styled('div')({
   display: 'flex',
   gap: '1em'
 })
+
+export const Column = styled('div')({
+  flexFlow: 'column',
+  display: 'flex',
+  gap: '1em'
+})

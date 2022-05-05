@@ -17,7 +17,7 @@ class AuthenticatorAuthService {
      * when he is registering a new authenticator
      *
      * @param {string} email
-     * @returns {Promise<string>} qrcode image
+     * @returns {Promise<{ qrcode: string, secret: string}>} qrcode image
      */
     async generateQRCode(email) {
         const secret = speakeasy.generateSecret({ name: "StrongNode" });
@@ -26,7 +26,10 @@ class AuthenticatorAuthService {
         const data = { authenticator_qr_secret: secret.base32 };
         const result = await this.__userRepository.update(data, { where: { email } });
         if(result != 1) throw new Error('Unable to generate QR code');
-        return qrcode;
+        return {
+            secret: secret.base32,
+            qrcode
+        };
     }
 
     /**

@@ -42,7 +42,8 @@ describe('Authenticator Authentication', () => {
         assert.equal(preAuthResult, null);
 
         const generateResult = await service.generateQRCode(userRecord.email);
-        assert.equal(typeof generateResult, 'string');
+        assert.equal(typeof generateResult.qrcode, 'string');
+        assert.equal(typeof generateResult.secret, 'string');
 
         const activateResult = await service.activateAuthenticatorAuth(
             userRecord.email,

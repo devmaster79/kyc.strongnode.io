@@ -155,7 +155,7 @@ export namespace AuthByAuthenticator {
 export namespace GenerateAuthenticatorQRCode {
   export type Request = { body: undefined }
   export type Response =
-    | Success<{ qrcode: string }>
+    | Success<{ qrcode: string; secret: string }>
     | UnauthorizedError
     | UnexpectedError
 }
