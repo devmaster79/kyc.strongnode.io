@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react'
 import styled from '@emotion/styled/macro'
 import TableSection from 'components/TableSection/TableSection'
 import cryptoDataService from '../../services/cryptoDataService'
-import { IData, IDataIcon } from 'constants/table.constants'
+import { IData, IDataIcon } from 'constants/TableConstants'
+import { AxiosResponse } from 'axios'
 
 const sampleColumns = [
   {
@@ -65,7 +66,7 @@ const overwrittenFields = {
       <CryptoWrapper>
         <img
           style={{ width: 40, height: 40 }}
-          src={icon.url.large}
+          src={icon.url.large || ''}
           alt={icon.name + ' icon'}
         />
         <p>{icon.name}</p>
@@ -95,15 +96,27 @@ type CoinMetricsProps = {
 interface TokenObject {
   owned: string
   value: string
-  value_trend: string
+  value_trend: ValueTrend
   icon: {
     url: string
     name: string
   }
 }
 
+interface TokenResponse {
+  token: string
+  usd_value: string
+  day_change: string
+  image: string
+}
+
+interface ValueTrend {
+  positive?: boolean
+  value?: string
+}
+
 export const CoinMetrics = (props: CoinMetricsProps) => {
-  const [tableData, setTableData] = useState<{ items: any[] }>({ items: [] })
+  const [tableData, setTableData] = useState<{ items: TokenObject[] }>({ items: [] })
 
   useEffect(() => {
     loadTokenMetrics()
@@ -116,14 +129,14 @@ export const CoinMetrics = (props: CoinMetricsProps) => {
   }, [])
 
   const loadTokenMetrics = async () => {
-    const data: any = await cryptoDataService.getTokenMetrics()
+    const data: AxiosResponse = await cryptoDataService.getTokenMetrics()
     setTableData(formatTableData(data.data))
   }
 
-  const formatTableData = (data: any) => {
+  const formatTableData = (data: Array<TokenResponse>) => {
     const temporaryData: TokenObject[] = []
 
-    data.forEach((token: any) => {
+    data.forEach((token: TokenResponse) => {
       const tokenObject = {
         owned: 'unknown',
         value: Number(token.usd_value).toFixed(4) + ' USD',
@@ -139,7 +152,7 @@ export const CoinMetrics = (props: CoinMetricsProps) => {
   }
 
   const createValueTrendObject = (value: string) => {
-    const valueTrendObject: any = {}
+    const valueTrendObject: ValueTrend = {}
 
     if (value.charAt(0) == '-') {
       valueTrendObject.positive = false

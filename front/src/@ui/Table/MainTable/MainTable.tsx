@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react'
 import { Table, TableWrapper } from './style'
 import { fDate } from '../../../utils/formatTime'
-import { Column, DataSet } from 'constants/table.constants'
+import { Column, DataSet } from 'constants/TableConstants'
 
 interface MainTableProps<Item> {
   dataSet: DataSet<Item>

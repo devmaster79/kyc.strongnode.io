@@ -15,7 +15,7 @@ export interface Finder {
 }
 export interface IDataIcon {
   name: string
-  url: any
+  url: string
 }
 
 export interface IData {
