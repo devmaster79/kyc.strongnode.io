@@ -116,7 +116,9 @@ interface ValueTrend {
 }
 
 export const CoinMetrics = (props: CoinMetricsProps) => {
-  const [tableData, setTableData] = useState<{ items: TokenObject[] }>({ items: [] })
+  const [tableData, setTableData] = useState<{ items: TokenObject[] }>({
+    items: []
+  })
 
   useEffect(() => {
     loadTokenMetrics()
@@ -154,7 +156,7 @@ export const CoinMetrics = (props: CoinMetricsProps) => {
   const createValueTrendObject = (value: string) => {
     const valueTrendObject: ValueTrend = {}
 
-    if (value.charAt(0) == '-') {
+    if (value.charAt(0) === '-') {
       valueTrendObject.positive = false
     } else {
       valueTrendObject.positive = true

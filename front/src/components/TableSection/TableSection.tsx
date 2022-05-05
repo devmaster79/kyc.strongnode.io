@@ -24,12 +24,8 @@ function TableSection<Item extends Record<string, unknown>>(
       return
     }
     // if no backend search implemented.
-    const filteredData = props.dataSet.items.filter((o) =>
-      Object.values(o).some((val) => {
-        if (typeof val === 'string') {
-          return val.toLowerCase().includes(search)
-        }
-      })
+    const filteredData = props.dataSet.items.filter((val) =>
+      JSON.stringify(val).toLowerCase().includes(search)
     )
     setFilteredDataSet({ items: filteredData })
   }
