@@ -40,18 +40,20 @@ export default function MainTable<Item extends Record<string, unknown>>({
           <tbody>
             {!hideHeading && (
               <tr>
-                {columns.map((column: any) => (
+                {columns.map((column: Column) => (
                   <th key={column.id}>{column.label}</th>
                 ))}
               </tr>
             )}
             {dataSet &&
-              dataSet.items.map((row: any) => (
+              dataSet.items.map((row: Item) => (
                 <tr key={row.id}>
-                  {columns.map((column: any) => (
+                  {columns.map((column: Column) => (
                     <td key={column.id}>
                       {overwrittenFields[column.id] ? (
-                        (overwrittenFields as any)[column.id](row[column.id])
+                        (overwrittenFields as Record<string, unknown>)[
+                          column.id
+                        ](row[column.id])
                       ) : (
                         <p>
                           {column.id === 'date'
