@@ -121,6 +121,27 @@ export const CoinMetrics = (props: CoinMetricsProps) => {
   })
 
   useEffect(() => {
+    const formatTableData = (data: Array<TokenResponse>) => {
+      const temporaryData: TokenObject[] = []
+
+      data.forEach((token: TokenResponse) => {
+        const tokenObject = {
+          owned: 'unknown',
+          value: Number(token.usd_value).toFixed(4) + ' USD',
+          value_trend: createValueTrendObject(token.day_change),
+          icon: {
+            url: token.image,
+            name: token.token.toUpperCase()
+          }
+        }
+        temporaryData.push(tokenObject)
+      })
+      return { items: temporaryData }
+    }
+    const loadTokenMetrics = async () => {
+      const data: AxiosResponse = await cryptoDataService.getTokenMetrics()
+      setTableData(formatTableData(data.data))
+    }
     loadTokenMetrics()
 
     const refreshDataInterval = setInterval(() => {
@@ -129,29 +150,6 @@ export const CoinMetrics = (props: CoinMetricsProps) => {
 
     return () => clearInterval(refreshDataInterval)
   }, [])
-
-  const loadTokenMetrics = async () => {
-    const data: AxiosResponse = await cryptoDataService.getTokenMetrics()
-    setTableData(formatTableData(data.data))
-  }
-
-  const formatTableData = (data: Array<TokenResponse>) => {
-    const temporaryData: TokenObject[] = []
-
-    data.forEach((token: TokenResponse) => {
-      const tokenObject = {
-        owned: 'unknown',
-        value: Number(token.usd_value).toFixed(4) + ' USD',
-        value_trend: createValueTrendObject(token.day_change),
-        icon: {
-          url: token.image,
-          name: token.token.toUpperCase()
-        }
-      }
-      temporaryData.push(tokenObject)
-    })
-    return { items: temporaryData }
-  }
 
   const createValueTrendObject = (value: string) => {
     const valueTrendObject: ValueTrend = {}

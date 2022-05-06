@@ -32,7 +32,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
     if (isOpenSidebar) {
       onCloseSidebar()
     }
-  }, [pathname])
+  }, [pathname, isOpenSidebar, onCloseSidebar])
 
   const renderContent = (
     <Scrollbar

@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
 import Container from '@mui/material/Container'
 import Grid from '@mui/material/Grid'
-import { useState, useEffect, useCallback, useRef } from 'react'
+import { useEffect, useCallback, useRef } from 'react'
 import userService from '../services/userService'
 import { Banner } from '../@ui/Banner/Banner'
 import { CryptoChart } from '../@ui/Chart/CryptoChart'
@@ -14,45 +14,6 @@ export default function Dashboard() {
   const { enqueueSnackbar } = useSnackbar()
   const navigate = useNavigate()
 
-  const [availableToken, setAvailableToken] = useState(0)
-  const [lockedToken, setLockedToken] = useState(0)
-
-  const dash = useRef()
-  useEffect(() => {
-    // navigate('/dashboard/kyc')
-    handleDashboard()
-  }, [dash])
-
-  const signOut = () => {
-    authService.signOut()
-    navigate('/verify-email')
-  }
-
-  const token = localStorage.getItem('token')
-  const useremail = localStorage.getItem('email')
-  const [user, setUser] = useState()
-  const [investor, setInvestor] = useState()
-
-  useEffect(() => {
-    async function fetch() {
-      const userResult = await userService.getProfile()
-      const investorResult = await userService.getInvestorDetails()
-
-      if (!userResult.data) {
-        console.error('Cannot get the user object! Please, try to relogin.')
-        signOut()
-        return
-      }
-
-      setUser(userResult.data[0])
-      setInvestor(investorResult.data)
-      setAvailableToken(userResult.data[0]?.remaining_total_amount)
-      setLockedToken(userResult.data[0]?.locked_bonus_amount)
-    }
-
-    fetch()
-  }, [token, useremail])
-
   const handleDashboard = useCallback(async () => {
     if (localStorage.getItem('visit') !== 'true') {
       enqueueSnackbar('Welcome to the StrongNodeID dashboard', {
@@ -60,7 +21,34 @@ export default function Dashboard() {
       })
       localStorage.setItem('visit', 'true')
     }
-  }, [])
+  }, [enqueueSnackbar])
+
+  const dash = useRef()
+  useEffect(() => {
+    handleDashboard()
+  }, [dash, handleDashboard])
+
+  const signOut = useCallback(() => {
+    authService.signOut()
+    navigate('/verify-email')
+  }, [navigate])
+
+  const token = localStorage.getItem('token')
+  const useremail = localStorage.getItem('email')
+
+  useEffect(() => {
+    async function fetch() {
+      const userResult = await userService.getProfile()
+      await userService.getInvestorDetails()
+
+      if (!userResult.data) {
+        console.error('Cannot get the user object! Please, try to relogin.')
+        signOut()
+      }
+    }
+
+    fetch()
+  }, [token, useremail, signOut])
 
   return (
     <Container ref={dash} maxWidth="xl" style={{ paddingBottom: 100 }}>

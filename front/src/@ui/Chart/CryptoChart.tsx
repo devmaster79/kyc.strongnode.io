@@ -33,7 +33,9 @@ interface ValueWithTimeStamp {
 
 export const CryptoChart = (props: CryptoChartProps) => {
   const [chartScopeFormat, setChartScopeFormat] = useState<XAxisFormat>('days')
-  const [chartDataTemp, setChartDataTemp] = useState([])
+  const [chartDataTemp, setChartDataTemp] = useState<Array<ValueWithTimeStamp>>(
+    []
+  )
   const [cryptoCurrency] = useState('SNE')
   const [targetCurrency] = useState('USD')
 
@@ -66,6 +68,26 @@ export const CryptoChart = (props: CryptoChartProps) => {
   ] as SelectorItem[]
 
   useEffect(() => {
+    const loadStrongnodeCurrency = async () => {
+      const data = await cryptoDataService.getChartDataAsync(chartScopeFormat)
+      const tempData: Array<ValueWithTimeStamp> = []
+
+      data.data.prices.forEach((price: Array<string>) => {
+        tempData.push({
+          timestamp: price[0],
+          value: price[1]
+        })
+      })
+
+      setValueTrendIndicator({
+        value:
+          Number(tempData[tempData.length - 1].value).toFixed(6) +
+          ' ' +
+          targetCurrency,
+        up: tempData[tempData.length - 1].value > tempData[0].value
+      })
+      setChartDataTemp(tempData)
+    }
     // init load
     loadStrongnodeCurrency()
 
@@ -74,28 +96,7 @@ export const CryptoChart = (props: CryptoChartProps) => {
     }, 10000)
 
     return () => clearInterval(refreshDataInterval)
-  }, [chartScopeFormat])
-
-  const loadStrongnodeCurrency = async () => {
-    const data = await cryptoDataService.getChartDataAsync(chartScopeFormat)
-    const tempData: Array<ValueWithTimeStamp> = []
-
-    data.data.prices.forEach((price: Array<string>) => {
-      tempData.push({
-        timestamp: price[0],
-        value: price[1]
-      })
-    })
-
-    setValueTrendIndicator({
-      value:
-        Number(tempData[tempData.length - 1].value).toFixed(6) +
-        ' ' +
-        targetCurrency,
-      up: tempData[tempData.length - 1].value > tempData[0].value
-    })
-    setChartDataTemp(tempData)
-  }
+  }, [chartScopeFormat, targetCurrency])
 
   return (
     <div style={props.wrapperStyles}>

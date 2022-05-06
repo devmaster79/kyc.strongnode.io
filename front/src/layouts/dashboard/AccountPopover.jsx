@@ -26,7 +26,7 @@ export default function AccountPopover() {
 
   useEffect(() => {
     handleDashboard()
-  }, [])
+  }, [handleDashboard])
 
   const [anchorEl, setAnchorEl] = React.useState(null)
   const handleClick = (event) => {
