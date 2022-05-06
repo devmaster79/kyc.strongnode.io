@@ -4,17 +4,17 @@ import MainTable from '@ui/Table/MainTable/MainTable'
 import Icon from '@ui/Icon/Icon'
 import { ChangeEvent, useState } from 'react'
 
-interface DataSet<Item> {
+export interface DataSet<Item> {
   items: Item[]
   total?: number
 }
-interface Column {
+export interface Column {
   id: string
   label: string
   align: string
 }
 
-interface Finder {
+export interface Finder {
   onChange: (keyword: string) => void
   searchMaxRow?: number
 }
