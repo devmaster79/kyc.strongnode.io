@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import styled from '@emotion/styled/macro'
 import TableSection from 'components/TableSection/TableSection'
 import cryptoDataService from '../../services/cryptoDataService'
-import { IData, IDataIcon } from 'constants/TableConstants'
 import { AxiosResponse } from 'axios'
 
 const sampleColumns = [
@@ -113,6 +112,15 @@ interface TokenResponse {
 interface ValueTrend {
   positive?: boolean
   value?: string
+}
+
+interface IDataIcon {
+  name: string
+  url: string
+}
+
+interface IData {
+  [key: string]: object
 }
 
 export const CoinMetrics = (props: CoinMetricsProps) => {

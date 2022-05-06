@@ -3,7 +3,35 @@ import InputField from '@ui/Input/InputField'
 import MainTable from '@ui/Table/MainTable/MainTable'
 import Icon from '@ui/Icon/Icon'
 import { ChangeEvent, useState } from 'react'
-import { DataSet, TableSectionProps } from 'constants/TableConstants'
+
+interface DataSet<Item> {
+  items: Item[]
+  total?: number
+}
+interface Column {
+  id: string
+  label: string
+  align: string
+}
+
+interface Finder {
+  onChange: (keyword: string) => void
+  searchMaxRow?: number
+}
+
+interface TableSectionProps<Item extends Record<string, unknown>> {
+  comingSoon?: string
+  title: string
+  subtitle: string | undefined
+  dataSet: DataSet<Item>
+  columns: Column[]
+  hideHeading?: boolean
+  overwrittenFields?: Record<string, unknown>
+  fetchData?: (p: number, p2: number) => void
+  searchEnabled?: boolean
+  searchColumn?: string
+  finder?: Finder
+}
 
 function TableSection<Item extends Record<string, unknown>>(
   props: TableSectionProps<Item>
