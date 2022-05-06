@@ -7,6 +7,7 @@ import userService from 'services/userService'
 import * as authService from 'services/auth'
 import Icon from '@ui/Icon/Icon'
 import { useTheme } from '@mui/styles'
+import { CustomTheme } from 'theme'
 
 export default function AccountPopover() {
   const navigate = useNavigate()
@@ -35,16 +36,7 @@ export default function AccountPopover() {
     navigate('/dashboard/kyc')
   }
 
-  interface Theme {
-    palette: {
-      icon: {
-        secondary?: string
-        active?: string
-      }
-    }
-  }
-
-  const theme: Theme = useTheme()
+  const theme: CustomTheme = useTheme()
 
   return (
     <>
