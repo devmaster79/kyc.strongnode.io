@@ -5,6 +5,7 @@ import Modal from '@ui/Modal/Modal'
 import { useAnimated } from '@ui/utils/useAnimated'
 import { useState } from 'react'
 import IdentityUpload from './IdentityUpload/IdentityUpload'
+import useSettings from 'hooks/useSettings';
 
 export default function Identity() {
   const [showModal, setShowModal] = useState(true)
@@ -17,6 +18,9 @@ export default function Identity() {
   const showPassportModalAnim = useAnimated(showPassportModal, 500)
   const showNationalIDModalAnim = useAnimated(showNationalIDModal, 500)
   const showDrivingLicenseModalAnim = useAnimated(showDrivingLicenseModal, 500)
+
+  const { themeMode } = useSettings();
+  const isLight = themeMode === 'light';
 
   return (
     <>
@@ -85,7 +89,7 @@ export default function Identity() {
         }
         scrollable>
         <IdentityUpload
-          icon="passportFront"
+          icon={isLight ? 'passportFrontLight' : 'passportFront'}
           description="Take picture of your national ID.
           Avoid glare and make sure all 4 corners are visible. Take a picture of both sides."
           onSelectFile={() => {
@@ -94,7 +98,7 @@ export default function Identity() {
         />
         <Separator />
         <IdentityUpload
-          icon="passportHold"
+          icon={isLight ? 'passportHoldLight' : 'passportHold'}
           description="Take a picture of you holding your passport near your face so we can verify your identity."
           onSelectFile={() => {
             /* TODO */
@@ -117,7 +121,8 @@ export default function Identity() {
         }
         scrollable>
         <IdentityUpload
-          icon="nationalIdFront"
+          icon={isLight ? 'nationalIdFrontLight'
+: 'nationalIdFront'}
           description="Take picture of your national ID. Avoid glare and make sure all 4 corners are visible. Take a picture of both sides."
           onSelectFile={() => {
             /* TODO */
@@ -125,7 +130,7 @@ export default function Identity() {
         />
         <Separator />
         <IdentityUpload
-          icon="nationalIdBack"
+          icon={isLight ? 'nationalIdBackLight' : 'nationalIdBack'}
           description="Back side of your national ID"
           onSelectFile={() => {
             /* TODO */
@@ -148,7 +153,7 @@ export default function Identity() {
         }
         scrollable>
         <IdentityUpload
-          icon="drivingLicenseFront"
+          icon={isLight ? 'drivingLicenseFrontLight' : 'drivingLicenseFront'}
           description="Take picture of your Driving license. Avoid glare and make sure all 4 corners are visible. Take a picture of both sides."
           onSelectFile={() => {
             /* TODO */
@@ -156,7 +161,7 @@ export default function Identity() {
         />
         <Separator />
         <IdentityUpload
-          icon="nationalIdBack"
+          icon={isLight ? 'nationalIdBackLight' : 'nationalIdBack'}
           description="Back side of your Driving licence"
           onSelectFile={() => {
             /* TODO */

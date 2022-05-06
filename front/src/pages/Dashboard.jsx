@@ -1,8 +1,6 @@
 import * as React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
-import Container from '@mui/material/Container'
-import Grid from '@mui/material/Grid'
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { useEthers, useEtherBalance, useTokenBalance } from '@usedapp/core'
 import { ethers } from 'ethers'
@@ -12,6 +10,7 @@ import { CryptoChart } from '../@ui/Chart/CryptoChart'
 import * as authService from 'services/auth'
 import TableSection from 'components/TableSection/TableSection'
 import { CoinMetrics } from '../@ui/Table/CoinMetrics'
+import styled from '@emotion/styled'
 
 const SneAddress = '0x32934CB16DA43fd661116468c1B225Fc26CF9A8c'
 
@@ -75,23 +74,50 @@ export default function Dashboard() {
   }, [])
 
   return (
-    <Container ref={dash} maxWidth="xl" style={{ paddingBottom: 100 }}>
-      <Banner
-        title="StrongNode dVPN coming soon."
-        description="Stay tuned for more information."
-        soon
-      />
-      <h1 style={{ marginTop: '56px' }}>DeFi Dashboard</h1>
-      <CryptoChart wrapperStyles={{ marginTop: '16px' }} />
+    <Wrapper>
+      <Container ref={dash}>
+        <Banner
+          title="StrongNode dVPN coming soon."
+          description="Stay tuned for more information."
+          soon
+        />
+        <h1 style={{ marginTop: '56px' }}>DeFi Dashboard</h1>
+        <CryptoChart wrapperStyles={{ marginTop: '16px', width: '100%' }} />
 
-      <Grid container spacing={4} sx={{ mt: 1 }}>
-        <Grid item xs={6}>
-          <CoinMetrics title="Coin Metrics" hideHeading />
+        <Grid>
+          <Grid>
+            <CoinMetrics title="Coin Metrics" hideHeading />
+          </Grid>
+          <Grid>
+            <TableSection comingSoon title="Farming Metrics" subtitle="NFT 18" />
+          </Grid>
         </Grid>
-        <Grid item xs={6}>
-          <TableSection comingSoon title="Farming Metrics" subtitle="NFT 18" />
-        </Grid>
-      </Grid>
-    </Container>
-  )
+      </Container>
+    </Wrapper>
+  );
 }
+
+const Wrapper = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+`
+
+const Container = styled.div`
+  max-width: 1536px;
+  width: 100%;
+  padding-bottom: 100px;
+`;
+
+const Grid = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  margin: 8px;
+
+  @media only screen and (max-width: 600px) {
+    flex-direction: column;
+    margin: 0px;
+  }
+`;

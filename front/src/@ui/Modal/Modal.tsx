@@ -83,7 +83,7 @@ const StyledModal = styled.div<StyledModalProps>`
   min-width: 642px;
   height: ${({ scrollable }) => (scrollable ? '100%' : 'unset')};
   overflow: auto;
-  background: ${(props) => props.theme.palette.background.secondary};
+  background: ${(props) => props.theme.palette.background.modalSecondary};
   border: 1px solid ${(props) => props.theme.palette.border.light};
   box-sizing: border-box;
   border-radius: 10px;
