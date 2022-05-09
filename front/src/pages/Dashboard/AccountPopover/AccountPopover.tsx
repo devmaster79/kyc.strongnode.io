@@ -5,19 +5,24 @@ import {
   AvatarIconWrapper,
   IconWrapper
 } from './style'
-import ConnectButton from 'components/ConnectButton'
+import { ConnectButton } from 'components/ConnectButton'
 import { useNavigate } from 'react-router-dom'
 import userService from 'services/userService'
 import * as authService from 'services/auth'
 import Icon from '@ui/Icon/Icon'
 import { useTheme } from '@mui/styles'
+import { useEthers, useEtherBalance } from '@usedapp/core'
+import { useGetTokenBalance } from '../../../hooks/useGetTokenBalance'
 
 export default function AccountPopover (props: any) {
   const navigate = useNavigate()
+  const { account } = useEthers()
   const [userName, setUserName] = useState('')
   const [email, setEmail] = useState('')
   const [avatar, setAvatar] = useState('')
   const [showModal, setShowModal] = useState(false)
+  const SNEBalance = useGetTokenBalance(account)
+  const etherBalance = useEtherBalance(account)
 
   useEffect(() => {
     setEmail(localStorage.getItem('email') || '')
@@ -63,8 +68,10 @@ export default function AccountPopover (props: any) {
           {userName}
           <span>{email}</span>
           <ConnectButton />
+          <ol>
+            <li>SNE balance <span style={{ float: 'right' }}>{SNEBalance || 'unknown'}</span> ether balance: {etherBalance}</li>
+          </ol>
           <ul>
-            <li>SNE balance</li>
             <li onClick={navigateToKyc} aria-hidden>My Account</li>
           </ul>
           <TextButton onClick={signOut}>Sign out</TextButton>
