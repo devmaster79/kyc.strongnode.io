@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import styled from '@emotion/styled/macro'
 import TableSection from 'components/TableSection/TableSection'
 import cryptoDataService from '../../services/cryptoDataService'
+import { useEthers } from '@usedapp/core'
+import { useTokenBalances } from '../../hooks/useTokenBalances'
 
 const sampleColumns = [
   {
@@ -100,18 +102,11 @@ type CoinMetricsProps = {
   columns: Array<IData>
 }
 
-interface TokenObject {
-  owned: string
-  value: string
-  value_trend: string
-  icon: {
-    url: string
-    name: string
-  }
-}
-
 export const CoinMetrics = (props: CoinMetricsProps) => {
-  const [tableData, setTableData] = useState<{ items: any[] }>({ items: [] })
+  const { account } = useEthers()
+  const [tableData, setTableData] = useState<IData>({})
+  const [ownedTableData, setOwnedTableData] = useState<IData>({})
+  const [coinIDs, setCoinIDs] = useState<Array<string>>([])
 
   useEffect(() => {
     loadTokenMetrics()
@@ -123,13 +118,33 @@ export const CoinMetrics = (props: CoinMetricsProps) => {
     return () => clearInterval(refreshDataInterval)
   }, [])
 
+  const loadOwnedTokenMetrics = async (data: IData) => {
+    // todo obosolete, remove when ill have functional overwrite component for this one
+    /*    console.log('hi im there and im functional')
+    console.log(data.items)
+    if (!data.items) {
+      return false
+    }
+
+    const tempCoinIDs: Array<string> = []
+    for (const [key, value] of Object.entries(data.items)) {
+      tempCoinIDs.push(value.icon.name)
+    }
+
+    setCoinIDs(tempCoinIDs)
+    */
+  }
+
+  // makes request and sets tableData to state
   const loadTokenMetrics = async () => {
     const data: any = await cryptoDataService.getTokenMetrics()
     setTableData(formatTableData(data.data))
+    return data.data
   }
 
+  // formats object for table
   const formatTableData = (data: any) => {
-    const temporaryData: TokenObject[] = []
+    const temporaryData: any = []
 
     data.forEach((token: any) => {
       const tokenObject = {
@@ -146,16 +161,12 @@ export const CoinMetrics = (props: CoinMetricsProps) => {
     return { items: temporaryData }
   }
 
+  // helper function
   const createValueTrendObject = (value: string) => {
     const valueTrendObject: any = {}
 
-    if (value.charAt(0) == '-') {
-      valueTrendObject.positive = false
-    } else {
-      valueTrendObject.positive = true
-    }
-    valueTrendObject.value =
-      (valueTrendObject.positive ? '+' : '') + Number(value).toFixed(2) + ' %'
+    if (value.charAt(0) == '-') { valueTrendObject.positive = false } else { valueTrendObject.positive = true }
+    valueTrendObject.value = ((valueTrendObject.positive) ? '+' : '') + Number(value).toFixed(2) + ' %'
 
     return valueTrendObject
   }
@@ -174,15 +185,7 @@ export const CoinMetrics = (props: CoinMetricsProps) => {
   }
 
   return (
-    <TableSection
-      finder={{ onChange: addKeywords, searchMaxRow: 5 }}
-      searchColumn={'name'}
-      title={props.title}
-      subtitle={props.subtitle}
-      overwrittenFields={overwrittenFields}
-      dataSet={tableData.items?.length > 0 ? tableData : sampleData}
-      columns={sampleColumns}
-    />
+    <TableSection title={props.title} subtitle={props.subtitle} overwrittenFields={overwrittenFields} dataSet={(Object.keys(tableData).length > 0) ? tableData : sampleData} columns={sampleColumns} />
   )
 }
 
