@@ -12,7 +12,7 @@ import * as authService from 'services/auth'
 import Icon from '@ui/Icon/Icon'
 import { useTheme } from '@mui/styles'
 import { useEthers, useEtherBalance } from '@usedapp/core'
-import { useGetTokenBalance } from '../../../hooks/useGetTokenBalance'
+import { useGetTokenBalanceFormatted } from '../../../hooks/useGetTokenBalanceFormatted'
 import { CustomTheme } from 'theme'
 
 export default function AccountPopover() {
@@ -21,7 +21,7 @@ export default function AccountPopover() {
   const [userName, setUserName] = useState('')
   const [email, setEmail] = useState('')
   const [showModal, setShowModal] = useState(false)
-  const SNEBalance = useGetTokenBalance(account)
+  const SNEBalance = useGetTokenBalanceFormatted(account)
   const etherBalance = useEtherBalance(account)
 
   useEffect(() => {
