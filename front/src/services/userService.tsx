@@ -110,8 +110,12 @@ export function getUserWallet () {
  * Method that adds or updates wallet of logged user.
  * @param wallet
  */
-export function addOrUpdateUserWallet (wallet: string) {
-  return axios.post(userWallets, { wallet })
+export function addOrUpdateUserWallet (wallet: string | null | undefined) {
+  if (wallet) {
+    return axios.post(userWallets, { wallet })
+  } else {
+    return false
+  }
 }
 
 /** @deprecated */
