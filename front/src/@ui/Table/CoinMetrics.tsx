@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import styled from '@emotion/styled/macro'
 import TableSection from 'components/TableSection/TableSection'
 import cryptoDataService from '../../services/cryptoDataService'
+import { useEthers } from '@usedapp/core'
+import { useTokenBalances } from '../../hooks/useTokenBalances'
 
 const sampleColumns = [
   {
@@ -93,7 +95,10 @@ type CoinMetricsProps = {
 }
 
 export const CoinMetrics = (props: CoinMetricsProps) => {
-  const [tableData, setTableData] = useState({})
+  const { account } = useEthers()
+  const [tableData, setTableData] = useState<IData>({})
+  const [ownedTableData, setOwnedTableData] = useState<IData>({})
+  const [coinIDs, setCoinIDs] = useState<Array<string>>([])
 
   useEffect(() => {
     loadTokenMetrics()
@@ -105,11 +110,31 @@ export const CoinMetrics = (props: CoinMetricsProps) => {
     return () => clearInterval(refreshDataInterval)
   }, [])
 
+  const loadOwnedTokenMetrics = async (data: IData) => {
+    // todo obosolete, remove when ill have functional overwrite component for this one
+    /*    console.log('hi im there and im functional')
+    console.log(data.items)
+    if (!data.items) {
+      return false
+    }
+
+    const tempCoinIDs: Array<string> = []
+    for (const [key, value] of Object.entries(data.items)) {
+      tempCoinIDs.push(value.icon.name)
+    }
+
+    setCoinIDs(tempCoinIDs)
+    */
+  }
+
+  // makes request and sets tableData to state
   const loadTokenMetrics = async () => {
     const data: any = await cryptoDataService.getTokenMetrics()
     setTableData(formatTableData(data.data))
+    return data.data
   }
 
+  // formats object for table
   const formatTableData = (data: any) => {
     const temporaryData: any = []
 
@@ -128,6 +153,7 @@ export const CoinMetrics = (props: CoinMetricsProps) => {
     return { items: temporaryData }
   }
 
+  // helper function
   const createValueTrendObject = (value: string) => {
     const valueTrendObject: any = {}
 
