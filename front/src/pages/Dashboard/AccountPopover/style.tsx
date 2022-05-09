@@ -42,6 +42,19 @@ export const AccountPopoverWrapper = styled.div`
       cursor: pointer;
     }
   }
+
+  & > ol {
+    list-style: none;
+    text-transform: uppercase;
+    font-size: 14px;
+    text-align: left;
+    margin-bottom: 0;
+
+    & > li {
+      padding: 16px 0px;
+      border-bottom: 1px solid ${(props) => props.theme.palette.border.light};
+    }
+  }
 `
 
 export const AvatarIconWrapper = styled.div`
