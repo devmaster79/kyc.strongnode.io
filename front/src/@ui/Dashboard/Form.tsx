@@ -105,11 +105,14 @@ export const ErrorMessage = styled(InfoMessage)((props) => ({
 
 export const Row = styled('div')({
   display: 'flex',
-  gap: '1em'
+  gap: '1em',
+  flexWrap: 'wrap',
+  justifyContent: 'center'
 })
 
 export const Column = styled('div')({
   flexFlow: 'column',
   display: 'flex',
-  gap: '1em'
+  gap: '1em',
+  flex:'1 1 100px'
 })
