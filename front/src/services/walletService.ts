@@ -1,13 +1,19 @@
 import { Polygon, Config, useTokenBalance } from '@usedapp/core'
-import WalletConnectProvider from '@maticnetwork/walletconnect-provider'
-import { addOrUpdateUserWallet } from './userService'
-import { ethers } from 'ethers'
+import WalletConnectProvider from '@maticnetwork/walletconnect-provider/dist/walletconnect-provider.umd'
 
 /**
- * SNE wallet address
- * @type {string}
+ * Token addresses' dictionary.
  */
-export const SneAddress = '0x32934CB16DA43fd661116468c1B225Fc26CF9A8c'
+export const tokenAddressDictionary = {
+  strongnode: '0x32934CB16DA43fd661116468c1B225Fc26CF9A8c'
+}
+
+/**
+ * RPC urls for a different networks.
+ */
+export const networksRpcDictionary = {
+  polygon: 'https://polygon-rpc.com'
+}
 
 /**
  * Config object for DAppProvider
@@ -16,19 +22,10 @@ export const SneAddress = '0x32934CB16DA43fd661116468c1B225Fc26CF9A8c'
 export const DAppProviderConfig = {
   readOnlyChainId: Polygon.chainId,
   readOnlyUrls: {
-    [Polygon.chainId]: 'https://polygon-rpc.com'
+    [Polygon.chainId]: networksRpcDictionary.polygon
   },
-  networks: [Polygon]
-}
-
-/**
- * Returns the current balance of specified token.
- */
-export const useGetTokenBalance = (account: string | null | undefined, tokenAddress: string = SneAddress) => {
-  console.log('used get token balance from walletService')
-  const tokenBalance = useTokenBalance(tokenAddress, account)
-  console.log(tokenBalance && ethers.utils.formatUnits(tokenBalance, 18))
-  return tokenBalance && ethers.utils.formatUnits(tokenBalance, 18)
+  networks: [Polygon],
+  autoConnect: true
 }
 
 /**
@@ -37,19 +34,22 @@ export const useGetTokenBalance = (account: string | null | undefined, tokenAddr
  * @param force
  */
 export const ConnectWallet = async (activate: any, force = false) => {
-  // todo make the force switcher work
-  // todo assign events to the provider
+  // todo make the force force work
   try {
     const provider = new WalletConnectProvider({
-      host: 'https://polygon-rpc.com',
-      onConnect: () => {
-        // connected
-      },
-      onDisconnect: () => {}
+      host: networksRpcDictionary.polygon,
+      callbacks: {
+        onConnect: (err: any, payload: any) => {
+          // todo, callbacks does not work, but provider returns true on .isConnected()
+        },
+        onDisconnect: () => {
+          // todo, callbacks does not work, but provider returns true on .isConnected()
+        }
+      }
     })
-
     await activate(provider)
+    return true
   } catch (error) {
-    console.error(error)
+    return false
   }
 }
