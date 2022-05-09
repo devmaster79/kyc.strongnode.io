@@ -1,20 +1,10 @@
 import styled from '@emotion/styled'
 import InputField from '@ui/Input/InputField'
-import MainTable from '@ui/Table/MainTable/MainTable'
+import MainTable, { Column, DataSet } from '@ui/Table/MainTable/MainTable'
 import Icon from '@ui/Icon/Icon'
 import { ChangeEvent, useState } from 'react'
 
-export interface DataSet<Item> {
-  items: Item[]
-  total?: number
-}
-export interface Column {
-  id: string
-  label: string
-  align: string
-}
-
-export interface Finder {
+interface Finder {
   onChange: (keyword: string) => void
   searchMaxRow?: number
 }

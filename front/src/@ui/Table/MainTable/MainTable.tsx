@@ -1,7 +1,6 @@
 import { useRef, useState } from 'react'
 import { Table, TableWrapper } from './style'
 import { fDate } from '../../../utils/formatTime'
-import { Column, DataSet } from 'components/TableSection/TableSection'
 
 interface MainTableProps<Item> {
   dataSet: DataSet<Item>
@@ -9,6 +8,16 @@ interface MainTableProps<Item> {
   fetchData?: (p: number, p2: number) => void | null
   overwrittenFields: Record<string, unknown>
   hideHeading?: boolean
+}
+
+export interface DataSet<Item> {
+  items: Item[]
+  total?: number
+}
+export interface Column {
+  id: string
+  label: string
+  align: string
 }
 
 export default function MainTable<Item extends Record<string, unknown>>({
