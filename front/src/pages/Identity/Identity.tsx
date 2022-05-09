@@ -5,7 +5,7 @@ import Modal from '@ui/Modal/Modal'
 import { useAnimated } from '@ui/utils/useAnimated'
 import { useState } from 'react'
 import IdentityUpload from './IdentityUpload/IdentityUpload'
-import useSettings from 'hooks/useSettings';
+import useSettings from 'hooks/useSettings'
 
 export default function Identity() {
   const [showModal] = useState(true)
@@ -19,8 +19,8 @@ export default function Identity() {
   const showNationalIDModalAnim = useAnimated(showNationalIDModal, 500)
   const showDrivingLicenseModalAnim = useAnimated(showDrivingLicenseModal, 500)
 
-  const { themeMode } = useSettings();
-  const isLight = themeMode === 'light';
+  const { themeMode } = useSettings()
+  const isLight = themeMode === 'light'
 
   return (
     <>
@@ -121,8 +121,7 @@ export default function Identity() {
         }
         scrollable>
         <IdentityUpload
-          icon={isLight ? 'nationalIdFrontLight'
-: 'nationalIdFront'}
+          icon={isLight ? 'nationalIdFrontLight' : 'nationalIdFront'}
           description="Take picture of your national ID. Avoid glare and make sure all 4 corners are visible. Take a picture of both sides."
           onSelectFile={() => {
             /* TODO */

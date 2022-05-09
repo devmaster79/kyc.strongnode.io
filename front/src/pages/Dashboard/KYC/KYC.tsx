@@ -206,7 +206,7 @@ export const Container = styled.div`
   width: 80%;
   margin: auto;
   text-align: center;
-`;
+`
 
 export const FormContainer = styled.div`
   display: flex;

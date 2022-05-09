@@ -32,7 +32,13 @@ export default function IdentityUpload(props: UploadProps) {
       {image ? (
         <img src={image || ''} />
       ) : (
-        <Icon name={props.icon} color="#141245" width={354} height={196} viewBox="0 0 354 196" />
+        <Icon
+          name={props.icon}
+          color="#141245"
+          width={354}
+          height={196}
+          viewBox="0 0 354 196"
+        />
       )}
       <Button color="white" variant="medium" onClick={onUploadButtonClick}>
         {image ? 'Upload new picture' : 'Upload picture'}

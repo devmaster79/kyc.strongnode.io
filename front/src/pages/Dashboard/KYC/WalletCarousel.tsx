@@ -5,8 +5,8 @@ import { Navigation } from 'swiper'
 import styled from '@emotion/styled'
 import CircleButton from '@ui/Button/CircleButton'
 import Icon from '@ui/Icon/Icon'
-import { useTheme } from '@mui/material/styles';
-import { CustomTheme } from 'theme';
+import { useTheme } from '@mui/material/styles'
+import { CustomTheme } from 'theme'
 interface WalletInfoType {
   featureIcon: number
   label: string
@@ -14,16 +14,16 @@ interface WalletInfoType {
 }
 
 export function WalletCarousel(props: { walletProps: WalletInfoType[] }) {
-  const walletsInfo = props.walletProps;
+  const walletsInfo = props.walletProps
 
-  const theme:CustomTheme = useTheme();
+  const theme: CustomTheme = useTheme()
 
   return (
     <Container>
       <div style={{ width: '100%', position: 'relative' }}>
         <div style={{ paddingLeft: '20px', paddingRight: '20px' }}>
           <Swiper
-            slidesPerView={ window.innerWidth > 600 ? 3 : 1}
+            slidesPerView={window.innerWidth > 600 ? 3 : 1}
             spaceBetween={17}
             loop
             navigation={{
@@ -44,7 +44,13 @@ export function WalletCarousel(props: { walletProps: WalletInfoType[] }) {
                   padding: '24px 0px 24px 0px'
                 }}>
                 <div style={{ paddingLeft: '24px' }}>
-                  <Icon name={'wallet'} style={{color: theme.palette.icon.wallet}} width={22} height={26} viewBox='0 0 22 22' />
+                  <Icon
+                    name={'wallet'}
+                    style={{ color: theme.palette.icon.wallet }}
+                    width={22}
+                    height={26}
+                    viewBox="0 0 22 22"
+                  />
                   <div style={{ paddingTop: '46px' }}>
                     <div style={{ display: 'flex' }}>
                       {walletInfo.featureIcon ? (
@@ -61,7 +67,9 @@ export function WalletCarousel(props: { walletProps: WalletInfoType[] }) {
                         }}>
                         <div>{walletInfo.label}</div>
                         {walletInfo.description ? (
-                          <div style={{ opacity: '0.4' }}>{walletInfo.description}</div>
+                          <div style={{ opacity: '0.4' }}>
+                            {walletInfo.description}
+                          </div>
                         ) : null}
                       </div>
                     </div>
@@ -127,4 +135,4 @@ export const Container = styled.div`
   @media only screen and (max-width: 600px) {
     width: 100%;
   }
-`;
+`

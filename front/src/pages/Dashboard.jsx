@@ -1,7 +1,5 @@
 import { useNavigate } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
-import Container from '@mui/material/Container'
-import Grid from '@mui/material/Grid'
 import { useEffect, useCallback, useRef } from 'react'
 import userService from '../services/userService'
 import { Banner } from '../@ui/Banner/Banner'
@@ -67,12 +65,16 @@ export default function Dashboard() {
             <CoinMetrics title="Coin Metrics" hideHeading />
           </Grid>
           <Grid>
-            <TableSection comingSoon title="Farming Metrics" subtitle="NFT 18" />
+            <TableSection
+              comingSoon
+              title="Farming Metrics"
+              subtitle="NFT 18"
+            />
           </Grid>
         </Grid>
       </Container>
     </Wrapper>
-  );
+  )
 }
 
 const Wrapper = styled.div`
@@ -86,7 +88,7 @@ const Container = styled.div`
   max-width: 1536px;
   width: 100%;
   padding-bottom: 100px;
-`;
+`
 
 const Grid = styled.div`
   display: flex;
@@ -98,4 +100,4 @@ const Grid = styled.div`
     flex-direction: column;
     margin: 0px;
   }
-`;
+`

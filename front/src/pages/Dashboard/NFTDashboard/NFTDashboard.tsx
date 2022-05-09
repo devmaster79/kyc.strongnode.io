@@ -10,7 +10,7 @@ const CardWrapper = styled.div`
   @media only screen and (max-width: 600px) {
     align-items: center;
   }
-`;
+`
 export default function NFTDashboard() {
   const cards = ['1', '2', '3', '4', '5', '6', '7']
 
@@ -127,8 +127,8 @@ export default function NFTDashboard() {
         </CardWrapper>
         <TableSection
           searchColumn={'name'}
-          title='Metrics'
-          subtitle='NFT 18'
+          title="Metrics"
+          subtitle="NFT 18"
           columns={columns}
           dataSet={dataSet}
           overwrittenFields={overwrittenFields}
@@ -136,7 +136,7 @@ export default function NFTDashboard() {
         />
       </Container>
     </Wrapper>
-  );
+  )
 }
 
 const Wrapper = styled.div`
@@ -149,12 +149,12 @@ const Wrapper = styled.div`
 const Container = styled.div`
   max-width: 1300px;
   width: 100%;
-`;
+`
 
 const AutocompleteWrapper = styled.div`
   max-width: 320px;
   display: none;
-`;
+`
 const AutocompleteStyle = styled.div`
   display: flex;
   align-items: center;
