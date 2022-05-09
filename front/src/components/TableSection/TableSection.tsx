@@ -102,7 +102,6 @@ const TableSectionWrapper = styled.div`
   box-sizing: border-box;
   border-radius: 10px;
   padding: 32px;
-
   h2 {
     font-size: 18px;
     color: ${(props) => props.theme.palette.text.primary};
@@ -115,13 +114,25 @@ const TableSectionWrapper = styled.div`
       padding-left: 7px;
     }
   }
-`
+
+  @media only screen and (max-width: 600px) {
+    margin-bottom: 20px;
+  }
+`;
 const HeaderWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding-bottom: 16px;
-`
+
+  @media only screen and (max-width: 600px) {
+    flex-direction: column;
+
+    h2 {
+      padding-bottom: 20px;
+    }
+  }
+`;
 
 const ComingSoonWrapper = styled.div`
   display: flex;

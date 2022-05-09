@@ -136,13 +136,14 @@ const palette = {
       primary: NIGHTBLUE[90],
       secondary: NIGHTBLUE[60],
       disabled: GREY[600],
-      dark: NIGHTBLUE[90]
+      dark: NIGHTBLUE[90],
+      whiteButton: NEW_GREY[65]
     },
     background: {
       primary: WHITE[100],
       secondary: NEW_GREY[30],
       light: WHITE[40],
-      white: WHITE[100],
+      white: '#6e6d8f14',
       label: '#FAFAFE',
       switch: NEW_GREY[5],
       input: WHITE[100],
@@ -150,8 +151,11 @@ const palette = {
       paper: GREY[800],
       neutral: GREY['500_16'],
       gradient: 'linear-gradient(180deg, #FAFAFF 0%, #F3F3FC 100%);',
+      walletGradient: 'linear-gradient(91.67deg, #F5F5FD 1.25%, rgba(245, 245, 253, 0) 98.45%)',
       qr: 'difference',
-      modal: 'rgba(151,151,176,0.8)'
+      modal: 'rgba(151,151,176,0.8)',
+      modalSecondary: WHITE[100],
+      wallet: 'rgba(110, 109, 143, 0.12)'
     },
     button: {
       text: WHITE[100],
@@ -169,7 +173,12 @@ const palette = {
       primary: NEW_GREY[70],
       active: NIGHTBLUE[90],
       secondary: GREY['600'],
+      wallet: NEW_GREY[65],
       wrapper: '#E0E0EE'
+    },
+    progressCircle: {
+      trailColorPrimary: '#EEDCFB',
+      trailColorSecondary: '#EDD9FC'
     }
   },
   dark: {
@@ -178,7 +187,8 @@ const palette = {
       primary: WHITE[100],
       secondary: WHITE[60],
       disabled: GREY[600],
-      dark: NIGHTBLUE[90]
+      dark: NIGHTBLUE[90],
+      whiteButton: NIGHTBLUE[90]
     },
     background: {
       primary: NIGHTBLUE[90],
@@ -192,8 +202,11 @@ const palette = {
       paper: GREY[800],
       neutral: GREY['500_16'],
       gradient: 'linear-gradient(111.76deg, #14133E 0%, #0B0B77 104.05%)',
+      walletGradient: 'linear-gradient(91.67deg, #111056 1.25%, rgba(17, 16, 86, 0) 98.45%)',
       qr: 'lighten',
-      modal: NIGHTBLUE[85]
+      modal: NIGHTBLUE[85],
+      modalSecondary: NIGHTBLUE[100],
+      wallet: WHITE[8]
     },
     button: {
       text: WHITE[100],
@@ -211,7 +224,12 @@ const palette = {
       primary: NEW_GREY[70],
       active: WHITE[100],
       secondary: WHITE[100],
-      wrapper: 'rgba(255, 255, 255, 0.12)'
+      wrapper: 'rgba(255, 255, 255, 0.12)',
+      wallet: WHITE[100]
+    },
+    progressCircle: {
+      trailColorPrimary: '#25136B',
+      trailColorSecondary: '#251362'
     }
   }
 }

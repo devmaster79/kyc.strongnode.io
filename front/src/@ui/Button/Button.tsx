@@ -74,7 +74,7 @@ const Button = styled.button<StyledButtonProps>`
     } else if (props.color === 'white') {
       return css`
         background: ${props.theme.palette.background.white};
-        color: ${props.theme.palette.text.dark};
+        color: ${props.theme.palette.text.whiteButton};
         box-shadow: none;
       `
     }

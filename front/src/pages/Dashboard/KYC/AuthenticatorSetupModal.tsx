@@ -53,16 +53,16 @@ export function AuthenticatorSetupModal({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const qrCode =
+  const secret: { qrcode: string; secret: string } | undefined =
     (authService.dataPerService.generateAuthenticatorQRCode.result ===
       'success' &&
-      authService.dataPerService.generateAuthenticatorQRCode.qrcode) ||
+      authService.dataPerService.generateAuthenticatorQRCode) ||
     undefined
 
   return (
     <Modal
       anim={anim}
-      title="Setup a new password"
+      title="Setup an Authenticator"
       onClose={onClose}
       footer={
         <>
@@ -83,15 +83,26 @@ export function AuthenticatorSetupModal({
       }>
       <ModalForm>
         <DashboardForm.Row>
-          {qrCode && <Qr src={qrCode} />}
-          <DashboardForm.Input
-            inputProps={{
-              id: 'totp',
-              value: totp,
-              onChange: handleTOTPInputChange,
-              placeholder: 'Enter your TOTP'
-            }}
-          />
+          {secret && <Qr src={secret.qrcode} />}
+          <DashboardForm.Column>
+            {secret && (
+              <Secret>
+                <p>
+                  Scan the QR with an Authenticator or type the code manually:{' '}
+                </p>
+                <code>{secret.secret}</code>
+              </Secret>
+            )}
+            <DashboardForm.Hr />
+            <DashboardForm.Input
+              inputProps={{
+                id: 'totp',
+                value: totp,
+                onChange: handleTOTPInputChange,
+                placeholder: 'Enter your TOTP'
+              }}
+            />
+          </DashboardForm.Column>
         </DashboardForm.Row>
         <Messages authService={authService} />
       </ModalForm>
@@ -159,14 +170,23 @@ const EnableAuthenticatorAuthMessage = (
 
 const Qr = styled.img`
   image-rendering: pixelated;
-  filter: invert(1);
-  transform: scale(1.2);
-  mix-blend-mode: ${(props) => props.theme.palette.background.qr};
+  object-fit: contain;
+`
+const Secret = styled.div`
+  text-align: left;
+  box-sizing: border-box;
+  border-radius: 8px;
+  code {
+    color: ${(props) => props.theme.palette.text.primary};
+    word-wrap: break-word;
+    overflow-wrap: anywhere;
+    flex: 1;
+  }
 `
 
 export const ModalForm = styled('div')({
   display: 'flex',
   gap: '1em',
-  paddingTop: '1em',
+  padding: '1em',
   flexFlow: 'column'
 })

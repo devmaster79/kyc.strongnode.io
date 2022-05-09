@@ -166,8 +166,14 @@ export const authByAuthenticator =
 
 export const generateAuthenticatorQRCode =
     withResponse<GenerateAuthenticatorQRCode.Response>(async req => {
-        const qrcode = await authenticatorAuthService.generateQRCode(req.user.email);
-        return success({ qrcode });
+        const result = await authenticatorAuthService.generateQRCode(req.user.email);
+        return success({
+            // Note that the secret is a number that users can use to register an authenticator.
+            // The QR is the secret in a mobile readable form, so users don't have to type that in.
+            // It's only safe to share the secret when we setup the autentication.
+            qrcode: result.qrcode,
+            secret: result.secret
+         });
     });
 
 export const enableAuthenticatorAuth =
