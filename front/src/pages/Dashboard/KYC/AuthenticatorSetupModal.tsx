@@ -94,7 +94,7 @@ export function AuthenticatorSetupModal({
               </Secret>
             )}
             <DashboardForm.Hr />
-            <DashboardForm.Input
+            <DashboardForm.ModalInput
               inputProps={{
                 id: 'totp',
                 value: totp,

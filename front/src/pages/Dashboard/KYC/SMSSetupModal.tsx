@@ -79,7 +79,7 @@ export function SMSSetupModal({
             disabled={authService.data.result === 'loading'}
           />
         </DashboardForm.Row>
-        <DashboardForm.Input
+        <DashboardForm.ModalInput
           inputProps={{
             type: 'number',
             placeholder: 'Enter your SMS code',
