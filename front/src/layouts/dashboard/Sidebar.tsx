@@ -39,7 +39,7 @@ const Sidebar = () => {
     <SidebarWrapper>
       <StyledThemedLogo />
       <SidebarButtonWrapperStyled />
-      <ThemeSwitch sx={themeSwitchStyles} color={{}} />
+      <ThemeSwitch sx={themeSwitchStyles} />
     </SidebarWrapper>
   )
 }

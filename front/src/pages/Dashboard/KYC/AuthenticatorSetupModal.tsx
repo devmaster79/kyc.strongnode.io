@@ -171,7 +171,7 @@ const EnableAuthenticatorAuthMessage = (
 const Qr = styled.img`
   image-rendering: pixelated;
   object-fit: contain;
-  flex:1 2 100px;
+  flex: 1 2 100px;
 `
 const Secret = styled.div`
   text-align: left;

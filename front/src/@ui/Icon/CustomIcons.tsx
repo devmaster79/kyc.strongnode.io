@@ -911,17 +911,87 @@ export const Icons = {
   ),
   passportFrontLight: (
     <g>
-      <rect width="354" height="196" rx="8" fill="#141245" fillOpacity="0.12"/>
-      <rect x="0.5" y="0.5" width="353" height="195" rx="7.5" stroke="#141245" strokeOpacity="0.1"/>
-      <rect x="18" y="21" width="135" height="154" rx="8" fill="#141245" fillOpacity="0.12"/>
-      <rect x="18.5" y="21.5" width="134" height="153" rx="7.5" stroke="#141245" strokeOpacity="0.1"/>
-      <path d="M114.853 113.891C108.995 111.775 99.2337 109.25 86 109.25C72.7663 109.25 63.005 111.775 57.1475 113.891C52.7225 115.491 49.75 119.741 49.75 124.467V135.5C49.75 136.19 50.31 136.75 51 136.75H121C121.69 136.75 122.25 136.19 122.25 135.5V124.467C122.25 119.741 119.278 115.491 114.853 113.891Z" fill="white"/>
-      <path d="M86 101.75C96.3387 101.75 104.75 93.3387 104.75 83V78C104.75 67.6613 96.3387 59.25 86 59.25C75.6613 59.25 67.25 67.6613 67.25 78V83C67.25 93.3387 75.6613 101.75 86 101.75Z" fill="white"/>
-      <rect opacity="0.4" x="177" y="35" width="135" height="10" rx="5" fill="#141245"/>
-      <rect x="177" y="53" width="135" height="10" rx="5" fill="#6E6D8F" fillOpacity="0.4"/>
-      <rect x="177" y="100" width="90" height="10" rx="5" fill="#6E6D8F" fillOpacity="0.4"/>
-      <rect x="177" y="118" width="109" height="10" rx="5" fill="#6E6D8F" fillOpacity="0.4"/>
-      <rect x="177" y="136" width="76" height="10" rx="5" fill="#6E6D8F" fillOpacity="0.4"/>
+      <rect width="354" height="196" rx="8" fill="#141245" fillOpacity="0.12" />
+      <rect
+        x="0.5"
+        y="0.5"
+        width="353"
+        height="195"
+        rx="7.5"
+        stroke="#141245"
+        strokeOpacity="0.1"
+      />
+      <rect
+        x="18"
+        y="21"
+        width="135"
+        height="154"
+        rx="8"
+        fill="#141245"
+        fillOpacity="0.12"
+      />
+      <rect
+        x="18.5"
+        y="21.5"
+        width="134"
+        height="153"
+        rx="7.5"
+        stroke="#141245"
+        strokeOpacity="0.1"
+      />
+      <path
+        d="M114.853 113.891C108.995 111.775 99.2337 109.25 86 109.25C72.7663 109.25 63.005 111.775 57.1475 113.891C52.7225 115.491 49.75 119.741 49.75 124.467V135.5C49.75 136.19 50.31 136.75 51 136.75H121C121.69 136.75 122.25 136.19 122.25 135.5V124.467C122.25 119.741 119.278 115.491 114.853 113.891Z"
+        fill="white"
+      />
+      <path
+        d="M86 101.75C96.3387 101.75 104.75 93.3387 104.75 83V78C104.75 67.6613 96.3387 59.25 86 59.25C75.6613 59.25 67.25 67.6613 67.25 78V83C67.25 93.3387 75.6613 101.75 86 101.75Z"
+        fill="white"
+      />
+      <rect
+        opacity="0.4"
+        x="177"
+        y="35"
+        width="135"
+        height="10"
+        rx="5"
+        fill="#141245"
+      />
+      <rect
+        x="177"
+        y="53"
+        width="135"
+        height="10"
+        rx="5"
+        fill="#6E6D8F"
+        fillOpacity="0.4"
+      />
+      <rect
+        x="177"
+        y="100"
+        width="90"
+        height="10"
+        rx="5"
+        fill="#6E6D8F"
+        fillOpacity="0.4"
+      />
+      <rect
+        x="177"
+        y="118"
+        width="109"
+        height="10"
+        rx="5"
+        fill="#6E6D8F"
+        fillOpacity="0.4"
+      />
+      <rect
+        x="177"
+        y="136"
+        width="76"
+        height="10"
+        rx="5"
+        fill="#6E6D8F"
+        fillOpacity="0.4"
+      />
     </g>
   ),
   passportHold: (
@@ -1054,27 +1124,129 @@ export const Icons = {
   ),
   passportHoldLight: (
     <g>
-      <rect width="354" height="196" rx="8" fill="#141245" fillOpacity="0.12"/>
-      <rect x="0.5" y="0.5" width="353" height="195" rx="7.5" stroke="#141245" strokeOpacity="0.1"/>
-      <path opacity="0.4" d="M137.772 149.713C127.925 146.515 123.125 138.235 120.783 131.068C115.11 133.878 108.747 135.5 102 135.5C95.25 135.5 88.8875 133.878 83.215 131.065C80.87 138.235 76.07 146.518 66.2275 149.713C46.1325 156.238 29.5 163.997 29.5 193C29.5 194.38 30.62 195.5 32 195.5H172C173.38 195.5 174.5 194.38 174.5 193C174.5 163.997 157.867 156.238 137.772 149.713Z" fill="white"/>
-      <path opacity="0.8" d="M102 40.5C81.3225 40.5 64.5 57.3225 64.5 78V93C64.5 113.677 81.3225 130.5 102 130.5C122.677 130.5 139.5 113.677 139.5 93V78C139.5 57.3225 122.677 40.5 102 40.5Z" fill="white"/>
-      <rect x="127" y="91" width="158.939" height="88" rx="8.14815" fill="#141343"/>
-      <rect x="127.407" y="91.4074" width="158.124" height="87.1852" rx="7.74074" stroke="white" strokeOpacity="0.1" stroke-width="0.814815"/>
-      <rect x="135.082" y="100.428" width="60.6122" height="69.1429" rx="3.59184" fill="white" fillOpacity="0.08"/>
-      <rect x="135.306" y="100.653" width="60.1633" height="68.6939" rx="3.36735" stroke="white" strokeOpacity="0.1" stroke-width="0.44898"/>
-      <g clip-path="url(#clip0_1338_1400)">
-      <path d="M178.566 142.135C175.936 141.185 171.554 140.051 165.612 140.051C159.671 140.051 155.288 141.185 152.658 142.135C150.671 142.853 149.337 144.761 149.337 146.883V151.837C149.337 152.146 149.588 152.398 149.898 152.398H181.326C181.636 152.398 181.888 152.146 181.888 151.837V146.883C181.888 144.761 180.553 142.853 178.566 142.135Z" fill="white" fillOpacity="0.32"/>
-      <path d="M165.612 136.684C170.254 136.684 174.031 132.907 174.031 128.265V126.02C174.031 121.379 170.254 117.602 165.612 117.602C160.97 117.602 157.194 121.379 157.194 126.02V128.265C157.194 132.907 160.97 136.684 165.612 136.684Z" fill="white" fillOpacity="0.32"/>
+      <rect width="354" height="196" rx="8" fill="#141245" fillOpacity="0.12" />
+      <rect
+        x="0.5"
+        y="0.5"
+        width="353"
+        height="195"
+        rx="7.5"
+        stroke="#141245"
+        strokeOpacity="0.1"
+      />
+      <path
+        opacity="0.4"
+        d="M137.772 149.713C127.925 146.515 123.125 138.235 120.783 131.068C115.11 133.878 108.747 135.5 102 135.5C95.25 135.5 88.8875 133.878 83.215 131.065C80.87 138.235 76.07 146.518 66.2275 149.713C46.1325 156.238 29.5 163.997 29.5 193C29.5 194.38 30.62 195.5 32 195.5H172C173.38 195.5 174.5 194.38 174.5 193C174.5 163.997 157.867 156.238 137.772 149.713Z"
+        fill="white"
+      />
+      <path
+        opacity="0.8"
+        d="M102 40.5C81.3225 40.5 64.5 57.3225 64.5 78V93C64.5 113.677 81.3225 130.5 102 130.5C122.677 130.5 139.5 113.677 139.5 93V78C139.5 57.3225 122.677 40.5 102 40.5Z"
+        fill="white"
+      />
+      <rect
+        x="127"
+        y="91"
+        width="158.939"
+        height="88"
+        rx="8.14815"
+        fill="#141343"
+      />
+      <rect
+        x="127.407"
+        y="91.4074"
+        width="158.124"
+        height="87.1852"
+        rx="7.74074"
+        stroke="white"
+        strokeOpacity="0.1"
+        strokeWidth="0.814815"
+      />
+      <rect
+        x="135.082"
+        y="100.428"
+        width="60.6122"
+        height="69.1429"
+        rx="3.59184"
+        fill="white"
+        fillOpacity="0.08"
+      />
+      <rect
+        x="135.306"
+        y="100.653"
+        width="60.1633"
+        height="68.6939"
+        rx="3.36735"
+        stroke="white"
+        strokeOpacity="0.1"
+        strokeWidth="0.44898"
+      />
+      <g clipPath="url(#clip0_1338_1400)">
+        <path
+          d="M178.566 142.135C175.936 141.185 171.554 140.051 165.612 140.051C159.671 140.051 155.288 141.185 152.658 142.135C150.671 142.853 149.337 144.761 149.337 146.883V151.837C149.337 152.146 149.588 152.398 149.898 152.398H181.326C181.636 152.398 181.888 152.146 181.888 151.837V146.883C181.888 144.761 180.553 142.853 178.566 142.135Z"
+          fill="white"
+          fillOpacity="0.32"
+        />
+        <path
+          d="M165.612 136.684C170.254 136.684 174.031 132.907 174.031 128.265V126.02C174.031 121.379 170.254 117.602 165.612 117.602C160.97 117.602 157.194 121.379 157.194 126.02V128.265C157.194 132.907 160.97 136.684 165.612 136.684Z"
+          fill="white"
+          fillOpacity="0.32"
+        />
       </g>
-      <rect x="206.47" y="106.714" width="60.6122" height="4.4898" rx="2.2449" fill="white" fillOpacity="0.12"/>
-      <rect x="206.47" y="114.796" width="60.6122" height="4.4898" rx="2.2449" fill="white" fillOpacity="0.12"/>
-      <rect x="206.47" y="135.898" width="40.4082" height="4.4898" rx="2.2449" fill="white" fillOpacity="0.12"/>
-      <rect x="206.47" y="143.98" width="48.9388" height="4.4898" rx="2.2449" fill="white" fillOpacity="0.12"/>
-      <rect x="206.47" y="152.061" width="34.1224" height="4.4898" rx="2.2449" fill="white" fillOpacity="0.12"/>
+      <rect
+        x="206.47"
+        y="106.714"
+        width="60.6122"
+        height="4.4898"
+        rx="2.2449"
+        fill="white"
+        fillOpacity="0.12"
+      />
+      <rect
+        x="206.47"
+        y="114.796"
+        width="60.6122"
+        height="4.4898"
+        rx="2.2449"
+        fill="white"
+        fillOpacity="0.12"
+      />
+      <rect
+        x="206.47"
+        y="135.898"
+        width="40.4082"
+        height="4.4898"
+        rx="2.2449"
+        fill="white"
+        fillOpacity="0.12"
+      />
+      <rect
+        x="206.47"
+        y="143.98"
+        width="48.9388"
+        height="4.4898"
+        rx="2.2449"
+        fill="white"
+        fillOpacity="0.12"
+      />
+      <rect
+        x="206.47"
+        y="152.061"
+        width="34.1224"
+        height="4.4898"
+        rx="2.2449"
+        fill="white"
+        fillOpacity="0.12"
+      />
       <defs>
-      <clipPath id="clip0_1338_1400">
-      <rect width="35.9184" height="35.9184" fill="white" transform="translate(147.653 117.041)"/>
-      </clipPath>
+        <clipPath id="clip0_1338_1400">
+          <rect
+            width="35.9184"
+            height="35.9184"
+            fill="white"
+            transform="translate(147.653 117.041)"
+          />
+        </clipPath>
       </defs>
     </g>
   ),
@@ -1185,19 +1357,107 @@ export const Icons = {
   ),
   nationalIdFrontLight: (
     <g>
-      <rect width="354" height="196" rx="8" fill="#141245" fillOpacity="0.12"/>
-      <rect x="0.5" y="0.5" width="353" height="195" rx="7.5" stroke="#141245" strokeOpacity="0.1"/>
-      <rect x="18" y="21" width="135" height="154" rx="8" fill="#6E6D8F" fillOpacity="0.24"/>
-      <rect x="18.5" y="21.5" width="134" height="153" rx="7.5" stroke="white" strokeOpacity="0.1"/>
-      <path d="M114.853 113.891C108.995 111.775 99.2337 109.25 86 109.25C72.7663 109.25 63.005 111.775 57.1475 113.891C52.7225 115.491 49.75 119.741 49.75 124.467V135.5C49.75 136.19 50.31 136.75 51 136.75H121C121.69 136.75 122.25 136.19 122.25 135.5V124.467C122.25 119.741 119.278 115.491 114.853 113.891Z" fill="white" fillOpacity="0.8"/>
-      <path d="M86 101.75C96.3387 101.75 104.75 93.3387 104.75 83V78C104.75 67.6613 96.3387 59.25 86 59.25C75.6613 59.25 67.25 67.6613 67.25 78V83C67.25 93.3387 75.6613 101.75 86 101.75Z" fill="white" fillOpacity="0.8"/>
-      <rect opacity="0.4" x="177" y="35" width="135" height="10" rx="5" fill="#141245"/>
-      <rect x="177" y="151" width="33" height="10" rx="5" fill="#6E6D8F" fillOpacity="0.4"/>
-      <rect x="215" y="151" width="33" height="10" rx="5" fill="#6E6D8F" fillOpacity="0.4"/>
-      <rect x="253" y="151" width="71" height="10" rx="5" fill="#6E6D8F" fillOpacity="0.4"/>
-      <rect x="177" y="58" width="90" height="10" rx="5" fill="#6E6D8F" fillOpacity="0.4"/>
-      <rect x="177" y="76" width="109" height="10" rx="5" fill="#6E6D8F" fillOpacity="0.4"/>
-      <rect x="177" y="94" width="76" height="10" rx="5" fill="#6E6D8F" fillOpacity="0.4"/>
+      <rect width="354" height="196" rx="8" fill="#141245" fillOpacity="0.12" />
+      <rect
+        x="0.5"
+        y="0.5"
+        width="353"
+        height="195"
+        rx="7.5"
+        stroke="#141245"
+        strokeOpacity="0.1"
+      />
+      <rect
+        x="18"
+        y="21"
+        width="135"
+        height="154"
+        rx="8"
+        fill="#6E6D8F"
+        fillOpacity="0.24"
+      />
+      <rect
+        x="18.5"
+        y="21.5"
+        width="134"
+        height="153"
+        rx="7.5"
+        stroke="white"
+        strokeOpacity="0.1"
+      />
+      <path
+        d="M114.853 113.891C108.995 111.775 99.2337 109.25 86 109.25C72.7663 109.25 63.005 111.775 57.1475 113.891C52.7225 115.491 49.75 119.741 49.75 124.467V135.5C49.75 136.19 50.31 136.75 51 136.75H121C121.69 136.75 122.25 136.19 122.25 135.5V124.467C122.25 119.741 119.278 115.491 114.853 113.891Z"
+        fill="white"
+        fillOpacity="0.8"
+      />
+      <path
+        d="M86 101.75C96.3387 101.75 104.75 93.3387 104.75 83V78C104.75 67.6613 96.3387 59.25 86 59.25C75.6613 59.25 67.25 67.6613 67.25 78V83C67.25 93.3387 75.6613 101.75 86 101.75Z"
+        fill="white"
+        fillOpacity="0.8"
+      />
+      <rect
+        opacity="0.4"
+        x="177"
+        y="35"
+        width="135"
+        height="10"
+        rx="5"
+        fill="#141245"
+      />
+      <rect
+        x="177"
+        y="151"
+        width="33"
+        height="10"
+        rx="5"
+        fill="#6E6D8F"
+        fillOpacity="0.4"
+      />
+      <rect
+        x="215"
+        y="151"
+        width="33"
+        height="10"
+        rx="5"
+        fill="#6E6D8F"
+        fillOpacity="0.4"
+      />
+      <rect
+        x="253"
+        y="151"
+        width="71"
+        height="10"
+        rx="5"
+        fill="#6E6D8F"
+        fillOpacity="0.4"
+      />
+      <rect
+        x="177"
+        y="58"
+        width="90"
+        height="10"
+        rx="5"
+        fill="#6E6D8F"
+        fillOpacity="0.4"
+      />
+      <rect
+        x="177"
+        y="76"
+        width="109"
+        height="10"
+        rx="5"
+        fill="#6E6D8F"
+        fillOpacity="0.4"
+      />
+      <rect
+        x="177"
+        y="94"
+        width="76"
+        height="10"
+        rx="5"
+        fill="#6E6D8F"
+        fillOpacity="0.4"
+      />
     </g>
   ),
   nationalIdBack: (
@@ -1315,19 +1575,115 @@ export const Icons = {
   ),
   nationalIdBackLight: (
     <g>
-      <rect width="354" height="196" rx="8" fill="#141245" fillOpacity="0.12"/>
-      <rect x="0.5" y="0.5" width="353" height="195" rx="7.5" stroke="#141245" strokeOpacity="0.1"/>
-      <rect x="216.5" y="117.5" width="105" height="47" rx="7.5" stroke="white" strokeOpacity="0.1"/>
-      <rect opacity="0.4" x="32" y="155" width="33" height="10" rx="5" fill="#141245"/>
-      <rect x="70" y="155" width="33" height="10" rx="5" fill="#6E6D8F" fillOpacity="0.4"/>
-      <rect x="108" y="155" width="71" height="10" rx="5" fill="#6E6D8F" fillOpacity="0.4"/>
-      <rect x="32" y="36" width="90" height="10" rx="5" fill="#6E6D8F" fillOpacity="0.4"/>
-      <rect x="183" y="36" width="130" height="10" rx="5" fill="#6E6D8F" fillOpacity="0.4"/>
-      <rect x="32" y="54" width="109" height="10" rx="5" fill="#6E6D8F" fillOpacity="0.4"/>
-      <rect x="183" y="54" width="48" height="10" rx="5" fill="#6E6D8F" fillOpacity="0.4"/>
-      <rect x="237" y="54" width="48" height="10" rx="5" fill="white" fillOpacity="0.12"/>
-      <rect x="32" y="72" width="76" height="10" rx="5" fill="#6E6D8F" fillOpacity="0.4"/>
-      <rect x="183" y="72" width="107" height="10" rx="5" fill="#6E6D8F" fillOpacity="0.4"/>
+      <rect width="354" height="196" rx="8" fill="#141245" fillOpacity="0.12" />
+      <rect
+        x="0.5"
+        y="0.5"
+        width="353"
+        height="195"
+        rx="7.5"
+        stroke="#141245"
+        strokeOpacity="0.1"
+      />
+      <rect
+        x="216.5"
+        y="117.5"
+        width="105"
+        height="47"
+        rx="7.5"
+        stroke="white"
+        strokeOpacity="0.1"
+      />
+      <rect
+        opacity="0.4"
+        x="32"
+        y="155"
+        width="33"
+        height="10"
+        rx="5"
+        fill="#141245"
+      />
+      <rect
+        x="70"
+        y="155"
+        width="33"
+        height="10"
+        rx="5"
+        fill="#6E6D8F"
+        fillOpacity="0.4"
+      />
+      <rect
+        x="108"
+        y="155"
+        width="71"
+        height="10"
+        rx="5"
+        fill="#6E6D8F"
+        fillOpacity="0.4"
+      />
+      <rect
+        x="32"
+        y="36"
+        width="90"
+        height="10"
+        rx="5"
+        fill="#6E6D8F"
+        fillOpacity="0.4"
+      />
+      <rect
+        x="183"
+        y="36"
+        width="130"
+        height="10"
+        rx="5"
+        fill="#6E6D8F"
+        fillOpacity="0.4"
+      />
+      <rect
+        x="32"
+        y="54"
+        width="109"
+        height="10"
+        rx="5"
+        fill="#6E6D8F"
+        fillOpacity="0.4"
+      />
+      <rect
+        x="183"
+        y="54"
+        width="48"
+        height="10"
+        rx="5"
+        fill="#6E6D8F"
+        fillOpacity="0.4"
+      />
+      <rect
+        x="237"
+        y="54"
+        width="48"
+        height="10"
+        rx="5"
+        fill="white"
+        fillOpacity="0.12"
+      />
+      <rect
+        x="32"
+        y="72"
+        width="76"
+        height="10"
+        rx="5"
+        fill="#6E6D8F"
+        fillOpacity="0.4"
+      />
+      <rect
+        x="183"
+        y="72"
+        width="107"
+        height="10"
+        rx="5"
+        fill="#6E6D8F"
+        fillOpacity="0.4"
+      />
     </g>
   ),
   drivingLicenseFront: (
@@ -1456,22 +1812,135 @@ export const Icons = {
   ),
   drivingLicenseFrontLight: (
     <g>
-      <rect width="354" height="196" rx="8" fill="#141245" fillOpacity="0.12"/>
-      <rect x="0.5" y="0.5" width="353" height="195" rx="7.5" stroke="#141245" strokeOpacity="0.1"/>
-      <rect x="18" y="65.4889" width="96" height="109.511" rx="8" fill="#6E6D8F" fillOpacity="0.24"/>
-      <rect x="18.5" y="65.9889" width="95" height="108.511" rx="7.5" stroke="white" strokeOpacity="0.1"/>
-      <rect x="18" y="17.9996" width="118" height="40" rx="8" fill="#6E6D8F" fillOpacity="0.24"/>
-      <rect x="18.5" y="18.4996" width="117" height="39" rx="7.5" stroke="white" strokeOpacity="0.1"/>
-      <path d="M86.8727 131.545C82.7074 130.04 75.7661 128.244 66.3554 128.244C56.9447 128.244 50.0034 130.04 45.8381 131.545C42.6914 132.683 40.5776 135.705 40.5776 139.066V146.911C40.5776 147.402 40.9759 147.8 41.4665 147.8H91.2443C91.735 147.8 92.1332 147.402 92.1332 146.911V139.066C92.1332 135.705 90.0194 132.683 86.8727 131.545Z" fill="white" fillOpacity="0.8"/>
-      <path d="M66.3553 122.911C73.7073 122.911 79.6886 116.93 79.6886 109.578V106.022C79.6886 98.6702 73.7073 92.6889 66.3553 92.6889C59.0033 92.6889 53.022 98.6702 53.022 106.022V109.578C53.022 116.93 59.0033 122.911 66.3553 122.911Z" fill="white" fillOpacity="0.8"/>
-      <rect opacity="0.4" x="162" y="35" width="76" height="10" rx="5" fill="#141245"/>
-      <rect opacity="0.4" x="244" y="35" width="46" height="10" rx="5" fill="#141245"/>
-      <rect x="162" y="58" width="86" height="10" rx="5" fill="#6E6D8F" fillOpacity="0.4"/>
-      <rect x="162" y="112" width="86" height="10" rx="5" fill="#6E6D8F" fillOpacity="0.4"/>
-      <rect x="162" y="76" width="80" height="10" rx="5" fill="#6E6D8F" fillOpacity="0.4"/>
-      <rect x="162" y="130" width="109" height="10" rx="5" fill="#6E6D8F" fillOpacity="0.4"/>
-      <rect x="162" y="94" width="109" height="10" rx="5" fill="#6E6D8F" fillOpacity="0.4"/>
-      <rect x="161.953" y="148.422" width="74.9984" height="10" rx="5" transform="rotate(-0.561382 161.953 148.422)" fill="#6E6D8F" fillOpacity="0.4"/>
+      <rect width="354" height="196" rx="8" fill="#141245" fillOpacity="0.12" />
+      <rect
+        x="0.5"
+        y="0.5"
+        width="353"
+        height="195"
+        rx="7.5"
+        stroke="#141245"
+        strokeOpacity="0.1"
+      />
+      <rect
+        x="18"
+        y="65.4889"
+        width="96"
+        height="109.511"
+        rx="8"
+        fill="#6E6D8F"
+        fillOpacity="0.24"
+      />
+      <rect
+        x="18.5"
+        y="65.9889"
+        width="95"
+        height="108.511"
+        rx="7.5"
+        stroke="white"
+        strokeOpacity="0.1"
+      />
+      <rect
+        x="18"
+        y="17.9996"
+        width="118"
+        height="40"
+        rx="8"
+        fill="#6E6D8F"
+        fillOpacity="0.24"
+      />
+      <rect
+        x="18.5"
+        y="18.4996"
+        width="117"
+        height="39"
+        rx="7.5"
+        stroke="white"
+        strokeOpacity="0.1"
+      />
+      <path
+        d="M86.8727 131.545C82.7074 130.04 75.7661 128.244 66.3554 128.244C56.9447 128.244 50.0034 130.04 45.8381 131.545C42.6914 132.683 40.5776 135.705 40.5776 139.066V146.911C40.5776 147.402 40.9759 147.8 41.4665 147.8H91.2443C91.735 147.8 92.1332 147.402 92.1332 146.911V139.066C92.1332 135.705 90.0194 132.683 86.8727 131.545Z"
+        fill="white"
+        fillOpacity="0.8"
+      />
+      <path
+        d="M66.3553 122.911C73.7073 122.911 79.6886 116.93 79.6886 109.578V106.022C79.6886 98.6702 73.7073 92.6889 66.3553 92.6889C59.0033 92.6889 53.022 98.6702 53.022 106.022V109.578C53.022 116.93 59.0033 122.911 66.3553 122.911Z"
+        fill="white"
+        fillOpacity="0.8"
+      />
+      <rect
+        opacity="0.4"
+        x="162"
+        y="35"
+        width="76"
+        height="10"
+        rx="5"
+        fill="#141245"
+      />
+      <rect
+        opacity="0.4"
+        x="244"
+        y="35"
+        width="46"
+        height="10"
+        rx="5"
+        fill="#141245"
+      />
+      <rect
+        x="162"
+        y="58"
+        width="86"
+        height="10"
+        rx="5"
+        fill="#6E6D8F"
+        fillOpacity="0.4"
+      />
+      <rect
+        x="162"
+        y="112"
+        width="86"
+        height="10"
+        rx="5"
+        fill="#6E6D8F"
+        fillOpacity="0.4"
+      />
+      <rect
+        x="162"
+        y="76"
+        width="80"
+        height="10"
+        rx="5"
+        fill="#6E6D8F"
+        fillOpacity="0.4"
+      />
+      <rect
+        x="162"
+        y="130"
+        width="109"
+        height="10"
+        rx="5"
+        fill="#6E6D8F"
+        fillOpacity="0.4"
+      />
+      <rect
+        x="162"
+        y="94"
+        width="109"
+        height="10"
+        rx="5"
+        fill="#6E6D8F"
+        fillOpacity="0.4"
+      />
+      <rect
+        x="161.953"
+        y="148.422"
+        width="74.9984"
+        height="10"
+        rx="5"
+        transform="rotate(-0.561382 161.953 148.422)"
+        fill="#6E6D8F"
+        fillOpacity="0.4"
+      />
     </g>
   )
 }

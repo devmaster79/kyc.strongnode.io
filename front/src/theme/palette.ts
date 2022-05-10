@@ -153,7 +153,8 @@ const palette = {
       paper: GREY[800],
       neutral: GREY['500_16'],
       gradient: 'linear-gradient(180deg, #FAFAFF 0%, #F3F3FC 100%);',
-      walletGradient: 'linear-gradient(91.67deg, #F5F5FD 1.25%, rgba(245, 245, 253, 0) 98.45%)',
+      walletGradient:
+        'linear-gradient(91.67deg, #F5F5FD 1.25%, rgba(245, 245, 253, 0) 98.45%)',
       qr: 'difference',
       modal: 'rgba(151,151,176,0.8)',
       modalSecondary: WHITE[100],
@@ -206,7 +207,8 @@ const palette = {
       paper: GREY[800],
       neutral: GREY['500_16'],
       gradient: 'linear-gradient(111.76deg, #14133E 0%, #0B0B77 104.05%)',
-      walletGradient: 'linear-gradient(91.67deg, #111056 1.25%, rgba(17, 16, 86, 0) 98.45%)',
+      walletGradient:
+        'linear-gradient(91.67deg, #111056 1.25%, rgba(17, 16, 86, 0) 98.45%)',
       qr: 'lighten',
       modal: NIGHTBLUE[85],
       modalSecondary: NIGHTBLUE[100],

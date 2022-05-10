@@ -91,8 +91,8 @@ const SelectWrapper = styled.div`
   }
 
   .active {
-    background: linear-gradient(90.39deg, #AA1FEC 0.24%, #7A3BFE 101.6%);
-    background-color: #7A3BFE;
+    background: linear-gradient(90.39deg, #aa1fec 0.24%, #7a3bfe 101.6%);
+    background-color: #7a3bfe;
     color: ${(props) => props.theme.palette.button.text};
   }
 `

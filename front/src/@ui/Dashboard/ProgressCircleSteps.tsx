@@ -19,14 +19,14 @@ export const Container = styled.div`
   @media only screen and (max-width: 600px) {
     flex-direction: column;
   }
-`;
+`
 
 export function Step(props: ProgressCircleProps) {
   const { label, progressAmount, progressLabel, progressBorder, disabled } =
     props
   const percentage = progressAmount
 
-  const theme: CustomTheme = useTheme();
+  const theme: CustomTheme = useTheme()
 
   const Container = styled.div<{
     disabled: boolean
@@ -41,7 +41,7 @@ export function Step(props: ProgressCircleProps) {
     @media only screen and (max-width: 600px) {
       margin-bottom: 70px;
     }
-  `;
+  `
   const ProgressContainer = styled.div<{
     border: boolean
   }>`
@@ -90,13 +90,13 @@ export function Step(props: ProgressCircleProps) {
             textColor: '#FFF',
             pathColor: `${progressBorder ? '#13124A' : '#AA1FEC'}`,
             trailColor: `${
-                            progressBorder
-                                ? theme.palette.progressCircle.trailColorPrimary
-                                : theme.palette.progressCircle.trailColorSecondary
-                        }`,
+              progressBorder
+                ? theme.palette.progressCircle.trailColorPrimary
+                : theme.palette.progressCircle.trailColorSecondary
+            }`,
             strokeLinecap: 'butt'
           })}
-                />
+        />
       </ProgressContainer>
       <Label>{label.toUpperCase()}</Label>
     </Container>
@@ -113,7 +113,7 @@ export function Separator() {
     @media only screen and (max-width: 600px) {
       transform: rotate(90deg);
     }
-  `;
+  `
   const Line = styled.div`
     border: 1px solid #fff;
     width: 83px;

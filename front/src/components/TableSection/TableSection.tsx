@@ -122,7 +122,7 @@ const TableSectionWrapper = styled.div`
   @media only screen and (max-width: 600px) {
     margin-bottom: 20px;
   }
-`;
+`
 const HeaderWrapper = styled.div`
   display: flex;
   justify-content: space-between;
@@ -136,7 +136,7 @@ const HeaderWrapper = styled.div`
       padding-bottom: 20px;
     }
   }
-`;
+`
 
 const ComingSoonWrapper = styled.div`
   display: flex;

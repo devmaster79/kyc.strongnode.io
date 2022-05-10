@@ -138,14 +138,6 @@ export default function NewsCarousel() {
     })
   }
 
-  const handlePrevious = () => {
-    carouselRef.current.slickPrev()
-  }
-
-  const handleNext = () => {
-    carouselRef.current.slickNext()
-  }
-
   return (
     <RootStyle>
       <Slider ref={carouselRef} {...settings}>

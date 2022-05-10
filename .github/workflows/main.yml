@@ -16,6 +16,30 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
+  test:
+    if: github.actor != 'fxdave'
+    runs-on: ubuntu-latest
+    env:
+      NODE_OPTIONS: --max_old_space_size=2048
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '17.9.0'
+      - name: Setup frontend
+        run: |
+          cd front
+          npm i
+          echo "REACT_APP_BASE_URL=https://stage.strongnode.io:8080" > .env
+      - name: Setup backend
+        run: |
+          cd back
+          npm i
+          echo ${{ secrets.ENV_STAGE_FILE }} | base64 -d > .env
+      - name: Run pre-push hook
+        run: ./.githooks/pre-push
+
   deploy_dev:
     if: github.ref == 'refs/heads/dev'
     # The type of runner that the job will run on
