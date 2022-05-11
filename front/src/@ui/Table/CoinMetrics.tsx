@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import styled from '@emotion/styled/macro'
 import TableSection from 'components/TableSection/TableSection'
+import { DataSet } from '@ui/Table/MainTable/MainTable'
 import cryptoDataService from '../../services/cryptoDataService'
 import { AxiosResponse } from 'axios'
 
@@ -193,7 +194,11 @@ export const CoinMetrics = (props: CoinMetricsProps) => {
       title={props.title}
       subtitle={props.subtitle}
       overwrittenFields={overwrittenFields}
-      dataSet={tableData.items?.length > 0 ? tableData : sampleData}
+      dataSet={
+        (tableData.items?.length > 0
+          ? tableData
+          : sampleData) as unknown as DataSet<Record<string, unknown>>
+      }
       columns={sampleColumns}
     />
   )
