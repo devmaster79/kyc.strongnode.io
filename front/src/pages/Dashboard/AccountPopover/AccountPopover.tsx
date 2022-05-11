@@ -11,8 +11,9 @@ import userService from 'services/userService'
 import * as authService from 'services/auth'
 import Icon from '@ui/Icon/Icon'
 import { useTheme } from '@mui/styles'
-import { useEthers, useEtherBalance } from '@usedapp/core'
+import { useEthers, useEtherBalance, useTokenBalance } from '@usedapp/core'
 import { useGetTokenBalanceFormatted } from '../../../hooks/useGetTokenBalanceFormatted'
+import { tokenAddressDictionary } from '../../../services/walletService'
 
 export default function AccountPopover (props: any) {
   const navigate = useNavigate()
@@ -21,8 +22,8 @@ export default function AccountPopover (props: any) {
   const [email, setEmail] = useState('')
   const [avatar, setAvatar] = useState('')
   const [showModal, setShowModal] = useState(false)
-  const SNEBalance = useGetTokenBalanceFormatted(account)
-  const etherBalance = useEtherBalance(account)
+  const SNEBalance = useGetTokenBalanceFormatted(account, tokenAddressDictionary.strongnode)
+  // const etherBalance = useEtherBalance(account)
 
   useEffect(() => {
     setEmail(localStorage.getItem('email') || '')
@@ -69,7 +70,7 @@ export default function AccountPopover (props: any) {
           <span>{email}</span>
           <ConnectButton />
           <ol>
-            <li>SNE balance <span style={{ float: 'right' }}>{SNEBalance || 'unknown'}</span> ether balance: {etherBalance}</li>
+            <li>SNE balance <span style={{ float: 'right' }}>{SNEBalance || '-'}</span></li>
           </ol>
           <ul>
             <li onClick={navigateToKyc} aria-hidden>My Account</li>
