@@ -59,7 +59,6 @@ export default function Dashboard() {
         />
         <h1 style={{ marginTop: '56px' }}>DeFi Dashboard</h1>
         <CryptoChart wrapperStyles={{ marginTop: '16px', width: '100%' }} />
-
         <Grid>
           <Grid>
             <CoinMetrics title="Coin Metrics" hideHeading />

@@ -42,6 +42,18 @@ export const Input = withAttrs(
   }
 )
 
+export const ModalInput = styled(Input)`
+  background: ${(props) => props.theme.palette.background.inputModal}!important;
+
+  ${FloatingLabelWrapper} {
+    :focus-within > .floating-label,
+    input:not(:placeholder-shown) + .floating-label,
+    input:-webkit-autofill + .floating-label {
+      background: ${(props) =>
+        props.theme.palette.background.floatingModalInput};
+  }
+`
+
 export const Button = styled(GenericButton)`
   margin: 0 20%;
   height: 56px;
@@ -105,11 +117,14 @@ export const ErrorMessage = styled(InfoMessage)((props) => ({
 
 export const Row = styled('div')({
   display: 'flex',
-  gap: '1em'
+  gap: '1em',
+  flexWrap: 'wrap',
+  justifyContent: 'center'
 })
 
 export const Column = styled('div')({
   flexFlow: 'column',
   display: 'flex',
-  gap: '1em'
+  gap: '1em',
+  flex: '1 1 100px'
 })

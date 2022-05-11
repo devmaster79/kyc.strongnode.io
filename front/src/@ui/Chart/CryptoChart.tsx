@@ -4,6 +4,7 @@ import styled from '@emotion/styled/macro'
 import cryptoDataService from '../../services/cryptoDataService'
 import { ValueTrendIndicator } from './ValueTrendIndicator'
 import { ChartScopeSelector, SelectorItem } from './ChartScopeSelector'
+import MultiSwitch from '@ui/MultiSwitch/MultiSwitch'
 
 // sample placeholder data
 const placeholderData = [
@@ -29,6 +30,11 @@ type CryptoChartProps = {
 interface ValueWithTimeStamp {
   timestamp: string
   value: string
+}
+
+type SwitchOption = {
+  label: string
+  value: number
 }
 
 export const CryptoChart = (props: CryptoChartProps) => {
@@ -67,6 +73,15 @@ export const CryptoChart = (props: CryptoChartProps) => {
     }
   ] as SelectorItem[]
 
+  const switchOptions = [
+    { label: 'Price', value: 1 },
+    { label: 'Market Cap', value: 2 },
+    { label: 'Trading View', value: 3 }
+  ] as SwitchOption[]
+
+  const [selectedSwitchOption, setSelectedSwitchOption] =
+    useState<SwitchOption>()
+
   useEffect(() => {
     const loadStrongnodeCurrency = async () => {
       const data = await cryptoDataService.getChartDataAsync(chartScopeFormat)
@@ -94,27 +109,38 @@ export const CryptoChart = (props: CryptoChartProps) => {
     const refreshDataInterval = setInterval(() => {
       loadStrongnodeCurrency()
     }, 10000)
+    setSelectedSwitchOption(switchOptions[0])
 
     return () => clearInterval(refreshDataInterval)
   }, [chartScopeFormat, targetCurrency])
 
   return (
     <div style={props.wrapperStyles}>
-      <ChartScopeSelector
-        style={{ float: 'right' }}
-        selectors={chartSelectors}
-      />
-      <CryptoPair>
-        <Pair>
-          {cryptoCurrency}/{targetCurrency}
-        </Pair>
-      </CryptoPair>
-      <TrendPairWrapper>
-        <ValueTrendIndicator
-          value={valueTrendIndicator.value}
-          up={valueTrendIndicator.up}
-        />
-      </TrendPairWrapper>
+      <HeadingWrapper>
+        <div>
+          <CryptoPair>
+            <Pair>
+              {cryptoCurrency}/{targetCurrency}
+            </Pair>
+          </CryptoPair>
+          <TrendPairWrapper>
+            <ValueTrendIndicator
+              value={valueTrendIndicator.value}
+              up={valueTrendIndicator.up}
+            />
+          </TrendPairWrapper>
+        </div>
+        {switchOptions && selectedSwitchOption && (
+          <MultiSwitch
+            options={switchOptions}
+            value={selectedSwitchOption}
+            onChange={(option) => {
+              setSelectedSwitchOption(option)
+            }}
+          />
+        )}
+        <ChartScopeSelector selectors={chartSelectors} />
+      </HeadingWrapper>
       <BaseChart
         xAxisFormat={chartScopeFormat}
         data={(chartDataTemp || placeholderData) as  unknown}
@@ -128,6 +154,12 @@ export const CryptoChart = (props: CryptoChartProps) => {
 
 const CryptoPair = styled.div`
   width: max-content;
+`
+
+const HeadingWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 `
 
 const Pair = styled.div`

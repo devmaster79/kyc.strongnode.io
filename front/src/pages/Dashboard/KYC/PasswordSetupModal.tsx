@@ -54,7 +54,7 @@ export function PasswordSetupModal({
         </>
       }>
       <ModalForm>
-        <DashboardForm.Input
+        <DashboardForm.ModalInput
           inputProps={{
             autoComplete: 'false',
             type: 'password',
@@ -63,7 +63,7 @@ export function PasswordSetupModal({
             onChange: (event) => setPassword1(event.target.value)
           }}
         />
-        <DashboardForm.Input
+        <DashboardForm.ModalInput
           inputProps={{
             autoComplete: 'false',
             type: 'password',
