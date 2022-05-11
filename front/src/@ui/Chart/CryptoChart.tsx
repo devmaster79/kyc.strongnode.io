@@ -117,7 +117,7 @@ export const CryptoChart = (props: CryptoChartProps) => {
       </TrendPairWrapper>
       <BaseChart
         xAxisFormat={chartScopeFormat}
-        data={chartDataTemp || placeholderData}
+        data={(chartDataTemp || placeholderData) as  unknown}
         xKey="timestamp"
         yKey="value"
         chartKey="value"

@@ -73,7 +73,7 @@ const UploadWrapper = styled.div`
     width: 354px;
     height: 196px;
     object-fit: cover;
-    border: 1px solid ${(props) => props.theme.palette.border.light};
+    border: 1px solid ${(props) => props.theme?.palette?.border?.light};
     border-radius: 8px;
   }
 `

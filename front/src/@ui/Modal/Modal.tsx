@@ -61,7 +61,7 @@ const ModalWrapper = styled.div<ModalWrapperProps>`
   height: 100vh;
   width: 100vw;
   padding: 8rem;
-  background-color: ${(props) => props.theme.palette.background.modal};
+  background-color: ${(props) => props.theme?.palette?.background?.modal};
   position: fixed;
   top: 0;
   left: 0;
@@ -83,8 +83,8 @@ const StyledModal = styled.div<StyledModalProps>`
   min-width: 642px;
   height: ${({ scrollable }) => (scrollable ? '100%' : 'unset')};
   overflow: auto;
-  background: ${(props) => props.theme.palette.background.modalSecondary};
-  border: 1px solid ${(props) => props.theme.palette.border.light};
+  background: ${(props) => props.theme?.palette?.background?.modalSecondary};
+  border: 1px solid ${(props) => props.theme?.palette?.border?.light};
   box-sizing: border-box;
   border-radius: 10px;
   display: flex;
@@ -93,7 +93,7 @@ const StyledModal = styled.div<StyledModalProps>`
   text-align: center;
   line-height: 24px;
 
-  color: ${(props) => props.theme.palette.text.secondary};
+  color: ${(props) => props.theme?.palette?.text?.secondary};
 
   h1 {
     font-size: 18px;

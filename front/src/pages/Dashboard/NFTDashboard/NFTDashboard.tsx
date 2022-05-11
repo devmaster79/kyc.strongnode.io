@@ -165,7 +165,7 @@ const AutocompleteStyle = styled.div`
     font-weight: 400;
     font-size: 14px;
     line-height: 19px;
-    color: ${(props) => props.theme.palette.text.secondary};
+    color: ${(props) => props.theme?.palette?.text?.secondary};
   }
 `
 const TitleWrapper = styled.div`

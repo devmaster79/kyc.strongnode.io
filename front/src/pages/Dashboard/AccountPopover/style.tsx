@@ -15,7 +15,7 @@ export const AccountPopoverWrapper = styled.div`
   right: 0px;
   display: flex;
   flex-direction: column;
-  background: ${(props) => props.theme.palette.background.primary};
+  background: ${(props) => props.theme?.palette?.background?.primary};
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-sizing: border-box;
   border-radius: 10px;
@@ -23,10 +23,10 @@ export const AccountPopoverWrapper = styled.div`
   line-height: 140%;
   font-size: 16px;
   text-align: center;
-  color: ${(props) => props.theme.palette.text.primary};
+  color: ${(props) => props.theme?.palette?.text?.primary};
 
   & > span {
-    color: ${(props) => props.theme.palette.text.secondary};
+    color: ${(props) => props.theme?.palette?.text?.secondary};
   }
 
   & > ul {
@@ -38,7 +38,7 @@ export const AccountPopoverWrapper = styled.div`
 
     & > li {
       padding: 16px 0px;
-      border-bottom: 1px solid ${(props) => props.theme.palette.border.light};
+      border-bottom: 1px solid ${(props) => props.theme?.palette?.border?.light};
       cursor: pointer;
     }
   }
@@ -47,7 +47,7 @@ export const AccountPopoverWrapper = styled.div`
 export const AvatarIconWrapper = styled.div`
   width: 40px;
   height: 40px;
-  background: ${(props) => props.theme.palette.icon.wrapper};
+  background: ${(props) => props.theme?.palette?.icon?.wrapper};
   box-shadow: 0px 1px 0px rgba(255, 255, 255, 0.25),
     inset 0px 0px 18px rgba(255, 255, 255, 0.12);
   border-radius: 102px;

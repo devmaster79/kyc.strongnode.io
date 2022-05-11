@@ -87,20 +87,20 @@ const TableSectionWrapper = styled.div`
   margin-bottom: 200px;
   margin-top: 32px;
 
-  background: ${(props) => props.theme.palette.background.primary};
-  border: 1px solid ${(props) => props.theme.palette.border.light};
+  background: ${(props) => props.theme?.palette?.background?.primary};
+  border: 1px solid ${(props) => props.theme?.palette?.border?.light};
   box-sizing: border-box;
   border-radius: 10px;
   padding: 32px;
   h2 {
     font-size: 18px;
-    color: ${(props) => props.theme.palette.text.primary};
+    color: ${(props) => props.theme?.palette?.text?.primary};
     font-weight: 900;
 
     span {
       font-family: 'Satoshi-Regular';
       font-size: 14px;
-      color: ${(props) => props.theme.palette.text.secondary};
+      color: ${(props) => props.theme?.palette?.text?.secondary};
       padding-left: 7px;
     }
   }
@@ -140,6 +140,6 @@ const ComingSoonWrapper = styled.div`
   span {
     font-family: 'Satoshi-Regular';
     font-size: 14px;
-    color: ${(props) => props.theme.palette.text.secondary};
+    color: ${(props) => props.theme?.palette?.text?.secondary};
   }
 `

@@ -177,7 +177,7 @@ const Secret = styled.div`
   box-sizing: border-box;
   border-radius: 8px;
   code {
-    color: ${(props) => props.theme.palette.text.primary};
+    color: ${(props) => props.theme?.palette?.text?.primary};
     word-wrap: break-word;
     overflow-wrap: anywhere;
     flex: 1;

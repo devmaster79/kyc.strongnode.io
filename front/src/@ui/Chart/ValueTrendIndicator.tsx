@@ -42,13 +42,13 @@ const CustomSvg = styled.svg`
   }
 
   path:nth-child(3) {
-    fill: ${(props) => props.theme.palette.icon.active};
+    fill: ${(props) => props.theme?.palette?.icon?.active};
   }
 `
 
 const ValueIndicatorWrapper = styled.div`
   width: max-content;
-  color: ${(props) => props.theme.palette.text.primary};
+  color: ${(props) => props.theme?.palette?.text?.primary};
 
   p {
     font-weight: 900;
@@ -56,7 +56,7 @@ const ValueIndicatorWrapper = styled.div`
     display: inline-block;
     vertical-align: middle;
     opacity: 0.4;
-    color: ${(props) => props.theme.palette.text.primary};
+    color: ${(props) => props.theme?.palette?.text?.primary};
   }
 
   svg {

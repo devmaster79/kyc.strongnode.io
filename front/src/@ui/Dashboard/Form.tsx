@@ -9,15 +9,15 @@ import { withAttrs } from '@ui/utils/withAttrs'
 
 export const Input = withAttrs(
   styled(InputField)`
-    background: ${(props) => props.theme.palette.background.input}!important;
+    background: ${(props) => props.theme?.palette?.background?.input}!important;
 
     ${(props) =>
       props.error
-        ? `border: 1px solid ${props.theme.palette.error.light};`
+        ? `border: 1px solid ${props.theme?.palette?.error?.light};`
         : 'border: 1px solid rgba(255, 255, 255, 0.1);'}
     ${(props) =>
       props.error
-        ? `background: ${props.theme.palette.error.light};`
+        ? `background: ${props.theme?.palette?.error?.light};`
         : 'background: rgba(255, 255, 255, 0.08);'}
 
   ${FloatingLabelWrapper} {
@@ -96,11 +96,11 @@ export const Hr = styled.hr`
 export const InfoMessage = styled('p')((props) => ({
   textAlign: 'center',
   marginBottom: '10px',
-  color: props.theme.palette.info.main
+  color: props.theme?.palette?.info?.main
 }))
 
 export const ErrorMessage = styled(InfoMessage)((props) => ({
-  color: props.theme.palette.error.main
+  color: props.theme?.palette?.error?.main
 }))
 
 export const Row = styled('div')({

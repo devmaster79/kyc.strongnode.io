@@ -112,7 +112,7 @@ const Title = styled.h1`
   b {
     font-weight: 900;
   }
-  color: ${(props) => props.theme.palette.text.primary};
+  color: ${(props) => props.theme?.palette?.text?.primary};
 `
 const HelpText = styled.div`
   margin: 32px 0 24px 0;

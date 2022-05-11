@@ -8,7 +8,7 @@ const useStyles = makeStyles((theme) =>
       '.apexcharts-tooltip,.apexcharts-xaxistooltip': {
         border: '0 !important',
         boxShadow: `${theme.customShadows.z24} !important`,
-        color: `${theme.palette.text.primary} !important`,
+        color: `${theme?.palette?.text?.primary} !important`,
         borderRadius: `${theme.shape.borderRadiusSm}px !important`,
         backgroundColor: `${theme.palette.background.default} !important`
       },

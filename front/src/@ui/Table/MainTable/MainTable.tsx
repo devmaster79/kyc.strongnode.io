@@ -56,7 +56,7 @@ export default function MainTable<Item extends Record<string, unknown>>({
             )}
             {dataSet &&
               dataSet.items.map((row: Item) => (
-                <tr key={row.id}>
+                <tr key={row['id'] as string}>
                   {columns.map((column: Column) => (
                     <td key={column.id}>
                       {overwrittenFields[column.id] ? (
@@ -65,9 +65,9 @@ export default function MainTable<Item extends Record<string, unknown>>({
                         ](row[column.id])
                       ) : (
                         <p>
-                          {column.id === 'date'
-                            ? fDate(row[column.id])
-                            : row[column.id]}
+                          {column['id'] === 'date'
+                            ? fDate(row[column.id] as string)
+                            : row[column.id] as string}
                         </p>
                       )}
                     </td>

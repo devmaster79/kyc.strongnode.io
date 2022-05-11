@@ -55,7 +55,7 @@ const SidebarButton = ({
           width={24}
           viewBox="0 0 24 24"
           color={
-            active ? theme.palette.icon.active : theme.palette.icon.primary
+            active ? theme?.palette?.icon?.active : theme?.palette?.icon?.primary
           }>
           {tooltipHint}
         </Svg>
@@ -95,6 +95,6 @@ const ButtonWrapper = styled.button`
   }
 
   &:hover ${Svg} path {
-    stroke: ${(props) => props.theme.palette.icon.primary};
+    stroke: ${(props) => props.theme?.palette?.icon?.primary};
   }
 `

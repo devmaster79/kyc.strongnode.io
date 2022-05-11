@@ -65,7 +65,7 @@ const overwrittenFields = {
       <CryptoWrapper>
         <img
           style={{ width: 40, height: 40 }}
-          src={icon.url.large || ''}
+          src={icon.url?.large || ''}
           alt={icon.name + ' icon'}
         />
         <p>{icon.name}</p>
@@ -116,7 +116,7 @@ interface ValueTrend {
 
 interface IDataIcon {
   name: string
-  url: string
+  url: {large:string}
 }
 
 interface IData {

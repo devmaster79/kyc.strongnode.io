@@ -18,7 +18,7 @@ const Button = styled.button<StyledButtonProps>`
   font-size: 12px;
   line-height: 100%;
   text-transform: uppercase;
-  color: ${(props) => props.theme.palette.button.text};
+  color: ${(props) => props.theme?.palette?.button?.text};
   padding: 12px 54px;
   border: 0px;
   margin: 16px 0px;
@@ -66,15 +66,15 @@ const Button = styled.button<StyledButtonProps>`
   ${(props) => {
     if (props.color === 'invert') {
       return css`
-        background: ${props.theme.palette.button.background.invert};
-        border: 1px solid ${props.theme.palette.border.button};
+        background: ${props.theme?.palette?.button?.background?.invert};
+        border: 1px solid ${props.theme?.palette?.border?.button};
         box-shadow: none;
-        color: ${props.theme.palette.button.invert};
+        color: ${props.theme?.palette?.button?.invert};
       `
     } else if (props.color === 'white') {
       return css`
-        background: ${props.theme.palette.background.white};
-        color: ${props.theme.palette.text.whiteButton};
+        background: ${props.theme?.palette?.background?.white};
+        color: ${props.theme?.palette?.text?.whiteButton};
         box-shadow: none;
       `
     }
