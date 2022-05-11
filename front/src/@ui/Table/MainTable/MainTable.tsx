@@ -20,6 +20,10 @@ export interface Column {
   align: string
 }
 
+type OverwrittenFields = {
+  [key: string]: (value: string) => Element
+}
+
 export default function MainTable<Item extends Record<string, unknown>>({
   dataSet,
   columns,
@@ -60,9 +64,9 @@ export default function MainTable<Item extends Record<string, unknown>>({
                   {columns.map((column: Column) => (
                     <td key={column.id}>
                       {overwrittenFields[column.id] ? (
-                        (overwrittenFields as Record<string, unknown>)[
-                          column?.id
-                        ](row[column?.id])
+                        (overwrittenFields as OverwrittenFields)[column.id](
+                          row[column.id] as string
+                        )
                       ) : (
                         <p>
                           {column['id'] === 'date'
