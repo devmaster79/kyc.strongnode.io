@@ -24,7 +24,6 @@ export default function AccountPopover() {
   const [email, setEmail] = useState('')
   const [showModal, setShowModal] = useState(false)
   const SNEBalance = useGetTokenBalanceFormatted(account)
-  const etherBalance = useEtherBalance(account)
 
   useEffect(() => {
     setEmail(localStorage.getItem('email') || '')
