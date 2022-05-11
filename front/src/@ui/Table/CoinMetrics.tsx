@@ -123,22 +123,6 @@ const overwrittenFields = {
 
 let searchTimeout: any = null
 
-interface IDataIcon {
-  name: string
-  url: any
-}
-
-interface IData {
-  [key: string]: object
-}
-
-type CoinMetricsProps = {
-  title: string
-  subtitle?: string
-  dataSet: Array<IData>
-  columns: Array<IData>
-}
-
 export const CoinMetrics = (props: CoinMetricsProps) => {
   const [tableData, setTableData] = useState<IData>({})
 
@@ -207,6 +191,8 @@ export const CoinMetrics = (props: CoinMetricsProps) => {
 
   return (
     <TableSection
+      finder={{ onChange: addKeywords, searchMaxRow: 5 }}
+      searchColumn={'name'}
       title={props.title}
       subtitle={props.subtitle}
       overwrittenFields={overwrittenFields}
