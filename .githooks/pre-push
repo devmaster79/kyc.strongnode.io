@@ -4,17 +4,12 @@ branch="$(git rev-parse --abbrev-ref HEAD)"
 
 # test and try building backend
 cd back
+npm run lint --max-warnings=0 || exit 1
 npm run build || exit 1
 npm run test || exit 1
 rm -r build
 
 # run linter on frontend
 cd ../front
-npm run lint || exit 1
+npm run lint -- --max-warnings=72 || exit 1
 npm run build || exit 1
-
-NUMBER_OF_WARNINGS=$(npm run lint | grep -Po "(0 errors, ([0-9]+) warnings)" | cut -d' ' -f3)
-[ $NUMBER_OF_WARNINGS -lt 72 ] || {
-    echo "More warnings than allowed"
-    exit 1
-}

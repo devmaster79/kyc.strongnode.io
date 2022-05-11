@@ -1,12 +1,14 @@
-import { template, Sendable } from './BaseTemplate';
+import { template, Sendable } from './BaseTemplate'
 
 export interface RegistrationTemplateParams {
   link: string
 }
 
-export class RegistrationTemplate implements Sendable<RegistrationTemplateParams> {
+export class RegistrationTemplate
+  implements Sendable<RegistrationTemplateParams>
+{
   renderSubject(): string {
-    return 'Please continue your registration';
+    return 'Please continue your registration'
   }
 
   renderBody({ link }: RegistrationTemplateParams) {
@@ -62,6 +64,6 @@ export class RegistrationTemplate implements Sendable<RegistrationTemplateParams
           </td>
         </tr>
       </table>`
-    });
+    })
   }
 }

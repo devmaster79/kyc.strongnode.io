@@ -1,4 +1,4 @@
-const { Sequelize } = require('sequelize');
+const { Sequelize } = require('sequelize')
 
 async function up({ context: queryInterface }) {
   await queryInterface.changeColumn('users', 'email', {
@@ -16,4 +16,4 @@ async function down({ context: queryInterface }) {
   })
 }
 
-module.exports = { up, down };
+module.exports = { up, down }

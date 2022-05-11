@@ -2,7 +2,12 @@
  * Token ids for metrics table.
  * @type {string[]}
  */
-const tokensMetricsListIDs = ['strongnode', 'bitcoin', 'ethereum', 'matic-network']
+const tokensMetricsListIDs = [
+  'strongnode',
+  'bitcoin',
+  'ethereum',
+  'matic-network'
+]
 
 /**
  * Scopes for Charts.
@@ -25,7 +30,6 @@ const scopeDays = {
  * Cryptocurrency data service that takes care of getting data from coingecko api.
  */
 class CryptocurrencyDataService {
-
   /**
    * @param {typeof import('coingecko-api')} coingeckoClient
    */
@@ -33,36 +37,39 @@ class CryptocurrencyDataService {
     this.__coingeckoClient = new coingeckoClient()
   }
 
-  async getTokenChartData (days = 7, vsCurrency = 'usd', tokenId = 'strongnode') {
-    try {
-      const result = await this.__coingeckoClient.coins.fetchMarketChart(tokenId, {vs_currency: vsCurrency, days: days.toString()})
-      return result.data
-    } catch (err) {
-      throw err
-    }
+  /**
+   * @throws something, check 'coingecko-api'
+   */
+  async getTokenChartData(
+    days = 7,
+    vsCurrency = 'usd',
+    tokenId = 'strongnode'
+  ) {
+    const result = await this.__coingeckoClient.coins.fetchMarketChart(
+      tokenId,
+      { vs_currency: vsCurrency, days: days.toString() }
+    )
+    return result.data
   }
 
   /**
    * Method for getting token price.
    * @param tokens
    * @param vsCurrency
+   * @throws something, check 'coingecko-api'
    * @returns {Promise<void>}
    */
-  async getTokenPrice (tokens = 'strongnode', vsCurrency = 'usd') {
-    try {
-      const result = await this.__coingeckoClient.simple.price({
-        ids: tokens,
-        vs_currencies: vsCurrency,
-        include_24hr_vol: true,
-        include_last_updated_at: true,
-        include_24hr_change: true,
-        include_market_cap: true
-      })
+  async getTokenPrice(tokens = 'strongnode', vsCurrency = 'usd') {
+    const result = await this.__coingeckoClient.simple.price({
+      ids: tokens,
+      vs_currencies: vsCurrency,
+      include_24hr_vol: true,
+      include_last_updated_at: true,
+      include_24hr_change: true,
+      include_market_cap: true
+    })
 
-      return result.data
-    } catch (err) {
-      throw err
-    }
+    return result.data
   }
 
   /**
@@ -70,9 +77,8 @@ class CryptocurrencyDataService {
    * @param tokenId
    * @returns {Promise<{code: number, data: (Object|*), message: string, success: boolean}>}
    */
-  async getTokenDetails (tokenId) {
-    const result = await this.__coingeckoClient.coins.fetch(tokenId);
-    return result
+  async getTokenDetails(tokenId) {
+    return await this.__coingeckoClient.coins.fetch(tokenId)
   }
 }
 

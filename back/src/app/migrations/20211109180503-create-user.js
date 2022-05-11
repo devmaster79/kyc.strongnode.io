@@ -1,4 +1,4 @@
-const { Sequelize } = require('sequelize');
+const { Sequelize } = require('sequelize')
 
 async function up({ context: queryInterface }) {
   await queryInterface.createTable('users', {
@@ -33,7 +33,7 @@ async function up({ context: queryInterface }) {
       type: Sequelize.STRING
     },
     profile_img_data: {
-      type: Sequelize.BLOB("long")
+      type: Sequelize.BLOB('long')
     },
     profile_img_key: {
       type: Sequelize.STRING
@@ -129,15 +129,14 @@ async function up({ context: queryInterface }) {
       type: Sequelize.STRING
     },
     createdAt: {
-      "type": Sequelize.DATE,
-      "allowNull": false
+      type: Sequelize.DATE,
+      allowNull: false
     }
-  });
+  })
 }
 
 async function down({ context: queryInterface }) {
-  await queryInterface.dropTable('users');
+  await queryInterface.dropTable('users')
 }
 
-module.exports = { up, down };
-
+module.exports = { up, down }

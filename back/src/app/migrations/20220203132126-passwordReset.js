@@ -1,4 +1,4 @@
-const { Sequelize } = require('sequelize');
+const { Sequelize } = require('sequelize')
 
 async function up({ context: queryInterface }) {
   await queryInterface.createTable('passwordReset', {
@@ -28,4 +28,4 @@ async function down({ context: queryInterface }) {
   await queryInterface.dropTable('passwordReset')
 }
 
-module.exports = { up, down };
+module.exports = { up, down }
