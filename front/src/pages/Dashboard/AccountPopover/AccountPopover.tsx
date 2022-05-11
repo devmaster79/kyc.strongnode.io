@@ -87,6 +87,7 @@ export default function AccountPopover(props: any) {
             <li>SNE balance <span style={{ float: 'right' }}>{SNEBalance || '-'}</span></li>
           </ol>
           <ul>
+            <li>SNE balance</li>
             <li onClick={navigateToKyc} aria-hidden>My Account</li>
           </ul>
           <TextButton onClick={signOut}>Sign out</TextButton>
