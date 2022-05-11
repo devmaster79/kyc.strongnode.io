@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import TextButton from '../../../@ui/Button/TextButton'
+import styled from '@emotion/styled/macro'
 import {
   AccountPopoverWrapper,
   AvatarIconWrapper,
@@ -17,7 +18,7 @@ import { tokenAddressDictionary } from '../../../services/walletService'
 
 export default function AccountPopover(props: any) {
   const navigate = useNavigate()
-  const { account } = useEthers()
+  const { account, activateBrowserWallet } = useEthers()
   const [userName, setUserName] = useState('')
   const [email, setEmail] = useState('')
   const [avatar, setAvatar] = useState('')
@@ -80,6 +81,8 @@ export default function AccountPopover(props: any) {
           {userName}
           <span>{email}</span>
           <ConnectButton />
+          {!account &&
+            <MetamaskBrowserLink onClick={activateBrowserWallet}>connect Metamask extension</MetamaskBrowserLink>}
           <ol>
             <li>SNE balance <span style={{ float: 'right' }}>{SNEBalance || '-'}</span></li>
           </ol>
@@ -92,3 +95,8 @@ export default function AccountPopover(props: any) {
     </>
   )
 }
+
+const MetamaskBrowserLink = styled.div`
+  margin-bottom: 16px;
+  cursor: pointer;
+`
