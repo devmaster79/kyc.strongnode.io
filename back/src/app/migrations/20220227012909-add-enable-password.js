@@ -1,11 +1,11 @@
-const { Sequelize } = require('sequelize');
+const { Sequelize } = require('sequelize')
 
 async function up({ context: queryInterface }) {
-  await queryInterface.addColumn('users', 'enable_password', Sequelize.BOOLEAN);
+  await queryInterface.addColumn('users', 'enable_password', Sequelize.BOOLEAN)
 }
 
 async function down({ context: queryInterface }) {
-  await queryInterface.removeColumn('users', 'enable_password' );
+  await queryInterface.removeColumn('users', 'enable_password')
 }
 
-module.exports = { up, down };
+module.exports = { up, down }

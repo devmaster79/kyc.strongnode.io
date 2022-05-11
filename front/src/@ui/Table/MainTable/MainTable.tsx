@@ -1,6 +1,10 @@
+import format from 'date-fns/format'
 import { useRef, useState } from 'react'
 import { Table, TableWrapper } from './style'
-import { fDate } from '../../../utils/formatTime'
+
+function fDate(date: string) {
+  return format(new Date(date), 'dd/MM/yyyy')
+}
 
 interface MainTableProps<Item> {
   dataSet: DataSet<Item>

@@ -1,12 +1,15 @@
 const axios = require('axios')
-const cron = require('node-cron');
+const cron = require('node-cron')
 
-const path = require('path');
-const dotenv = require('dotenv');
-dotenv.config({ path: path.join(__dirname, '../../../../../.env') });
+const path = require('path')
+const dotenv = require('dotenv')
+dotenv.config({ path: path.join(__dirname, '../../../../../.env') })
 
 // let the script updates production and stage envs
-const baseUrl = (process.env.NODE_ENV === 'production') ? 'https://id.strongnode.io' : 'https://stage.strongonde.io'
+const baseUrl =
+  process.env.NODE_ENV === 'production'
+    ? 'https://id.strongnode.io'
+    : 'https://stage.strongonde.io'
 
 const chartUrl = '/api/cryptocurrency/refresh-strongnode-token?scope='
 const tokensUrl = '/api/cryptocurrency/refresh-tokens'
@@ -15,16 +18,16 @@ const tokensUrl = '/api/cryptocurrency/refresh-tokens'
  * This should be called every 5 minutes, since the Coingecko data granuality is 5 minutes for the days interval.
  * @returns {Promise<void>}
  */
-async function refreshChartData (scope) {
+async function refreshChartData(scope) {
   await axios
     .get(baseUrl + chartUrl + scope)
-    .then(response => {
+    .then((response) => {
       return response.data
     })
-    .then(data => {
+    .then((data) => {
       console.log(data)
     })
-    .catch(error => {
+    .catch((error) => {
       console.log(error)
     })
 }
@@ -36,44 +39,54 @@ async function refreshChartData (scope) {
 const refreshCoinMetricsData = async () => {
   await axios
     .get(baseUrl + tokensUrl)
-    .then(response => {
+    .then((response) => {
       return response.data
     })
-    .then(data => {
+    .then((data) => {
       console.log(data)
     })
-    .catch(error => {
+    .catch((error) => {
       console.log(error)
     })
 }
 
 // refresh coins metrics every 10 seconds
 cron.schedule('*/10 * * * * *', function () {
-  refreshCoinMetricsData().then(() => {
-    console.log('Coin metrics data refreshed!')
-  })
+  refreshCoinMetricsData()
+    .then(() => {
+      console.log('Coin metrics data refreshed!')
+    })
+    .catch(console.error)
 })
 
 // refresh days scope every 5 minutes
 cron.schedule('* */5 * * * *', function () {
-  refreshChartData('days').then(() => {
-    console.log('Days chart data refresh!')
-  })
+  refreshChartData('days')
+    .then(() => {
+      console.log('Days chart data refresh!')
+    })
+    .catch(console.error)
 })
 
 // refresh weeks and months scope every 1 hour
 cron.schedule('0 * * * *', function () {
-  refreshChartData('weeks').then(() => {
-    console.log('Weeks chart data refresh!')
-  })
-  refreshChartData('months').then(() => {
-    console.log('Months chart data refresh!')
-  })
+  refreshChartData('weeks')
+    .then(() => {
+      console.log('Weeks chart data refresh!')
+    })
+    .catch(console.error)
+  refreshChartData('months')
+    .then(() => {
+      console.log('Months chart data refresh!')
+    })
+    .catch(console.error)
 })
 
 // refresh years scope once a day
 cron.schedule('0 0 * * *', function () {
-  refreshChartData('days').then(() => {
-    console.log('Months chart data refresh!')
-  })
+  refreshChartData('days')
+    .then(() => {
+      console.log('Months chart data refresh!')
+    })
+    .catch(console.error)
 })

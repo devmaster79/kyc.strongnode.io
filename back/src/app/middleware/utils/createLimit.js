@@ -1,29 +1,28 @@
 /**
  * @type {Object.<string, { nextFreeTime: number, count: number }>}
  */
-let trials = {};
+let trials = {}
 
 /**
  * method that resets the trials database
  */
 exports.resetTrials = () => {
-    trials = {};
+  trials = {}
 }
 
 /**
  * method that cleans up old entries
  */
 exports.cleanUp = () => {
-    const now = Date.now()
-    Object
-        .keys(trials)
-        .filter(key => trials[key].nextFreeTime < now)
-        .forEach(key => {
-            delete trials[key];
-        });
+  const now = Date.now()
+  Object.keys(trials)
+    .filter((key) => trials[key].nextFreeTime < now)
+    .forEach((key) => {
+      delete trials[key]
+    })
 }
 
-setInterval(exports.cleanUp, 60 * 60 * 1000);
+setInterval(exports.cleanUp, 60 * 60 * 1000)
 
 /**
  * @typedef {Object} Limit
@@ -58,18 +57,18 @@ setInterval(exports.cleanUp, 60 * 60 * 1000);
  * @returns {Limit} see the Limit typedef
  */
 exports.createLimit = (
-    name,
-    getIdentifier,
-    config = { maxFreeTrials: 5, banMinutesBase: 5, multiplier: 3 }
+  name,
+  getIdentifier,
+  config = { maxFreeTrials: 5, banMinutesBase: 5, multiplier: 3 }
 ) => {
-    return {
-        limiter: createLimiter(getIdentifier, name, config),
-        resolver: createResolver(getIdentifier, name),
-        resolve(req) {
-            req.limits[name].registerSuccess();
-        }
+  return {
+    limiter: createLimiter(getIdentifier, name, config),
+    resolver: createResolver(getIdentifier, name),
+    resolve(req) {
+      req.limits[name].registerSuccess()
     }
-};
+  }
+}
 
 /**
  * Create a limiter middleware
@@ -83,42 +82,42 @@ exports.createLimit = (
  * @returns {(req: Object, res: Object, next: () => any) => any}
  */
 const createLimiter = (getIdentifier, name, config) => (req, res, next) => {
-    const identifier = calculateUID(name, getIdentifier(req));
-    const now = Date.now();
-    let lastTrial = trials[identifier];
-    if (!lastTrial) {
-        trials[identifier] = {
-            count: 1,
-            nextFreeTime: null,
-        };
-        lastTrial = trials[identifier];
+  const identifier = calculateUID(name, getIdentifier(req))
+  const now = Date.now()
+  let lastTrial = trials[identifier]
+  if (!lastTrial) {
+    trials[identifier] = {
+      count: 1,
+      nextFreeTime: null
     }
+    lastTrial = trials[identifier]
+  }
 
-    // STEP 1: set the next free-to-try time
-    if (lastTrial.count > config.maxFreeTrials) {
-        if (!lastTrial.nextFreeTime) {
-            // user should be banned
-            lastTrial.nextFreeTime = calculateNextFreeTime(config, lastTrial.count);
-        } else if (lastTrial.nextFreeTime <= now) {
-            // ban expired so we allow one free trial and renew the ban
-            lastTrial.count += 1;
-            lastTrial.nextFreeTime = calculateNextFreeTime(config, lastTrial.count);
-            return next();
-        } else {
-            // already banned and not expired
-        }
+  // STEP 1: set the next free-to-try time
+  if (lastTrial.count > config.maxFreeTrials) {
+    if (!lastTrial.nextFreeTime) {
+      // user should be banned
+      lastTrial.nextFreeTime = calculateNextFreeTime(config, lastTrial.count)
+    } else if (lastTrial.nextFreeTime <= now) {
+      // ban expired so we allow one free trial and renew the ban
+      lastTrial.count += 1
+      lastTrial.nextFreeTime = calculateNextFreeTime(config, lastTrial.count)
+      return next()
+    } else {
+      // already banned and not expired
     }
+  }
 
-    // STEP 2: check next free time
-    if (lastTrial.nextFreeTime && lastTrial.nextFreeTime > now) {
-        return res.status(401).send({
-            result: 'banned-error',
-            remainingTimeMs: lastTrial.nextFreeTime - now
-        });
-    }
+  // STEP 2: check next free time
+  if (lastTrial.nextFreeTime && lastTrial.nextFreeTime > now) {
+    return res.status(401).send({
+      result: 'banned-error',
+      remainingTimeMs: lastTrial.nextFreeTime - now
+    })
+  }
 
-    lastTrial.count += 1;
-    return next();
+  lastTrial.count += 1
+  return next()
 }
 
 /**
@@ -130,16 +129,16 @@ const createLimiter = (getIdentifier, name, config) => (req, res, next) => {
  * @returns {(req: Object, res: Object, next: () => any) => any}
  */
 const createResolver = (getIdentifier, name) => (req, res, next) => {
-    const identifier = calculateUID(name, getIdentifier(req));
-    req.limits = {
-        [name]: {
-            registerSuccess() {
-                delete trials[identifier];
-            }
-        },
-        ...req.limits
-    }
-    return next();
+  const identifier = calculateUID(name, getIdentifier(req))
+  req.limits = {
+    [name]: {
+      registerSuccess() {
+        delete trials[identifier]
+      }
+    },
+    ...req.limits
+  }
+  return next()
 }
 
 /**
@@ -150,7 +149,7 @@ const createResolver = (getIdentifier, name) => (req, res, next) => {
  * @returns {string}
  */
 exports.identifyByAuth = (req) => {
-    return req.user.email;
+  return req.user.email
 }
 
 /**
@@ -162,7 +161,7 @@ exports.identifyByAuth = (req) => {
  * @returns {string}
  */
 exports.identifyByEmailAndIP = (req) => {
-    return `${req.body.email}__${req.ip}`
+  return `${req.body.email}__${req.ip}`
 }
 
 /**
@@ -175,13 +174,12 @@ exports.identifyByEmailAndIP = (req) => {
  * @returns {number} timestamp
  */
 function calculateNextFreeTime(config, trials) {
-    const excess_trials = trials - config.maxFreeTrials;
-    const base = config.banMinutesBase;
-    const m = config.multiplier;
-    const e = excess_trials - 1;
-    const banMs = base * Math.pow(m, e) * 60 * 1000;
-    const newNextFreeTime = Date.now() + banMs;
-    return newNextFreeTime;
+  const excess_trials = trials - config.maxFreeTrials
+  const base = config.banMinutesBase
+  const m = config.multiplier
+  const e = excess_trials - 1
+  const banMs = base * Math.pow(m, e) * 60 * 1000
+  return Date.now() + banMs
 }
 
 /**
@@ -190,4 +188,4 @@ function calculateNextFreeTime(config, trials) {
  * @param {string} identifier
  * @returns {string}
  */
-const calculateUID = (name, identifier) => name + '__' + identifier;
+const calculateUID = (name, identifier) => name + '__' + identifier

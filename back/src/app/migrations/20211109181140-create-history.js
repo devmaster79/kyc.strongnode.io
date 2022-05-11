@@ -1,4 +1,4 @@
-const { Sequelize } = require('sequelize');
+const { Sequelize } = require('sequelize')
 
 async function up({ context: queryInterface }) {
   await queryInterface.createTable('histories', {
@@ -12,7 +12,12 @@ async function up({ context: queryInterface }) {
       type: Sequelize.STRING
     },
     action_type: {
-      type: Sequelize.DataTypes.ENUM('vested', 'earned', 'unlocked', 'withdrawn')
+      type: Sequelize.DataTypes.ENUM(
+        'vested',
+        'earned',
+        'unlocked',
+        'withdrawn'
+      )
     },
     token_amount: {
       type: Sequelize.STRING
@@ -24,11 +29,11 @@ async function up({ context: queryInterface }) {
       type: Sequelize.DATE,
       allowNull: false
     }
-  });
+  })
 }
 
 async function down({ context: queryInterface }) {
-  await queryInterface.dropTable('histories');
+  await queryInterface.dropTable('histories')
 }
 
-module.exports = { up, down };
+module.exports = { up, down }

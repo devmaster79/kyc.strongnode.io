@@ -2,8 +2,8 @@
 // https://marketplace.visualstudio.com/items?itemName=Tobermory.es6-string-html
 
 export interface TemplateParams {
-    body: string,
-    title: string
+  body: string
+  title: string
 }
 
 export interface Sendable<Params> {
@@ -390,4 +390,4 @@ export const template = ({ body, title }: TemplateParams) => /*html*/ `<html>
       </tr>
     </table>
   </body>
-</html>`;
+</html>`

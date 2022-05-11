@@ -17,13 +17,13 @@ const refreshChartData = async () => {
   for (let i = 0; i < baseUrls.length; i++) {
     await axios
       .get(baseUrls[i] + url)
-      .then(response => {
+      .then((response) => {
         return response.data
       })
-      .then(data => {
+      .then((data) => {
         console.log(data)
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error)
       })
   }

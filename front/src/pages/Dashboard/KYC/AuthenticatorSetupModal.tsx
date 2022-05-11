@@ -185,7 +185,7 @@ const Secret = styled.div`
   }
 `
 
-export const ModalForm = styled('div')({
+const ModalForm = styled('div')({
   display: 'flex',
   gap: '1em',
   padding: '1em',

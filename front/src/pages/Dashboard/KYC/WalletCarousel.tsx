@@ -123,7 +123,7 @@ export function WalletCarousel(props: { walletProps: WalletInfoType[] }) {
   )
 }
 
-export const Container = styled.div`
+const Container = styled.div`
   width: 824px;
   margin: auto;
   font-size: 14px;
