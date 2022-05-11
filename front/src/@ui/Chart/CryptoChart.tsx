@@ -143,7 +143,12 @@ export const CryptoChart = (props: CryptoChartProps) => {
       </HeadingWrapper>
       <BaseChart
         xAxisFormat={chartScopeFormat}
-        data={(chartDataTemp || placeholderData) as unknown}
+        data={
+          (chartDataTemp || placeholderData) as unknown as (Record<
+            string,
+            unknown
+          > & { value: { toString: () => string } })[]
+        }
         xKey="timestamp"
         yKey="value"
         chartKey="value"

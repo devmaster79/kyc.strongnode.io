@@ -25,11 +25,13 @@ export function VerifyEmail() {
   const onSubmit: SubmitHandler<VerifyEmailFields> = async (data) => {
     const response = await sendVerificationEmail(data.email)
     if (response.result === 'validation-error') {
-      getFieldIssues(response).forEach((val) => {
-        setError(val.path, {
-          message: val.message
-        })
-      })
+      getFieldIssues(response).forEach(
+        (val: { path: 'email'; message: string }) => {
+          setError(val.path, {
+            message: val.message
+          })
+        }
+      )
     }
   }
 

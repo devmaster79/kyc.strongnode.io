@@ -33,14 +33,16 @@ export function SignInWithAuthenticator() {
     if (response.result === 'success') {
       navigate('/sign-in-with-token')
     } else if (response.result === 'validation-error') {
-      getFieldIssues(response).forEach((val) => {
-        const path = {
-          token: 'totp' as const
-        }[val.path]
-        setError(path, {
-          message: val.message
-        })
-      })
+      getFieldIssues(response).forEach(
+        (val: { path: string | number; message: string }) => {
+          const path = {
+            token: 'totp' as const
+          }[val.path]
+          setError(path as 'totp', {
+            message: val.message
+          })
+        }
+      )
     }
   }
 

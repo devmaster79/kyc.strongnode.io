@@ -61,8 +61,8 @@ export default function MainTable<Item extends Record<string, unknown>>({
                     <td key={column.id}>
                       {overwrittenFields[column.id] ? (
                         (overwrittenFields as Record<string, unknown>)[
-                          column.id
-                        ](row[column.id])
+                          column?.id
+                        ](row[column?.id])
                       ) : (
                         <p>
                           {column['id'] === 'date'

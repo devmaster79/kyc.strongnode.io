@@ -67,6 +67,8 @@ declare module '@mui/material/styles' {
     label: string
     switch: string
     white: string
+    inputModal: string
+    floatingModalInput: string
   }
   export interface PaletteColorOptions {
     light?: string

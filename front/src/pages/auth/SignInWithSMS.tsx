@@ -36,14 +36,16 @@ export function SignInWithSMS() {
     if (response.result === 'success') {
       navigate('/sign-in-with-token')
     } else if (response.result === 'validation-error') {
-      getFieldIssues(response).forEach((val) => {
-        const path = {
-          smscode: 'smsCode' as const
-        }[val.path]
-        setError(path, {
-          message: val.message
-        })
-      })
+      getFieldIssues(response).forEach(
+        (val: { path: string | number; message: string }) => {
+          const path = {
+            smscode: 'smsCode' as const
+          }[val.path]
+          setError(path as 'smsCode', {
+            message: val.message
+          })
+        }
+      )
     }
   }
 

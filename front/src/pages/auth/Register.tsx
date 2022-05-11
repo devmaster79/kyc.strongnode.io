@@ -42,11 +42,16 @@ export function Register() {
     if (response.result === 'success') {
       navigate('/sign-in-with-token')
     } else if (response.result === 'validation-error') {
-      getFieldIssues(response).forEach((val) => {
-        setError(val.path, {
-          message: val.message
-        })
-      })
+      getFieldIssues(response).forEach(
+        (val: {
+          path: 'first_name' | 'last_name' | 'user_name'
+          message: string
+        }) => {
+          setError(val.path, {
+            message: val.message
+          })
+        }
+      )
     }
   }
 
