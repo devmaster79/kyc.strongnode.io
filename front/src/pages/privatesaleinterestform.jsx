@@ -10,14 +10,6 @@ import userService from '../services/userService'
 import { ReactComponent as MagicImg } from '../assets/images/magic.svg'
 import EntryCard from '../components/EntryCard'
 
-export const Container = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  background: #f3f3f5;
-`
-
 export const Wrapper = styled.div`
   width: 100%;
   max-width: 909px;

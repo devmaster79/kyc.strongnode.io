@@ -217,7 +217,7 @@ const SendButton = styled(Button)({
   flex: '0'
 })
 
-export const ModalForm = styled('div')({
+const ModalForm = styled('div')({
   display: 'flex',
   gap: '1em',
   paddingTop: '1em',

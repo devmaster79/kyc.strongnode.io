@@ -193,9 +193,7 @@ export default function KYC() {
   )
 }
 
-export const PasswordSetupModal = () => <div>Settings</div>
-
-export const Container = styled.div`
+const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -208,7 +206,7 @@ export const Container = styled.div`
   text-align: center;
 `
 
-export const FormContainer = styled.div`
+const FormContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
