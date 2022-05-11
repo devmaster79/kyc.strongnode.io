@@ -6,9 +6,9 @@
 - Share URLs with backend like:
 
   ```ts
-  export const findAllVestedBaseURL = () => '/history/findAllVested/';
+  export const findAllVestedBaseURL = () => '/history/findAllVested/'
   export const findAllVestedURL = (page: number, perPage: number) =>
-    `${findAllVestedBaseURL}?page=${page}&perPage=${perPage}`;
+    `${findAllVestedBaseURL}?page=${page}&perPage=${perPage}`
 
   // backend would use findAllVestedBaseURL()
   // frontend would use findAllVestedURL(page, perPage)

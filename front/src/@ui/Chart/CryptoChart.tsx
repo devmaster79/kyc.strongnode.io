@@ -73,11 +73,11 @@ export const CryptoChart = (props: CryptoChartProps) => {
     }
   ] as SelectorItem[]
 
-  const switchOptions = [
+  const [switchOptions] = useState([
     { label: 'Price', value: 1 },
     { label: 'Market Cap', value: 2 },
     { label: 'Trading View', value: 3 }
-  ] as SwitchOption[]
+  ] as SwitchOption[])
 
   const [selectedSwitchOption, setSelectedSwitchOption] =
     useState<SwitchOption>()
@@ -112,7 +112,7 @@ export const CryptoChart = (props: CryptoChartProps) => {
     setSelectedSwitchOption(switchOptions[0])
 
     return () => clearInterval(refreshDataInterval)
-  }, [chartScopeFormat, targetCurrency])
+  }, [chartScopeFormat, targetCurrency, switchOptions])
 
   return (
     <div style={props.wrapperStyles}>
@@ -143,7 +143,7 @@ export const CryptoChart = (props: CryptoChartProps) => {
       </HeadingWrapper>
       <BaseChart
         xAxisFormat={chartScopeFormat}
-        data={(chartDataTemp || placeholderData) as  unknown}
+        data={(chartDataTemp || placeholderData) as unknown}
         xKey="timestamp"
         yKey="value"
         chartKey="value"

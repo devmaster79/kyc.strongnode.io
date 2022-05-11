@@ -67,7 +67,7 @@ export default function MainTable<Item extends Record<string, unknown>>({
                         <p>
                           {column['id'] === 'date'
                             ? fDate(row[column.id] as string)
-                            : row[column.id] as string}
+                            : (row[column.id] as string)}
                         </p>
                       )}
                     </td>

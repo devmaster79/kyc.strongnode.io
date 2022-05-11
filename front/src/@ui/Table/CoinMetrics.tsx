@@ -116,7 +116,7 @@ interface ValueTrend {
 
 interface IDataIcon {
   name: string
-  url: {large:string}
+  url: { large: string }
 }
 
 interface IData {

@@ -55,7 +55,9 @@ const SidebarButton = ({
           width={24}
           viewBox="0 0 24 24"
           color={
-            active ? theme?.palette?.icon?.active : theme?.palette?.icon?.primary
+            active
+              ? theme?.palette?.icon?.active
+              : theme?.palette?.icon?.primary
           }>
           {tooltipHint}
         </Svg>

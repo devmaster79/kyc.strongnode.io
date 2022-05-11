@@ -1,13 +1,13 @@
 import type { CustomTheme } from '../theme'
-import '@material-ui/core/styles';
+import '@material-ui/core/styles'
 declare module '@emotion/styled' {
-  export interface Theme extends CustomTheme { }
+  export interface Theme extends CustomTheme {}
 }
 declare module '@emotion/css' {
-  export interface Theme extends CustomTheme { }
+  export interface Theme extends CustomTheme {}
 }
 declare module '@emotion/react' {
-  export interface Theme extends CustomTheme { }
+  export interface Theme extends CustomTheme {}
 }
 declare module '@mui/material/styles' {
   export interface Theme {
@@ -78,8 +78,6 @@ declare module '@mui/material/styles' {
     whiteButton: string
   }
 }
-
-
 
 declare module '@mui/material' {
   export interface Color {
