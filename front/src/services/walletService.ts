@@ -1,5 +1,5 @@
 import { Polygon, Config } from '@usedapp/core'
-import WalletConnectProvider from '@maticnetwork/walletconnect-provider/dist/walletconnect-provider.umd'
+import WalletConnectProvider from '@walletconnect/web3-provider/dist/umd/index.min.js'
 
 interface IStringDictionary {
   [key:string]: string
@@ -56,6 +56,13 @@ export const ConnectWallet = async (activate: any, force = false) => {
   // todo make the force force work
   try {
     const provider = new WalletConnectProvider({
+      rpc: {
+        [Polygon.chainId]: networksRpcDictionary.polygon
+      },
+      chainId: Polygon.chainId
+    })
+
+    /*const provider = new WalletConnectProvider({
       host: networksRpcDictionary.polygon,
       callbacks: {
         onConnect: (err: any, payload: any) => {
@@ -65,7 +72,11 @@ export const ConnectWallet = async (activate: any, force = false) => {
           // todo, callbacks does not work, but provider returns true on .isConnected()
         }
       }
-    })
+    })*/
+
+    // opens up the QR code
+    await provider.enable()
+
     await activate(provider)
     return true
   } catch (error) {
