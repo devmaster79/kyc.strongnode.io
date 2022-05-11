@@ -1,11 +1,19 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
+import { useGetTokenBalanceFormatted } from '../../../hooks/useGetTokenBalanceFormatted'
+import { useEthers } from '@usedapp/core'
 
-interface IProps {
-  tokenAdress: string
+type UserOwnedTokensProps = {
+  tokenAddress: string,
+  default: string
 }
 
-export const UserOwnedTokens = (props: IProps) => {
+export const UserOwnedTokens = (props: UserOwnedTokensProps) => {
+  const { account } = useEthers()
+  const ownedTokens = useGetTokenBalanceFormatted(account, props.tokenAddress)
+
   return (
-    <div />
+    <span>
+      {ownedTokens || props.default}
+    </span>
   )
 }
