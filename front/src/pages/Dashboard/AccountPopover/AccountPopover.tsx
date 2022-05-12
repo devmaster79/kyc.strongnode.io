@@ -83,11 +83,8 @@ export default function AccountPopover(props: any) {
           <ConnectButton />
           {!account &&
             <MetamaskBrowserLink onClick={activateBrowserWallet}>connect Metamask extension</MetamaskBrowserLink>}
-          <ol>
-            <li>SNE balance <span style={{ float: 'right' }}>{SNEBalance || '-'}</span></li>
-          </ol>
           <ul>
-            <li>SNE balance</li>
+            <li>SNE balance <span style={{ float: 'right' }}>{SNEBalance || '-'}</span></li>
             <li onClick={navigateToKyc} aria-hidden>My Account</li>
           </ul>
           <TextButton onClick={signOut}>Sign out</TextButton>
