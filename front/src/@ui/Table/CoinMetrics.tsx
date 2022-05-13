@@ -47,11 +47,6 @@ const sampleData = {
   ]
 }
 
-interface IValueTrend {
-  positive: boolean,
-  value: string
-}
-
 interface IDataIcon {
   name: string,
   url: IGetTokenMetricsImageObject
@@ -70,12 +65,8 @@ interface IOwnedObject {
 interface IFormattedTokenObject {
   owned: IOwnedObject,
   value: string,
-  value_trend: IValueTrend,
+  value_trend: number,
   icon: IDataIcon
-}
-
-interface ObjectAny {
-  [key:string]: any
 }
 
 type CoinMetricsProps = {
@@ -98,11 +89,11 @@ const overwrittenFields = {
       </CryptoWrapper>
     )
   },
-  value_trend: (value: IValueTrend) => {
+  value_trend: (value: number) => {
     return (
       <div>
-        <GrowthWrapper style={value.positive ? {} : { color: '#BB3353' }}>
-          {value.value}
+        <GrowthWrapper style={Math.sign(value) === -1 ? { color: '#BB3353' } : {}}>
+          {value}
         </GrowthWrapper>
       </div>
     )
@@ -138,13 +129,12 @@ export const CoinMetrics = (props: CoinMetricsProps) => {
 
   // makes request and sets tableData to state
   const loadTokenMetrics = async () => {
-    const data: AxiosResponse<IGetTokenMetricsData> = await cryptoDataService.getTokenMetrics()
+    const data = await cryptoDataService.getTokenMetrics()
     setTableData(formatTableData(data.data))
-    return data.data
   }
 
   // formats object for table
-  const formatTableData = (data: ObjectAny) => {
+  const formatTableData = (data: Array<IGetTokenMetricsObject>) => {
     const temporaryData: Array<IFormattedTokenObject> = []
 
     data.forEach((token: IGetTokenMetricsObject) => {
@@ -155,7 +145,7 @@ export const CoinMetrics = (props: CoinMetricsProps) => {
           type: coinTypesDictionary[token.token.toLowerCase()]
         },
         value: Number(token.usd_value).toFixed(4) + ' USD',
-        value_trend: createValueTrendObject(token.day_change),
+        value_trend: Number(Number(token.day_change).toFixed(2)),
         icon: {
           url: token.image,
           name: token.token.toUpperCase()
@@ -164,16 +154,6 @@ export const CoinMetrics = (props: CoinMetricsProps) => {
       temporaryData.push(tokenObject)
     })
     return { items: temporaryData }
-  }
-
-  // helper function
-  const createValueTrendObject = (value: string) => {
-    const valueTrendObject: IValueTrend = { positive: false, value: '' }
-
-    if (value.charAt(0) !== '-') { valueTrendObject.positive = true }
-    valueTrendObject.value = ((valueTrendObject.positive) ? '+' : '') + Number(value).toFixed(2) + ' %'
-
-    return valueTrendObject
   }
 
   const addKeywords = async (keyword: string) => {

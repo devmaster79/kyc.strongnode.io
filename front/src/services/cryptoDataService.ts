@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { AxiosResponse } from 'axios'
 import { getCryptoChartData, getTokenMetrics } from '../utils/config'
 
 export interface IGetTokenMetricsData {
@@ -23,13 +23,19 @@ export interface IGetTokenMetricsImageObject {
   thumb: string
 }
 
+export interface IGetChartData {
+  market_caps: Array<Array<string>>,
+  prices: Array<Array<string>>,
+  total_volumes: Array<Array<string>>
+}
+
 export default {
-  async getChartDataAsync (scope = 'days') {
-    const url = getCryptoChartData + '?scope=' + scope
-    return await axios.get(url)
+  async getChartDataAsync (scope: string = 'days'): Promise<AxiosResponse<IGetChartData>> {
+    const url: string = getCryptoChartData + '?scope=' + scope
+    return axios.get(url)
   },
-  async getTokenMetrics () {
+  async getTokenMetrics (): Promise<AxiosResponse<Array<IGetTokenMetricsObject>>> {
     // todo add the parameter to call only data for one token
-    return await axios.get(getTokenMetrics)
+    return axios.get(getTokenMetrics)
   }
 }
