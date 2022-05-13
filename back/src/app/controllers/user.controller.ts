@@ -4,7 +4,9 @@ import { EmailService }  from "app/services/communication/EmailService";
 import { AWS_CONFIG, EMAIL_CONFIG }  from "app/config/config";
 import { SupportRequestTemplate }  from "app/services/communication/templates/SupportRequestTemplate";
 import { Request, Response } from "express";
+import { Logger } from 'app/services/Logger'
 
+const UserControllerLogger = new Logger('UserController')
 type UserRequest = Request & { user: { email: string, user_name: string }};
 type GetUserWalletResponse = { email: string, wallets: Array<string> }
 
@@ -69,39 +71,40 @@ export const createProfile = (req: UserRequest, res: Response) => {
   // Validate request
   if (!req.user) {
     res.status(400).send({
-      message: "Content can not be empty!",
-    });
-    return;
+      message: 'Content can not be empty!'
+    })
+    return
   }
 
   // Create a User profile
   const data = {
     telegram_id: req.body.telegram_id,
     twitter_id: req.body.twitter_id,
-    wallet_address: req.body.wallet_address,
-  };
+    wallet_address: req.body.wallet_address
+  }
 
   User.update(data, {
-    where: { user_name: req.user.user_name },
+    where: { user_name: req.user.user_name }
   })
     .then((num) => {
       if (num) {
         res.send({
-          message: "User profile was created successfully.",
-        });
+          message: 'User profile was created successfully.'
+        })
       } else {
         res.send({
-          message: `Cannot create User profile with username=${req.user.user_name}. Maybe User profile info was not found or req.body is empty!`,
-        });
+          message: `Cannot create User profile with username=${req.user.user_name}. Maybe User profile info was not found or req.body is empty!`
+        })
       }
     })
     .catch((err) => {
+      UserControllerLogger.error(err)
       res.status(500).send({
         message:
-          "Error creating User profile with username=" + req.user.user_name,
-      });
-    });
-};
+          'Error creating User profile with username=' + req.user.user_name
+      })
+    })
+}
 
 /**
  * Method create investor that is being used for creating investor detail row in investorDetails table.
@@ -112,8 +115,14 @@ export const createProfile = (req: UserRequest, res: Response) => {
  */
 export const createInvestor = async (req: Request, res: Response) => {
   // validate request
-  if (!req.body.investor_name || !req.body.investor_telegram_id || !req.body.investor_country || !req.body.investor_commitment_amount
-    || !req.body.investor_wallet_address || !req.body.investor_email) {
+  if (
+    !req.body.investor_name ||
+    !req.body.investor_telegram_id ||
+    !req.body.investor_country ||
+    !req.body.investor_commitment_amount ||
+    !req.body.investor_wallet_address ||
+    !req.body.investor_email
+  ) {
     res.status(500).send({
       message: 'Required parameters are not present.',
       request: req.body
@@ -132,16 +141,20 @@ export const createInvestor = async (req: Request, res: Response) => {
     investor_wallet_address: req.body.investor_wallet_address,
     investor_email: req.body.investor_email as string,
     investor_fund_name: req.body.investor_fund_name,
-    investor_fund_website: req.body.investor_fund_website,
-  };
+    investor_fund_website: req.body.investor_fund_website
+  }
 
-  const userCreated = await User.findOne({ where: { email: req.body.investor_email } })
+  const userCreated = await User.findOne({
+    where: { email: req.body.investor_email }
+  })
 
   if (userCreated) {
     data.user_id = userCreated.id
     data.reviewed = false
 
-    const investorExist = await InvestorDetail.findOne({ where: { user_id: userCreated.id }})
+    const investorExist = await InvestorDetail.findOne({
+      where: { user_id: userCreated.id }
+    })
 
     // return error that investor already exists
     if (investorExist) {
@@ -161,13 +174,14 @@ export const createInvestor = async (req: Request, res: Response) => {
       })
     } else {
       res.status(500).send({
-        message: 'Internal error occurred (while creating investor profile), please take a look at the servers console.'
+        message:
+          'Internal error occurred (while creating investor profile), please take a look at the servers console.'
       })
     }
   } else {
     // todo should we create a new user for this investor?
   }
-};
+}
 
 /**
  * Get profile
@@ -176,32 +190,37 @@ export const createInvestor = async (req: Request, res: Response) => {
  * TODO: check with this planned usage with dev team
  */
 export const getProfile = (req: UserRequest, res: Response) => {
-  const { email } = req.user;
+  const { email } = req.user
 
   User.findOne({ where: { email: email } })
     .then((data) => {
-      const _returnData = [{
-        email,
-        remaining_total_amount : data!.remaining_total_amount || 0,
-        locked_bonus_amount : data!.locked_bonus_amount || 0,
-        user_name : data!.user_name,
-        first_name: data!.first_name,
-        last_name: data!.last_name,
-        wallet_address: data!.wallet_address,
-        telegram_id: data!.telegram_id,
-        twitter_id: data!.twitter_id,
-        enable_authenticator: data!.enable_authenticator,
-        enable_sms: data!.enable_sms,
-        enable_password: data!.enable_password,
-      }];
-      res.send(_returnData);
+      // non-null-asserions will be fixed once input validation become finished in user controller as well
+      /* eslint-disable @typescript-eslint/no-non-null-assertion */
+      const _returnData = [
+        {
+          email,
+          remaining_total_amount: data?.remaining_total_amount || 0,
+          locked_bonus_amount: data?.locked_bonus_amount || 0,
+          user_name: data!.user_name,
+          first_name: data!.first_name,
+          last_name: data!.last_name,
+          wallet_address: data!.wallet_address,
+          telegram_id: data!.telegram_id,
+          twitter_id: data!.twitter_id,
+          enable_authenticator: data!.enable_authenticator,
+          enable_sms: data!.enable_sms,
+          enable_password: data!.enable_password
+        }
+      ]
+      /* eslint-enable @typescript-eslint/no-non-null-assertion */
+      res.send(_returnData)
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message || "Some error occurred while retrieving users.",
-      });
-    });
-};
+        message: err.message || 'Some error occurred while retrieving users.'
+      })
+    })
+}
 
 /**
  * Method that gets investor details for a specific user.
@@ -216,25 +235,31 @@ export const getInvestorDetails = async (req: UserRequest, res: Response) => {
   }
 
   const userCheck = await User.findOne({ where: { email: req.user.email } })
-  const investorDetails = await InvestorDetail.findOne({ where: { user_id: userCheck!.id, reviewed: 1 } })
+  const investorDetails = await InvestorDetail.findOne({
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    where: { user_id: userCheck!.id, reviewed: 1 }
+  })
 
   // check if investor details are present
   if (investorDetails) {
     res.send(investorDetails.toJSON())
   } else {
-    res.send({ message: 'Investor details are not present. Details were not submitted or reviewed yet.' })
+    res.send({
+      message:
+        'Investor details are not present. Details were not submitted or reviewed yet.'
+    })
   }
 }
 
 //Update profile
 export const updateProfile = async (req: UserRequest, res: Response) => {
-  const { email } = req.user;
+  const { email } = req.user
 
   if (!email) {
     res.status(400).send({
-      message: "Email is required!",
-    });
-    return;
+      message: 'Email is required!'
+    })
+    return
   }
 
   const data = {
@@ -247,62 +272,64 @@ export const updateProfile = async (req: UserRequest, res: Response) => {
     enable_authenticator: req.body.enable_authenticator,
     enable_sms: req.body.enable_sms,
     enable_password: req.body.enable_password
-  };
+  }
 
   User.update(data, {
-    where: { email: email },
+    where: { email: email }
   })
     .then((result) => {
       if (result[0] === 1) {
         res.send({
-          message: "User profile was updated successfully.",
-        });
+          message: 'User profile was updated successfully.'
+        })
       } else {
         res.send({
-          message: `Cannot update User profile with username=${req.user.user_name}. Maybe User profile info was not found or req.body is empty!`,
-        });
+          message: `Cannot update User profile with username=${req.user.user_name}. Maybe User profile info was not found or req.body is empty!`
+        })
       }
     })
     .catch((err) => {
+      UserControllerLogger.error(err)
       res.status(500).send({
         message:
-          "Error creating User profile with username=" + req.user.user_name,
-      });
-    });
-};
+          'Error updating User profile with username=' + req.user.user_name
+      })
+    })
+}
 
 /** Upload profile Image */
 export const uploadImg = async (req: UserRequest, res: Response) => {
-  const { email } = req.user;
-  const { user_name, image_data } = req.body;
+  const { email } = req.user
+  const { user_name, image_data } = req.body
 
   if (!email) {
     res.status(400).send({
-      message: "Email is required!",
-    });
-    return;
+      message: 'Email is required!'
+    })
+    return
   }
 
   //upload image data to S3
   const s3 = new AWS.S3({
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-    region: process.env.AWS_REGION,
-  });
-  await s3.createBucket({
-    Bucket: "strong-profile-img",
-    ACL: "public-read",
-  }).promise()
+    region: process.env.AWS_REGION
+  })
+  await s3
+    .createBucket({
+      Bucket: 'strong-profile-img',
+      ACL: 'public-read'
+    })
+    .promise()
 
   if (image_data !== undefined) {
-
     const base64Data = Buffer.from(
-      image_data.replace(/^data:image\/\w+;base64,/, ""),
-      "base64"
-    );
-    const image_type = image_data.split(";")[0].split("/")[1];
-    let s3_image_url = "";
-    let key = "";
+      image_data.replace(/^data:image\/\w+;base64,/, ''),
+      'base64'
+    )
+    const image_type = image_data.split(';')[0].split('/')[1]
+    let s3_image_url = ''
+    let key = ''
 
     /*
       s3.createBucket(function(){
@@ -329,54 +356,53 @@ export const uploadImg = async (req: UserRequest, res: Response) => {
     */
 
     const s3_params = {
-      Bucket: "strong-profile-img",
+      Bucket: 'strong-profile-img',
       Key: `${user_name}.${image_type}`,
       Body: base64Data,
-      ACL: "public-read",
-      ContentEncoding: "base64",
-      ContentType: `image/${image_type}`,
-    };
+      ACL: 'public-read',
+      ContentEncoding: 'base64',
+      ContentType: `image/${image_type}`
+    }
 
     try {
-      const { Location, Key } = await s3.upload(s3_params).promise();
-      s3_image_url = Location;
-      key = Key;
+      const { Location, Key } = await s3.upload(s3_params).promise()
+      s3_image_url = Location
+      key = Key
     } catch (error) {
-      console.log(error);
+      UserControllerLogger.error(error)
       res.status(500).send({
-        message:
-          "Error uploading User profile image with username=" + user_name,
-      });
+        message: 'Error uploading User profile image with username=' + user_name
+      })
     }
 
     const data = {
       profile_img_type: image_type,
       profile_img_url: s3_image_url,
-      profile_img_key: key,
-    };
+      profile_img_key: key
+    }
 
     User.update(data, {
-      where: { email: email },
+      where: { email: email }
     })
       .then((result) => {
         if (result[0] === 1) {
           res.send({
-            message: "User profile image was uploaded successfully.",
-          });
+            message: 'User profile image was uploaded successfully.'
+          })
         } else {
           res.send({
-            message: "Cannot upload User profile image with username=" + user_name,
-          });
+            message:
+              'Cannot upload User profile image with username=' + user_name
+          })
         }
       })
       .catch((err) => {
         res.status(500).send({
-          message: err,
-        });
-      });
-  };
-
-};
+          message: err
+        })
+      })
+  }
+}
 
 /**
  * Method that requests support from members of SNE.
@@ -387,23 +413,31 @@ export const uploadImg = async (req: UserRequest, res: Response) => {
 export const createSupportRequest = async (req: UserRequest, res: Response) => {
   // validate request
   if (!req.body.subject || !req.body.message)
-    return res.status(400).send({ result: 'Required parameters are not present' })
+    return res
+      .status(400)
+      .send({ result: 'Required parameters are not present' })
 
-  const user = await User.findOne({ where: { email: req.user.email }})
+  const user = await User.findOne({ where: { email: req.user.email } })
 
   if (!user)
-    return res.status(500).send({ result: 'Unexpected error. User is not in the database.' })
+    return res
+      .status(500)
+      .send({ result: 'Unexpected error. User is not in the database.' })
 
   // send email to SNE support
-  const emailService = new EmailService(new AWS.SES(AWS_CONFIG()));
-  const request = await emailService.sendTemplate(EMAIL_CONFIG.supportTeamEmail, new SupportRequestTemplate(), {
-    email: user.email,
-    username: user.user_name,
-    message: req.body.message,
-  })
+  const emailService = new EmailService(new AWS.SES(AWS_CONFIG()))
+  try {
+    await emailService.sendTemplate(
+      EMAIL_CONFIG.supportTeamEmail,
+      new SupportRequestTemplate(),
+      {
+        email: user.email,
+        username: user.user_name,
+        message: req.body.message
+      }
+    )
 
-  // if email was sent correctly, create record in database
-  if (request) {
+    // if email was sent correctly, create record in database
     const supportRequest = await SupportRequest.create({
       user_id: user.id,
       subject: req.body.subject,
@@ -415,7 +449,7 @@ export const createSupportRequest = async (req: UserRequest, res: Response) => {
     } else {
       res.status(500).send({ result: 'Unexpected error.' })
     }
-  } else {
+  } catch (e) {
     res.status(500).send({ result: 'Unexpected error.' })
   }
 }

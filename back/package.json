@@ -7,9 +7,10 @@
     "build": "swc src --copy-files -d build",
     "test": "NODE_PATH=./src mocha -r ts-node/register $(find ./src/app -name '*.test.js') --exit",
     "test-watch": "NODE_PATH=./src mocha -r ts-node/register $(find ./src/app -name '*.test.js') --watch",
-    "migrate:up": "node ./src/app/scripts/run-migrations.js up",
-    "migrate:down": "node ./src/app/scripts/run-migrations.js down",
-    "templates": "NODE_ENV=development nodemon --ignore public ./src/app/scripts/try-template.ts"
+    "migrate:up": "NODE_PATH=./src node -r ts-node/register ./src/app/scripts/run-migrations.js up",
+    "migrate:down": "NODE_PATH=./src node -r ts-node/register ./src/app/scripts/run-migrations.js down",
+    "templates": "NODE_PATH=./src NODE_ENV=development nodemon --ignore public ./src/app/scripts/try-template.ts",
+    "lint": "eslint \"src/**\""
   },
   "keywords": [
     "nodejs",
@@ -65,10 +66,17 @@
     "@types/validator": "^13.7.1",
     "@types/websocket": "^1.0.5",
     "@types/ws": "^8.5.3",
+    "@typescript-eslint/eslint-plugin": "^5.22.0",
     "connect-livereload": "^0.6.1",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-promise": "^6.0.0",
+    "eslint-plugin-sonarjs": "^0.13.0",
     "i": "^0.3.7",
     "livereload": "^0.9.3",
     "nodemon": "^2.0.15",
+    "prettier": "^2.6.2",
+    "prettier-config-standard": "^5.0.0",
     "typescript": "^4.6.2"
   }
 }

@@ -1,13 +1,13 @@
-import { template, Sendable } from './BaseTemplate';
+import { template, Sendable } from './BaseTemplate'
 
 export interface SignInTemplateParams {
-  link: string,
-  userName: string,
+  link: string
+  userName: string
 }
 
 export class SignInTemplate implements Sendable<SignInTemplateParams> {
   renderSubject(): string {
-    return 'Activate your account';
+    return 'Activate your account'
   }
 
   renderBody({ link, userName }: SignInTemplateParams) {
@@ -63,6 +63,6 @@ export class SignInTemplate implements Sendable<SignInTemplateParams> {
           </td>
         </tr>
       </table>`
-    });
+    })
   }
 }

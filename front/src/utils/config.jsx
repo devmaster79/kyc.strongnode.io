@@ -15,9 +15,6 @@ export const generateAuthenticatorQRCode =
 export const enableAuthenticatorAuth = '/api/auth/enableAuthenticatorAuth'
 export const disableAuthenticatorAuth = '/api/auth/disableAuthenticatorAuth'
 
-// NEWS
-export const getNews = '/api/news'
-
 // CRYPTO
 export const getCryptoChartData = '/api/cryptocurrency/chart/'
 export const getTokenMetrics = '/api/cryptocurrency/token-metrics/'

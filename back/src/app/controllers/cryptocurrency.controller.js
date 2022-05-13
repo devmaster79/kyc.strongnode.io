@@ -1,8 +1,13 @@
-const { CryptocurrencyDataService, availableScopes, scopeDays, tokensMetricsListIDs } = require('../services/cryptocurrency/CryptocurrencyDataService')
+const {
+  CryptocurrencyDataService,
+  availableScopes,
+  scopeDays,
+  tokensMetricsListIDs
+} = require('../services/cryptocurrency/CryptocurrencyDataService')
 const coingecko = require('coingecko-api')
 
-const coinChartData = require('../models').StrongnodeCoinData;
-const coinMetricsData = require('../models').CoinMetricsData;
+const coinChartData = require('../models').StrongnodeCoinData
+const coinMetricsData = require('../models').CoinMetricsData
 
 const cryptocurrencyDataService = new CryptocurrencyDataService(coingecko)
 
@@ -16,28 +21,43 @@ exports.refreshStrongnodeTokenData = async (req, res) => {
   const token = 'strongnode'
 
   if (!req.query.scope)
-    return res.status(400).send({ message: 'Request does not contain scope query parameter.' })
+    return res
+      .status(400)
+      .send({ message: 'Request does not contain scope query parameter.' })
 
   if (!availableScopes.includes(req.query.scope))
-    return res.status(400).send({ message: 'Scope query is unsupported. Supported scopes: "days", "weeks", "months" and "years."' })
+    return res.status(400).send({
+      message:
+        'Scope query is unsupported. Supported scopes: "days", "weeks", "months" and "years."'
+    })
 
   try {
-    const data = await cryptocurrencyDataService.getTokenChartData(scopeDays[req.query.scope])
+    const data = await cryptocurrencyDataService.getTokenChartData(
+      scopeDays[req.query.scope]
+    )
 
-    const checkScopedRecord = await coinChartData.findOne({where: {scope: req.query.scope, token: token}})
+    const checkScopedRecord = await coinChartData.findOne({
+      where: { scope: req.query.scope, token: token }
+    })
 
     if (!checkScopedRecord)
-      await coinChartData.create({ data: data, token: token, scope: req.query.scope })
+      await coinChartData.create({
+        data: data,
+        token: token,
+        scope: req.query.scope
+      })
     else
-      await coinChartData.update({ data: data, scope: req.query.scope }, {where: {scope: req.query.scope, token: token}})
+      await coinChartData.update(
+        { data: data, scope: req.query.scope },
+        { where: { scope: req.query.scope, token: token } }
+      )
 
-    return res.send({message: 'succesfully refreshed'})
+    return res.send({ message: 'succesfully refreshed' })
   } catch (err) {
     res.status(500).send({
       message:
-        err.message ||
-        "Some error occurred while adding data to database.",
-    });
+        err.message || 'Some error occurred while adding data to database.'
+    })
   }
 }
 
@@ -48,18 +68,22 @@ exports.refreshStrongnodeTokenData = async (req, res) => {
  * @returns {Promise<void>}
  */
 exports.refreshTokenDataList = async (req, res) => {
-  const data = await cryptocurrencyDataService.getTokenPrice(tokensMetricsListIDs)
+  const data = await cryptocurrencyDataService.getTokenPrice(
+    tokensMetricsListIDs
+  )
 
   // save or update each of this token data
   if (data) {
     for (const el of Object.keys(data)) {
-
-      const tokenUpdate = await coinMetricsData.update({
-        usd_value: Number(data[el].usd).toFixed(30),
-        market_cap: Number(data[el].usd_market_cap).toFixed(30),
-        day_volume: Number(data[el].usd_24h_vol).toFixed(30),
-        day_change: Number(data[el].usd_24h_change).toFixed(30)
-      }, {where: {token: el}})
+      const tokenUpdate = await coinMetricsData.update(
+        {
+          usd_value: Number(data[el].usd).toFixed(30),
+          market_cap: Number(data[el].usd_market_cap).toFixed(30),
+          day_volume: Number(data[el].usd_24h_vol).toFixed(30),
+          day_change: Number(data[el].usd_24h_change).toFixed(30)
+        },
+        { where: { token: el } }
+      )
 
       if (!tokenUpdate[0]) {
         const tokenDetails = await cryptocurrencyDataService.getTokenDetails(el)
@@ -91,17 +115,16 @@ exports.getTokenChartData = async (req, res) => {
   let token = 'strongnode'
 
   if (!req.query.scope)
-    return res.status(400).send({message: 'Scope parameter is required.'})
+    return res.status(400).send({ message: 'Scope parameter is required.' })
 
-  if (req.query.token)
-    token = req.query.token
+  if (req.query.token) token = req.query.token
 
-  const tokenData = await coinChartData.findOne({where: {token: token, scope: req.query.scope}})
+  const tokenData = await coinChartData.findOne({
+    where: { token: token, scope: req.query.scope }
+  })
 
-  if (tokenData)
-    return res.send(tokenData.data)
-  else
-    return res.status(500).send({message: 'Token data were not found.'})
+  if (tokenData) return res.send(tokenData.data)
+  else return res.status(500).send({ message: 'Token data were not found.' })
 }
 
 /**

@@ -10,14 +10,6 @@ import { ReactComponent as TwitterIcon } from '../icons/twitter.svg'
 import { EntryPage } from './style'
 import userService from '../services/userService'
 
-export const Container = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  background: #f3f3f5;
-`
-
 const ProgressBarWrapper = styled.div`
   margin: 0;
   display: flex;

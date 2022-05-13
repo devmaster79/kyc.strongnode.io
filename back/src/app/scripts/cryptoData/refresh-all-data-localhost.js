@@ -1,9 +1,8 @@
 const axios = require('axios')
 const ip = require('ip')
-
-const path = require('path');
-const dotenv = require('dotenv');
-dotenv.config({ path: path.join(__dirname, '../../../.env') });
+const path = require('path')
+const dotenv = require('dotenv')
+dotenv.config({ path: path.join(__dirname, '../../../.env') })
 
 const port = process.env.port || 8080
 
@@ -23,13 +22,13 @@ const refreshChartData = async () => {
   for (let i = 0; i < scopes.length; i++) {
     await axios
       .get(baseUrl + endpoints.chart + scopes[i])
-      .then(response => {
+      .then((response) => {
         return response.data
       })
-      .then(data => {
+      .then((data) => {
         console.log(data)
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error)
       })
   }
@@ -42,13 +41,13 @@ const refreshChartData = async () => {
 const refreshCoinMetrics = async () => {
   await axios
     .get(baseUrl + endpoints.metrics)
-    .then(response => {
+    .then((response) => {
       return response.data
     })
-    .then(data => {
+    .then((data) => {
       console.log(data)
     })
-    .catch(error => {
+    .catch((error) => {
       console.log(error)
     })
 }
