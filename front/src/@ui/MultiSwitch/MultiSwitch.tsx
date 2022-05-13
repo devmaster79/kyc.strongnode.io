@@ -31,8 +31,7 @@ function MultiSwitch<
 
     const selectedOption = props.options.find((option) => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const target: { value: Option[TrackBy] } = event.target as any
-      // todo target ⬆️ should extend the HTMLElement
+      const target: HTMLLIElement = event.target as HTMLLIElement
 
       if (option[props.trackBy].toString() === target.value.toString()) {
         activeIndex = props.options.findIndex(
