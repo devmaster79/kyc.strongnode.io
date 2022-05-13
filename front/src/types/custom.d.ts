@@ -32,25 +32,25 @@ declare module '@mui/material/styles' {
     }
   }
   export interface PaletteOptions {
-    border?: {
+    border: {
       light: string
       button: string
     }
-    icon?: {
+    icon: {
       wrapper: string
       wallet: string
       active: string
       secondary: string
       primary: string
     }
-    progressCircle?: {
+    progressCircle: {
       trailColorPrimary: string
       trailColorSecondary: string
     }
-    button?: {
+    button: {
       invert: string
       text: string
-      background?: {
+      background: {
         invert: string
       }
     }

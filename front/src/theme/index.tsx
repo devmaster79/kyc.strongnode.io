@@ -1,5 +1,12 @@
 import React, { useMemo } from 'react'
-import { CssBaseline } from '@mui/material'
+import {
+  CssBaseline,
+  PaletteColorOptions,
+  PaletteOptions,
+  ThemeOptions,
+  TypeBackground,
+  TypeText
+} from '@mui/material'
 import {
   createTheme,
   ThemeProvider,
@@ -12,7 +19,7 @@ import typography from './typography'
 import breakpoints from './breakpoints'
 import GlobalStyles from './globalStyles'
 import componentsOverride from './overrides'
-import shadows, { customShadows, CustomThemeOption } from './shadows'
+import shadows, { customShadows } from './shadows'
 import { CacheProvider } from '@emotion/react'
 import { cache } from '@emotion/css'
 import { TypographyOptions } from '@mui/material/styles/createTypography'
@@ -20,6 +27,19 @@ cache.compat = true
 
 interface ThemeConfigProps {
   children: React.ReactNode
+}
+
+export interface CustomThemeOption extends ThemeOptions {
+  customShadows?: { [key: string]: string }
+  palette: CustomPaletteOptions
+}
+
+interface CustomPaletteOptions extends PaletteOptions {
+  background: Partial<TypeBackground>
+  text: Partial<TypeText>
+  primary: PaletteColorOptions
+  error: PaletteColorOptions
+  info: PaletteColorOptions
 }
 
 export const getTheme = (

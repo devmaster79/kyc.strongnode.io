@@ -1,4 +1,4 @@
-import { alpha, ThemeOptions } from '@mui/material/styles'
+import { alpha } from '@mui/material/styles'
 import { Shadows } from '@mui/material/styles/shadows'
 import palette from './palette'
 
@@ -65,10 +65,6 @@ export const customShadows = {
 const shadows = {
   light: createShadow(LIGHT_MODE),
   dark: createShadow(DARK_MODE)
-}
-
-export interface CustomThemeOption extends ThemeOptions {
-  customShadows?: { [key: string]: string }
 }
 
 export default shadows

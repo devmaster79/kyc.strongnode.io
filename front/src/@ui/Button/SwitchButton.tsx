@@ -73,7 +73,7 @@ const StyledButton = styled.label`
   width: 50px;
   height: 24px;
   border-radius: 20px;
-  background: ${(props) => props.theme?.palette?.background?.switch};
+  background: ${(props) => props.theme.palette.background.switch};
   vertical-align: middle;
   cursor: pointer;
   margin-left: 14px;
@@ -95,5 +95,5 @@ const Help = styled.div`
   font-weight: 500;
   font-size: 0.9em;
   color: ${(props) =>
-    props.theme?.palette?.primary ? props.theme?.palette?.primary[75] : null};
+    props.theme.palette.primary ? props.theme.palette.primary[75] : null};
 `

@@ -11,7 +11,7 @@ const SidebarWrapper = styled.div`
   flex: 1 0 auto;
   z-index: 1200;
   position: fixed;
-  background: ${(props) => props.theme?.palette?.background?.primary};
+  background: ${(props) => props.theme.palette.background.primary};
   box-shadow: inset -1px 0px 0px rgba(255, 255, 255, 0.12);
 
   @media only screen and (max-width: 600px) {

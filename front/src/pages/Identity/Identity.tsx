@@ -193,7 +193,7 @@ const IdentityWrapper = styled.div`
     padding: 15px;
 
     a {
-      color: ${(props) => props.theme?.palette?.text?.secondary};
+      color: ${(props) => props.theme.palette.text.secondary};
       text-decoration: underline;
     }
   }
@@ -201,6 +201,6 @@ const IdentityWrapper = styled.div`
 
 const Separator = styled.hr`
   width: 354px;
-  border: 1px solid ${(props) => props.theme?.palette?.border?.light};
+  border: 1px solid ${(props) => props.theme.palette.border.light};
   margin: 32px 0;
 `

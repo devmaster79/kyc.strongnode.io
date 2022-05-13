@@ -44,7 +44,7 @@ export const InputContainer = styled.div`
 export const HelpText = styled.div<{ error: boolean }>`
   text-align: left;
   padding: 0.3em 2em;
-  ${(props) => props.error && `color: ${props.theme?.palette?.error?.main}`}
+  ${(props) => props.error && `color: ${props.theme.palette.error.main}`}
 `
 
 export const FloatingLabel = styled.label`
@@ -77,7 +77,7 @@ export const FloatingLabelWrapper = styled('div', {
     transform: translateY(-18px);
     transition-duration: 300ms;
     font-size: 12px;
-    background-color: ${(props) => props.theme?.palette?.background?.label};
+    background-color: ${(props) => props.theme.palette.background.label};
     left: 3px;
     ${(props) => props.onFocusStyle}
   }
@@ -88,14 +88,14 @@ export const StyledInputWrapper = styled.div<{
   error: boolean
 }>`
   flex: 1;
-  background: ${(props) => props.theme?.palette?.background?.light};
+  background: ${(props) => props.theme.palette.background.light};
   ${(props) =>
     props.error
-      ? `border: 1px solid ${props.theme?.palette?.error?.light};`
-      : `border: 1px solid ${props.theme?.palette?.border?.light};`}
+      ? `border: 1px solid ${props.theme.palette.error.light};`
+      : `border: 1px solid ${props.theme.palette.border.light};`}
   box-sizing: border-box;
   border-radius: 8px;
-  color: ${(props) => props.theme?.palette?.text?.secondary};
+  color: ${(props) => props.theme.palette.text.secondary};
   display: flex;
   align-items: center;
   min-width: 260px;
@@ -112,30 +112,30 @@ export const StyledInputField = styled.input`
   height: 40px;
   background: transparent;
   border: 0px;
-  color: ${(props) => props.theme?.palette?.text?.primary};
+  color: ${(props) => props.theme.palette.text.primary};
   font-size: 14px;
   padding-left: 8px;
 
   ::placeholder {
     /* Chrome, Firefox, Opera, Safari 10.1+ */
-    color: ${(props) => props.theme?.palette?.text?.secondary};
+    color: ${(props) => props.theme.palette.text.secondary};
     opacity: 1; /* Firefox */
   }
 
   :-ms-input-placeholder {
     /* Internet Explorer 10-11 */
-    color: ${(props) => props.theme?.palette?.text?.secondary};
+    color: ${(props) => props.theme.palette.text.secondary};
   }
 
   ::-ms-input-placeholder {
     /* Microsoft Edge */
-    color: ${(props) => props.theme?.palette?.text?.secondary};
+    color: ${(props) => props.theme.palette.text.secondary};
   }
 
   &:-webkit-autofill {
-    -webkit-text-fill-color: ${(props) => props.theme?.palette?.text?.primary};
+    -webkit-text-fill-color: ${(props) => props.theme.palette.text.primary};
     -webkit-box-shadow: 0 0 0px 1000px
-      ${(props) => props.theme?.palette?.background?.primary} inset;
+      ${(props) => props.theme.palette.background.primary} inset;
     border-radius: 7px;
   }
 `

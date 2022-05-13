@@ -73,7 +73,7 @@ export function Step(props: ProgressCircleProps) {
     font-style: regular;
     font-weight: 400;
     font-size: 14px;
-    font-color: ${(props) => props.theme?.palette?.text?.primary};
+    font-color: ${(props) => props.theme.palette.text.primary};
     line-height: 14px;
     text-align: center;
     opacity: 0.6;
@@ -91,8 +91,8 @@ export function Step(props: ProgressCircleProps) {
             pathColor: `${progressBorder ? '#13124A' : '#AA1FEC'}`,
             trailColor: `${
               progressBorder
-                ? theme.palette?.progressCircle?.trailColorPrimary
-                : theme.palette?.progressCircle?.trailColorSecondary
+                ? theme.palette.progressCircle.trailColorPrimary
+                : theme.palette.progressCircle.trailColorSecondary
             }`,
             strokeLinecap: 'butt'
           })}

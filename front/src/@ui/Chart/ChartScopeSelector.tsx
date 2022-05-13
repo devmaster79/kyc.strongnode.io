@@ -56,7 +56,7 @@ const SelectorButton = styled.div`
   cursor: pointer;
 
   transition: 240ms ease;
-  color: ${(props) => props.theme?.palette?.text?.primary};
+  color: ${(props) => props.theme.palette.text.primary};
   opacity: 0.4;
 
   &:hover {

@@ -52,7 +52,7 @@ function Select<
               ? { transform: 'rotate(180deg)', transition: '450ms ease' }
               : { transition: '450ms ease' }
           }
-          color={theme?.palette?.text?.primary}
+          color={theme.palette.text.primary}
         />
       </HeaderWrapper>
       {opened && (
@@ -101,12 +101,12 @@ const HeaderWrapper = styled.div`
 `
 
 const OptionsWrapper = styled.div`
-  background: ${(props) => props.theme?.palette?.background?.secondary};
-  border: 1px solid ${(props) => props.theme?.palette?.border?.light};
+  background: ${(props) => props.theme.palette.background.secondary};
+  border: 1px solid ${(props) => props.theme.palette.border.light};
   box-sizing: border-box;
   border-radius: 10px;
 
-  color: ${(props) => props.theme?.palette?.text?.secondary};
+  color: ${(props) => props.theme.palette.text.secondary};
   text-align: left;
   padding: 24px;
 
@@ -114,7 +114,7 @@ const OptionsWrapper = styled.div`
   margin-top: 10px;
 
   .active {
-    color: ${(props) => props.theme?.palette?.text?.primary};
+    color: ${(props) => props.theme.palette.text.primary};
   }
 
   ul {

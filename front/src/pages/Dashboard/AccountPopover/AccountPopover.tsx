@@ -51,7 +51,7 @@ export default function AccountPopover() {
               ? { transform: 'rotate(180deg)', transition: '450ms ease' }
               : { transition: '450ms ease' }
           }
-          color={theme?.palette?.icon?.secondary}
+          color={theme.palette.icon.secondary}
         />
 
         <AvatarIconWrapper>
@@ -60,7 +60,7 @@ export default function AccountPopover() {
             width={20}
             height={20}
             viewBox="0 0 20 20"
-            color={theme?.palette?.icon?.active}
+            color={theme.palette.icon.active}
           />
         </AvatarIconWrapper>
       </IconWrapper>

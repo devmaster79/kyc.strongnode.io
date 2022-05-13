@@ -1,10 +1,10 @@
 import styled from '@emotion/styled'
 
 export const Card = styled.div`
-  background: ${(props) => props.theme?.palette?.background?.light};
-  color: ${(props) => props.theme?.palette?.text?.primary};
+  background: ${(props) => props.theme.palette.background.light};
+  color: ${(props) => props.theme.palette.text.primary};
   padding: 8px;
-  border: 1px solid ${(props) => props.theme?.palette?.border?.light};
+  border: 1px solid ${(props) => props.theme.palette.border.light};
   box-sizing: border-box;
   border-radius: 8px;
   font-family: 'Satoshi-Variable';
@@ -35,6 +35,6 @@ export const CardContent = styled.div`
 
   span {
     font-family: 'Satoshi-Regular';
-    color: ${(props) => props.theme?.palette?.text?.secondary};
+    color: ${(props) => props.theme.palette.text.secondary};
   }
 `

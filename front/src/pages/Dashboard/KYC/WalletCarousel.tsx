@@ -38,7 +38,7 @@ export function WalletCarousel(props: { walletProps: WalletInfoType[] }) {
                 style={{
                   width: '248px',
                   height: '110px',
-                  backgroundColor: theme?.palette?.background?.wallet,
+                  backgroundColor: theme.palette.background.wallet,
                   border: '1px solid rgba(255, 255, 255, 0.1)',
                   borderRadius: '8px',
                   padding: '24px 0px 24px 0px'
@@ -46,7 +46,7 @@ export function WalletCarousel(props: { walletProps: WalletInfoType[] }) {
                 <div style={{ paddingLeft: '24px' }}>
                   <Icon
                     name={'wallet'}
-                    style={{ color: theme?.palette?.icon?.wallet }}
+                    style={{ color: theme.palette.icon.wallet }}
                     width={22}
                     height={26}
                     viewBox="0 0 22 22"
@@ -85,7 +85,7 @@ export function WalletCarousel(props: { walletProps: WalletInfoType[] }) {
                 top: '0',
                 left: '0',
                 zIndex: '10',
-                background: theme?.palette?.background?.walletGradient
+                background: theme.palette.background.walletGradient
               }}
             />
             <div
@@ -96,7 +96,7 @@ export function WalletCarousel(props: { walletProps: WalletInfoType[] }) {
                 top: '0',
                 right: '0',
                 zIndex: '10',
-                background: theme?.palette?.background?.walletGradient,
+                background: theme.palette.background.walletGradient,
                 transform: 'matrix(-1, 0, 0, 1, 0, 0)'
               }}
             />

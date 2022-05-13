@@ -5,7 +5,7 @@ const StyledButton = styled.button`
   font-size: 16px;
   line-height: 140%;
   text-align: center;
-  color: ${(props) => props.theme?.palette?.text?.secondary};
+  color: ${(props) => props.theme.palette.text.secondary};
   background: transparent;
   border: 0px;
   cursor: pointer;

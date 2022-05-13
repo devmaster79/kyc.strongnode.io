@@ -16,7 +16,7 @@ const GlobalStyles = withStyles((theme) => ({
       '-webkit-overflow-scrolling': 'touch'
     },
     body: {
-      color: theme?.palette?.text?.primary,
+      color: theme.palette.text.primary,
       width: '100%',
       height: '100%',
       background: '#F3F5F9',
@@ -31,7 +31,7 @@ const GlobalStyles = withStyles((theme) => ({
       fontWeight: 900,
       fontSize: '32px',
       paddingBottom: 40,
-      color: theme?.palette?.text?.primary
+      color: theme.palette.text.primary
     },
     '#root': {
       width: '100%',

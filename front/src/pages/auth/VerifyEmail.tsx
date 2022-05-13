@@ -98,7 +98,7 @@ const Title = styled.h1`
     font-weight: 900;
   }
 
-  color: ${(props) => props.theme?.palette?.text?.primary};
+  color: ${(props) => props.theme.palette.text.primary};
 `
 
 const HelpText = styled.div`
