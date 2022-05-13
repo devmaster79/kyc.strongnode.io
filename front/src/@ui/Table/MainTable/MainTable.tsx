@@ -6,24 +6,46 @@ function fDate(date: string) {
   return format(new Date(date), 'dd/MM/yyyy')
 }
 
-export default function MainTable({
+interface MainTableProps<Item> {
+  dataSet: DataSet<Item>
+  columns: Column[]
+  fetchData?: (p: number, p2: number) => void | null
+  overwrittenFields: Record<string, unknown>
+  hideHeading?: boolean
+}
+
+export interface DataSet<Item> {
+  items: Item[]
+  total?: number
+}
+export interface Column {
+  id: string
+  label: string
+  align: string
+}
+
+type OverwrittenFields = {
+  [key: string]: (value: string) => Element
+}
+
+export default function MainTable<Item extends Record<string, unknown>>({
   dataSet,
   columns,
   fetchData,
   overwrittenFields,
   hideHeading
-}: any) {
+}: MainTableProps<Item>) {
   const [page, setPage] = useState(0)
 
   const listInnerRef = useRef() as React.MutableRefObject<HTMLInputElement>
 
   const onScroll = () => {
     if (listInnerRef.current) {
-      if (dataSet.total === dataSet.items.length) return
+      if (dataSet?.total === dataSet.items.length) return
       const { scrollTop, scrollHeight, clientHeight } = listInnerRef.current
       if (Math.abs(scrollHeight - clientHeight - scrollTop) < 1) {
         setPage(page + 1)
-        fetchData(page + 1, 5)
+        fetchData && fetchData(page + 1, 5)
       }
     }
   }
@@ -35,23 +57,25 @@ export default function MainTable({
           <tbody>
             {!hideHeading && (
               <tr>
-                {columns.map((column: any) => (
+                {columns.map((column: Column) => (
                   <th key={column.id}>{column.label}</th>
                 ))}
               </tr>
             )}
             {dataSet &&
-              dataSet.items.map((row: any) => (
-                <tr key={row.id}>
-                  {columns.map((column: any) => (
+              dataSet.items.map((row: Item) => (
+                <tr key={row['id'] as string}>
+                  {columns.map((column: Column) => (
                     <td key={column.id}>
                       {overwrittenFields[column.id] ? (
-                        overwrittenFields[column.id](row[column.id])
+                        (overwrittenFields as OverwrittenFields)[column.id](
+                          row[column.id] as string
+                        )
                       ) : (
                         <p>
-                          {column.id === 'date'
-                            ? fDate(row[column.id])
-                            : row[column.id]}
+                          {column['id'] === 'date'
+                            ? fDate(row[column.id] as string)
+                            : (row[column.id] as string)}
                         </p>
                       )}
                     </td>

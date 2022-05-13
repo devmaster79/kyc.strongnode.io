@@ -1,8 +1,5 @@
 import styled from '@emotion/styled'
-import Icon from '@ui/Icon/Icon'
-import { MouseEvent, useState } from 'react'
-import { useTheme } from '@mui/styles'
-import { CustomTheme } from 'theme'
+import { MouseEvent } from 'react'
 
 export type MultiSwitchProps<
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

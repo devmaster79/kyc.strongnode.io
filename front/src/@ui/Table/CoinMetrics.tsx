@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import styled from '@emotion/styled/macro'
 import TableSection from 'components/TableSection/TableSection'
+import { DataSet } from '@ui/Table/MainTable/MainTable'
 import cryptoDataService from '../../services/cryptoDataService'
+import { AxiosResponse } from 'axios'
 
 const sampleColumns = [
   {
@@ -64,7 +66,7 @@ const overwrittenFields = {
       <CryptoWrapper>
         <img
           style={{ width: 40, height: 40 }}
-          src={icon.url.large}
+          src={icon.url?.large || ''}
           alt={icon.name + ' icon'}
         />
         <p>{icon.name}</p>
@@ -82,16 +84,7 @@ const overwrittenFields = {
   }
 }
 
-let searchTimeout: any = null
-
-interface IDataIcon {
-  name: string
-  url: any
-}
-
-interface IData {
-  [key: string]: object
-}
+let searchTimeout: ReturnType<typeof setTimeout>
 
 type CoinMetricsProps = {
   title: string
@@ -103,17 +96,61 @@ type CoinMetricsProps = {
 interface TokenObject {
   owned: string
   value: string
-  value_trend: string
+  value_trend: ValueTrend
   icon: {
     url: string
     name: string
   }
 }
 
+interface TokenResponse {
+  token: string
+  usd_value: string
+  day_change: string
+  image: string
+}
+
+interface ValueTrend {
+  positive?: boolean
+  value?: string
+}
+
+interface IDataIcon {
+  name: string
+  url: { large: string }
+}
+
+interface IData {
+  [key: string]: object
+}
+
 export const CoinMetrics = (props: CoinMetricsProps) => {
-  const [tableData, setTableData] = useState<{ items: any[] }>({ items: [] })
+  const [tableData, setTableData] = useState<{ items: TokenObject[] }>({
+    items: []
+  })
 
   useEffect(() => {
+    const formatTableData = (data: Array<TokenResponse>) => {
+      const temporaryData: TokenObject[] = []
+
+      data.forEach((token: TokenResponse) => {
+        const tokenObject = {
+          owned: 'unknown',
+          value: Number(token.usd_value).toFixed(4) + ' USD',
+          value_trend: createValueTrendObject(token.day_change),
+          icon: {
+            url: token.image,
+            name: token.token.toUpperCase()
+          }
+        }
+        temporaryData.push(tokenObject)
+      })
+      return { items: temporaryData }
+    }
+    const loadTokenMetrics = async () => {
+      const data: AxiosResponse = await cryptoDataService.getTokenMetrics()
+      setTableData(formatTableData(data.data))
+    }
     loadTokenMetrics()
 
     const refreshDataInterval = setInterval(() => {
@@ -123,33 +160,10 @@ export const CoinMetrics = (props: CoinMetricsProps) => {
     return () => clearInterval(refreshDataInterval)
   }, [])
 
-  const loadTokenMetrics = async () => {
-    const data: any = await cryptoDataService.getTokenMetrics()
-    setTableData(formatTableData(data.data))
-  }
-
-  const formatTableData = (data: any) => {
-    const temporaryData: TokenObject[] = []
-
-    data.forEach((token: any) => {
-      const tokenObject = {
-        owned: 'unknown',
-        value: Number(token.usd_value).toFixed(4) + ' USD',
-        value_trend: createValueTrendObject(token.day_change),
-        icon: {
-          url: token.image,
-          name: token.token.toUpperCase()
-        }
-      }
-      temporaryData.push(tokenObject)
-    })
-    return { items: temporaryData }
-  }
-
   const createValueTrendObject = (value: string) => {
-    const valueTrendObject: any = {}
+    const valueTrendObject: ValueTrend = {}
 
-    if (value.charAt(0) == '-') {
+    if (value.charAt(0) === '-') {
       valueTrendObject.positive = false
     } else {
       valueTrendObject.positive = true
@@ -180,7 +194,11 @@ export const CoinMetrics = (props: CoinMetricsProps) => {
       title={props.title}
       subtitle={props.subtitle}
       overwrittenFields={overwrittenFields}
-      dataSet={tableData.items?.length > 0 ? tableData : sampleData}
+      dataSet={
+        (tableData.items?.length > 0
+          ? tableData
+          : sampleData) as unknown as DataSet<Record<string, unknown>>
+      }
       columns={sampleColumns}
     />
   )

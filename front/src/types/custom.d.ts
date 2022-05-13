@@ -1,5 +1,5 @@
 import type { CustomTheme } from '../theme'
-
+import '@material-ui/core/styles'
 declare module '@emotion/styled' {
   export interface Theme extends CustomTheme {}
 }
@@ -30,6 +30,54 @@ declare module '@mui/material/styles' {
     gradients: {
       button: string
     }
+  }
+  export interface PaletteOptions {
+    border: {
+      light: string
+      button: string
+    }
+    icon: {
+      wrapper: string
+      wallet: string
+      active: string
+      secondary: string
+      primary: string
+    }
+    progressCircle: {
+      trailColorPrimary: string
+      trailColorSecondary: string
+    }
+    button: {
+      invert: string
+      text: string
+      background: {
+        invert: string
+      }
+    }
+  }
+  export interface TypeBackground {
+    secondary: string
+    light: string
+    walletGradient: string
+    wallet: string
+    primary: string
+    modalSecondary: string
+    modal: string
+    input: string
+    label: string
+    switch: string
+    white: string
+    inputModal: string
+    floatingModalInput: string
+  }
+  export interface PaletteColorOptions {
+    light?: string
+    main?: string
+    75?: string
+  }
+
+  export interface TypeText {
+    whiteButton: string
   }
 }
 

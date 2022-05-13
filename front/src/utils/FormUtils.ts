@@ -10,9 +10,9 @@ export function getFieldIssues<TRequestBody extends Record<string, unknown>>(
   response: ZodValidationError<TRequestBody>
 ) {
   return response.issues
-    .filter((issue) => issue.message !== 'undefined')
+    .filter((issue: { message: string }) => issue.message !== 'undefined')
     .map(
-      (issue) =>
+      (issue: { message: string; path: string[] }) =>
         ({
           message: issue.message,
           path: issue.path.join('.')

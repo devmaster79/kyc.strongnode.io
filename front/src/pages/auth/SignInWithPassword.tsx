@@ -33,11 +33,13 @@ export function SignInWithPassword() {
     if (response.result === 'success') {
       navigate('/sign-in-with-token')
     } else if (response.result === 'validation-error') {
-      getFieldIssues(response).forEach((val) => {
-        setError(val.path, {
-          message: val.message
-        })
-      })
+      getFieldIssues(response).forEach(
+        (val: { path: 'password'; message: string }) => {
+          setError(val.path, {
+            message: val.message
+          })
+        }
+      )
     }
   }
 
