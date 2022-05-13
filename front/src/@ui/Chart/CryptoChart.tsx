@@ -30,6 +30,7 @@ type CryptoChartProps = {
 type SwitchOption = {
   label: string
   value: number
+  dataKey: string
 }
 
 export const CryptoChart = (props: CryptoChartProps) => {
@@ -40,7 +41,7 @@ export const CryptoChart = (props: CryptoChartProps) => {
 
   const [valueTrendIndicator, setValueTrendIndicator] = useState({
     up: false,
-    value: '20%'
+    value: '0%'
   })
 
   const onScopeChange = (scopeFormat: XAxisFormat) => {
@@ -67,13 +68,12 @@ export const CryptoChart = (props: CryptoChartProps) => {
   ] as SelectorItem[]
 
   const switchOptions = [
-    { label: 'Price', value: 1 },
-    { label: 'Market Cap', value: 2 },
-    { label: 'Trading View', value: 3 }
+    { label: 'Price', value: 1, dataKey: 'prices' },
+    { label: 'Market Cap', value: 2, dataKey: 'market_caps' }
   ] as SwitchOption[]
 
   const [selectedSwitchOption, setSelectedSwitchOption] =
-    useState<SwitchOption>()
+    useState<SwitchOption>(switchOptions[0])
 
   useEffect(() => {
     // init load
@@ -82,18 +82,16 @@ export const CryptoChart = (props: CryptoChartProps) => {
     const refreshDataInterval = setInterval(() => {
       loadStrongnodeCurrency()
     }, 10000)
-    setSelectedSwitchOption(switchOptions[0])
 
     return () => clearInterval(refreshDataInterval)
-  }, [chartScopeFormat])
+  }, [chartScopeFormat, selectedSwitchOption])
 
   const loadStrongnodeCurrency = async () => {
     const data: any = await cryptoDataService.getChartDataAsync(
       chartScopeFormat
     )
     const tempData: any = []
-
-    data.data.prices.forEach((price: Array<string>) => {
+    data.data[selectedSwitchOption.dataKey].forEach((price: Array<string>) => {
       tempData.push({
         timestamp: price[0],
         value: price[1]
