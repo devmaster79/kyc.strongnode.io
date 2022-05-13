@@ -37,6 +37,8 @@ type SwitchOption = {
   value: number
 }
 
+type ChartDataType = Array<{timestamp: string, value: string}>
+
 export const CryptoChart = (props: CryptoChartProps) => {
   const [chartScopeFormat, setChartScopeFormat] = useState<XAxisFormat>('days')
   const [chartDataTemp, setChartDataTemp] = useState<Array<ValueWithTimeStamp>>(

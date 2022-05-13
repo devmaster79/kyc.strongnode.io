@@ -1,6 +1,6 @@
 import Button from '../@ui/Button/Button'
 import { useEthers, shortenIfAddress } from '@usedapp/core'
-import { ConnectWallet } from '../services/walletService'
+import { connectWallet } from '../services/walletService'
 import { addOrUpdateUserWallet } from '../services/userService'
 import { useEffect } from 'react'
 
@@ -23,7 +23,7 @@ export const ConnectButton = () => {
           </Button>
         )
         : (
-          <Button variant='normal' onClick={() => { ConnectWallet(activate) }}>
+          <Button variant='normal' onClick={() => { connectWallet(activate) }}>
             Connect Wallet
           </Button>
         )}
