@@ -189,6 +189,6 @@ const TrendPairWrapper = styled.div`
   }
 
   div:first-child {
-    margin-left: 0px;
+    margin-left: 0;
   }
 `
