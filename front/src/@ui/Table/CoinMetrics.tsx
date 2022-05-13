@@ -2,10 +2,9 @@ import React, { useEffect, useState } from 'react'
 import styled from '@emotion/styled/macro'
 import TableSection from 'components/TableSection/TableSection'
 import cryptoDataService, {
-  IGetTokenMetricsObject, IGetTokenMetricsData,
+  IGetTokenMetricsObject,
   IGetTokenMetricsImageObject
 } from '../../services/cryptoDataService'
-import { AxiosResponse } from 'axios'
 import { UserOwnedTokens } from './UserOwned/UserOwnedTokens'
 import { UserOwnedEthereum } from './UserOwned/UserOwnedEthereum'
 import { tokenAddressDictionary, coinTypesDictionary } from '../../services/walletService'
@@ -71,9 +70,7 @@ interface IFormattedTokenObject {
 
 type CoinMetricsProps = {
   title: string,
-  subtitle?: string,
-  dataSet: Array<IData>,
-  columns: Array<IData>
+  subtitle?: string
 }
 
 const overwrittenFields = {
@@ -137,7 +134,7 @@ export const CoinMetrics = (props: CoinMetricsProps) => {
   const formatTableData = (data: Array<IGetTokenMetricsObject>) => {
     const temporaryData: Array<IFormattedTokenObject> = []
 
-    data.forEach((token: IGetTokenMetricsObject) => {
+    data.map((token: IGetTokenMetricsObject) => {
       const tokenObject: IFormattedTokenObject = {
         owned: {
           tokenAddress: tokenAddressDictionary.strongnode,
@@ -156,7 +153,7 @@ export const CoinMetrics = (props: CoinMetricsProps) => {
     return { items: temporaryData }
   }
 
-  const addKeywords = async (keyword: string) => {
+  const addKeywords = async () => {
     // clear old timeout
     if (searchTimeout) {
       clearTimeout(searchTimeout)
