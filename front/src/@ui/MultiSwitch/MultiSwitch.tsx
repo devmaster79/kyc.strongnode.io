@@ -26,26 +26,16 @@ function MultiSwitch<
     // check the initial active offset
   }, [])
 
-  function onSelectValue(event: MouseEvent<HTMLLIElement>): void {
-    let activeIndex = 0
+  const onSelectValue = async (selectedValue: string) => {
+    const selectedIndex = props.options.findIndex(
+      (option) => option[props.searchBy] === selectedValue
+    )
+    setXOffset(selectedIndex)
 
-    const selectedOption = props.options.find((option) => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const target: HTMLLIElement = event.target as HTMLLIElement
+    // waits until the animation gets done
+    await new Promise((resolve) => setTimeout(resolve, 350))
 
-      if (option[props.trackBy].toString() === target.value.toString()) {
-        activeIndex = props.options.findIndex(
-          (item) => item.label === target.innerHTML
-        )
-        setXOffset(activeIndex)
-      }
-
-      return option[props.trackBy].toString() === target.value.toString()
-    })
-
-    if (selectedOption) {
-      props.onChange(selectedOption)
-    }
+    props.onChange(props.options[selectedIndex])
   }
 
   const setXOffset = (index: number) => {
@@ -66,7 +56,9 @@ function MultiSwitch<
                 ? 'active'
                 : ''
             }
-            onClick={onSelectValue}>
+            onClick={() => {
+              onSelectValue(option[props.searchBy])
+            }}>
             {option[props.searchBy]}
           </li>
         ))}
