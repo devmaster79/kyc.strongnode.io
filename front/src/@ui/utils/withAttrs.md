@@ -13,5 +13,5 @@ export const Input = withAttrs(
   {
     type: 'password'
   }
-);
+)
 ```

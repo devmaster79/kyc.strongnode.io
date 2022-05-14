@@ -1,18 +1,8 @@
 import styled from '@emotion/styled'
 import InputField from '@ui/Input/InputField'
-import MainTable from '@ui/Table/MainTable/MainTable'
+import MainTable, { Column, DataSet } from '@ui/Table/MainTable/MainTable'
 import Icon from '@ui/Icon/Icon'
 import { ChangeEvent, useState } from 'react'
-
-interface Column {
-  id: string
-  label: string
-  align: string
-}
-
-interface DataSet<Item> {
-  items: Item[]
-}
 
 interface Finder {
   onChange: (keyword: string) => void
@@ -26,11 +16,11 @@ interface TableSectionProps<Item extends Record<string, unknown>> {
   dataSet: DataSet<Item>
   columns: Column[]
   hideHeading?: boolean
-  overwrittenFields?: any
-  fetchData?: string
+  overwrittenFields?: Record<string, unknown>
+  fetchData?: (p: number, p2: number) => void
   searchEnabled?: boolean
   searchColumn?: string
-  finder?: Finder // if backend search implemented
+  finder?: Finder
 }
 
 function TableSection<Item extends Record<string, unknown>>(
@@ -52,12 +42,8 @@ function TableSection<Item extends Record<string, unknown>>(
       return
     }
     // if no backend search implemented.
-    const filteredData = props.dataSet.items.filter((o) =>
-      Object.values(o).some((val) => {
-        if (typeof val === 'string') {
-          return val.toLowerCase().includes(search)
-        }
-      })
+    const filteredData = props.dataSet.items.filter((val) =>
+      JSON.stringify(val).toLowerCase().includes(search)
     )
     setFilteredDataSet({ items: filteredData })
   }
@@ -85,7 +71,7 @@ function TableSection<Item extends Record<string, unknown>>(
             dataSet={filteredDataSet ? filteredDataSet : props.dataSet}
             columns={props.columns}
             overwrittenFields={props.overwrittenFields || {}}
-            fetchData={props.fetchData || null}
+            fetchData={props.fetchData}
             hideHeading={props.hideHeading || false}
           />
         </>

@@ -5,42 +5,36 @@ import InputField, {
   FloatingLabel
 } from '@ui/Input/InputField'
 import GenericButton from '@ui/Button/Button'
-import { withAttrs } from '@ui/utils/withAttrs'
 
-export const Input = withAttrs(
-  styled(InputField)`
-    background: ${(props) => props.theme.palette.background.input}!important;
+export const Input = styled(InputField)`
+  background: ${(props) => props.theme.palette.background.input}!important;
 
-    ${(props) =>
-      props.error
-        ? `border: 1px solid ${props.theme.palette.error.light};`
-        : 'border: 1px solid rgba(255, 255, 255, 0.1);'}
-    ${(props) =>
-      props.error
-        ? `background: ${props.theme.palette.error.light};`
-        : 'background: rgba(255, 255, 255, 0.08);'}
+  ${(props) =>
+    props.error
+      ? `border: 1px solid ${props.theme.palette.error.light};`
+      : 'border: 1px solid rgba(255, 255, 255, 0.1);'}
+  ${(props) =>
+    props.error
+      ? `background: ${props.theme.palette.error.light};`
+      : 'background: rgba(255, 255, 255, 0.08);'}
 
   ${FloatingLabelWrapper} {
-      font-size: 14px;
-    }
-    ${StyledInputField} {
-      height: 56px;
-    }
-    ${FloatingLabel} {
-      background: none;
-      padding-top: 9px;
-      top: 7px;
-    }
-  `,
-  {
-    floatingLabelWrapperProps: {
-      onFocusStyle: {
-        transform: 'translateY(-25px)',
-        background: 'transparent'
-      }
+    font-size: 14px;
+    :focus-within > .floating-label,
+    input:not(:placeholder-shown) + .floating-label,
+    input:-webkit-autofill + .floating-label {
+      background: ${(props) => props.theme.palette.background.floatingLabel};
     }
   }
-)
+  ${StyledInputField} {
+    height: 56px;
+  }
+  ${FloatingLabel} {
+    background: none;
+    padding-top: 9px;
+    top: 7px;
+  }
+`
 
 export const ModalInput = styled(Input)`
   background: ${(props) => props.theme.palette.background.inputModal}!important;

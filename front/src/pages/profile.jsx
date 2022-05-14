@@ -59,16 +59,19 @@ function Profile() {
   const [twitterUserName, setTwitterUserName] = useState('')
   const [walletAddress, setWalletAddress] = useState('')
 
-  const handleCreateProfile = useCallback(async (data) => {
-    try {
-      const res = await userService.createProfile(data)
-      if (res.data) {
-        navigate('/private-sale-interest-form')
+  const handleCreateProfile = useCallback(
+    async (data) => {
+      try {
+        const res = await userService.createProfile(data)
+        if (res.data) {
+          navigate('/private-sale-interest-form')
+        }
+      } catch (err) {
+        console.error('Error for create password', err)
       }
-    } catch (err) {
-      console.error('Error for create password', err)
-    }
-  }, [])
+    },
+    [navigate]
+  )
 
   const handleTGUserNameInputChange = (event) => {
     setTelegramUserName(event.target.value)

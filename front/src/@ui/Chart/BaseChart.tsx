@@ -60,19 +60,18 @@ export const BaseChart = <
     }
   }
 
-  const calculateYAxisWidth = (data: Item[]) => {
-    return data
-      .map((c) => (c[props.chartKey] as typeof toString).toString())
-      .reduce(
-        (acc: number, cur: string | string[]) =>
-          cur.length > acc ? cur.length : acc,
-        0
-      )
-  }
-
   useEffect(() => {
+    const calculateYAxisWidth = (data: Item[]) => {
+      return data
+        .map((c) => (c[props.chartKey] as typeof toString).toString())
+        .reduce(
+          (acc: number, cur: string | string[]) =>
+            cur.length > acc ? cur.length : acc,
+          0
+        )
+    }
     setYAxisWidth(calculateYAxisWidth(props.data))
-  }, [props.data])
+  }, [props.data, props.chartKey])
 
   const tooltipWrapperStyle = {
     background: 'red'

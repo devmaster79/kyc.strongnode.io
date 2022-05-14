@@ -7,12 +7,12 @@ import userService from 'services/userService'
 import * as authService from 'services/auth'
 import Icon from '@ui/Icon/Icon'
 import { useTheme } from '@mui/styles'
+import { CustomTheme } from 'theme'
 
-export default function AccountPopover(props: any) {
+export default function AccountPopover() {
   const navigate = useNavigate()
   const [userName, setUserName] = useState('')
   const [email, setEmail] = useState('')
-  const [avatar, setAvatar] = useState('')
   const [showModal, setShowModal] = useState(false)
 
   useEffect(() => {
@@ -21,7 +21,6 @@ export default function AccountPopover(props: any) {
       .getProfile()
       .then((r) => {
         setUserName(r.data[0].first_name + ' ' + r.data[0].last_name)
-        setAvatar(r.data[0].profile_img_url || '')
       })
       .catch((error) => console.error(error))
   }, [])
@@ -37,7 +36,7 @@ export default function AccountPopover(props: any) {
     navigate('/dashboard/kyc')
   }
 
-  const theme: any = useTheme()
+  const theme: CustomTheme = useTheme()
 
   return (
     <>

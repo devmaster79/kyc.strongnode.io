@@ -94,5 +94,6 @@ const StyledButton = styled.label`
 const Help = styled.div`
   font-weight: 500;
   font-size: 0.9em;
-  color: ${(props) => props.theme.palette.primary[75]};
+  color: ${(props) =>
+    props.theme.palette.primary ? props.theme.palette.primary[75] : null};
 `
