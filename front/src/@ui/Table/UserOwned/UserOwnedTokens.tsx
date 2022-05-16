@@ -3,7 +3,7 @@ import { useGetTokenBalanceFormatted } from '../../../hooks/useGetTokenBalanceFo
 import { useEthers } from '@usedapp/core'
 
 type UserOwnedTokensProps = {
-  tokenAddress: string,
+  tokenAddress: string
   default: string
 }
 
@@ -11,9 +11,5 @@ export const UserOwnedTokens = (props: UserOwnedTokensProps) => {
   const { account } = useEthers()
   const ownedTokens = useGetTokenBalanceFormatted(account, props.tokenAddress)
 
-  return (
-    <span>
-      {ownedTokens || props.default}
-    </span>
-  )
+  return <span>{ownedTokens || props.default}</span>
 }

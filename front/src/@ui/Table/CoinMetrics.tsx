@@ -7,7 +7,10 @@ import cryptoDataService, {
 } from '../../services/cryptoDataService'
 import { UserOwnedTokens } from './UserOwned/UserOwnedTokens'
 import { UserOwnedEthereum } from './UserOwned/UserOwnedEthereum'
-import { tokenAddressDictionary, coinTypesDictionary } from '../../services/walletService'
+import {
+  tokenAddressDictionary,
+  coinTypesDictionary
+} from '../../services/walletService'
 
 const sampleColumns = [
   {
@@ -47,29 +50,29 @@ const sampleData = {
 }
 
 interface IDataIcon {
-  name: string,
+  name: string
   url: IGetTokenMetricsImageObject
 }
 
 interface IData {
-  [key:string]: object
+  [key: string]: object
 }
 
 interface IOwnedObject {
-  tokenAddress: string,
-  default: string,
+  tokenAddress: string
+  default: string
   type: string | undefined | boolean
 }
 
 interface IFormattedTokenObject {
-  owned: IOwnedObject,
-  value: string,
-  value_trend: number,
+  owned: IOwnedObject
+  value: string
+  value_trend: number
   icon: IDataIcon
 }
 
 type CoinMetricsProps = {
-  title: string,
+  title: string
   subtitle?: string
 }
 
@@ -89,7 +92,8 @@ const overwrittenFields = {
   value_trend: (value: number) => {
     return (
       <div>
-        <GrowthWrapper style={Math.sign(value) === -1 ? { color: '#BB3353' } : {}}>
+        <GrowthWrapper
+          style={Math.sign(value) === -1 ? { color: '#BB3353' } : {}}>
           {value}
         </GrowthWrapper>
       </div>
@@ -98,12 +102,16 @@ const overwrittenFields = {
   owned: (data: IOwnedObject) => {
     return (
       <span>
-        {data.type === 'token' &&
-          <UserOwnedTokens tokenAddress={data.tokenAddress} default={data.default} />}
-        {data.type === 'ethereum' &&
-          <UserOwnedEthereum default={data.default} />}
-        {!data.type &&
-          data.default}
+        {data.type === 'token' && (
+          <UserOwnedTokens
+            tokenAddress={data.tokenAddress}
+            default={data.default}
+          />
+        )}
+        {data.type === 'ethereum' && (
+          <UserOwnedEthereum default={data.default} />
+        )}
+        {!data.type && data.default}
       </span>
     )
   }
@@ -173,7 +181,7 @@ export const CoinMetrics = (props: CoinMetricsProps) => {
       title={props.title}
       subtitle={props.subtitle}
       overwrittenFields={overwrittenFields}
-      dataSet={(Object.keys(tableData).length > 0) ? tableData : sampleData}
+      dataSet={Object.keys(tableData).length > 0 ? tableData : sampleData}
       columns={sampleColumns}
     />
   )

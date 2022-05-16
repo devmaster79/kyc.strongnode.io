@@ -10,9 +10,5 @@ export const UserOwnedEthereum = (props: UserOwnedEthereumProps) => {
   const { account } = useEthers()
   const ownedTokens = useGetEthereumBalanceFormatted(account)
 
-  return (
-    <span>
-      {ownedTokens || props.default}
-    </span>
-  )
+  return <span>{ownedTokens || props.default}</span>
 }

@@ -27,23 +27,16 @@ type CryptoChartProps = {
   wrapperStyles: object
 }
 
-interface ValueWithTimeStamp {
-  timestamp: string
-  value: string
-}
-
 type SwitchOption = {
   label: string
   value: number
 }
 
-type ChartDataType = Array<{timestamp: string, value: string}>
+type ChartDataType = Array<{ timestamp: string; value: string }>
 
 export const CryptoChart = (props: CryptoChartProps) => {
   const [chartScopeFormat, setChartScopeFormat] = useState<XAxisFormat>('days')
-  const [chartDataTemp, setChartDataTemp] = useState<Array<ValueWithTimeStamp>>(
-    []
-  )
+  const [chartDataTemp, setChartDataTemp] = useState<ChartDataType>([])
   const [cryptoCurrency] = useState('SNE')
   const [targetCurrency] = useState('USD')
 
@@ -87,7 +80,7 @@ export const CryptoChart = (props: CryptoChartProps) => {
   useEffect(() => {
     const loadStrongnodeCurrency = async () => {
       const data = await cryptoDataService.getChartDataAsync(chartScopeFormat)
-      const tempData: Array<ValueWithTimeStamp> = []
+      const tempData: ChartDataType = []
 
       data.data.prices.forEach((price: Array<string>) => {
         tempData.push({

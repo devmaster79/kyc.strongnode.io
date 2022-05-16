@@ -8,7 +8,9 @@ export const ConnectButton = () => {
   const { activate, deactivate, account } = useEthers()
 
   useEffect(() => {
-    if (account) { addOrUpdateUserWallet(account) }
+    if (account) {
+      addOrUpdateUserWallet(account)
+    }
   }, [account])
 
   // todo this fragment of code will be in wallet carousel too
@@ -16,17 +18,23 @@ export const ConnectButton = () => {
 
   return (
     <>
-      {account
-        ? (
-          <Button variant='normal' onClick={() => { deactivate() }}>
-            {shortenIfAddress(account)}
-          </Button>
-        )
-        : (
-          <Button variant='normal' onClick={() => { connectWallet(activate) }}>
-            Connect Wallet
-          </Button>
-        )}
+      {account ? (
+        <Button
+          variant="normal"
+          onClick={() => {
+            deactivate()
+          }}>
+          {shortenIfAddress(account)}
+        </Button>
+      ) : (
+        <Button
+          variant="normal"
+          onClick={() => {
+            connectWallet(activate)
+          }}>
+          Connect Wallet
+        </Button>
+      )}
     </>
   )
 }

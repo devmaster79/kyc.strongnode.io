@@ -1,11 +1,7 @@
 import { useState, useEffect } from 'react'
 import TextButton from '../../../@ui/Button/TextButton'
 import styled from '@emotion/styled/macro'
-import {
-  AccountPopoverWrapper,
-  AvatarIconWrapper,
-  IconWrapper
-} from './style'
+import { AccountPopoverWrapper, AvatarIconWrapper, IconWrapper } from './style'
 import { ConnectButton } from 'components/ConnectButton'
 import { useNavigate } from 'react-router-dom'
 import userService from 'services/userService'
@@ -79,13 +75,21 @@ export default function AccountPopover() {
           {userName}
           <span>{email}</span>
           <ConnectButton />
-          {!account &&
-            <MetamaskBrowserLink onClick={activateBrowserWallet}>connect Metamask extension</MetamaskBrowserLink>}
+          {!account && (
+            <MetamaskBrowserLink onClick={activateBrowserWallet}>
+              connect Metamask extension
+            </MetamaskBrowserLink>
+          )}
           <ol>
-            <li>SNE balance <span style={{ float: 'right' }}>{SNEBalance || '-'}</span></li>
+            <li>
+              SNE balance{' '}
+              <span style={{ float: 'right' }}>{SNEBalance || '-'}</span>
+            </li>
           </ol>
           <ul>
-            <li onClick={navigateToKyc} aria-hidden>My Account</li>
+            <li onClick={navigateToKyc} aria-hidden>
+              My Account
+            </li>
           </ul>
           <TextButton onClick={signOut}>Sign out</TextButton>
         </AccountPopoverWrapper>

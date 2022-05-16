@@ -2,11 +2,11 @@ import { Polygon, Config } from '@usedapp/core'
 import WalletConnectProvider from '@walletconnect/web3-provider/dist/umd/index.min.js'
 
 interface IStringDictionary {
-  [key:string]: string
+  [key: string]: string
 }
 
 interface IDictionary {
-  [key:string]: string | boolean
+  [key: string]: string | boolean
 }
 
 /**

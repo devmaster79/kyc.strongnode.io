@@ -5,6 +5,7 @@ import { AWS_CONFIG, EMAIL_CONFIG } from 'app/config/config'
 import { SupportRequestTemplate } from 'app/services/communication/templates/SupportRequestTemplate'
 import { Request, Response } from 'express'
 import { Logger } from 'app/services/Logger'
+import { IWalletObject } from '../models/userwallets.model'
 
 const UserControllerLogger = new Logger('UserController')
 type UserRequest = Request & { user: { email: string; user_name: string } }
@@ -37,7 +38,7 @@ export const addOrUpdateWallet = async (req: UserRequest, res: Response) => {
       )
       return res.send({ message: 'Wallets successfully updated.' })
     } else {
-      const createdWallet = await UserWallets.create({
+      await UserWallets.create({
         wallet: req.body.wallet,
         user_id: userDetails.id
       })
@@ -67,7 +68,7 @@ export const getUserWallets = async (req: UserRequest, res: Response) => {
       where: { user_id: userDetails.id }
     })
 
-    userWallets.forEach((wallet: any) => {
+    userWallets.forEach((wallet: IWalletObject) => {
       response.wallets.push(wallet.wallet)
     })
 
