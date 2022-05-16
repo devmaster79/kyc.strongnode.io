@@ -113,28 +113,6 @@ export const CryptoChart = (props: CryptoChartProps) => {
     return () => clearInterval(refreshDataInterval)
   }, [chartScopeFormat, selectedSwitchOption])
 
-  const loadStrongnodeCurrency = async () => {
-    const data: any = await cryptoDataService.getChartDataAsync(
-      chartScopeFormat
-    )
-    const tempData: any = []
-    data.data[selectedSwitchOption.dataKey].forEach((price: Array<string>) => {
-      tempData.push({
-        timestamp: price[0],
-        value: price[1]
-      })
-    })
-
-    setValueTrendIndicator({
-      value:
-        Number(tempData[tempData.length - 1].value).toFixed(6) +
-        ' ' +
-        targetCurrency,
-      up: tempData[tempData.length - 1].value > tempData[0].value
-    })
-    setChartDataTemp(tempData)
-  }
-
   return (
     <div style={props.wrapperStyles}>
       <HeadingWrapper>

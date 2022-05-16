@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 import { MouseEvent, useState, useEffect } from 'react'
-        
+
 export type MultiSwitchProps<
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   Option extends Record<string, any>,
