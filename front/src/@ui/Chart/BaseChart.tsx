@@ -60,6 +60,18 @@ export const BaseChart = <
     }
   }
 
+  const formatLabel = (label: string) => {
+    if (!props.xAxisFormat || isNaN(parseInt(label))) {
+      return label
+    }
+    return new Intl.DateTimeFormat('en-Us').format(new Date(label))
+  }
+
+  // todo add YAxis format to props and then work with it
+  const formatTooltipValue = (value: string) => {
+    return Number(value).toFixed(6) + ' $'
+  }
+
   useEffect(() => {
     const calculateYAxisWidth = (data: Item[]) => {
       return data
@@ -103,11 +115,12 @@ export const BaseChart = <
             axisLine={false}
             dataKey={props.yKey}
           />
-          <CartesianGrid vertical={false} stroke="rgba(153, 153, 153, 0.12)" />
+          <CartesianGrid vertical={true} stroke="rgba(153, 153, 153, 0.12)" />
 
           <Tooltip
+            labelFormatter={formatLabel}
+            formatter={formatTooltipValue}
             wrapperStyle={tooltipWrapperStyle}
-            contentStyle={{ display: 'none' }}
           />
           <Area
             key={1}
