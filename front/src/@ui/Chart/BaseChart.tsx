@@ -97,8 +97,8 @@ export const BaseChart = <
           margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
           <defs>
             <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#AA1FEC" stopOpacity={1} />
-              <stop offset="95%" stopColor="#AA1FEC" stopOpacity={0} />
+              <stop offset="30%" stopColor="#AA1FEC" stopOpacity={1} />
+              <stop offset="100%" stopColor="#AA1FEC" stopOpacity={0} />
             </linearGradient>
           </defs>
           <XAxis
@@ -115,7 +115,11 @@ export const BaseChart = <
             axisLine={false}
             dataKey={props.yKey}
           />
-          <CartesianGrid vertical={true} stroke="rgba(153, 153, 153, 0.12)" />
+          <CartesianGrid
+            vertical={true}
+            verticalFill={['transparent', 'rgba(217, 217, 217, 0.25)']}
+            stroke="rgba(153, 153, 153, 0.12)"
+          />
 
           <Tooltip
             labelFormatter={formatLabel}
