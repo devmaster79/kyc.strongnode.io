@@ -1,8 +1,9 @@
 import type { Express } from 'express'
-import { MODE_FULL } from '../services/auth/TokenService.js'
-import * as users from '../controllers/user.controller'
-import auth from '../middleware/auth'
-import multer from 'multer'
+import { MODE_FULL } from "../services/auth/TokenService.js";
+import * as users from "../controllers/user.controller";
+import auth from "../middleware/auth";
+import multer from 'multer';
+import { addOrUpdateWallet } from "../controllers/user.controller";
 
 module.exports = (app: Express) => {
   const upload = multer({ dest: '../uploads/' })

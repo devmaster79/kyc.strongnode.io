@@ -1,4 +1,4 @@
-const { Sequelize } = require('sequelize')
+const { Sequelize } = require('sequelize');
 
 async function up({ context: queryInterface }) {
   await queryInterface.createTable('userWallets', {
@@ -23,11 +23,11 @@ async function up({ context: queryInterface }) {
       type: Sequelize.DATE,
       allowNull: false
     }
-  })
+  });
 }
 
 async function down({ context: queryInterface }) {
-  await queryInterface.dropTable('userWallets')
+  await queryInterface.dropTable('userWallets');
 }
 
-module.exports = { up, down }
+module.exports = { up, down };

@@ -30,7 +30,7 @@ const MainStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-export default function DashboardLayout() {
+export default function DashboardLayout () {
   const theme = useTheme()
   const { collapseClick } = useCollapseDrawer()
   const [open, setOpen] = useState(false)
@@ -48,7 +48,8 @@ export default function DashboardLayout() {
           ...(collapseClick && {
             ml: '130px'
           })
-        }}>
+        }}
+      >
         <Outlet />
       </MainStyle>
     </RootStyle>

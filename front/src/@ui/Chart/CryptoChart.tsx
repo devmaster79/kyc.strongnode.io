@@ -36,7 +36,7 @@ type ChartDataType = Array<{ timestamp: string; value: string }>
 
 export const CryptoChart = (props: CryptoChartProps) => {
   const [chartScopeFormat, setChartScopeFormat] = useState<XAxisFormat>('days')
-  const [chartDataTemp, setChartDataTemp] = useState<ChartDataType>([])
+  const [chartData, setChartData] = useState<ChartDataType>([])
   const [cryptoCurrency] = useState('SNE')
   const [targetCurrency] = useState('USD')
 
@@ -96,7 +96,7 @@ export const CryptoChart = (props: CryptoChartProps) => {
           targetCurrency,
         up: tempData[tempData.length - 1].value > tempData[0].value
       })
-      setChartDataTemp(tempData)
+      setChartData(tempData)
     }
     // init load
     loadStrongnodeCurrency()
@@ -138,12 +138,7 @@ export const CryptoChart = (props: CryptoChartProps) => {
       </HeadingWrapper>
       <BaseChart
         xAxisFormat={chartScopeFormat}
-        data={
-          (chartDataTemp || placeholderData) as unknown as (Record<
-            string,
-            unknown
-          > & { value: { toString: () => string } })[]
-        }
+        data={chartData || placeholderData}
         xKey="timestamp"
         yKey="value"
         chartKey="value"
