@@ -1,14 +1,15 @@
 import { useState, useEffect } from 'react'
 import { sendSMSAndSaveNumber, enableSMSAuth } from 'services/auth'
-import { useServices, SingleServiceData, ServicesProps } from 'hooks/useService'
+import { useServices, ServicesProps } from 'hooks/useService'
 import PhoneInput from 'material-ui-phone-number'
 import Modal from '@ui/Modal/Modal'
 import Button from '@ui/Button/Button'
 import * as DashboardForm from '@ui/Dashboard/Form'
 import styled from '@emotion/styled'
 import { IAnim } from '@ui/utils/useAnimated'
+const { Message } = DashboardForm
 
-const authServices = {
+const __initAuthServices = {
   sendSMSAndSaveNumber,
   verifyOTPAndEnableSMSAuth: enableSMSAuth
 }
@@ -26,7 +27,7 @@ export function SMSSetupModal({
 }: SMSSetupModalProps) {
   const [smsCode, setSmsCode] = useState('')
   const [phoneNumber, setPhoneNumber] = useState('')
-  const authService = useServices(authServices)
+  const authServices = useServices(__initAuthServices)
 
   const setOTPValue = (val: string) => {
     val = val.slice(0, 4)
@@ -34,7 +35,7 @@ export function SMSSetupModal({
   }
 
   const verifySMSCode = async () => {
-    const data = await authService.verifyOTPAndEnableSMSAuth(smsCode)
+    const data = await authServices.verifyOTPAndEnableSMSAuth(smsCode)
     if (data.result === 'success') {
       onSuccess()
     }
@@ -75,8 +76,8 @@ export function SMSSetupModal({
             }}
           />
           <SendButtonWithCounter
-            onClick={() => authService.sendSMSAndSaveNumber(phoneNumber)}
-            disabled={authService.data.result === 'loading'}
+            onClick={() => authServices.sendSMSAndSaveNumber(phoneNumber)}
+            disabled={authServices.data.result === 'loading'}
           />
         </DashboardForm.Row>
         <DashboardForm.ModalInput
@@ -88,94 +89,40 @@ export function SMSSetupModal({
             onChange: (event) => setOTPValue(event.target.value)
           }}
         />
-        <Messages authService={authService} />
+        <Messages authServices={authServices} />
       </ModalForm>
     </Modal>
   )
 }
 
 const Messages = (props: {
-  authService: ServicesProps<typeof authServices>
+  authServices: ServicesProps<typeof __initAuthServices>
 }) => {
-  if (props.authService.last === 'sendSMSAndSaveNumber') {
-    return <SendSMSAndSaveNumberMessage data={props.authService.data} />
+  const services = props.authServices
+  if (services.data.result === 'waiting') {
+    return <WaitingMessage />
   }
-  if (props.authService.last === 'verifyOTPAndEnableSMSAuth') {
-    return <VerifyOTPAndEnableSMSAuthMessage data={props.authService.data} />
-  }
-  return (
-    <DashboardForm.InfoMessage>
-      Fill in your phone number and we will send you a password.
-    </DashboardForm.InfoMessage>
-  )
-}
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-interface MessageProps<T extends (...args: any) => any> {
-  data: SingleServiceData<T>
-}
-
-const SendSMSAndSaveNumberMessage = (
-  props: MessageProps<typeof sendSMSAndSaveNumber>
-) => {
-  if (props.data.result === 'loading') {
-    return (
-      <DashboardForm.InfoMessage>Sending the SMS...</DashboardForm.InfoMessage>
-    )
-  }
-  if (props.data.result === 'success') {
-    return (
-      <DashboardForm.InfoMessage>
-        We have sent you an SMS with the password.
-      </DashboardForm.InfoMessage>
-    )
-  }
-  if (props.data.result === 'banned-error') {
-    return (
-      <DashboardForm.ErrorMessage>
-        We have sent you an SMS already. You can try it again
-        {' ' + Math.floor(props.data.remainingTimeMs / 1000)} seconds later.
-      </DashboardForm.ErrorMessage>
-    )
-  }
-  if (props.data.result === 'validation-error') {
-    return (
-      <DashboardForm.ErrorMessage>
-        Wrong phone number.
-      </DashboardForm.ErrorMessage>
-    )
+  if (services.data.result === 'loading') {
+    switch (services.last) {
+      case 'verifyOTPAndEnableSMSAuth':
+        return <VerifyingMessage />
+      case 'sendSMSAndSaveNumber':
+        return <SendingMessage />
+      case null:
+        throw new Error('Unreachable')
+    }
   }
   return (
-    <DashboardForm.ErrorMessage>
-      We could not send you an SMS. Please try again later.
-    </DashboardForm.ErrorMessage>
+    <Message error={services.data.result !== 'success'}>
+      {services.data.message}
+    </Message>
   )
 }
-
-const VerifyOTPAndEnableSMSAuthMessage = (
-  props: MessageProps<typeof enableSMSAuth>
-) => {
-  if (props.data.result === 'loading') {
-    return (
-      <DashboardForm.InfoMessage>
-        Verifying the password...
-      </DashboardForm.InfoMessage>
-    )
-  }
-  if (props.data.result === 'validation-error') {
-    return (
-      <DashboardForm.ErrorMessage>Wrong password.</DashboardForm.ErrorMessage>
-    )
-  }
-  if (props.data.result === 'success') {
-    return <DashboardForm.InfoMessage>Good!</DashboardForm.InfoMessage>
-  }
-  return (
-    <DashboardForm.ErrorMessage>
-      We could not verify your password. Please try again later.
-    </DashboardForm.ErrorMessage>
-  )
-}
+const VerifyingMessage = () => <Message>Verifying the password...</Message>
+const SendingMessage = () => <Message>Sending the SMS...</Message>
+const WaitingMessage = () => (
+  <Message>Fill in your phone number and we will send you a password.</Message>
+)
 
 interface SendButtonWithCounterProps {
   onClick: () => void

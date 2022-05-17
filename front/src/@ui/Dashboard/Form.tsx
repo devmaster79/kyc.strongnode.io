@@ -99,14 +99,18 @@ export const Hr = styled.hr`
   );
 `
 
-export const InfoMessage = styled('p')((props) => ({
+interface MessageProps {
+  error?: boolean
+}
+
+export const Message = styled('p', {
+  shouldForwardProp: (prop) => prop !== 'error'
+})<MessageProps>((props) => ({
   textAlign: 'center',
   marginBottom: '10px',
-  color: props.theme.palette.info.main
-}))
-
-export const ErrorMessage = styled(InfoMessage)((props) => ({
-  color: props.theme.palette.error.main
+  color: props.error
+    ? props.theme.palette.error.main
+    : props.theme.palette.info.main
 }))
 
 export const Row = styled('div')({

@@ -1,10 +1,10 @@
 import * as authState from '../../services/auth'
 import styled from '@emotion/styled'
-import { useService } from '../../hooks/useService'
+import { ServiceProps, useService } from '../../hooks/useService'
 import InputField from '@ui/Input/InputField'
 import Button from '@ui/Button/Button'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { ErrorMessage, InfoMessage } from '@ui/Dashboard/Form'
+import { Message } from '@ui/Dashboard/Form'
 import { getFieldIssues } from 'utils/FormUtils'
 
 interface VerifyEmailFields {
@@ -18,7 +18,7 @@ export function VerifyEmail() {
         email: ''
       }
     })
-  const { data: sendResult, call: sendVerificationEmail } = useService(
+  const { data: sendResponse, call: sendVerificationEmail } = useService(
     authState.sendVerificationEmail
   )
 
@@ -42,23 +42,9 @@ export function VerifyEmail() {
         <br />
         Sign in / Register
       </Title>
-      <HelpText>
-        {sendResult.result === 'waiting' &&
-          'We will send a magic link to your email'}
-        {sendResult.result === 'loading' && (
-          <InfoMessage>Sending the email...</InfoMessage>
-        )}
-        {sendResult.result === 'success' && (
-          <InfoMessage>
-            We have successfully sent you an email. You can close this tab now.
-          </InfoMessage>
-        )}
-        {sendResult.result === 'unexpected-error' && (
-          <ErrorMessage>
-            Something went wrong. Please try again later.
-          </ErrorMessage>
-        )}
-      </HelpText>
+      <HelpTextContainer>
+        <HelpText response={sendResponse} />
+      </HelpTextContainer>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <InputField
           error={!!formState.errors.email}
@@ -101,6 +87,25 @@ const Title = styled.h1`
   color: ${(props) => props.theme.palette.text.primary};
 `
 
-const HelpText = styled.div`
+type HelpTextProps = {
+  response: ServiceProps<typeof authState.sendVerificationEmail>['data']
+}
+
+const HelpText = ({ response }: HelpTextProps) => {
+  switch (response.result) {
+    case 'waiting':
+      return <Message>We will send a magic link to your email</Message>
+    case 'loading':
+      return <Message>Sending the email...</Message>
+    default:
+      return (
+        <Message error={response.result !== 'success'}>
+          {response.message}
+        </Message>
+      )
+  }
+}
+
+const HelpTextContainer = styled.div`
   margin: 32px 0 24px 0;
 `

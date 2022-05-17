@@ -1,10 +1,10 @@
 import * as authService from '../../services/auth'
-import { useService } from 'hooks/useService'
+import { ServiceProps, useService } from 'hooks/useService'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import InputField from '@ui/Input/InputField'
 import styled from '@emotion/styled'
 import Button from '@ui/Button/Button'
-import { ErrorMessage, InfoMessage } from '@ui/Dashboard/Form'
+import { Message } from '@ui/Dashboard/Form'
 import { Link, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import { getFieldIssues } from 'utils/FormUtils'
@@ -18,7 +18,7 @@ interface RegisterFields {
 export function Register() {
   const navigate = useNavigate()
   const [agreement, setAgreement] = useState(false)
-  const { data: sendResult, call: registration } = useService(
+  const { data: response, call: registration } = useService(
     authService.register
   )
 
@@ -62,23 +62,9 @@ export function Register() {
         <br />
         Register
       </Title>
-      <HelpText>
-        {sendResult.result === 'loading' && (
-          <InfoMessage>Loading...</InfoMessage>
-        )}
-        {sendResult.result === 'limit-reached-error' && (
-          <ErrorMessage>
-            Sorry, but the maximum number of users limit is reached. We cannot
-            allow new registrations.
-          </ErrorMessage>
-        )}
-        {sendResult.result === 'unauthorized-error' && (
-          <ErrorMessage>You do not have access to this feature.</ErrorMessage>
-        )}
-        {sendResult.result === 'unexpected-error' && (
-          <ErrorMessage>Something went wrong.</ErrorMessage>
-        )}
-      </HelpText>
+      <HelpTextContainer>
+        <HelpText response={response} />
+      </HelpTextContainer>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <StyledInputField
           error={!!formState.errors.user_name}
@@ -132,6 +118,29 @@ export function Register() {
   )
 }
 
+type HelpTextProps = {
+  response: ServiceProps<typeof authService.register>['data']
+}
+
+const HelpText = ({ response }: HelpTextProps) => {
+  switch (response.result) {
+    case 'waiting':
+      return <Message></Message>
+    case 'loading':
+      return <Message>Loading...</Message>
+    default:
+      return (
+        <Message error={response.result !== 'success'}>
+          {response.message}
+        </Message>
+      )
+  }
+}
+
+const HelpTextContainer = styled.div`
+  margin: 32px 0 24px 0;
+`
+
 const Checkbox = styled.input`
   margin-right: 15px;
 `
@@ -163,9 +172,6 @@ const Title = styled.h1`
     font-weight: 900;
   }
   color: ${(props) => props.theme.palette.text.primary};
-`
-const HelpText = styled.div`
-  margin: 32px 0 24px 0;
 `
 
 const Note = styled.p`
