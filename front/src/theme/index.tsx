@@ -34,8 +34,12 @@ export interface CustomThemeOption extends ThemeOptions {
   palette: CustomPaletteOptions
 }
 
+interface CustomTypeBackground extends TypeBackground {
+  floatingLabel: string
+}
+
 interface CustomPaletteOptions extends PaletteOptions {
-  background: Partial<TypeBackground>
+  background: Partial<CustomTypeBackground>
   text: Partial<TypeText>
   primary: PaletteColorOptions
   error: PaletteColorOptions

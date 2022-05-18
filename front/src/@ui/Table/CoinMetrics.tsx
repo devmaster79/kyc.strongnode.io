@@ -11,6 +11,7 @@ import {
   tokenAddressDictionary,
   coinTypesDictionary
 } from '../../services/walletService'
+import { DataSet } from './MainTable/MainTable'
 
 const sampleColumns = [
   {
@@ -36,26 +37,12 @@ const sampleColumns = [
 ]
 
 const sampleData = {
-  items: [
-    {
-      icon: {
-        url: 'https://icons.iconarchive.com/icons/cjdowner/cryptocurrency-flat/1024/Bitcoin-BTC-icon.png',
-        name: 'BTC'
-      },
-      owned: '50 | 20$',
-      value: '2010$',
-      value_trend: '+20%'
-    }
-  ]
+  items: []
 }
 
 interface IDataIcon {
   name: string
   url: IGetTokenMetricsImageObject
-}
-
-interface IData {
-  [key: string]: object
 }
 
 interface IOwnedObject {
@@ -65,7 +52,7 @@ interface IOwnedObject {
 }
 
 interface IFormattedTokenObject {
-  owned: IOwnedObject
+  owned: IOwnedObject | string
   value: string
   value_trend: number
   icon: IDataIcon
@@ -120,7 +107,11 @@ const overwrittenFields = {
 let searchTimeout: any = null
 
 export const CoinMetrics = (props: CoinMetricsProps) => {
-  const [tableData, setTableData] = useState<IData>({})
+  const [tableData, setTableData] = useState<{
+    items: Record<string, IFormattedTokenObject>[]
+  }>({
+    items: []
+  })
 
   useEffect(() => {
     loadTokenMetrics()
@@ -135,7 +126,10 @@ export const CoinMetrics = (props: CoinMetricsProps) => {
   // makes request and sets tableData to state
   const loadTokenMetrics = async () => {
     const data = await cryptoDataService.getTokenMetrics()
-    setTableData(formatTableData(data.data))
+    // console.log(data.data)
+    const formatedData = formatTableData(data.data)
+    console.log(formatedData)
+    setTableData({ items: formatedData })
   }
 
   // formats object for table

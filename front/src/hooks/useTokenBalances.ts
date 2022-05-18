@@ -5,10 +5,6 @@ export function useTokenBalances(
   account: string | undefined,
   tokenAddresses: string[] | undefined
 ): (BigNumber | undefined)[] {
-  if (!account) {
-    return [undefined]
-  }
-
   const calls =
     tokenAddresses?.map((address) => ({
       contract: new Contract(address, ERC20Interface),

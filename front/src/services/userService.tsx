@@ -110,7 +110,7 @@ export function createSupportRequest(data: CreateSupportRequestDTO) {
 /**
  * Method that gets list of wallets from BE of logged user.
  */
-export function getUserWallet () {
+export function getUserWallet() {
   return axios.get(userWallets)
 }
 
@@ -118,7 +118,7 @@ export function getUserWallet () {
  * Method that adds or updates wallet of logged user.
  * @param wallet
  */
-export function addOrUpdateUserWallet (wallet: string | null | undefined) {
+export function addOrUpdateUserWallet(wallet: string | null | undefined) {
   if (wallet) {
     return axios.post(userWallets, { wallet })
   } else {
