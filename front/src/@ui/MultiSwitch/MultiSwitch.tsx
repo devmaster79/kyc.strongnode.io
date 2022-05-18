@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import { MouseEvent, useState, useEffect } from 'react'
+import { useState } from 'react'
 
 export type MultiSwitchProps<
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -22,10 +22,6 @@ function MultiSwitch<
 >(props: MultiSwitchProps<Option, TrackBy>) {
   const [activeXOffset, setActiveXOffset] = useState<string>('3px')
 
-  useEffect(() => {
-    // check the initial active offset
-  }, [])
-
   const onSelectValue = async (selectedValue: string) => {
     const selectedIndex = props.options.findIndex(
       (option) => option[props.searchBy] === selectedValue
@@ -38,8 +34,17 @@ function MultiSwitch<
     props.onChange(props.options[selectedIndex])
   }
 
+  const animWidthOffset = 132
+  const animMarginOffset = 6
+  const animBaseMarginOffset = 3
+
   const setXOffset = (index: number) => {
-    setActiveXOffset(index * 132 + index * 6 + 3 + 'px')
+    setActiveXOffset(
+      index * animWidthOffset +
+        index * animMarginOffset +
+        animBaseMarginOffset +
+        'px'
+    )
   }
 
   return (
