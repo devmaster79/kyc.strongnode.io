@@ -7,8 +7,8 @@
     "build": "swc src --copy-files -d build",
     "test": "NODE_PATH=./src mocha --preserve-symlinks -r ts-node/register $(find ./src/app -name '*.test.js') --exit",
     "test-watch": "NODE_PATH=./src mocha --preserve-symlinks -r ts-node/register $(find ./src/app -name '*.test.js') --watch",
-    "migrate:up": "NODE_PATH=./src node -r ts-node/register ./src/app/scripts/run-migrations.js up",
-    "migrate:down": "NODE_PATH=./src node -r ts-node/register ./src/app/scripts/run-migrations.js down",
+    "migrate:up": "NODE_PATH=./src node -r ts-node/register ./src/app/scripts/run-migrations.ts up",
+    "migrate:down": "NODE_PATH=./src node -r ts-node/register ./src/app/scripts/run-migrations.ts down",
     "templates": "NODE_PATH=./src NODE_ENV=development nodemon --ignore public -x \"node -r ts-node/register --preserve-symlinks ./src/app/scripts/try-template.ts\"",
     "lint": "eslint \"src/**\""
   },
