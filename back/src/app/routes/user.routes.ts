@@ -34,5 +34,9 @@ module.exports = (app: Express) => {
     users.uploadImg
   )
 
+  // wallets
+  router.get('/wallets', auth(MODE_FULL), users.getUserWallets)
+  router.post('/wallets', auth(MODE_FULL), users.addOrUpdateWallet)
+
   app.use('/api/users', router)
 }
