@@ -1,6 +1,7 @@
 import format from 'date-fns/format'
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { Table, TableWrapper } from './style'
+import { IFormattedTokenObject } from '../CoinMetrics'
 
 function fDate(date: string) {
   return format(new Date(date), 'dd/MM/yyyy')
@@ -18,6 +19,7 @@ export interface DataSet<Item> {
   items: Item[]
   total?: number
 }
+
 export interface Column {
   id: string
   label: string
@@ -38,6 +40,18 @@ export default function MainTable<Item extends Record<string, unknown>>({
   const [page, setPage] = useState(0)
 
   const listInnerRef = useRef() as React.MutableRefObject<HTMLInputElement>
+
+  useEffect(() => {
+    console.log(dataSet)
+    console.log(
+      dataSet.items.map((el) => {
+        return el
+      })
+    )
+
+    console.log('new')
+    console.log(dataSet.items)
+  }, [dataSet])
 
   const onScroll = () => {
     if (listInnerRef.current) {
@@ -63,6 +77,7 @@ export default function MainTable<Item extends Record<string, unknown>>({
               </tr>
             )}
             {dataSet &&
+              dataSet.items &&
               dataSet.items.map((row: Item) => (
                 <tr key={row['id'] as string}>
                   {columns.map((column: Column) => (

@@ -51,7 +51,7 @@ interface IOwnedObject {
   type: string | undefined | boolean
 }
 
-interface IFormattedTokenObject {
+export interface IFormattedTokenObject {
   owned: IOwnedObject | string
   value: string
   value_trend: number
@@ -108,7 +108,7 @@ let searchTimeout: any = null
 
 export const CoinMetrics = (props: CoinMetricsProps) => {
   const [tableData, setTableData] = useState<{
-    items: Record<string, IFormattedTokenObject>[]
+    items: Array<IFormattedTokenObject>
   }>({
     items: []
   })
@@ -128,8 +128,7 @@ export const CoinMetrics = (props: CoinMetricsProps) => {
     const data = await cryptoDataService.getTokenMetrics()
     // console.log(data.data)
     const formatedData = formatTableData(data.data)
-    console.log(formatedData)
-    setTableData({ items: formatedData })
+    setTableData(formatedData as DataSet<IFormattedTokenObject>)
   }
 
   // formats object for table
@@ -175,7 +174,13 @@ export const CoinMetrics = (props: CoinMetricsProps) => {
       title={props.title}
       subtitle={props.subtitle}
       overwrittenFields={overwrittenFields}
-      dataSet={Object.keys(tableData).length > 0 ? tableData : sampleData}
+      dataSet={
+        Object.keys(tableData).length > 0
+          ? (tableData as unknown as DataSet<
+              Record<string, IFormattedTokenObject>
+            >)
+          : (sampleData as DataSet<Record<string, IFormattedTokenObject>>)
+      }
       columns={sampleColumns}
     />
   )
