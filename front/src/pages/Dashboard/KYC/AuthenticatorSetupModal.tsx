@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 import { ChangeEvent, useEffect, useState } from 'react'
-import { ServicesProps, SingleServiceData, useServices } from 'hooks/useService'
+import { ServicesProps, useServices } from 'hooks/useService'
 import {
   enableAuthenticatorAuth,
   generateAuthenticatorQRCode
@@ -9,6 +9,7 @@ import Button from '@ui/Button/Button'
 import Modal from '@ui/Modal/Modal'
 import * as DashboardForm from '@ui/Dashboard/Form'
 import { IAnim } from '@ui/utils/useAnimated'
+const { Message } = DashboardForm
 
 export type AuthenticatorSetupModalProps = {
   anim: IAnim
@@ -16,7 +17,7 @@ export type AuthenticatorSetupModalProps = {
   onSuccess: () => void
 }
 
-const authServices = {
+const __initAuthServices = {
   enableAuthenticatorAuth,
   generateAuthenticatorQRCode
 }
@@ -27,7 +28,7 @@ export function AuthenticatorSetupModal({
   anim
 }: AuthenticatorSetupModalProps) {
   const [totp, setTOTP] = useState('')
-  const authService = useServices(authServices)
+  const authServices = useServices(__initAuthServices)
 
   const handleTOTPInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.value.length > 6) {
@@ -39,24 +40,24 @@ export function AuthenticatorSetupModal({
   }
 
   const enableAuthenticatorAuth = async () => {
-    const data = await authService.enableAuthenticatorAuth(totp)
+    const data = await authServices.enableAuthenticatorAuth(totp)
     if (data.result === 'success') {
       onSuccess()
     }
   }
 
   useEffect(() => {
-    authService.generateAuthenticatorQRCode()
-    // SAFETY: authService is an object that is redeclared on every render
-    // so adding authService to deps could cause an infinite loop.
-    // However, at the first run the authService is complete, so it is safe to use here.
+    authServices.generateAuthenticatorQRCode()
+    // SAFETY: authServices is an object that is redeclared on every render
+    // so adding authServices to deps could cause an infinite loop.
+    // However, at the first run the authServices is complete, so it is safe to use here.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const secret: { qrcode: string; secret: string } | undefined =
-    (authService.dataPerService.generateAuthenticatorQRCode.result ===
+    (authServices.dataPerService.generateAuthenticatorQRCode.result ===
       'success' &&
-      authService.dataPerService.generateAuthenticatorQRCode) ||
+      authServices.dataPerService.generateAuthenticatorQRCode) ||
     undefined
 
   return (
@@ -104,69 +105,41 @@ export function AuthenticatorSetupModal({
             />
           </DashboardForm.Column>
         </DashboardForm.Row>
-        <Messages authService={authService} />
+        <Messages authServices={authServices} />
       </ModalForm>
     </Modal>
   )
 }
 
 const Messages = (props: {
-  authService: ServicesProps<typeof authServices>
+  authServices: ServicesProps<typeof __initAuthServices>
 }) => {
-  if (props.authService.last === 'generateAuthenticatorQRCode') {
-    return <GenerateQRCodeMessage data={props.authService.data} />
+  const services = props.authServices
+  if (services.data.result === 'waiting') {
+    return <WaitingMessage />
   }
-  if (props.authService.last === 'enableAuthenticatorAuth') {
-    return <EnableAuthenticatorAuthMessage data={props.authService.data} />
-  }
-  return (
-    <DashboardForm.InfoMessage>
-      Please setup MFA on authenticator application like Google authenticator
-    </DashboardForm.InfoMessage>
-  )
-}
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-interface MessageProps<T extends (...args: any) => any> {
-  data: SingleServiceData<T>
-}
-
-const GenerateQRCodeMessage = (
-  props: MessageProps<typeof generateAuthenticatorQRCode>
-) => {
-  if (props.data.result === 'loading') return <></>
-  if (props.data.result === 'success') return <></>
-  return (
-    <DashboardForm.ErrorMessage>
-      Something went wrong. Please try again later.
-    </DashboardForm.ErrorMessage>
-  )
-}
-
-const EnableAuthenticatorAuthMessage = (
-  props: MessageProps<typeof enableAuthenticatorAuth>
-) => {
-  if (props.data.result === 'loading') {
-    return (
-      <DashboardForm.InfoMessage>
-        Verifying the password...
-      </DashboardForm.InfoMessage>
-    )
-  }
-  if (props.data.result === 'validation-error') {
-    return (
-      <DashboardForm.ErrorMessage>Wrong password.</DashboardForm.ErrorMessage>
-    )
-  }
-  if (props.data.result === 'success') {
-    return <DashboardForm.InfoMessage>Good!</DashboardForm.InfoMessage>
+  if (services.data.result === 'loading') {
+    switch (services.last) {
+      case 'generateAuthenticatorQRCode':
+        return <></>
+      case 'enableAuthenticatorAuth':
+        return <VerifyingMessage />
+      case null:
+        throw new Error('Unreachable')
+    }
   }
   return (
-    <DashboardForm.ErrorMessage>
-      We could not verify your password. Please try again later.
-    </DashboardForm.ErrorMessage>
+    <Message error={services.data.result !== 'success'}>
+      {services.data.message}
+    </Message>
   )
 }
+const VerifyingMessage = () => <Message>Verifying the password...</Message>
+const WaitingMessage = () => (
+  <Message>
+    Please setup MFA on authenticator application like Google authenticator
+  </Message>
+)
 
 const Qr = styled.img`
   image-rendering: pixelated;

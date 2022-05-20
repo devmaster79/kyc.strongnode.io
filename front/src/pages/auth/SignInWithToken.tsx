@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { getProfile } from 'services/userService'
-import { ErrorMessage } from '@ui/Dashboard/Form'
+import { Message } from '@ui/Dashboard/Form'
 import styled from '@emotion/styled'
 
 /**
@@ -36,7 +36,7 @@ export function SignInWithToken() {
       </Title>
       {showError && (
         <HelpText>
-          <ErrorMessage>We could not query your profile.</ErrorMessage>
+          <Message error>We could not query your profile.</Message>
         </HelpText>
       )}
     </>

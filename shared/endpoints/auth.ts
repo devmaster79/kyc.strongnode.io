@@ -48,7 +48,7 @@ export namespace Register {
   export type Request = { body: z.infer<typeof schema> }
   export type Response =
     | Success<{ token: string }>
-    | ApiResponse<'limit-reached-error', 403, Record<never, never>>
+    | ApiResponse<'limit-reached-error', 403, { message: string }>
     | ZodValidationError<Request['body']>
     | UnauthorizedError
     | UnexpectedError

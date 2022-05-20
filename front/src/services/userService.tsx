@@ -17,6 +17,10 @@ export type GetProfileResult = {
   enable_password: boolean
 }[]
 
+export type MessageResult = {
+  message: string
+}
+
 const userProfileURL = '/api/users/profile'
 export function getProfile(): Promise<
   AxiosResponse<GetProfileResult, unknown>
@@ -26,7 +30,9 @@ export function getProfile(): Promise<
 export function createProfile(data: CreateProfileDTO) {
   return axios.post(userProfileURL, data)
 }
-export function updateProfile(data: UpdateProfileDTO) {
+export function updateProfile(
+  data: UpdateProfileDTO
+): Promise<AxiosResponse<MessageResult, unknown>> {
   return axios.put(userProfileURL, data)
 }
 

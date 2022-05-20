@@ -1,22 +1,21 @@
-import * as authService from 'services/auth'
 import { OtherOptions } from '../../components/OtherOptions'
-import { useService } from 'hooks/useService'
+import { ServiceProps, useService } from 'hooks/useService'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { ErrorMessage, InfoMessage } from '@ui/Dashboard/Form'
+import { Message } from '@ui/Dashboard/Form'
 import InputField from '@ui/Input/InputField'
 import styled from '@emotion/styled'
 import Button from '@ui/Button/Button'
 import { useNavigate } from 'react-router-dom'
 import { getFieldIssues } from 'utils/FormUtils'
-
+import * as authServices from 'services/auth'
 interface SignInWithAuthenticatorFields {
   totp: string
 }
 
 export function SignInWithAuthenticator() {
   const navigate = useNavigate()
-  const { data: authState, call: authByAuthenticator } = useService(
-    authService.authByAuthenticator
+  const { data: authResponse, call: authByAuthenticator } = useService(
+    authServices.authByAuthenticator
   )
 
   const { register, handleSubmit, setError, formState } =
@@ -53,25 +52,9 @@ export function SignInWithAuthenticator() {
         <br />
         2-STEP VERIFICATION
       </Title>
-      <HelpText>
-        {authState.result === 'loading' && (
-          <InfoMessage>Verifying the TOTP...</InfoMessage>
-        )}
-        {authState.result === 'unexpected-error' && (
-          <ErrorMessage>
-            Something went wrong. Please try again later.
-          </ErrorMessage>
-        )}
-        {authState.result === 'unauthorized-error' && (
-          <ErrorMessage>You do not have access to this feature.</ErrorMessage>
-        )}
-        {authState.result === 'banned-error' && (
-          <ErrorMessage>
-            Too many trials. You can try it again{' '}
-            {Math.floor(authState.remainingTimeMs / 1000)} seconds later.
-          </ErrorMessage>
-        )}
-      </HelpText>
+      <HelpTextContainer>
+        <HelpText response={authResponse} />
+      </HelpTextContainer>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <StyledInputField
           error={!!formState.errors.totp}
@@ -87,6 +70,25 @@ export function SignInWithAuthenticator() {
       </Form>
     </>
   )
+}
+
+type HelpTextProps = {
+  response: ServiceProps<typeof authServices.authByAuthenticator>['data']
+}
+
+const HelpText = ({ response }: HelpTextProps) => {
+  switch (response.result) {
+    case 'waiting':
+      return <Message></Message>
+    case 'loading':
+      return <Message>Verifying the TOTP...</Message>
+    default:
+      return (
+        <Message error={response.result !== 'success'}>
+          {response.message}
+        </Message>
+      )
+  }
 }
 
 const Form = styled.form`
@@ -116,6 +118,7 @@ const Title = styled.h1`
   }
   color: ${(props) => props.theme.palette.text.primary};
 `
-const HelpText = styled.div`
+
+const HelpTextContainer = styled.div`
   margin: 32px 0 24px 0;
 `

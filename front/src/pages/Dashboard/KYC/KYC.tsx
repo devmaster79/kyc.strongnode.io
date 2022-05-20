@@ -9,6 +9,7 @@ import { SMSSwitch } from './SMSSwitch'
 import { WalletCarousel } from './WalletCarousel'
 import * as ProgressCircleSteps from '@ui/Dashboard/ProgressCircleSteps'
 import { Banner } from '../../../@ui/Banner/Banner'
+import { useSnackbar } from 'notistack'
 
 interface FormFields {
   firstName: string
@@ -39,6 +40,8 @@ const walletsObject = [
 ]
 
 export default function KYC() {
+  const { enqueueSnackbar } = useSnackbar()
+
   const { register, handleSubmit, reset, control, formState } =
     useForm<FormFields>({
       mode: 'all',
@@ -74,14 +77,20 @@ export default function KYC() {
   }, [reset])
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
-    await userService.updateProfile({
-      first_name: data.firstName,
-      last_name: data.lastName,
-      user_name: data.username,
-      enable_password: data.enablePasswordAuth,
-      enable_sms: data.enableSMSAuth,
-      enable_authenticator: data.enableAuthenticatorAuth
-    })
+    await userService
+      .updateProfile({
+        first_name: data.firstName,
+        last_name: data.lastName,
+        user_name: data.username,
+        enable_password: data.enablePasswordAuth,
+        enable_sms: data.enableSMSAuth,
+        enable_authenticator: data.enableAuthenticatorAuth
+      })
+      .then((result) => {
+        enqueueSnackbar(result.data.message, {
+          variant: 'success'
+        })
+      })
   }
 
   return (

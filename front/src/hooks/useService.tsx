@@ -49,14 +49,16 @@ export interface ServicesPropsDescription<Last, Data, DataPerServices> {
 export type PossibleServicesPropsDescriptions<
   Services extends ObjectOfFunctions
 > =
+  // When waiting the last is 'waiting' and both the accumulated and separated result is waiting
   | ServicesPropsDescription<
       null,
       { result: 'waiting' },
       DataPerServicesWaiting<Services>
     >
+  // if not waiting
   | ValueOf<{
       [ServiceName in keyof Services]: ServicesPropsDescription<
-        ServiceName,
+        ServiceName & string,
         SingleServiceData<Services[ServiceName]>,
         DataPerServices<Services>
       >
