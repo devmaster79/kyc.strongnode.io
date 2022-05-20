@@ -41,18 +41,6 @@ export default function MainTable<Item extends Record<string, unknown>>({
 
   const listInnerRef = useRef() as React.MutableRefObject<HTMLInputElement>
 
-  useEffect(() => {
-    console.log(dataSet)
-    console.log(
-      dataSet.items.map((el) => {
-        return el
-      })
-    )
-
-    console.log('new')
-    console.log(dataSet.items)
-  }, [dataSet])
-
   const onScroll = () => {
     if (listInnerRef.current) {
       if (dataSet?.total === dataSet.items.length) return
