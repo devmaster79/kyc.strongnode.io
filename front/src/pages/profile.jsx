@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
-import styled from 'styled-components'
+import styled from '@emotion/styled'
 import EntryCard from '../components/EntryCard'
 import InputGroup from '../components/InputGroup'
 import Input from '../components/Input'

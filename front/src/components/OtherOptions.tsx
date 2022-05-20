@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom'
 import { ROUTES } from 'Router'
-import styled from 'styled-components'
+import styled from '@emotion/styled'
 
 interface OtherOptionsProps {
   hideSMS?: boolean

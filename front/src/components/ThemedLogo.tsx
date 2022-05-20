@@ -1,16 +1,16 @@
 import React from 'react'
-import styled from 'styled-components'
+import styled from '@emotion/styled'
 import darkLogo from '../assets/SNE_logo_dark.png'
 import lightLogo from '../assets/SNE_logo_light.png'
 import { useTheme } from '@mui/styles'
 import type { Theme } from '@mui/material'
 
-const Logo = styled.img`
-  width: 40px;
+const Logo = styled("img")({
+  width: "40px"
   height: 40px;
   object-fit: cover;
   cursor: pointer;
-`
+})
 
 type ButtonProps = {
   className?: string

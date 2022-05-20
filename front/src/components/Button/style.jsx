@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from '@emotion/styled'
 
 export const StyledButton = styled.button`
   width: ${(props) => (props.full ? '100%' : null)};
