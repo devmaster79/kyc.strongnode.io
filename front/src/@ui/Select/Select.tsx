@@ -85,43 +85,43 @@ Select.defaultProps = {
   searchBy: 'label'
 }
 
-const SelectWrapper = styled.div`
-  width: fit-content;
-`
+const SelectWrapper = styled.div({
+  width: 'fit-content'
+})
 
-const HeaderWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
+const HeaderWrapper = styled.div({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  cursor: 'pointer',
 
-  span {
-    padding-right: 8px;
+  span: {
+    paddingRight: '8px'
   }
-`
+})
 
-const OptionsWrapper = styled.div`
-  background: ${(props) => props.theme.palette.background.secondary};
-  border: 1px solid ${(props) => props.theme.palette.border.light};
-  box-sizing: border-box;
-  border-radius: 10px;
+const OptionsWrapper = styled.div((props) => ({
+  background: `${props.theme.palette.background.secondary}`,
+  border: `1px solid ${props.theme.palette.border.light}`,
+  boxSizing: 'border-box',
+  borderRadius: '10px',
 
-  color: ${(props) => props.theme.palette.text.secondary};
-  text-align: left;
-  padding: 24px;
+  color: `${props.theme.palette.text.secondary}`,
+  textAlign: 'left',
+  padding: '24px',
 
-  position: absolute;
-  margin-top: 10px;
+  position: 'absolute',
+  marginTop: '10px',
 
-  .active {
-    color: ${(props) => props.theme.palette.text.primary};
-  }
+  '.active': {
+    color: `${props.theme.palette.text.primary}`
+  },
 
-  ul {
-    list-style-type: none;
+  ul: {
+    listStyleType: 'none',
 
-    li {
-      cursor: pointer;
+    li: {
+      cursor: 'pointer'
     }
   }
-`
+}))

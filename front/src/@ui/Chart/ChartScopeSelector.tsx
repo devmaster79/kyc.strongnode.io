@@ -35,17 +35,17 @@ export const ChartScopeSelector = (props: ChartScopeSelectorProps) => {
   )
 }
 
-const ButtonActiveLine = styled.div`
-  width: 50%;
-  height: 2px;
-  position: absolute;
-  left: 50%;
-  bottom: -4px;
-  background-color: #aa1fec;
-  transform: translateX(-50%);
-  opacity: 0;
-  transition: 250ms ease;
-`
+const ButtonActiveLine = styled.div({
+  width: '50%',
+  height: '2px',
+  position: 'absolute',
+  left: '50%',
+  bottom: '-4px',
+  backgroundColor: '#aa1fec',
+  transform: 'translateX(-50%)',
+  opacity: 0,
+  transition: '250ms ease'
+})
 
 const SelectorButton = styled.div`
   position: relative;

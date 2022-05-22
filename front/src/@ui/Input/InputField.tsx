@@ -36,29 +36,28 @@ export default function InputField(props: InputParams) {
   )
 }
 
-export const InputContainer = styled.div`
-  display: flex;
-  flex-flow: column;
-`
+export const InputContainer = styled.div({
+  display: 'flex',
+  flexFlow: 'column'
+})
 
-export const HelpText = styled.div<{ error: boolean }>`
-  text-align: left;
-  padding: 0.3em 2em;
-  ${(props) => props.error && `color: ${props.theme.palette.error.main}`}
-`
+export const HelpText = styled.div<{ error: boolean }>((props) => ({
+  textAlign: 'left',
+  padding: '0.3em 2em',
+  color: `${props.error ? props.theme.palette.error.main : ''}`
+}))
 
-export const FloatingLabel = styled.label`
-  display: flex;
-  align-items: center;
-  position: absolute;
-  left: ${6 / 14}em;
-  top: ${6 / 14}em;
-  padding: 0 ${10 / 14}em;
-  font-size: 1em;
-  transition-duration: 300ms;
-  pointer-events: none;
-`
-
+export const FloatingLabel = styled.label({
+  display: 'flex',
+  alignItems: 'center',
+  position: 'absolute',
+  left: `${6 / 14}em`,
+  top: `${6 / 14}em`,
+  padding: `0 ${10 / 14}em`,
+  fontSize: '1em',
+  transitionDuration: '300ms',
+  pointerEvents: 'none'
+})
 interface FloatingLabelWrapperProps {
   onFocusStyle?: CSSObject
 }
@@ -86,56 +85,57 @@ export const FloatingLabelWrapper = styled('div', {
 export const StyledInputWrapper = styled.div<{
   disabled: boolean
   error: boolean
-}>`
-  flex: 1;
-  background: ${(props) => props.theme.palette.background.light};
-  ${(props) =>
+}>((props) => ({
+  flex: 1,
+  background: `${props.theme.palette.background.light}`,
+  border: `${
     props.error
-      ? `border: 1px solid ${props.theme.palette.error.light};`
-      : `border: 1px solid ${props.theme.palette.border.light};`}
-  box-sizing: border-box;
-  border-radius: 8px;
-  color: ${(props) => props.theme.palette.text.secondary};
-  display: flex;
-  align-items: center;
-  min-width: 260px;
-  opacity: ${(props) => (props.disabled ? '0.5' : '1')};
+      ? `1px solid ${props.theme.palette.error.light}`
+      : `1px solid ${props.theme.palette.border.light}`
+  }`,
+  boxSizing: 'border-box',
+  borderRadius: '8px',
+  color: `${props.theme.palette.text.secondary}`,
+  display: 'flex',
+  alignItems: 'center',
+  minWidth: '260px',
+  opacity: `${props.disabled ? '0.5' : '1'}`,
 
-  svg {
-    margin-left: 8px;
+  svg: {
+    marginLeft: '8px'
   }
-`
+}))
 
-export const StyledInputField = styled.input`
-  display: block;
-  width: 100%;
-  height: 40px;
-  background: transparent;
-  border: 0px;
-  color: ${(props) => props.theme.palette.text.primary};
-  font-size: 14px;
-  padding-left: 8px;
+export const StyledInputField = styled.input((props) => ({
+  display: 'block',
+  width: '100%',
+  height: '40px',
+  background: 'transparent',
+  border: '0px',
+  color: `${props.theme.palette.text.primary}`,
+  fontSize: '14px',
+  paddingLeft: '8px',
 
-  ::placeholder {
+  '::placeholder': {
     /* Chrome, Firefox, Opera, Safari 10.1+ */
-    color: ${(props) => props.theme.palette.text.secondary};
-    opacity: 1; /* Firefox */
-  }
+    color: `${props.theme.palette.text.secondary}`,
+    opacity: 1 /* Firefox */
+  },
 
-  :-ms-input-placeholder {
+  ':-ms-input-placeholder': {
     /* Internet Explorer 10-11 */
-    color: ${(props) => props.theme.palette.text.secondary};
-  }
+    color: `${props.theme.palette.text.secondary}`
+  },
 
-  ::-ms-input-placeholder {
+  '::-ms-input-placeholder': {
     /* Microsoft Edge */
-    color: ${(props) => props.theme.palette.text.secondary};
-  }
+    color: `${props.theme.palette.text.secondary}`
+  },
 
-  &:-webkit-autofill {
-    -webkit-text-fill-color: ${(props) => props.theme.palette.text.primary};
-    -webkit-box-shadow: 0 0 0px 1000px
-      ${(props) => props.theme.palette.background.primary} inset;
-    border-radius: 7px;
+  '&:-webkit-autofill': {
+    '-webkit-text-fill-color': `${props.theme.palette.text.primary}`,
+    '-webkit-box-shadow': `0 0 0px 1000px
+    ${props.theme.palette.background.primary} inset`,
+    borderRadius: '7px'
   }
-`
+}))

@@ -39,6 +39,6 @@ export const OtherOptions = ({
   </div>
 )
 
-const Options = styled.ul`
-  list-style-type: none;
-`
+const Options = styled.ul({
+  listStyleType: 'none'
+})

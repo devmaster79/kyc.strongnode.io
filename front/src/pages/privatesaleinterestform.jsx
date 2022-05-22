@@ -10,78 +10,78 @@ import userService from '../services/userService'
 import { ReactComponent as MagicImg } from '../assets/images/magic.svg'
 import EntryCard from '../components/EntryCard'
 
-export const Wrapper = styled.div`
-  width: 100%;
-  max-width: 909px;
-  padding: 50px 40px 40px 40px;
-  margin-bottom: 120px;
-  display: flex;
-  flex-direction: column;
-  justify-contents: space-between;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid #1df4f6;
-  box-sizing: border-box;
-  box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.25);
-  backdrop-filter: blur(10px);
-  border-radius: 5px;
-  h2 {
-    margin-bottom: 10px;
-    color: white;
+export const Wrapper = styled.div({
+  width: '100%',
+  maxWidth: '909px',
+  padding: '50px 40px 40px 40px',
+  marginBottom: '120px',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'space-between',
+  background: 'rgba(255, 255, 255, 0.1)',
+  border: '1px solid #1df4f6',
+  boxSizing: 'border-box',
+  boxShadow: '0px 10px 10px rgba(0, 0, 0, 0.25)',
+  backdropFilter: 'blur(10px)',
+  borderRadius: '5px',
+  h2: {
+    marginBottom: '10px',
+    color: 'white'
+  },
+  p: {
+    marginTop: '20px',
+    fontWeight: '400',
+    fontStyle: 'normal',
+    fontSize: '18px',
+    lineHeight: '30px',
+    color: 'white'
+  },
+  h5: {
+    marginBottom: '5px',
+    color: 'white',
+    fontSize: '14px',
+    lineHeight: '18px',
+    fontWeight: '500'
   }
-  p {
-    margin-top: 20px;
-    font-weight: 400;
-    font-style: normal;
-    font-size: 18px;
-    line-height: 30px;
-    color: white;
-  }
-  h5 {
-    margin-bottom: 5px;
-    color: white;
-    font-size: 14px;
-    line-height: 18px;
-    font-weight: 500;
-  }
-`
+})
 
-const P = styled.p`
-  font-style: normal;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 26px;
-  color: white;
-  margin-bottom: 20px;
-  text-align: center;
-  padding-left: 32px;
-  padding-right: 32px;
-`
+const P = styled.p({
+  fontStyle: 'normal',
+  fontWeight: '400',
+  fontSize: '16px',
+  lineHeight: '26px',
+  color: 'white',
+  marginBottom: '20px',
+  textAlign: 'center',
+  paddingLeft: '32px',
+  paddingRight: '32px'
+})
 
-const InputRow = styled.div`
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-`
+const InputRow = styled.div({
+  display: 'flex',
+  justifyContent: 'space-between',
+  flexWrap: 'wrap'
+})
 
-const InputCol = styled.div`
-  width: 48%;
-  span {
-    font-size: 14px;
-    margin-bottom: 8px;
-    color: #584a72;
+const InputCol = styled.div({
+  width: '48%',
+  span: {
+    fontSize: '14px',
+    marginBottom: '8px',
+    color: '#584a72'
+  },
+  '@media screen and (max-width: 600px)': {
+    width: '100%'
   }
-  @media screen and (max-width: 600px) {
-    width: 100%;
-  }
-`
+})
 
-const SubmitButtonWrapper = styled.div`
-  margin-top: 10px;
-  text-align: right;
-  > button {
-    width: calc(50% - 16px);
+const SubmitButtonWrapper = styled.div({
+  marginTop: '10px',
+  textAlign: 'right',
+  '> button': {
+    width: 'calc(50% - 16px)'
   }
-`
+})
 
 function PrivateSaleInterestForm() {
   const navigate = useNavigate()

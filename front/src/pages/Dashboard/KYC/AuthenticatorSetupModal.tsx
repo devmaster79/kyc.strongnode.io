@@ -141,22 +141,23 @@ const WaitingMessage = () => (
   </Message>
 )
 
-const Qr = styled.img`
-  image-rendering: pixelated;
-  object-fit: contain;
-  flex: 1 2 100px;
-`
-const Secret = styled.div`
-  text-align: left;
-  box-sizing: border-box;
-  border-radius: 8px;
-  code {
-    color: ${(props) => props.theme.palette.text.primary};
-    word-wrap: break-word;
-    overflow-wrap: anywhere;
-    flex: 1;
+const Qr = styled.img({
+  imageRendering: 'pixelated',
+  objectFit: 'contain',
+  flex: '1 2 100px'
+})
+
+const Secret = styled.div((props) => ({
+  textAlign: 'left',
+  boxSizing: 'border-box',
+  borderRadius: '8px',
+  code: {
+    color: `${props.theme.palette.text.primary}`,
+    wordWrap: 'break-word',
+    overflowWrap: 'anywhere',
+    flex: 1
   }
-`
+}))
 
 const ModalForm = styled('div')({
   display: 'flex',

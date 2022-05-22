@@ -48,56 +48,53 @@ export const ModalInput = styled(Input)`
   }
 `
 
-export const Button = styled(GenericButton)`
-  margin: 0 20%;
-  height: 56px;
-`
+export const Button = styled(GenericButton)({
+  margin: '0 20%',
+  height: '56px'
+})
 
-export const Form = styled.form`
-  width: 100%;
-  display: flex;
-  flex-flow: column;
-  align-items: center;
-  justify-content: center;
+export const Form = styled.form({
+  width: '100%',
+  display: 'flex',
+  flexFlow: 'column',
+  alignItems: 'center',
+  justifyContent: 'center',
 
-  @media only screen and (max-width: 600px) {
-    width: 100%;
+  '@media only screen and (max-width: 600px)': {
+    width: '100%'
   }
-`
+})
 
-export const InputGroup = styled.div`
-  display: flex;
-  flex-flow: column;
-  gap: 16px;
-  width: 530px;
+export const InputGroup = styled.div({
+  display: 'flex',
+  flexFlow: 'column',
+  gap: '16px',
+  width: '530px',
 
-  @media only screen and (max-width: 600px) {
-    width: 100%;
+  '@media only screen and (max-width: 600px)': {
+    width: '100%'
   }
-`
-export const ButtonGroup = styled.div`
-  display: flex;
-  flex-flow: row;
-  gap: 32px;
-  width: 530px;
-  padding-top: 24px;
-  padding-bottom: 40px;
+})
 
-  @media only screen and (max-width: 600px) {
-    width: 100%;
+export const ButtonGroup = styled.div({
+  display: 'flex',
+  flexFlow: 'row',
+  gap: '32px',
+  width: '530px',
+  paddingTop: '24px',
+  paddingBottom: '40px',
+
+  '@media only screen and (max-width: 600px)': {
+    width: '100%'
   }
-`
+})
 
-export const Hr = styled.hr`
-  border: 0;
-  height: 1px;
-  background-image: linear-gradient(
-    to right,
-    rgba(255, 255, 255, 0),
-    rgba(255, 255, 255, 0.5),
-    rgba(255, 255, 255, 0)
-  );
-`
+export const Hr = styled.hr({
+  border: 0,
+  height: '1px',
+  backgroundImage:
+    'linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0))'
+})
 
 interface MessageProps {
   error?: boolean

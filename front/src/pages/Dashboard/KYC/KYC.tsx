@@ -202,28 +202,28 @@ export default function KYC() {
   )
 }
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding-top: 95px;
-  padding-bottom: 70px;
-  gap: 32px;
-  width: 80%;
-  margin: auto;
-  text-align: center;
-`
+const Container = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+  paddingTop: '95px',
+  paddingBottom: '70px',
+  gap: '32px',
+  width: '80%',
+  margin: 'auto',
+  textAlign: 'center'
+})
 
-const FormContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 32px;
-  width: 65%;
-  margin: auto;
-  @media only screen and (max-width: 600px) {
-    width: 100%;
+const FormContainer = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+  gap: '32px',
+  width: '65%',
+  margin: 'auto',
+  '@media only screen and (max-width: 600px)': {
+    width: '100%'
   }
-`
+})

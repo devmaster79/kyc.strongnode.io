@@ -1,15 +1,15 @@
 import styled from '@emotion/styled'
 
-export const EntryPage = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  min-height: 100vh;
-  background: url('/images/background.png');
-  background-size: 100% 100%;
-  &:before {
-    content: url('/images/signlogo.png');
-    margin: 50px 0px;
+export const EntryPage = styled.div({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  flexDirection: 'column',
+  minHeight: '100vh',
+  background: `url('/images/background.png')`,
+  backgroundSize: '100% 100%',
+  '&:before': {
+    content: `url('/images/signlogo.png')`,
+    margin: '50px 0px'
   }
-`
+})

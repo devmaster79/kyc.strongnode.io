@@ -62,54 +62,54 @@ export default function SwitchButton(props: SwitchButtonProps) {
   )
 }
 
-const LeftIconWrapper = styled.div`
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 24px;
-  height: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`
+const LeftIconWrapper = styled.div({
+  position: 'absolute',
+  top: '2px',
+  left: '2px',
+  width: '24px',
+  height: '20px',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center'
+})
 
-const RightIconWrapper = styled.div`
-  position: absolute;
-  top: 2px;
-  left: 24px;
-  width: 24px;
-  height: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`
+const RightIconWrapper = styled.div({
+  position: 'absolute',
+  top: '2px',
+  left: '24px',
+  width: '24px',
+  height: '20px',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center'
+})
 
-const IconWrapper = styled.div`
-  position: relative;
-  top: 2px;
-  left: 2px;
-  width: 24px;
-  height: 20px;
-  background: #fafafa;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`
+const IconWrapper = styled.div({
+  position: 'relative',
+  top: '2px',
+  left: '2px',
+  width: '24px',
+  height: '20px',
+  background: '#fafafa',
+  borderRadius: '10px',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center'
+})
 
-const Container = styled.div`
-  display: flex;
-  flex-flow: column;
-  gap: 0.5em;
-  font-size: 14px;
-  font-family: 'Satoshi-Variable';
-  font-style: normal;
-  font-weight: 900;
-`
+const Container = styled.div({
+  display: 'flex',
+  flexFlow: 'column',
+  gap: '0.5em',
+  fontSize: '14px',
+  fontFamily: 'Satoshi-Variable',
+  fontStyle: 'normal',
+  fontWeight: 900
+})
 
-const SwitchWrapper = styled.label`
-  display: block;
-`
+const SwitchWrapper = styled.label({
+  display: 'block'
+})
 
 const StyledInput = styled.input<{ checked: boolean }>`
   display: inline-block;
@@ -135,20 +135,20 @@ const StyledInput = styled.input<{ checked: boolean }>`
     }`}
 `
 
-const StyledButton = styled.label`
-  display: inline-block;
-  position: relative;
-  width: 50px;
-  height: 24px;
-  border-radius: 20px;
-  background: #aa1fec;
-  vertical-align: middle;
-  cursor: pointer;
-  margin-left: 14px;
-`
+const StyledButton = styled.label({
+  display: 'inline-block',
+  position: 'relative',
+  width: '50px',
+  height: '24px',
+  borderRadius: '20px',
+  background: '#aa1fec',
+  verticalAlign: 'middle',
+  cursor: 'pointer',
+  marginLeft: '14px'
+})
 
-const Help = styled.div`
-  font-weight: 500;
-  font-size: 0.9em;
-  color: ${(props) => props.theme.palette.primary[75]};
-`
+const Help = styled.div((props) => ({
+  fontWeight: 500,
+  fontSize: '0.9em',
+  color: `${props.theme.palette.primary[75]}`
+}))

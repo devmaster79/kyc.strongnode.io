@@ -123,16 +123,16 @@ export function WalletCarousel(props: { walletProps: WalletInfoType[] }) {
   )
 }
 
-const Container = styled.div`
-  width: 824px;
-  margin: auto;
-  font-size: 14px;
-  font-family: 'Satoshi-Variable';
-  font-style: normal;
-  font-weight: 900;
-  padding-top: 100px;
+const Container = styled.div({
+  width: '824px',
+  margin: 'auto',
+  fontSize: '14px',
+  fontFamily: 'Satoshi-Variable',
+  fontStyle: 'normal',
+  fontWeight: '900',
+  paddingTop: '100px',
 
-  @media only screen and (max-width: 600px) {
-    width: 100%;
+  '@media only screen and (max-width: 600px)': {
+    width: '100%'
   }
-`
+})

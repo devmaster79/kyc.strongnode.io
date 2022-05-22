@@ -11,15 +11,15 @@ interface ProgressCircleProps {
   disabled: boolean
 }
 
-export const Container = styled.div`
-  display: flex;
-  padding-top: 32px;
-  padding-bottom: 128px;
+export const Container = styled.div({
+  display: 'flex',
+  paddingTop: '32px',
+  paddingBottom: '128px',
 
-  @media only screen and (max-width: 600px) {
-    flex-direction: column;
+  '@media only screen and (max-width: 600px)': {
+    flexDirection: 'column'
   }
-`
+})
 
 export function Step(props: ProgressCircleProps) {
   const { label, progressAmount, progressLabel, progressBorder, disabled } =
@@ -42,6 +42,7 @@ export function Step(props: ProgressCircleProps) {
       margin-bottom: 70px;
     }
   `
+
   const ProgressContainer = styled.div<{
     border: boolean
   }>`
@@ -68,16 +69,16 @@ export function Step(props: ProgressCircleProps) {
     line-height: 14px;
     margin: 0px 19px 16px 19px;
   `
-  const Label = styled.p`
-    font-family: 'Satoshi-Variable';
-    font-style: regular;
-    font-weight: 400;
-    font-size: 14px;
-    font-color: ${(props) => props.theme.palette.text.primary};
-    line-height: 14px;
-    text-align: center;
-    opacity: 0.6;
-  `
+  const Label = styled.p((props) => ({
+    fontFamily: 'Satoshi-Variable',
+    fontStyle: 'regular',
+    fontWeight: '400',
+    fontSize: '14px',
+    fontColor: `${props.theme.palette.text.primary}`,
+    lineHeight: '14px',
+    textAlign: 'center',
+    opacity: 0.6
+  }))
   return (
     <Container disabled={disabled}>
       <ProgressContainer border={progressBorder}>
@@ -104,20 +105,22 @@ export function Step(props: ProgressCircleProps) {
 }
 
 export function Separator() {
-  const Container = styled.div`
-    display: flex;
-    align-items: center;
-    margin-bottom: 18px;
-    opacity: 0.12;
+  const Container = styled.div({
+    display: 'flex',
+    alignItems: 'center',
+    marginBottom: '18px',
+    opacity: '0.12',
 
-    @media only screen and (max-width: 600px) {
-      transform: rotate(90deg);
+    '@media only screen and (max-width: 600px)': {
+      transform: 'rotate(90deg)'
     }
-  `
-  const Line = styled.div`
-    border: 1px solid #fff;
-    width: 83px;
-  `
+  })
+
+  const Line = styled.div({
+    border: '1px solid #fff',
+    width: '83px'
+  })
+
   return (
     <Container>
       <Line />

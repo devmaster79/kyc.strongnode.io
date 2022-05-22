@@ -204,24 +204,24 @@ export const CoinMetrics = (props: CoinMetricsProps) => {
   )
 }
 
-const CryptoWrapper = styled.div`
-  height: max-content;
-  width: max-content;
+const CryptoWrapper = styled.div({
+  height: 'max-content',
+  width: 'max-content',
 
-  p {
-    display: inline-block;
-    vertical-align: middle;
-    margin-left: 16px;
+  p: {
+    display: 'inline-block',
+    verticalAlign: 'middle',
+    marginLeft: '16px'
+  },
+
+  img: {
+    display: 'inline-block',
+    verticalAlign: 'middle'
   }
+})
 
-  img {
-    display: inline-block;
-    vertical-align: middle;
-  }
-`
-
-const GrowthWrapper = styled.div`
-  text-align: right;
-  text-transform: uppercase;
-  color: #54c093;
-`
+const GrowthWrapper = styled.div({
+  textAlign: 'right',
+  textTransform: 'uppercase',
+  color: '#54c093'
+})

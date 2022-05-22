@@ -82,64 +82,64 @@ function TableSection<Item extends Record<string, unknown>>(
 
 export default TableSection
 
-const TableSectionWrapper = styled.div`
-  width: 100%;
-  margin-bottom: 200px;
-  margin-top: 32px;
+const TableSectionWrapper = styled.div((props) => ({
+  width: '100%',
+  marginBottom: '200px',
+  marginTop: '32px',
+  background: `${props.theme.palette.background.primary}`,
+  border: `1px solid ${props.theme.palette.border.light}`,
+  boxSizing: 'border-box',
+  borderRadius: '10px',
+  padding: '32px',
+  h2: {
+    fontSize: '18px',
+    color: `${props.theme.palette.text.primary}`,
+    fontWeight: '900',
 
-  background: ${(props) => props.theme.palette.background.primary};
-  border: 1px solid ${(props) => props.theme.palette.border.light};
-  box-sizing: border-box;
-  border-radius: 10px;
-  padding: 32px;
-  h2 {
-    font-size: 18px;
-    color: ${(props) => props.theme.palette.text.primary};
-    font-weight: 900;
+    span: {
+      fontFamily: 'Satoshi-Regular',
+      fontSize: '14px',
+      color: `${props.theme.palette.text.secondary}`,
+      paddingLeft: '7px'
+    }
+  },
 
-    span {
-      font-family: 'Satoshi-Regular';
-      font-size: 14px;
-      color: ${(props) => props.theme.palette.text.secondary};
-      padding-left: 7px;
+  '@media only screen and (max-width: 600px)': {
+    marginBottom: '20px'
+  }
+}))
+
+const HeaderWrapper = styled.div({
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  paddingBottom: '16px',
+
+  '@media only screen and (max-width: 600px)': {
+    flexDirection: 'column',
+
+    h2: {
+      paddingBottom: '20px'
     }
   }
+})
 
-  @media only screen and (max-width: 600px) {
-    margin-bottom: 20px;
+const ComingSoonWrapper = styled.div((props) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'center',
+  paddingBottom: '40px',
+  height: '480px',
+  width: '100%',
+
+  h2: {
+    paddingTop: '16px'
+  },
+
+  span: {
+    fontFamily: 'Satoshi-Regular',
+    fontSize: '14px',
+    color: `${props.theme.palette.text.secondary}`
   }
-`
-const HeaderWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-bottom: 16px;
-
-  @media only screen and (max-width: 600px) {
-    flex-direction: column;
-
-    h2 {
-      padding-bottom: 20px;
-    }
-  }
-`
-
-const ComingSoonWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding-bottom: 40px;
-  height: 480px;
-  width: 100%;
-
-  h2 {
-    padding-top: 16px;
-  }
-
-  span {
-    font-family: 'Satoshi-Regular';
-    font-size: 14px;
-    color: ${(props) => props.theme.palette.text.secondary};
-  }
-`
+}))

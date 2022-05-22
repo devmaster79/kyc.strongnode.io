@@ -10,47 +10,47 @@ import { ReactComponent as TwitterIcon } from '../icons/twitter.svg'
 import { EntryPage } from './style'
 import userService from '../services/userService'
 
-const ProgressBarWrapper = styled.div`
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  jusity-content: flex-start;
-  text-align: left;
-  p {
-    margin-top: 30px;
-    font-style: medium;
-    font-size: 14px;
-    line-height: 18px;
-    color: white;
-  }
-  progress {
-    background: rgba(238, 238, 238, 0.0001);
-    border: 2px solid #1df4f6;
-    box-sizing: border-box;
-    box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 50.5px;
-    height: 20px;
-    margin-top: 20px;
-    width: 100%;
-    &::-webkit-progress-value {
-      background: rgba(29, 244, 246, 0.51);
-      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-      border-radius: 50.5px;
+const ProgressBarWrapper = styled.div({
+  margin: 0,
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'flex-start',
+  textAlign: 'left',
+  p: {
+    marginTop: '30px',
+    fontStyle: 'medium',
+    fontSize: '14px',
+    lineHeight: '18px',
+    color: 'white'
+  },
+  progress: {
+    background: 'rgba(238, 238, 238, 0.0001)',
+    border: '2px solid #1df4f6',
+    boxSizing: 'border-box',
+    boxShadow: 'inset 0px 4px 4px rgba(0, 0, 0, 0.25)',
+    borderRadius: '50.5px',
+    height: '20px',
+    marginTop: '20px',
+    width: '100%',
+    '&::-webkit-progress-value': {
+      background: 'rgba(29, 244, 246, 0.51)',
+      boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+      borderRadius: '50.5px'
+    },
+    '&[value]::-webkit-progress-bar': {
+      background: 'transparent'
     }
-    &[value]::-webkit-progress-bar {
-      background: transparent;
-    }
   }
-`
+})
 
-const InputWrapper = styled.div`
-  text-align: left;
-  p {
-    margin-bottom: 3px;
-    color: white;
-    font-size: 12px;
+const InputWrapper = styled.div({
+  textAlign: 'left',
+  p: {
+    marginBottom: '3px',
+    color: 'white',
+    fontSize: '12px'
   }
-`
+})
 
 function Profile() {
   const navigate = useNavigate()

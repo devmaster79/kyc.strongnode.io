@@ -1,40 +1,39 @@
 import styled from '@emotion/styled'
 
-export const Card = styled.div`
-  background: ${(props) => props.theme.palette.background.light};
-  color: ${(props) => props.theme.palette.text.primary};
-  padding: 8px;
-  border: 1px solid ${(props) => props.theme.palette.border.light};
-  box-sizing: border-box;
-  border-radius: 8px;
-  font-family: 'Satoshi-Variable';
-  font-style: normal;
-  font-weight: 900;
-  font-size: 14px;
-  line-height: 19px;
-  width: fit-content;
-  margin-right: 16px;
-  margin-bottom: 40px;
-
-  img {
-    width: 280px;
-    height: 240px;
-    border-radius: 10px;
+export const Card = styled.div((props) => ({
+  background: `props.theme.palette.background.light`,
+  color: `${props.theme.palette.text.primary}`,
+  padding: '8px',
+  border: `1px solid ${props.theme.palette.border.light}`,
+  boxSizing: 'border-box',
+  borderRadius: '8px',
+  fontFamily: 'Satoshi-Variable',
+  fontStyle: 'normal',
+  fontWeight: '900',
+  fontSize: '14px',
+  lineHeight: '19px',
+  width: 'fit-content',
+  marginRight: '16px',
+  marginBottom: '40px',
+  img: {
+    width: '280px',
+    height: '240px',
+    borderRadius: '10px'
   }
-`
+}))
 
-export const CardContent = styled.div`
-  display: flex;
-  justify-content: space-between;
-  div {
-    padding: 16px;
-    display: flex;
-    flex-direction: column;
-    font-weight: 900;
-  }
+export const CardContent = styled.div((props) => ({
+  display: 'flex',
+  justifyContent: 'space-between',
+  div: {
+    padding: '16px',
+    display: 'flex',
+    flexDirection: 'column',
+    fontWeight: '900'
+  },
 
-  span {
-    font-family: 'Satoshi-Regular';
-    color: ${(props) => props.theme.palette.text.secondary};
+  span: {
+    fontFamily: 'Satoshi-Regular',
+    color: `${props.theme.palette.text.secondary}`
   }
-`
+}))

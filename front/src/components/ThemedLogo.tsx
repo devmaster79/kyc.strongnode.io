@@ -5,11 +5,11 @@ import lightLogo from '../assets/SNE_logo_light.png'
 import { useTheme } from '@mui/styles'
 import type { Theme } from '@mui/material'
 
-const Logo = styled("img")({
-  width: "40px"
-  height: 40px;
-  object-fit: cover;
-  cursor: pointer;
+const Logo = styled.img({
+  width: '40px',
+  height: '40px',
+  objectFit: 'cover',
+  cursor: 'pointer'
 })
 
 type ButtonProps = {

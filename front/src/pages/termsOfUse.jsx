@@ -336,15 +336,15 @@ function TermsOfUse() {
 
 export default TermsOfUse
 
-const Box = styled.div`
-  width: 65%;
-  padding: 40px;
-  margin-left: auto;
-  margin-right: auto;
-  background: #141343;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-sizing: border-box;
-  border-radius: 10px;
-  color: rgba(255, 255, 255, 1);
-  margin-top: 32px;
-`
+const Box = styled.div({
+  width: '65%',
+  padding: '40px',
+  marginLeft: 'auto',
+  marginRight: 'auto',
+  background: '#141343',
+  border: '1px solid rgba(255, 255, 255, 0.12)',
+  boxSizing: 'border-box',
+  borderRadius: '10px',
+  color: 'rgba(255, 255, 255, 1)',
+  marginTop: '32px'
+})

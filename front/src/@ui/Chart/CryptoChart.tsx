@@ -157,36 +157,36 @@ export const CryptoChart = (props: CryptoChartProps) => {
   )
 }
 
-const CryptoPair = styled.div`
-  width: max-content;
-`
+const CryptoPair = styled.div({
+  width: 'max-content'
+})
 
-const HeadingWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`
+const HeadingWrapper = styled.div({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between'
+})
 
-const Pair = styled.div`
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 100%;
-  text-transform: uppercase;
-  margin-bottom: 8px;
-  opacity: 0.4;
-`
+const Pair = styled.div({
+  fontWeight: 400,
+  fontSize: '14px',
+  lineHeight: '100%',
+  textTransform: 'uppercase',
+  marginBottom: '8px',
+  opacity: '0.4'
+})
 
-const TrendPairWrapper = styled.div`
-  margin-top: 8px;
-  margin-bottom: 32px;
+const TrendPairWrapper = styled.div({
+  marginTop: '8px',
+  marginBottom: '32px',
 
-  div {
-    display: inline-block;
-    vertical-align: middle;
-    margin-left: 24px;
+  div: {
+    display: 'inline-block',
+    verticalAlign: 'middle',
+    marginLeft: '24px'
+  },
+
+  'div:first-child': {
+    marginLeft: '0px'
   }
-
-  div:first-child {
-    margin-left: 0px;
-  }
-`
+})

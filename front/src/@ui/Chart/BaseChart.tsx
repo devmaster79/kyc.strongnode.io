@@ -10,10 +10,10 @@ import {
   ResponsiveContainer
 } from 'recharts'
 
-const ChartWrapper = styled.div`
-  width: 100%;
-  height: 400px;
-`
+const ChartWrapper = styled.div({
+  width: '100%',
+  height: '400px'
+})
 
 export type RechartCompatibleKey<Data> = Exclude<keyof Data, symbol>
 export type XAxisFormat = 'days' | 'weeks' | 'months' | 'years'
