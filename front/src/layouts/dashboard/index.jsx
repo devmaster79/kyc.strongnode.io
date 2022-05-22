@@ -18,6 +18,8 @@ const MainStyle = styled('div')(({ theme }) => ({
   flexGrow: 1,
   overflow: 'auto',
   minHeight: '100%',
+  marginLeft: 'auto',
+  maxWidth: 'calc(100% - 104px - ' + theme.spacing(2) + ')',
   paddingTop: 32,
   paddingLeft: theme.spacing(2),
   paddingRight: theme.spacing(2),

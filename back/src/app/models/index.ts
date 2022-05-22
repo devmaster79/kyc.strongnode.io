@@ -5,6 +5,7 @@ import * as NewsModel from './news.model'
 import * as SupportRequestModel from './supportrequest.model'
 import * as StrongnodeCoinDataModel from './strongnodecoindata.model'
 import * as CoinMetricsDataModel from './coinmetrics.model'
+import * as UserWalletsModel from './userwallets.model'
 import * as Sequelize from 'sequelize'
 import { Umzug, SequelizeStorage } from 'umzug'
 import { Logger } from 'app/services/Logger'
@@ -51,6 +52,7 @@ NewsModel.create(sequelize)
 SupportRequestModel.create(sequelize)
 StrongnodeCoinDataModel.create(sequelize)
 CoinMetricsDataModel.create(sequelize)
+UserWalletsModel.create(sequelize)
 
 export { Sequelize }
 export const History = HistoryModel.History
@@ -60,6 +62,7 @@ export const InvestorDetail = InvestorDetailModel.InvestorDetail
 export const SupportRequest = SupportRequestModel.SupportRequest
 export const StrongnodeCoinData = StrongnodeCoinDataModel.StrongnodeCoinData
 export const CoinMetricsData = CoinMetricsDataModel.CoinMetricsModel
+export const UserWallets = UserWalletsModel.UserWallets
 
 /** @deprecated */
 export const history = HistoryModel.History
