@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 /* eslint-disable @typescript-eslint/ban-types */
 
+import '../utils/frontend-should-only-import-types-guard'
 import { z } from 'zod'
 import {
   ApiResponse,
@@ -10,17 +11,7 @@ import {
   UnexpectedError,
   ZodValidationError
 } from './responses'
-
-if (typeof window !== 'undefined') {
-  // This stops leaking backend validation rules, but it gives us the possibility
-  // to infer the validation types for frontend and backend at the same time.
-  //
-  // NOTE: TS will remove normal imports as well that imports only type.
-  // So you can use both `import` and `import type`.
-  // But if you see this message it means you import
-  // something that you really should not.
-  alert('THE FRONTEND SHOULD ONLY IMPORT THIS FILE AS TYPE (use import type)')
-}
+import { userNameRule } from './common'
 
 export namespace SendVerificationEmail {
   export const schema = z.object({
@@ -28,26 +19,20 @@ export namespace SendVerificationEmail {
   })
   export type Request = { body: z.infer<typeof schema> }
   export type Response =
-    | Success<{}>
+    | Success<{ message: string }>
     | ZodValidationError<Request['body']>
     | UnexpectedError
 }
 
 export namespace Register {
   export const schema = z.object({
-    user_name: z
-      .string()
-      .min(3, { message: 'Username should be at least 3 characters' })
-      .regex(/^[a-z\-_]+$/g, {
-        message:
-          'Username should only contain lowercase letters including hypen (-) and underscore (_)'
-      }),
+    user_name: userNameRule,
     first_name: z.string(),
     last_name: z.string()
   })
   export type Request = { body: z.infer<typeof schema> }
   export type Response =
-    | Success<{ token: string }>
+    | Success<{ message: string; token: string }>
     | ApiResponse<'limit-reached-error', 403, { message: string }>
     | ZodValidationError<Request['body']>
     | UnauthorizedError
@@ -60,7 +45,7 @@ export namespace EnablePasswordAuth {
   })
   export type Request = { body: z.infer<typeof schema> }
   export type Response =
-    | Success<{}>
+    | Success<{ message: string }>
     | ZodValidationError<Request['body']>
     | UnauthorizedError
     | UnexpectedError
@@ -68,7 +53,10 @@ export namespace EnablePasswordAuth {
 
 export namespace DisablePasswordAuth {
   export type Request = { body: undefined }
-  export type Response = Success<{}> | UnauthorizedError | UnexpectedError
+  export type Response =
+    | Success<{ message: string }>
+    | UnauthorizedError
+    | UnexpectedError
 }
 
 export namespace AuthByPassword {
@@ -77,7 +65,7 @@ export namespace AuthByPassword {
   })
   export type Request = { body: z.infer<typeof schema> }
   export type Response =
-    | Success<{ token: string }>
+    | Success<{ message: string; token: string }>
     | BannedError
     | ZodValidationError<Request['body']>
     | UnauthorizedError
@@ -87,7 +75,7 @@ export namespace AuthByPassword {
 export namespace SendSMSToUser {
   export type Request = { body: undefined }
   export type Response =
-    | Success<{}>
+    | Success<{ message: string }>
     | BannedError
     | UnauthorizedError
     | UnexpectedError
@@ -99,7 +87,7 @@ export namespace AuthBySMSCode {
   })
   export type Request = { body: z.infer<typeof schema> }
   export type Response =
-    | Success<{ token: string }>
+    | Success<{ message: string; token: string }>
     | BannedError
     | ZodValidationError<Request['body']>
     | UnauthorizedError
@@ -112,7 +100,7 @@ export namespace SendSMSAndSaveNumber {
   })
   export type Request = { body: z.infer<typeof schema> }
   export type Response =
-    | Success<{}>
+    | Success<{ message: string }>
     | BannedError
     | ZodValidationError<Request['body']>
     | UnauthorizedError
@@ -125,7 +113,7 @@ export namespace EnableSMSAuth {
   })
   export type Request = { body: z.infer<typeof schema> }
   export type Response =
-    | Success<{}>
+    | Success<{ message: string }>
     | ZodValidationError<Request['body']>
     | UnauthorizedError
     | UnexpectedError
@@ -133,7 +121,10 @@ export namespace EnableSMSAuth {
 
 export namespace DisableSMSAuth {
   export type Request = { body: undefined }
-  export type Response = Success<{}> | UnauthorizedError | UnexpectedError
+  export type Response =
+    | Success<{ message: string }>
+    | UnauthorizedError
+    | UnexpectedError
 }
 
 export namespace AuthByAuthenticator {
@@ -145,7 +136,7 @@ export namespace AuthByAuthenticator {
   })
   export type Request = { body: z.infer<typeof schema> }
   export type Response =
-    | Success<{ token: string }>
+    | Success<{ message: string; token: string }>
     | BannedError
     | ZodValidationError<Request['body']>
     | UnauthorizedError
@@ -155,7 +146,7 @@ export namespace AuthByAuthenticator {
 export namespace GenerateAuthenticatorQRCode {
   export type Request = { body: undefined }
   export type Response =
-    | Success<{ qrcode: string; secret: string }>
+    | Success<{ message: string; qrcode: string; secret: string }>
     | UnauthorizedError
     | UnexpectedError
 }
@@ -166,7 +157,7 @@ export namespace EnableAuthenticatorAuth {
   })
   export type Request = { body: z.infer<typeof schema> }
   export type Response =
-    | Success<{}>
+    | Success<{ message: string }>
     | ZodValidationError<Request['body']>
     | UnauthorizedError
     | UnexpectedError
@@ -174,5 +165,8 @@ export namespace EnableAuthenticatorAuth {
 
 export namespace DisableAuthenticatorAuth {
   export type Request = { body: undefined }
-  export type Response = Success<{}> | UnauthorizedError | UnexpectedError
+  export type Response =
+    | Success<{ message: string }>
+    | UnauthorizedError
+    | UnexpectedError
 }

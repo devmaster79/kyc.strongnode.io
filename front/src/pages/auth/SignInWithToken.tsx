@@ -14,10 +14,10 @@ export function SignInWithToken() {
   useEffect(() => {
     ;(async function () {
       try {
-        const user = await getProfile()
-        if (user.data[0]?.email) {
-          localStorage.setItem('email', user.data[0].email)
-          localStorage.setItem('username', user.data[0].user_name)
+        const response = await getProfile()
+        if (response.result === 'success') {
+          localStorage.setItem('email', response.data.email)
+          localStorage.setItem('username', response.data.user_name)
           localStorage.setItem('loggedin', 'true')
           navigate('/dashboard/kyc')
         }

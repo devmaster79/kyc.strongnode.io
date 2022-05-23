@@ -1,4 +1,4 @@
-import { getResponseData, setToken } from './utils'
+import { fetchAPI } from '../utils'
 import * as urls from '../../utils/config'
 import {
   SendSMSToUser,
@@ -7,19 +7,22 @@ import {
   SendSMSAndSaveNumber,
   AuthBySMSCode
 } from 'shared/endpoints/auth'
+import { setToken } from './tokenService'
 
 export async function sendSMSToUser() {
-  return await getResponseData<SendSMSToUser.Request, SendSMSToUser.Response>(
+  return await fetchAPI<SendSMSToUser.Request, SendSMSToUser.Response>(
+    'post',
     urls.sendSMSToUser
   )
 }
 
 /** Verify smscode and set token */
 export async function authBySMSCode(smscode: string) {
-  const data = await getResponseData<
-    AuthBySMSCode.Request,
-    AuthBySMSCode.Response
-  >(urls.authBySMSCode, { smscode })
+  const data = await fetchAPI<AuthBySMSCode.Request, AuthBySMSCode.Response>(
+    'post',
+    urls.authBySMSCode,
+    { smscode }
+  )
   if (data.result === 'success') {
     setToken(data.token)
   }
@@ -27,23 +30,25 @@ export async function authBySMSCode(smscode: string) {
 }
 
 export async function sendSMSAndSaveNumber(phoneNumber: string) {
-  return await getResponseData<
+  return await fetchAPI<
     SendSMSAndSaveNumber.Request,
     SendSMSAndSaveNumber.Response
-  >(urls.sendSMSAndSaveNumber, {
+  >('post', urls.sendSMSAndSaveNumber, {
     number: phoneNumber
   })
 }
 
 export async function enableSMSAuth(smscode: string) {
-  return await getResponseData<EnableSMSAuth.Request, EnableSMSAuth.Response>(
+  return await fetchAPI<EnableSMSAuth.Request, EnableSMSAuth.Response>(
+    'post',
     urls.enableSMSAuth,
     { smscode }
   )
 }
 
 export async function disableSMSAuth() {
-  return await getResponseData<DisableSMSAuth.Request, DisableSMSAuth.Response>(
+  return await fetchAPI<DisableSMSAuth.Request, DisableSMSAuth.Response>(
+    'post',
     urls.disableSMSAuth
   )
 }

@@ -59,16 +59,18 @@ export default function KYC() {
   useEffect(() => {
     userService
       .getProfile()
-      .then((result) => {
-        const data = result.data[0]
+      .then((response) => {
+        if (response.result !== 'success') {
+          throw new Error('Could not get the profile')
+        }
         reset({
-          firstName: data.first_name,
-          lastName: data.last_name,
-          username: data.user_name,
-          email: data.email,
-          enablePasswordAuth: data.enable_password,
-          enableSMSAuth: data.enable_sms,
-          enableAuthenticatorAuth: data.enable_authenticator
+          firstName: response.data.first_name,
+          lastName: response.data.last_name,
+          username: response.data.user_name,
+          email: response.data.email,
+          enablePasswordAuth: response.data.enable_password,
+          enableSMSAuth: response.data.enable_sms,
+          enableAuthenticatorAuth: response.data.enable_authenticator
         })
       })
       .catch((err) => {
@@ -87,7 +89,7 @@ export default function KYC() {
         enable_authenticator: data.enableAuthenticatorAuth
       })
       .then((result) => {
-        enqueueSnackbar(result.data.message, {
+        enqueueSnackbar(result.message, {
           variant: 'success'
         })
       })

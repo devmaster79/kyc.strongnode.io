@@ -6,7 +6,7 @@ import Line from '../components/Line'
 import Input from '../components/Input'
 import Button from '../components/Button'
 import { EntryPage } from './style'
-import userService from '../services/userService'
+import * as userService from '../services/userService'
 import { ReactComponent as MagicImg } from '../assets/images/magic.svg'
 import EntryCard from '../components/EntryCard'
 
