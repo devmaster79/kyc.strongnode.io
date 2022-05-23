@@ -1,12 +1,15 @@
 import axios from 'axios'
 
+type HTTPVerb = 'get' | 'post' | 'put' | 'delete' | 'patch'
+
 /** Get the response data even if the response status is not 2xx */
-export async function getResponseData<RequestData, ResponseData>(
-  route: string,
+export async function fetchAPI<RequestData, ResponseData>(
+  verb: HTTPVerb,
+  path: string,
   data: RequestData | Record<never, never> = {}
 ): Promise<ResponseData> {
   try {
-    const response = await axios.post(route, data)
+    const response = await axios[verb](path, data)
     return response.data
   } catch (error: unknown) {
     if (axios.isAxiosError(error) && error.response) {
@@ -14,14 +17,5 @@ export async function getResponseData<RequestData, ResponseData>(
     } else {
       throw new Error('Something went wrong, there is no data: ' + error)
     }
-  }
-}
-
-export function setToken(token: string | null) {
-  if (token === null) {
-    localStorage.removeItem('token')
-  } else {
-    localStorage.setItem('token', token)
-    axios.defaults.headers.common.Authorization = `Bearer ${token}`
   }
 }

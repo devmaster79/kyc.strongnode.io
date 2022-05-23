@@ -1,16 +1,18 @@
 import * as urls from '../../utils/config'
-import { getResponseData, setToken } from './utils'
+import { fetchAPI } from '../utils'
 import { Register, SendVerificationEmail } from 'shared/endpoints/auth'
+import { setToken } from './tokenService'
 
 function sendVerificationEmail(email: string) {
-  return getResponseData<
+  return fetchAPI<
     SendVerificationEmail.Request,
     SendVerificationEmail.Response
-  >(urls.sendVerificationEmail, { email })
+  >('post', urls.sendVerificationEmail, { email })
 }
 
 async function register(params: Register.Request['body']) {
-  const data = await getResponseData<Register.Request, Register.Response>(
+  const data = await fetchAPI<Register.Request, Register.Response>(
+    'post',
     urls.register,
     {
       user_name: params.user_name,

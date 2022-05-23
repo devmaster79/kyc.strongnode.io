@@ -1,4 +1,3 @@
-import { getResponseData, setToken } from './utils'
 import * as urls from '../../utils/config'
 import {
   AuthByAuthenticator,
@@ -6,13 +5,15 @@ import {
   GenerateAuthenticatorQRCode,
   DisableAuthenticatorAuth
 } from 'shared/endpoints/auth'
+import { fetchAPI } from 'services/utils'
+import { setToken } from './tokenService'
 
 /** Verify OTP and set token */
 export async function authByAuthenticator(otp: string) {
-  const data = await getResponseData<
+  const data = await fetchAPI<
     AuthByAuthenticator.Request,
     AuthByAuthenticator.Response
-  >(urls.authByAuthenticator, { token: otp })
+  >('post', urls.authByAuthenticator, { token: otp })
   if (data.result === 'success') {
     setToken(data.token)
   }
@@ -20,22 +21,22 @@ export async function authByAuthenticator(otp: string) {
 }
 
 export async function generateAuthenticatorQRCode() {
-  return await getResponseData<
+  return await fetchAPI<
     GenerateAuthenticatorQRCode.Request,
     GenerateAuthenticatorQRCode.Response
-  >(urls.generateAuthenticatorQRCode)
+  >('post', urls.generateAuthenticatorQRCode)
 }
 
 export async function enableAuthenticatorAuth(token: string) {
-  return await getResponseData<
+  return await fetchAPI<
     EnableAuthenticatorAuth.Request,
     EnableAuthenticatorAuth.Response
-  >(urls.enableAuthenticatorAuth, { token })
+  >('post', urls.enableAuthenticatorAuth, { token })
 }
 
 export async function disableAuthenticatorAuth() {
-  return await getResponseData<
+  return await fetchAPI<
     DisableAuthenticatorAuth.Request,
     DisableAuthenticatorAuth.Response
-  >(urls.disableAuthenticatorAuth)
+  >('post', urls.disableAuthenticatorAuth)
 }

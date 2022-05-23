@@ -4,7 +4,7 @@ import styled from '@emotion/styled/macro'
 import { AccountPopoverWrapper, AvatarIconWrapper, IconWrapper } from './style'
 import { ConnectButton } from 'components/ConnectButton'
 import { useNavigate } from 'react-router-dom'
-import userService from 'services/userService'
+import * as userService from 'services/userService'
 import * as authService from 'services/auth'
 import Icon from '@ui/Icon/Icon'
 import { useTheme } from '@mui/styles'
@@ -28,8 +28,10 @@ export default function AccountPopover() {
     setEmail(localStorage.getItem('email') || '')
     userService
       .getProfile()
-      .then((r) => {
-        setUserName(r.data[0].first_name + ' ' + r.data[0].last_name)
+      .then((response) => {
+        if (response.result === 'success') {
+          setUserName(response.data.first_name + ' ' + response.data.last_name)
+        }
       })
       .catch((error) => console.error(error))
   }, [])

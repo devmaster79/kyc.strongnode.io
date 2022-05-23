@@ -1,7 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import DashboardLayout from './layouts/dashboard'
 import Dashboard from './pages/Dashboard'
-import Profile from './pages/profile'
 import ContactSupport from './pages/contactSupport'
 import { Register } from './pages/auth/Register'
 import { VerifyEmail } from './pages/auth/VerifyEmail'
@@ -42,7 +41,6 @@ export const ROUTES = {
     SIGN_IN_WITH_TOKEN: SHARED_ROUTES.SIGN_IN_WITH_TOKEN
   },
   // TODO: review these routes, and rename/relocate/remove if needed
-  PROFILE: '/profile',
   PRIVATE_SALE_INTEREST_FORM: '/private-sale-interest-form',
   TERMS_OF_USE: '/terms-of-use',
   PRIVACY_POLICY: '/privacy-policy'
@@ -86,7 +84,6 @@ export default function Router () {
           <Route path={ROUTES.AUTH.SIGN_IN_WITH_SMS} element={<SignInWithSMS />} />
           <Route path={ROUTES.AUTH.SIGN_IN_WITH_TOKEN} element={<SignInWithToken />} />
         </Route>
-        <Route path={ROUTES.PROFILE} element={<Profile />} />
         <Route path={ROUTES.PRIVATE_SALE_INTEREST_FORM} element={<PrivateSaleInterestForm />} />
         <Route path={ROUTES.PRIVACY_POLICY} element={<PrivacyPolicy />} />
         <Route path={ROUTES.TERMS_OF_USE} element={<TermsOfUse />} />

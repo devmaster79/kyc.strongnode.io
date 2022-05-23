@@ -4,5 +4,9 @@
     },
     "search.exclude": {
         "shared": true
-    }
+    },
+    "eslint.workingDirectories": [
+        "back/",
+        "front/"
+    ]
 }

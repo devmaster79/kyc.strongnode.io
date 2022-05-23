@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
 import { useEffect, useCallback, useRef } from 'react'
-import userService from '../services/userService'
+import * as userService from '../services/userService'
 import { Banner } from '../@ui/Banner/Banner'
 import { CryptoChart } from '../@ui/Chart/CryptoChart'
 import * as authService from 'services/auth'

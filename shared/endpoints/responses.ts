@@ -3,7 +3,7 @@ import { ZodIssue } from 'zod'
 export type ApiResponse<
   Result extends string,
   StatusCode extends number,
-  Others extends { message: string }
+  Others
 > = {
   result: Result
   statusCode: StatusCode
@@ -13,7 +13,7 @@ export type ApiResponse<
 export type AbstractApiresponse = ApiResponse<
   string,
   number,
-  Record<string, unknown> & { message: string }
+  Record<string, unknown>
 >
 
 export const apiResponse = <
@@ -68,8 +68,14 @@ export type ImprovedZodIssue<TRequestBody extends Record<string, unknown>> =
   ZodIssue & { path: Path<TRequestBody> }
 
 // Factory methods
-export const success = <Others extends { message: string }>(others: Others) =>
-  apiResponse<'success', 200, Others>('success', 200, others)
+export const success = <Others>(others: Others) => ({
+  result: 'success' as const,
+  statusCode: 200 as const,
+  ...others
+})
+export const notFoundError = <Others extends { message: string }>(
+  others: Others
+) => apiResponse<'not-found-error', 404, Others>('not-found-error', 404, others)
 export const validationError = <Issues>(issues: Issues) =>
   apiResponse('validation-error', 422, {
     issues,
@@ -93,7 +99,12 @@ export const unexpectedError = apiResponse('unexpected-error', 500, {
 })
 
 // Response types
-export type Success<T> = ApiResponse<'success', 200, T & { message: string }>
+export type Success<T> = ApiResponse<'success', 200, T>
+export type NotFoundError<T> = ApiResponse<
+  'not-found-error',
+  404,
+  T & { message: string }
+>
 export type UnauthorizedError = ApiResponse<
   'unauthorized-error',
   401,
