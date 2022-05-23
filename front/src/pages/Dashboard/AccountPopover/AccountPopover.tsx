@@ -18,7 +18,6 @@ export default function AccountPopover() {
   const { account, activateBrowserWallet } = useEthers()
   const [userName, setUserName] = useState('')
   const [email, setEmail] = useState('')
-  const [avatar, setAvatar] = useState('')
   const [showModal, setShowModal] = useState(false)
   const SNEBalance = useGetTokenBalanceFormatted(
     account,
@@ -31,7 +30,6 @@ export default function AccountPopover() {
       .getProfile()
       .then((r) => {
         setUserName(r.data[0].first_name + ' ' + r.data[0].last_name)
-        setAvatar(r.data[0].profile_img_url || '')
       })
       .catch((error) => console.error(error))
   }, [])
