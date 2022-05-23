@@ -52,7 +52,10 @@ export const DAppProviderConfig = {
  * When force parameters is set to true, we log out current wallet and then let user log with a different wallet.
  * @param force
  */
-export const connectWallet = async (activate: any, force = false) => {
+export const connectWallet = async (
+  activate: (p: WalletConnectProvider) => void,
+  force = false
+) => {
   // todo make the force force work
   try {
     const provider = new WalletConnectProvider({
