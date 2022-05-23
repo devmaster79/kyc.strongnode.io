@@ -104,7 +104,7 @@ const overwrittenFields = {
   }
 }
 
-let searchTimeout: any = null
+let searchTimeout: ReturnType<typeof setTimeout>
 
 export const CoinMetrics = (props: CoinMetricsProps) => {
   const [tableData, setTableData] = useState<{
@@ -114,6 +114,12 @@ export const CoinMetrics = (props: CoinMetricsProps) => {
   })
 
   useEffect(() => {
+    const loadTokenMetrics = async () => {
+      const data = await cryptoDataService.getTokenMetricsFunc()
+      // console.log(data.data)
+      const formatedData = formatTableData(data.data)
+      setTableData(formatedData as DataSet<IFormattedTokenObject>)
+    }
     loadTokenMetrics()
 
     const refreshDataInterval = setInterval(() => {
@@ -124,12 +130,6 @@ export const CoinMetrics = (props: CoinMetricsProps) => {
   }, [])
 
   // makes request and sets tableData to state
-  const loadTokenMetrics = async () => {
-    const data = await cryptoDataService.getTokenMetrics()
-    // console.log(data.data)
-    const formatedData = formatTableData(data.data)
-    setTableData(formatedData as DataSet<IFormattedTokenObject>)
-  }
 
   // formats object for table
   const formatTableData = (data: Array<IGetTokenMetricsObject>) => {
@@ -150,6 +150,7 @@ export const CoinMetrics = (props: CoinMetricsProps) => {
         }
       }
       temporaryData.push(tokenObject)
+      return null
     })
     return { items: temporaryData }
   }

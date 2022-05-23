@@ -29,17 +29,22 @@ export interface IGetChartData {
   total_volumes: Array<Array<string>>
 }
 
-export default {
-  async getChartDataAsync(
-    scope = 'days'
-  ): Promise<AxiosResponse<IGetChartData>> {
-    const url: string = getCryptoChartData + '?scope=' + scope
-    return axios.get(url)
-  },
-  async getTokenMetrics(): Promise<
-    AxiosResponse<Array<IGetTokenMetricsObject>>
-  > {
-    // todo add the parameter to call only data for one token
-    return axios.get(getTokenMetrics)
-  }
+const getChartDataAsync = (
+  scope = 'days'
+): Promise<AxiosResponse<IGetChartData>> => {
+  const url: string = getCryptoChartData + '?scope=' + scope
+  return axios.get(url)
 }
+
+const getTokenMetricsFunc = (): Promise<
+  AxiosResponse<Array<IGetTokenMetricsObject>>
+> => {
+  return axios.get(getTokenMetrics)
+}
+
+const logger = {
+  getChartDataAsync,
+  getTokenMetricsFunc
+}
+
+export default logger
