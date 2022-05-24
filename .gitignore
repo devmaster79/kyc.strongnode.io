@@ -22,3 +22,4 @@ docker/.localstack
 
 blockchain/artifacts
 blockchain/cache
+/blockchain/node_modules/
