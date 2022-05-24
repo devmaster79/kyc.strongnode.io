@@ -1,5 +1,5 @@
 import { getDefaultProvider } from 'ethers'
-import { Polygon, Config, Mainnet, ChainId } from '@usedapp/core'
+import { Polygon, Config, Mainnet } from '@usedapp/core'
 import WalletConnectProvider from '@walletconnect/web3-provider/dist/umd/index.min.js'
 
 // checking if .env file has setted localhost blockchain info
