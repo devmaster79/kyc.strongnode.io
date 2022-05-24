@@ -1,4 +1,5 @@
-import { Polygon, Config } from '@usedapp/core'
+import { getDefaultProvider } from 'ethers'
+import { Polygon, Config, Mainnet } from '@usedapp/core'
 import WalletConnectProvider from '@walletconnect/web3-provider/dist/umd/index.min.js'
 
 interface IStringDictionary {
@@ -41,9 +42,10 @@ export const networksRpcDictionary: IStringDictionary = {
 export const DAppProviderConfig = {
   readOnlyChainId: Polygon.chainId,
   readOnlyUrls: {
-    [Polygon.chainId]: networksRpcDictionary.polygon
+    [Polygon.chainId]: networksRpcDictionary.polygon,
+    [Mainnet.chainId]: getDefaultProvider('mainnet')
   },
-  networks: [Polygon],
+  networks: [Polygon, Mainnet],
   autoConnect: true
 }
 
