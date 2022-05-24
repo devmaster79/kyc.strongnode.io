@@ -25,23 +25,22 @@ export function WalletCarousel(props: { walletProps: WalletInfoType[] }) {
           <Swiper
             slidesPerView={window.innerWidth > 600 ? 1 : 1}
             pagination={{
-              clickable: true,
+              clickable: true
             }}
             breakpoints={{
               600: {
                 slidesPerView: 1,
-                spaceBetween: 20,
+                spaceBetween: 20
               },
               768: {
                 slidesPerView: 2,
-                spaceBetween: 10,
+                spaceBetween: 10
               },
               1024: {
                 slidesPerView: 3,
-                spaceBetween: 10,
-              },
+                spaceBetween: 10
+              }
             }}
-            className="mySwiper"
             spaceBetween={17}
             loop
             navigation={{
