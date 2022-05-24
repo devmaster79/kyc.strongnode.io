@@ -157,7 +157,7 @@ const palette = {
         'linear-gradient(91.67deg, #F5F5FD 1.25%, rgba(245, 245, 253, 0) 98.45%)',
       qr: 'difference',
       modal: 'rgba(151,151,176,0.8)',
-      floatingLabel: '#FFFFFF',
+      floatingLabel: WHITE[100],
       modalSecondary: WHITE[100],
       wallet: 'rgba(110, 109, 143, 0.12)'
     },

@@ -1,4 +1,7 @@
-import { ApiResponse, validationError } from 'shared/endpoints/responses'
+import {
+  AbstractApiresponse,
+  validationError
+} from 'shared/endpoints/responses'
 import * as express from 'express'
 import { ZodError } from 'zod'
 import { AppLogger } from 'app/services/Logger'
@@ -10,7 +13,7 @@ type UserRequest = Request & { user: { email: string; user_name: string } }
 
 /** Decorate the given controller with res.send */
 export const withResponse =
-  <R extends ApiResponse<string, number, Record<string, unknown>>>(
+  <R extends AbstractApiresponse>(
     controller: (req: UserRequest, res?: express.Response) => Promise<R>
   ) =>
   async (req: UserRequest, res: express.Response) => {

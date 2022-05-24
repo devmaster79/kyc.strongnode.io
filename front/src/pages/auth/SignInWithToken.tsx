@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { getProfile } from 'services/userService'
-import { ErrorMessage } from '@ui/Dashboard/Form'
+import { Message } from '@ui/Dashboard/Form'
 import styled from '@emotion/styled'
 
 /**
@@ -14,10 +14,10 @@ export function SignInWithToken() {
   useEffect(() => {
     ;(async function () {
       try {
-        const user = await getProfile()
-        if (user.data[0]?.email) {
-          localStorage.setItem('email', user.data[0].email)
-          localStorage.setItem('username', user.data[0].user_name)
+        const response = await getProfile()
+        if (response.result === 'success') {
+          localStorage.setItem('email', response.data.email)
+          localStorage.setItem('username', response.data.user_name)
           localStorage.setItem('loggedin', 'true')
           navigate('/dashboard/kyc')
         }
@@ -36,7 +36,7 @@ export function SignInWithToken() {
       </Title>
       {showError && (
         <HelpText>
-          <ErrorMessage>We could not query your profile.</ErrorMessage>
+          <Message error>We could not query your profile.</Message>
         </HelpText>
       )}
     </>

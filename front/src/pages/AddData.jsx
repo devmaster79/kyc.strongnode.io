@@ -15,7 +15,7 @@ import { useFormik, FormikProvider } from 'formik'
 import AdapterDateFns from '@mui/lab/AdapterDateFns'
 import LocalizationProvider from '@mui/lab/LocalizationProvider'
 import DateTimePicker from '@mui/lab/DateTimePicker'
-import userService from '../services/userService'
+import * as userService from '../services/userService'
 import historyService from '../services/historyService'
 
 const CardStyle = styled(Box)(({ theme }) => ({
@@ -86,7 +86,7 @@ export default function Dashboard() {
   useEffect(() => {
     async function fetch() {
       const result = await userService.getProfile()
-      setUser(result.data[0])
+      setUser(result.data)
     }
 
     fetch()

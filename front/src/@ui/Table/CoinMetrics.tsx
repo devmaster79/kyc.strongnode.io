@@ -1,9 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import styled from '@emotion/styled/macro'
 import TableSection from 'components/TableSection/TableSection'
-import { DataSet } from '@ui/Table/MainTable/MainTable'
-import cryptoDataService from '../../services/cryptoDataService'
-import { AxiosResponse } from 'axios'
+import cryptoDataService, {
+  IGetTokenMetricsObject,
+  IGetTokenMetricsImageObject
+} from '../../services/cryptoDataService'
+import { UserOwnedTokens } from './UserOwned/UserOwnedTokens'
+import { UserOwnedEthereum } from './UserOwned/UserOwnedEthereum'
+import {
+  tokenAddressDictionary,
+  coinTypesDictionary
+} from '../../services/walletService'
+import { DataSet } from './MainTable/MainTable'
 
 const sampleColumns = [
   {
@@ -29,35 +37,30 @@ const sampleColumns = [
 ]
 
 const sampleData = {
-  items: [
-    {
-      icon: {
-        url: 'https://icons.iconarchive.com/icons/cjdowner/cryptocurrency-flat/1024/Bitcoin-BTC-icon.png',
-        name: 'BTC'
-      },
-      owned: '50 | 20$',
-      value: '2010$',
-      value_trend: '+20%'
-    },
-    {
-      icon: {
-        url: 'https://icons.iconarchive.com/icons/cjdowner/cryptocurrency-flat/1024/Bitcoin-BTC-icon.png',
-        name: 'LTC'
-      },
-      owned: '50 | 20$',
-      value: '2010$',
-      value_trend: '+20%'
-    },
-    {
-      icon: {
-        url: 'https://icons.iconarchive.com/icons/cjdowner/cryptocurrency-flat/1024/Bitcoin-BTC-icon.png',
-        name: 'RTC'
-      },
-      owned: '50 | 20$',
-      value: '2010$',
-      value_trend: '+20%'
-    }
-  ]
+  items: []
+}
+
+interface IDataIcon {
+  name: string
+  url: IGetTokenMetricsImageObject
+}
+
+interface IOwnedObject {
+  tokenAddress: string
+  default: string
+  type: string | undefined | boolean
+}
+
+export interface IFormattedTokenObject {
+  owned: IOwnedObject | string
+  value: string
+  value_trend: number
+  icon: IDataIcon
+}
+
+type CoinMetricsProps = {
+  title: string
+  subtitle?: string
 }
 
 const overwrittenFields = {
@@ -66,91 +69,51 @@ const overwrittenFields = {
       <CryptoWrapper>
         <img
           style={{ width: 40, height: 40 }}
-          src={icon.url?.large || ''}
+          src={icon.url.large}
           alt={icon.name + ' icon'}
         />
         <p>{icon.name}</p>
       </CryptoWrapper>
     )
   },
-  value_trend: (value: IData) => {
+  value_trend: (value: number) => {
     return (
       <div>
-        <GrowthWrapper style={value.positive ? {} : { color: '#BB3353' }}>
-          {value.value}
+        <GrowthWrapper
+          style={Math.sign(value) === -1 ? { color: '#BB3353' } : {}}>
+          {value}
         </GrowthWrapper>
       </div>
+    )
+  },
+  owned: (data: IOwnedObject) => {
+    return (
+      <span>
+        {data.type === 'token' && (
+          <UserOwnedTokens
+            tokenAddress={data.tokenAddress}
+            default={data.default}
+          />
+        )}
+        {data.type === 'ethereum' && (
+          <UserOwnedEthereum default={data.default} />
+        )}
+        {!data.type && data.default}
+      </span>
     )
   }
 }
 
-let searchTimeout: ReturnType<typeof setTimeout>
-
-type CoinMetricsProps = {
-  title: string
-  subtitle?: string
-  dataSet: Array<IData>
-  columns: Array<IData>
-}
-
-interface TokenObject {
-  owned: string
-  value: string
-  value_trend: ValueTrend
-  icon: {
-    url: string
-    name: string
-  }
-}
-
-interface TokenResponse {
-  token: string
-  usd_value: string
-  day_change: string
-  image: string
-}
-
-interface ValueTrend {
-  positive?: boolean
-  value?: string
-}
-
-interface IDataIcon {
-  name: string
-  url: { large: string }
-}
-
-interface IData {
-  [key: string]: object
-}
+let searchTimeout: any = null
 
 export const CoinMetrics = (props: CoinMetricsProps) => {
-  const [tableData, setTableData] = useState<{ items: TokenObject[] }>({
+  const [tableData, setTableData] = useState<{
+    items: Array<IFormattedTokenObject>
+  }>({
     items: []
   })
 
   useEffect(() => {
-    const formatTableData = (data: Array<TokenResponse>) => {
-      const temporaryData: TokenObject[] = []
-
-      data.forEach((token: TokenResponse) => {
-        const tokenObject = {
-          owned: 'unknown',
-          value: Number(token.usd_value).toFixed(4) + ' USD',
-          value_trend: createValueTrendObject(token.day_change),
-          icon: {
-            url: token.image,
-            name: token.token.toUpperCase()
-          }
-        }
-        temporaryData.push(tokenObject)
-      })
-      return { items: temporaryData }
-    }
-    const loadTokenMetrics = async () => {
-      const data: AxiosResponse = await cryptoDataService.getTokenMetrics()
-      setTableData(formatTableData(data.data))
-    }
     loadTokenMetrics()
 
     const refreshDataInterval = setInterval(() => {
@@ -160,21 +123,38 @@ export const CoinMetrics = (props: CoinMetricsProps) => {
     return () => clearInterval(refreshDataInterval)
   }, [])
 
-  const createValueTrendObject = (value: string) => {
-    const valueTrendObject: ValueTrend = {}
-
-    if (value.charAt(0) === '-') {
-      valueTrendObject.positive = false
-    } else {
-      valueTrendObject.positive = true
-    }
-    valueTrendObject.value =
-      (valueTrendObject.positive ? '+' : '') + Number(value).toFixed(2) + ' %'
-
-    return valueTrendObject
+  // makes request and sets tableData to state
+  const loadTokenMetrics = async () => {
+    const data = await cryptoDataService.getTokenMetrics()
+    // console.log(data.data)
+    const formatedData = formatTableData(data.data)
+    setTableData(formatedData as DataSet<IFormattedTokenObject>)
   }
 
-  const addKeywords = async (keyword: string) => {
+  // formats object for table
+  const formatTableData = (data: Array<IGetTokenMetricsObject>) => {
+    const temporaryData: Array<IFormattedTokenObject> = []
+
+    data.map((token: IGetTokenMetricsObject) => {
+      const tokenObject: IFormattedTokenObject = {
+        owned: {
+          tokenAddress: tokenAddressDictionary.strongnode,
+          default: '-',
+          type: coinTypesDictionary[token.token.toLowerCase()]
+        },
+        value: Number(token.usd_value).toFixed(4) + ' USD',
+        value_trend: Number(Number(token.day_change).toFixed(2)),
+        icon: {
+          url: token.image,
+          name: token.token.toUpperCase()
+        }
+      }
+      temporaryData.push(tokenObject)
+    })
+    return { items: temporaryData }
+  }
+
+  const addKeywords = async () => {
     // clear old timeout
     if (searchTimeout) {
       clearTimeout(searchTimeout)
@@ -195,9 +175,11 @@ export const CoinMetrics = (props: CoinMetricsProps) => {
       subtitle={props.subtitle}
       overwrittenFields={overwrittenFields}
       dataSet={
-        (tableData.items?.length > 0
-          ? tableData
-          : sampleData) as unknown as DataSet<Record<string, unknown>>
+        Object.keys(tableData).length > 0
+          ? (tableData as unknown as DataSet<
+              Record<string, IFormattedTokenObject>
+            >)
+          : (sampleData as DataSet<Record<string, IFormattedTokenObject>>)
       }
       columns={sampleColumns}
     />

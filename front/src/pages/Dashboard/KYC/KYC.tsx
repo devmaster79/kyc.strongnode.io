@@ -9,6 +9,7 @@ import { SMSSwitch } from './SMSSwitch'
 import { WalletCarousel } from './WalletCarousel'
 import * as ProgressCircleSteps from '@ui/Dashboard/ProgressCircleSteps'
 import { Banner } from '../../../@ui/Banner/Banner'
+import { useSnackbar } from 'notistack'
 
 interface FormFields {
   firstName: string
@@ -39,6 +40,8 @@ const walletsObject = [
 ]
 
 export default function KYC() {
+  const { enqueueSnackbar } = useSnackbar()
+
   const { register, handleSubmit, reset, control, formState } =
     useForm<FormFields>({
       mode: 'all',
@@ -56,16 +59,18 @@ export default function KYC() {
   useEffect(() => {
     userService
       .getProfile()
-      .then((result) => {
-        const data = result.data[0]
+      .then((response) => {
+        if (response.result !== 'success') {
+          throw new Error('Could not get the profile')
+        }
         reset({
-          firstName: data.first_name,
-          lastName: data.last_name,
-          username: data.user_name,
-          email: data.email,
-          enablePasswordAuth: data.enable_password,
-          enableSMSAuth: data.enable_sms,
-          enableAuthenticatorAuth: data.enable_authenticator
+          firstName: response.data.first_name,
+          lastName: response.data.last_name,
+          username: response.data.user_name,
+          email: response.data.email,
+          enablePasswordAuth: response.data.enable_password,
+          enableSMSAuth: response.data.enable_sms,
+          enableAuthenticatorAuth: response.data.enable_authenticator
         })
       })
       .catch((err) => {
@@ -74,14 +79,20 @@ export default function KYC() {
   }, [reset])
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
-    await userService.updateProfile({
-      first_name: data.firstName,
-      last_name: data.lastName,
-      user_name: data.username,
-      enable_password: data.enablePasswordAuth,
-      enable_sms: data.enableSMSAuth,
-      enable_authenticator: data.enableAuthenticatorAuth
-    })
+    await userService
+      .updateProfile({
+        first_name: data.firstName,
+        last_name: data.lastName,
+        user_name: data.username,
+        enable_password: data.enablePasswordAuth,
+        enable_sms: data.enableSMSAuth,
+        enable_authenticator: data.enableAuthenticatorAuth
+      })
+      .then((result) => {
+        enqueueSnackbar(result.message, {
+          variant: 'success'
+        })
+      })
   }
 
   return (

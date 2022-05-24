@@ -2,25 +2,25 @@ import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import * as authService from 'services/auth'
 import { OtherOptions } from '../../components/OtherOptions'
-import { useService } from 'hooks/useService'
+import { ServicesProps, useServices } from 'hooks/useService'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { ErrorMessage, InfoMessage } from '@ui/Dashboard/Form'
+import { Message } from '@ui/Dashboard/Form'
 import InputField from '@ui/Input/InputField'
 import styled from '@emotion/styled'
 import Button from '@ui/Button/Button'
 import { getFieldIssues } from 'utils/FormUtils'
+
+const __initAuthServices = {
+  sendSMSToUser: authService.sendSMSToUser,
+  authBySMSCode: authService.authBySMSCode
+}
 
 interface SignInWithSMSFields {
   smsCode: string
 }
 export function SignInWithSMS() {
   const navigate = useNavigate()
-  const { data: sendState, call: sendSMS } = useService(
-    authService.sendSMSToUser
-  )
-  const { data: authState, call: authBySMSCode } = useService(
-    authService.authBySMSCode
-  )
+  const services = useServices(__initAuthServices)
 
   const { register, handleSubmit, setError, formState } =
     useForm<SignInWithSMSFields>({
@@ -32,7 +32,7 @@ export function SignInWithSMS() {
   const onSubmit: SubmitHandler<SignInWithSMSFields> = async (
     data: SignInWithSMSFields
   ) => {
-    const response = await authBySMSCode(data.smsCode)
+    const response = await services.authBySMSCode(data.smsCode)
     if (response.result === 'success') {
       navigate('/sign-in-with-token')
     } else if (response.result === 'validation-error') {
@@ -51,7 +51,7 @@ export function SignInWithSMS() {
 
   // send sms after the component is loaded
   useEffect(() => {
-    sendSMS()
+    services.sendSMSToUser()
     // sendSMS is declared once and it is not changing so it is safe:
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -63,45 +63,9 @@ export function SignInWithSMS() {
         <br />
         2-STEP VERIFICATION
       </Title>
-      <HelpText>
-        {sendState.result === 'loading' && 'Sending the SMS...'}
-        {sendState.result === 'success' &&
-          'We have sent you an SMS to your given phone number.'}
-        {sendState.result === 'unexpected-error' && (
-          <ErrorMessage>
-            We could not send you an SMS. Please try again later.
-          </ErrorMessage>
-        )}
-        {sendState.result === 'unauthorized-error' && (
-          <ErrorMessage>You do not have access to this feature.</ErrorMessage>
-        )}
-        {sendState.result === 'banned-error' && (
-          <ErrorMessage>
-            We have sent you an SMS already. You can try it again{' '}
-            {Math.floor(sendState.remainingTimeMs / 1000)} seconds later.
-          </ErrorMessage>
-        )}
-      </HelpText>
-      {authState.result !== 'waiting' && authState.result !== sendState.result && (
-        <HelpText>
-          {authState.result === 'loading' && (
-            <InfoMessage>Validating...</InfoMessage>
-          )}
-          {authState.result === 'banned-error' && (
-            <ErrorMessage>Too many trials, try again later.</ErrorMessage>
-          )}
-          {authState.result === 'unauthorized-error' && (
-            <ErrorMessage>You do not have access to this feature.</ErrorMessage>
-          )}
-          {authState.result === 'unexpected-error' && (
-            <ErrorMessage>
-              Some error occurred during the authorization. Please try again
-              later.
-            </ErrorMessage>
-          )}
-        </HelpText>
-      )}
-
+      <HelpTextContainer>
+        <HelpText services={services} />
+      </HelpTextContainer>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <StyledInputField
           error={!!formState.errors.smsCode}
@@ -118,6 +82,25 @@ export function SignInWithSMS() {
       </Form>
     </>
   )
+}
+
+type HelpTextProps = {
+  services: ServicesProps<typeof __initAuthServices>
+}
+
+const HelpText = ({ services }: HelpTextProps) => {
+  switch (services.data.result) {
+    case 'waiting':
+      return <Message></Message>
+    case 'loading':
+      return <Message>Loading...</Message>
+    default:
+      return (
+        <Message error={services.data.result !== 'success'}>
+          {services.data.message}
+        </Message>
+      )
+  }
 }
 
 const Form = styled.form`
@@ -147,6 +130,6 @@ const Title = styled.h1`
   }
   color: ${(props) => props.theme.palette.text.primary};
 `
-const HelpText = styled.div`
+const HelpTextContainer = styled.div`
   margin: 32px 0 24px 0;
 `

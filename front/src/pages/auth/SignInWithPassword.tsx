@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router-dom'
 import * as authService from 'services/auth'
-import { useService } from 'hooks/useService'
+import { ServiceProps, useService } from 'hooks/useService'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { ErrorMessage, InfoMessage } from '@ui/Dashboard/Form'
+import { Message } from '@ui/Dashboard/Form'
 import InputField from '@ui/Input/InputField'
 import styled from '@emotion/styled'
 import Button from '@ui/Button/Button'
@@ -15,7 +15,7 @@ interface SignInWithPasswordFields {
 
 export function SignInWithPassword() {
   const navigate = useNavigate()
-  const { data: sendResult, call: authByPassword } = useService(
+  const { data: authResponse, call: authByPassword } = useService(
     authService.authByPassword
   )
 
@@ -50,23 +50,9 @@ export function SignInWithPassword() {
         <br />
         Welcome
       </Title>
-      <HelpText>
-        {sendResult.result === 'loading' && (
-          <InfoMessage>Loading...</InfoMessage>
-        )}
-        {sendResult.result === 'unauthorized-error' && (
-          <ErrorMessage>You do not have access to this feature.</ErrorMessage>
-        )}
-        {sendResult.result === 'unexpected-error' && (
-          <ErrorMessage>Something went wrong.</ErrorMessage>
-        )}
-        {sendResult.result === 'banned-error' && (
-          <ErrorMessage>
-            Too many trials. You can try it again{' '}
-            {Math.floor(sendResult.remainingTimeMs / 1000)} seconds later.
-          </ErrorMessage>
-        )}
-      </HelpText>
+      <HelpTextContainer>
+        <HelpText response={authResponse} />
+      </HelpTextContainer>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <StyledInputField
           error={!!formState.errors.password}
@@ -84,6 +70,29 @@ export function SignInWithPassword() {
     </>
   )
 }
+
+type HelpTextProps = {
+  response: ServiceProps<typeof authService.authByPassword>['data']
+}
+
+const HelpText = ({ response }: HelpTextProps) => {
+  switch (response.result) {
+    case 'waiting':
+      return <Message></Message>
+    case 'loading':
+      return <Message>Loading...</Message>
+    default:
+      return (
+        <Message error={response.result !== 'success'}>
+          {response.message}
+        </Message>
+      )
+  }
+}
+
+const HelpTextContainer = styled.div`
+  margin: 32px 0 24px 0;
+`
 
 const Form = styled.form`
   padding: 0 112px;
@@ -111,7 +120,4 @@ const Title = styled.h1`
     font-weight: 900;
   }
   color: ${(props) => props.theme.palette.text.primary};
-`
-const HelpText = styled.div`
-  margin: 32px 0 24px 0;
 `

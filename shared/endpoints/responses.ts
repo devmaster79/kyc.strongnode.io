@@ -9,10 +9,17 @@ export type ApiResponse<
   statusCode: StatusCode
 } & Others
 
+/** Use this type for extends */
+export type AbstractApiresponse = ApiResponse<
+  string,
+  number,
+  Record<string, unknown>
+>
+
 export const apiResponse = <
   Result extends string,
   StatusCode extends number,
-  Others
+  Others extends { message: string }
 >(
   result: Result,
   statusCode: StatusCode,
@@ -61,37 +68,62 @@ export type ImprovedZodIssue<TRequestBody extends Record<string, unknown>> =
   ZodIssue & { path: Path<TRequestBody> }
 
 // Factory methods
-export const success = <Others>(others: Others) =>
-  apiResponse<'success', 200, Others>('success', 200, others)
+export const success = <Others>(others: Others) => ({
+  result: 'success' as const,
+  statusCode: 200 as const,
+  ...others
+})
+export const notFoundError = <Others extends { message: string }>(
+  others: Others
+) => apiResponse<'not-found-error', 404, Others>('not-found-error', 404, others)
 export const validationError = <Issues>(issues: Issues) =>
-  apiResponse('validation-error', 422, { issues })
+  apiResponse('validation-error', 422, {
+    issues,
+    message: 'We found some incorrect field(s) during validating the form.'
+  })
 export const zodValidationError = <
   TRequestBody extends Record<string, unknown>
 >(
   issues: ImprovedZodIssue<TRequestBody>[]
-): ZodValidationError<TRequestBody> =>
-  apiResponse('validation-error', 422, { issues })
-export const unauthorizedError = apiResponse('unauthorized-error', 401, {})
-export const bannedError = apiResponse('banned-error', 403, {})
-export const unexpectedError = apiResponse('unexpected-error', 500, {})
+): ZodValidationError<TRequestBody> => validationError(issues)
+export const unauthorizedError = apiResponse('unauthorized-error', 401, {
+  message: 'You do not have access to this feature'
+})
+export const bannedError = (remainingTimeMs: number) =>
+  apiResponse('banned-error', 403, {
+    message: `You've been banned for ${remainingTimeMs} milliseconds from this feature.`,
+    remainingTimeMs
+  })
+export const unexpectedError = apiResponse('unexpected-error', 500, {
+  message: 'Something went wrong. Please try again later.'
+})
 
 // Response types
 export type Success<T> = ApiResponse<'success', 200, T>
+export type NotFoundError<T> = ApiResponse<
+  'not-found-error',
+  404,
+  T & { message: string }
+>
 export type UnauthorizedError = ApiResponse<
   'unauthorized-error',
   401,
-  EmptyObject
+  { message: string }
 >
-export type UnexpectedError = ApiResponse<'unexpected-error', 500, EmptyObject>
+export type UnexpectedError = ApiResponse<
+  'unexpected-error',
+  500,
+  { message: string }
+>
 export type ValidationError<T = EmptyObject> = ApiResponse<
   'validation-error',
   422,
-  { issues: T }
+  { issues: T; message: string }
 >
-export type ZodValidationError<TRequestBody extends Record<string, unknown>> =
-  ValidationError<ImprovedZodIssue<TRequestBody>[]>
 export type BannedError = ApiResponse<
   'banned-error',
   403,
-  { remainingTimeMs: number }
+  { remainingTimeMs: number; message: string }
 >
+export type ZodValidationError<TRequestBody extends Record<string, unknown>> =
+  ValidationError<ImprovedZodIssue<TRequestBody>[]>

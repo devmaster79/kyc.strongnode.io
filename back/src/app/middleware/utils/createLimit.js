@@ -1,3 +1,5 @@
+const { bannedError } = require('shared/endpoints/responses')
+
 /**
  * @type {Object.<string, { nextFreeTime: number, count: number }>}
  */
@@ -110,10 +112,7 @@ const createLimiter = (getIdentifier, name, config) => (req, res, next) => {
 
   // STEP 2: check next free time
   if (lastTrial.nextFreeTime && lastTrial.nextFreeTime > now) {
-    return res.status(401).send({
-      result: 'banned-error',
-      remainingTimeMs: lastTrial.nextFreeTime - now
-    })
+    return res.status(401).send(bannedError(lastTrial.nextFreeTime - now))
   }
 
   lastTrial.count += 1
