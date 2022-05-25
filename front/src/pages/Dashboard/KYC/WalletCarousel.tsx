@@ -23,7 +23,26 @@ export function WalletCarousel(props: { walletProps: WalletInfoType[] }) {
       <div style={{ width: '100%', position: 'relative' }}>
         <div style={{ paddingLeft: '20px', paddingRight: '20px' }}>
           <Swiper
-            slidesPerView={window.innerWidth > 600 ? 3 : 1}
+            slidesPerView={
+              window.innerWidth > 1200 ? 3 : window.innerWidth > 768 ? 2 : 1
+            }
+            pagination={{
+              clickable: true
+            }}
+            breakpoints={{
+              600: {
+                slidesPerView: 1,
+                spaceBetween: 20
+              },
+              768: {
+                slidesPerView: 2,
+                spaceBetween: 10
+              },
+              1200: {
+                slidesPerView: 3,
+                spaceBetween: 10
+              }
+            }}
             spaceBetween={17}
             loop
             navigation={{
@@ -124,7 +143,8 @@ export function WalletCarousel(props: { walletProps: WalletInfoType[] }) {
 }
 
 const Container = styled.div`
-  width: 824px;
+  width: 100%;
+  max-width: 824px;
   margin: auto;
   font-size: 14px;
   font-family: 'Satoshi-Variable';
