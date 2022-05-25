@@ -47,38 +47,38 @@ const ButtonActiveLine = styled.div({
   transition: '250ms ease'
 })
 
-const SelectorButton = styled.div`
-  position: relative;
-  width: max-content;
-  display: inline-block;
-  text-transform: uppercase;
-  vertical-align: middle;
-  cursor: pointer;
+const SelectorButton = styled.div((props) => ({
+  position: 'relative',
+  width: 'max-content',
+  display: 'inline-block',
+  textTransform: 'uppercase',
+  verticalAlign: 'middle',
+  cursor: 'pointer',
 
-  transition: 240ms ease;
-  color: ${(props) => props.theme.palette.text.primary};
-  opacity: 0.4;
+  transition: '240ms ease',
+  color: props.theme.palette.text.primary,
+  opacity: 0.4,
 
-  &:hover {
-    opacity: 1;
+  '&:hover': {
+    opacity: 1
+  },
+
+  [`:hover ${ButtonActiveLine}`]: {
+    opacity: 1
   }
+}))
 
-  &:hover ${ButtonActiveLine} {
-    opacity: 1;
+const SelectorWrapper = styled.div({
+  width: 'max-content',
+
+  [`${SelectorButton}`]: {
+    marginLeft: '24px'
+  },
+
+  [`${SelectorButton}:first-child`]: {
+    marginLeft: '0px'
   }
-`
-
-const SelectorWrapper = styled.div`
-  width: max-content;
-
-  ${SelectorButton} {
-    margin-left: 24px;
-  }
-
-  ${SelectorButton}:first-child {
-    margin-left: 0px;
-  }
-`
+})
 
 const activeSelectorStyle = {
   opacity: 1

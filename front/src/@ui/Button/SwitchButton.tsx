@@ -98,5 +98,5 @@ const StyledButton = styled.label((props) => ({
 const Help = styled.div((props) => ({
   fontWeight: '500',
   fontSize: '0.9em',
-  color: props.theme.palette.primary ? props.theme.palette.primary[75] : null
+  color: props.theme.palette.primary ? props.theme.palette.primary[75] : ''
 }))
