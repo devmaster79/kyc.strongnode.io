@@ -102,18 +102,18 @@ class SidebarButtonWrapper extends React.Component<
 
 export default SidebarButtonWrapper
 
-const ButtonWrapper = styled.div`
-  width: 100%;
-  height: max-content;
-  position: relative;
-`
+const ButtonWrapper = styled.div({
+  width: '100%',
+  height: 'max-content',
+  position: 'relative'
+})
 
-const VerticalActiveLine = styled.div`
-  position: absolute;
-  right: 0;
-  top: 0;
-  width: 2px;
-  height: 72px;
-  background: #aa1fec;
-  transition: 250ms ease;
-`
+const VerticalActiveLine = styled.div({
+  position: 'absolute',
+  right: 0,
+  top: 0,
+  width: '2px',
+  height: '72px',
+  background: '#aa1fec',
+  transition: '250ms ease'
+})

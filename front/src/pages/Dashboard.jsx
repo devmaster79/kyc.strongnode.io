@@ -8,6 +8,7 @@ import * as authService from 'services/auth'
 import TableSection from 'components/TableSection/TableSection'
 import { CoinMetrics } from '../@ui/Table/CoinMetrics'
 import styled from '@emotion/styled'
+import Media from './../theme/mediaQueries'
 
 export default function Dashboard() {
   const { enqueueSnackbar } = useSnackbar()
@@ -76,27 +77,27 @@ export default function Dashboard() {
   )
 }
 
-const Wrapper = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-`
+const Wrapper = styled.div({
+  width: '100%',
+  display: 'flex',
+  alignItems: 'center',
+  flexDirection: 'column'
+})
 
-const Container = styled.div`
-  max-width: 1536px;
-  width: 100%;
-  padding-bottom: 100px;
-`
+const Container = styled.div({
+  maxWidth: '1536px',
+  width: '100%',
+  paddingBottom: '100px'
+})
 
-const Grid = styled.div`
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  margin: 8px;
+const Grid = styled.div({
+  display: 'flex',
+  flexDirection: 'row',
+  width: '100%',
+  margin: '8px',
 
-  @media only screen and (max-width: 600px) {
-    flex-direction: column;
-    margin: 0px;
+  [Media.phone]: {
+    flexDirection: 'column',
+    margin: '0px'
   }
-`
+})

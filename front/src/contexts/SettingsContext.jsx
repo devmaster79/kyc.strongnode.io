@@ -4,6 +4,7 @@ import useLocalStorage from '../hooks/useLocalStorage'
 const initialState = {
   themeMode: 'dark',
   onChangeMode: (mode) => {
+    return mode
     // Do nothing
   }
 }

@@ -103,7 +103,7 @@ export default function AccountPopover() {
   )
 }
 
-const MetamaskBrowserLink = styled.div`
-  margin-bottom: 16px;
-  cursor: pointer;
-`
+const MetamaskBrowserLink = styled.div({
+  marginBottom: '16px',
+  cursor: 'pointer'
+})

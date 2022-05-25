@@ -79,54 +79,51 @@ MultiSwitch.defaultProps = {
 
 export default MultiSwitch
 
-const SelectWrapper = styled.div`
-  position: relative;
-  display: flex;
-  background: ${(props) => props.theme.palette.background.secondary};
-  border: 1px solid ${(props) => props.theme.palette.border.light};
-  border-radius: 126px;
-  width: fit-content;
-  padding: 3px;
+const SelectWrapper = styled.div((props) => ({
+  display: 'flex',
+  background: props.theme.palette.background.secondary,
+  border: `1px solid ${props.theme.palette.border.light}`,
+  borderRadius: '126px',
+  width: 'fit-content',
 
-  ul {
-    display: flex;
-    list-style-type: none;
+  ul: {
+    display: 'flex',
+    listStyleType: 'none',
 
-    li:first-child {
-      margin-left: 0;
+    li: {
+      padding: '14px 0',
+      borderRadius: '92px',
+      minWidth: '132px',
+      textAlign: 'center',
+      fontSize: '14px',
+      textTransform: 'uppercase',
+      fontWeight: '400',
+      margin: '3px',
+      color: props.theme.palette.text.secondary,
+      cursor: 'pointer',
+      backgroundColor: 'none',
+      transition: '500ms background-color'
     }
+  },
 
-    li {
-      padding: 14px 0;
-      border-radius: 92px;
-      min-width: 132px;
-      text-align: center;
-      font-size: 14px;
-      text-transform: uppercase;
-      font-weight: 400;
-      color: ${(props) => props.theme.palette.text.secondary};
-      cursor: pointer;
-      margin-left: 6px;
-      z-index: 10;
-    }
+  '.active': {
+    background: 'linear-gradient(90.39deg, #aa1fec 0.24%, #7a3bfe 101.6%)',
+    backgroundColor: '#7a3bfe',
+    color: props.theme.palette.button.text
   }
+}))
 
-  .active {
-    color: ${(props) => props.theme.palette.button.text};
-  }
-`
-
-const AnimatedBackground = styled.div`
-  width: 132px;
-  height: 49px;
-  border-radius: 92px;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  left: 3px;
-  background: linear-gradient(90.39deg, #aa1fec 0.24%, #7a3bfe 101.6%);
-  background-color: #7a3bfe;
-  transition: 250ms ease;
-  z-index: 8;
-  pointer-events: none;
-`
+const AnimatedBackground = styled.div({
+  width: '132px',
+  height: '49px',
+  borderRadius: '92px',
+  position: 'absolute',
+  top: '50%',
+  transform: 'translateY(-50%)',
+  left: '3px',
+  background: 'linear-gradient(90.39deg, #aa1fec 0.24%, #7a3bfe 101.6%)',
+  backgroundColor: '#7a3bfe',
+  transition: '250ms ease',
+  zIndex: 8,
+  pointerEvents: 'none'
+})

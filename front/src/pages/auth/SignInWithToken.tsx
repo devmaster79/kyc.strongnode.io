@@ -43,19 +43,19 @@ export function SignInWithToken() {
   )
 }
 
-const Title = styled.h1`
-  font-style: normal;
-  font-weight: 100;
-  font-size: 32px !important;
-  line-height: 43.2px;
-  margin: 0 !important;
-  padding: 0 !important;
-  b {
-    font-weight: 900;
-  }
-  color: ${(props) => props.theme.palette.text.primary};
-`
+const Title = styled.h1((props) => ({
+  fontStyle: 'normal',
+  fontWeight: '100',
+  fontSize: '32px !important',
+  lineHeight: '43.2px',
+  margin: '0 !important',
+  padding: '0 !important',
+  b: {
+    fontWeight: '900'
+  },
+  color: props.theme.palette.text.primary
+}))
 
-const HelpText = styled.div`
-  margin: 32px 0 24px 0;
-`
+const HelpText = styled.div({
+  margin: '32px 0 24px 0'
+})
