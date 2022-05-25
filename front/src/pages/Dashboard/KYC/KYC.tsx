@@ -10,6 +10,7 @@ import { WalletCarousel } from './WalletCarousel'
 import * as ProgressCircleSteps from '@ui/Dashboard/ProgressCircleSteps'
 import { Banner } from '../../../@ui/Banner/Banner'
 import { useSnackbar } from 'notistack'
+import Media from './../../../theme/mediaQueries'
 
 interface FormFields {
   firstName: string
@@ -225,7 +226,7 @@ const FormContainer = styled.div({
   gap: '32px',
   width: '65%',
   margin: 'auto',
-  '@media only screen and (max-width: 600px)': {
+  [Media.phone]: {
     width: '100%'
   }
 })

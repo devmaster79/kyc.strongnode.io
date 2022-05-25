@@ -5,6 +5,7 @@ import InputField, {
   FloatingLabel
 } from '@ui/Input/InputField'
 import GenericButton from '@ui/Button/Button'
+import Media from './../../theme/mediaQueries'
 
 export const Input = styled(InputField)`
   background: ${(props) => props.theme.palette.background.input}!important;
@@ -39,6 +40,7 @@ export const Input = styled(InputField)`
 export const ModalInput = styled(Input)`
   background: ${(props) => props.theme.palette.background.inputModal}!important;
 
+
   ${FloatingLabelWrapper} {
     :focus-within > .floating-label,
     input:not(:placeholder-shown) + .floating-label,
@@ -60,7 +62,7 @@ export const Form = styled.form({
   alignItems: 'center',
   justifyContent: 'center',
 
-  '@media only screen and (max-width: 600px)': {
+  [Media.phone]: {
     width: '100%'
   }
 })
@@ -71,7 +73,7 @@ export const InputGroup = styled.div({
   gap: '16px',
   width: '530px',
 
-  '@media only screen and (max-width: 600px)': {
+  [Media.phone]: {
     width: '100%'
   }
 })
@@ -84,7 +86,7 @@ export const ButtonGroup = styled.div({
   paddingTop: '24px',
   paddingBottom: '40px',
 
-  '@media only screen and (max-width: 600px)': {
+  [Media.phone]: {
     width: '100%'
   }
 })

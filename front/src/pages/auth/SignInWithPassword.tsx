@@ -8,7 +8,7 @@ import styled from '@emotion/styled'
 import Button from '@ui/Button/Button'
 import { OtherOptions } from 'components/OtherOptions'
 import { getFieldIssues } from 'utils/FormUtils'
-
+import Media from './../../theme/mediaQueries'
 interface SignInWithPasswordFields {
   password: string
 }
@@ -101,7 +101,7 @@ const Form = styled.form({
   display: 'flex',
   flexFlow: 'column',
 
-  '@media only screen and (max-width: 600px)': {
+  [Media.phone]: {
     padding: '0 10px'
   }
 })

@@ -8,6 +8,7 @@ import * as authService from 'services/auth'
 import TableSection from 'components/TableSection/TableSection'
 import { CoinMetrics } from '../@ui/Table/CoinMetrics'
 import styled from '@emotion/styled'
+import Media from './../theme/mediaQueries'
 
 export default function Dashboard() {
   const { enqueueSnackbar } = useSnackbar()
@@ -95,7 +96,7 @@ const Grid = styled.div({
   width: '100%',
   margin: '8px',
 
-  '@media only screen and (max-width: 600px)': {
+  [Media.phone]: {
     flexDirection: 'column',
     margin: '0px'
   }

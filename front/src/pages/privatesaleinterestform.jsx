@@ -9,6 +9,7 @@ import { EntryPage } from './style'
 import * as userService from '../services/userService'
 import { ReactComponent as MagicImg } from '../assets/images/magic.svg'
 import EntryCard from '../components/EntryCard'
+import Media from './../theme/mediaQueries'
 
 export const Wrapper = styled.div({
   width: '100%',
@@ -70,7 +71,7 @@ const InputCol = styled.div({
     marginBottom: '8px',
     color: '#584a72'
   },
-  '@media screen and (max-width: 600px)': {
+  [Media.phone]: {
     width: '100%'
   }
 })

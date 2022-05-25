@@ -111,29 +111,33 @@ const SwitchWrapper = styled.label({
   display: 'block'
 })
 
-const StyledInput = styled.input<{ checked: boolean }>`
-  display: inline-block;
-  position: absolute;
-  margin-top: 2px;
-  width: 50px;
-  height: 22px;
-  border-radius: 20px;
-  vertical-align: middle;
-  cursor: pointer;
-  opacity: 0;
-  margin-left: 14px;
-  ${(props) =>
+const StyledInput = styled.input<{ checked: boolean }>(
+  {
+    display: 'inline-block',
+    position: 'absolute',
+    marginTop: '2px',
+    width: '50px',
+    height: '22px',
+    borderRadius: '20px',
+    verticalAlign: 'middle',
+    cursor: 'pointer',
+    opacity: 0,
+    marginLeft: '14px'
+  },
+
+  (props) =>
     props.checked &&
     `+ .switch .iconWrapper {
       left: 24px;
       transition: left 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    }`}
-  ${(props) =>
+    }`,
+
+  (props) =>
     !props.checked &&
     `+ .switch .iconWrapper {
       transition: left 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    }`}
-`
+    }`
+)
 
 const StyledButton = styled.label({
   display: 'inline-block',

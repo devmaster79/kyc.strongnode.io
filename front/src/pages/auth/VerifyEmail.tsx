@@ -6,7 +6,7 @@ import Button from '@ui/Button/Button'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Message } from '@ui/Dashboard/Form'
 import { getFieldIssues } from 'utils/FormUtils'
-
+import Media from './../../theme/mediaQueries'
 interface VerifyEmailFields {
   email: string
 }
@@ -68,7 +68,7 @@ const Form = styled.form({
   display: 'flex',
   flexFlow: 'column',
 
-  '@media only screen and (max-width: 600px)': {
+  [Media.phone]: {
     padding: '0 10px'
   }
 })

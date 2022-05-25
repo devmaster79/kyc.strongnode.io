@@ -3,7 +3,7 @@ import InputField from '@ui/Input/InputField'
 import MainTable, { Column, DataSet } from '@ui/Table/MainTable/MainTable'
 import Icon from '@ui/Icon/Icon'
 import { ChangeEvent, useState } from 'react'
-
+import Media from './../../theme/mediaQueries'
 interface Finder {
   onChange: (keyword: string) => void
   searchMaxRow?: number
@@ -104,7 +104,7 @@ const TableSectionWrapper = styled.div((props) => ({
     }
   },
 
-  '@media only screen and (max-width: 600px)': {
+  [Media.phone]: {
     marginBottom: '20px'
   }
 }))
@@ -115,7 +115,7 @@ const HeaderWrapper = styled.div({
   alignItems: 'center',
   paddingBottom: '16px',
 
-  '@media only screen and (max-width: 600px)': {
+  [Media.phone]: {
     flexDirection: 'column',
 
     h2: {

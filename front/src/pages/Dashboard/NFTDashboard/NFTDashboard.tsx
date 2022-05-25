@@ -3,11 +3,12 @@ import styled from '@emotion/styled'
 import TableSection from 'components/TableSection/TableSection'
 import Autocomplete from '@ui/Autocomplete/Autocomplete'
 import Icon from '@ui/Icon/Icon'
+import Media from './../../../theme/mediaQueries'
 
 const CardWrapper = styled.div({
   display: 'flex',
   flexFlow: 'wrap',
-  '@media only screen and (max-width: 600px)': {
+  [Media.phone]: {
     alignItems: 'center'
   }
 })

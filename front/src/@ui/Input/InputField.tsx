@@ -64,23 +64,22 @@ interface FloatingLabelWrapperProps {
 
 export const FloatingLabelWrapper = styled('div', {
   shouldForwardProp: (prop) => prop !== 'onFocusStyle'
-})<FloatingLabelWrapperProps>`
-  position: relative;
-  width: 100%;
+})<FloatingLabelWrapperProps>((props) => ({
+  position: 'relative',
+  width: '100%',
 
-  :focus-within > .floating-label,
-  input:not(:placeholder-shown) + .floating-label,
-  input:-webkit-autofill + .floating-label {
-    padding-top: 0;
-    padding-bottom: 0;
-    transform: translateY(-18px);
-    transition-duration: 300ms;
-    font-size: 12px;
-    background-color: ${(props) => props.theme.palette.background.label};
-    left: 3px;
-    ${(props) => props.onFocusStyle}
-  }
-`
+  ':focus-within > .floating-label, input:not(:placeholder-shown) + .floating-label, input:-webkit-autofill + .floating-label':
+    {
+      paddingTop: 0,
+      paddingBottom: 0,
+      transform: 'translateY(-18px)',
+      transitionDuration: '300ms',
+      fontSize: '12px',
+      backgroundColor: `${props.theme.palette.background.label}`,
+      left: '3px'
+      // `${props.onFocusStyle}`
+    }
+}))
 
 export const StyledInputWrapper = styled.div<{
   disabled: boolean

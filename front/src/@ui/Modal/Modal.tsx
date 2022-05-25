@@ -2,6 +2,7 @@ import styled from '@emotion/styled'
 import Icon, { IconProps } from '@ui/Icon/Icon'
 import { IAnim } from '@ui/utils/useAnimated'
 import { ReactNode } from 'react'
+import Media from './../../theme/mediaQueries'
 
 export type ModalProps = {
   children: ReactNode
@@ -106,7 +107,7 @@ const StyledModal = styled.div<StyledModalProps>((props) => ({
     paddingBottom: '8px'
   },
 
-  '@media only screen and (max-width: 600px)': {
+  [Media.phone]: {
     minWidth: '95vw',
     maxWidth: '95vw'
   }

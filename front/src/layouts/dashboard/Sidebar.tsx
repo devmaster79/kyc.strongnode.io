@@ -4,6 +4,7 @@ import ThemedLogo from '../../components/ThemedLogo'
 import SidebarButtonWrapper from '../../@ui/Sidebar/SidebarButtonWrapper'
 import IconToggle from '@ui/Button/IconToggle'
 import useSettings from 'hooks/useSettings'
+import Media from './../../theme/mediaQueries'
 
 const SidebarWrapper = styled.div((props) => ({
   width: '104px',
@@ -15,7 +16,7 @@ const SidebarWrapper = styled.div((props) => ({
   background: `${props.theme.palette.background.primary}`,
   boxShadow: 'inset -1px 0px 0px rgba(255, 255, 255, 0.12)',
 
-  '@media only screen and (max-width: 600px)': {
+  [Media.phone]: {
     display: 'none'
   }
 }))

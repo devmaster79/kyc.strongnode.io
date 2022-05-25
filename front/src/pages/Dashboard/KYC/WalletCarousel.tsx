@@ -7,6 +7,7 @@ import CircleButton from '@ui/Button/CircleButton'
 import Icon from '@ui/Icon/Icon'
 import { useTheme } from '@mui/material/styles'
 import { CustomTheme } from 'theme'
+import Media from './../../../theme/mediaQueries'
 interface WalletInfoType {
   featureIcon: number
   label: string
@@ -132,7 +133,7 @@ const Container = styled.div({
   fontWeight: '900',
   paddingTop: '100px',
 
-  '@media only screen and (max-width: 600px)': {
+  [Media.phone]: {
     width: '100%'
   }
 })

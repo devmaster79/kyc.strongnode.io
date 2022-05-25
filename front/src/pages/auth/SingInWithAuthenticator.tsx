@@ -8,6 +8,7 @@ import Button from '@ui/Button/Button'
 import { useNavigate } from 'react-router-dom'
 import { getFieldIssues } from 'utils/FormUtils'
 import * as authServices from 'services/auth'
+import Media from './../../theme/mediaQueries'
 interface SignInWithAuthenticatorFields {
   totp: string
 }
@@ -98,7 +99,7 @@ const Form = styled.form({
   display: 'flex',
   flexFlow: 'column',
 
-  '@media only screen and (max-width: 600px)': {
+  [Media.phone]: {
     padding: '0 10px'
   }
 })

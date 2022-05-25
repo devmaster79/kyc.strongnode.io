@@ -8,7 +8,7 @@ import { Message } from '@ui/Dashboard/Form'
 import { Link, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import { getFieldIssues } from 'utils/FormUtils'
-
+import Media from './../../theme/mediaQueries'
 interface RegisterFields {
   first_name: string
   last_name: string
@@ -152,7 +152,7 @@ const Form = styled.form({
   display: 'flex',
   flexFlow: 'column',
 
-  '@media only screen and (max-width: 600px)': {
+  [Media.phone]: {
     padding: '0 10px'
   }
 })

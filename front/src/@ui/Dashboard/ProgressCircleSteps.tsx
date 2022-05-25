@@ -3,6 +3,7 @@ import { CircularProgressbar, buildStyles } from 'react-circular-progressbar'
 import 'react-circular-progressbar/dist/styles.css'
 import { useTheme } from '@mui/material/styles'
 import { CustomTheme } from 'theme'
+import Media from './../../theme/mediaQueries'
 interface ProgressCircleProps {
   label: string
   progressAmount: number
@@ -16,7 +17,7 @@ export const Container = styled.div({
   paddingTop: '32px',
   paddingBottom: '128px',
 
-  '@media only screen and (max-width: 600px)': {
+  [Media.phone]: {
     flexDirection: 'column'
   }
 })
@@ -30,45 +31,47 @@ export function Step(props: ProgressCircleProps) {
 
   const Container = styled.div<{
     disabled: boolean
-  }>`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    cursor: ${(props) => (props.disabled ? 'no-drop' : 'pointer')};
-    opacity: ${(props) => (props.disabled ? '0.4' : '1')};
+  }>((props) => ({
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    cursor: `${props.disabled ? 'no-drop' : 'pointer'}`,
+    opacity: `${props.disabled ? '0.4' : '1'}`,
 
-    @media only screen and (max-width: 600px) {
-      margin-bottom: 70px;
+    [Media.phone]: {
+      marginBottom: '70px'
     }
-  `
+  }))
 
   const ProgressContainer = styled.div<{
     border: boolean
-  }>`
-    display: block;
-    width: 98px;
-    height: 98px;
-    border: ${(props) => (props.border ? '3px solid transparent' : '0px')};
-    border-radius: 50%;
-    background: linear-gradient(
-          ${(props) => (props.border ? '#AA1FEC' : '#13124A')},
-          ${(props) => (props.border ? '#AA1FEC' : '#13124A')}
-        )
-        padding-box,
-      linear-gradient(
-          to bottom,
-          ${(props) => (props.border ? '#AA1FEC' : '#13124A')},
-          ${(props) => (props.border ? '#1FC7EC' : '#13124A')}
-        )
-        border-box;
-    font-family: 'Satoshi-Variable';
-    font-style: normal;
-    font-weight: 900;
-    font-size: 14px;
-    line-height: 14px;
-    margin: 0px 19px 16px 19px;
-  `
+  }>((props) => ({
+    display: 'block',
+    width: '98px',
+    height: '98px',
+    border: `${props.border ? '3px solid transparent' : '0px'}`,
+    borderRadius: '50%',
+    fontFamily: 'Satoshi-Variable',
+    fontStyle: 'normal',
+    fontWeight: 900,
+    fontSize: '14px',
+    lineHeight: '14px',
+    margin: '0px 19px 16px 19px',
+
+    background: `linear-gradient(
+      ${props.border ? '#AA1FEC' : '#13124A'},
+      ${props.border ? '#AA1FEC' : '#13124A'}
+    ),
+    padding-box,
+  linear-gradient(
+      to bottom,
+      ${props.border ? '#AA1FEC' : '#13124A'},
+      ${props.border ? '#1FC7EC' : '#13124A'}
+    )
+    border-box`
+  }))
+
   const Label = styled.p((props) => ({
     fontFamily: 'Satoshi-Variable',
     fontStyle: 'regular',
@@ -111,7 +114,7 @@ export function Separator() {
     marginBottom: '18px',
     opacity: '0.12',
 
-    '@media only screen and (max-width: 600px)': {
+    [Media.phone]: {
       transform: 'rotate(90deg)'
     }
   })

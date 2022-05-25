@@ -9,6 +9,7 @@ import InputField from '@ui/Input/InputField'
 import styled from '@emotion/styled'
 import Button from '@ui/Button/Button'
 import { getFieldIssues } from 'utils/FormUtils'
+import Media from './../../theme/mediaQueries'
 
 const __initAuthServices = {
   sendSMSToUser: authService.sendSMSToUser,
@@ -110,7 +111,7 @@ const Form = styled.form({
   display: 'flex',
   flexFlow: 'column',
 
-  '@media only screen and (max-width: 600px)': {
+  [Media.phone]: {
     padding: '0 10px'
   }
 })

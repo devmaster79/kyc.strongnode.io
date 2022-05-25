@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from '@emotion/styled/macro'
 import background from '../../assets/images/banner_background.png'
+import Media from './../../theme/mediaQueries'
 
 export type BannerProps = {
   title: string
@@ -33,7 +34,7 @@ const BannerWrapper = styled.div({
   overflow: 'hidden',
   position: 'relative',
 
-  '@media only screen and (max-width: 600px)': {
+  [Media.phone]: {
     height: 'max-content'
   }
 })
@@ -44,7 +45,7 @@ const TextWrapper = styled.div({
   top: '50%',
   transform: 'translateY(-50%)',
 
-  '@media only screen and (max-width: 600px)': {
+  [Media.phone]: {
     position: 'static',
     transform: 'none',
     marginLeft: 'auto',
@@ -84,7 +85,7 @@ const ComingSoon = styled.div({
   lineHeight: '100%',
   color: 'rgba(255, 255, 255, 0.6)',
 
-  '@media only screen and (max-width: 600px)': {
+  [Media.phone]: {
     position: 'static',
     transform: 'none',
     marginTop: '32px',

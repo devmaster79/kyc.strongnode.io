@@ -17,6 +17,7 @@ import LocalizationProvider from '@mui/lab/LocalizationProvider'
 import DateTimePicker from '@mui/lab/DateTimePicker'
 import * as userService from '../services/userService'
 import historyService from '../services/historyService'
+import Media from './../theme/mediaQueries'
 
 const CardStyle = styled(Box)(({ theme }) => ({
   background: 'rgba(255, 255, 255, 0.1)',
@@ -27,11 +28,12 @@ const CardStyle = styled(Box)(({ theme }) => ({
   width: '90%',
   margin: 'auto'
 }))
-const MyStack = styled(Stack)`
-  @media (max-width: 1024px) {
-    margin-left: 0 !important;
+const MyStack = styled(Stack)({
+  [Media.tablet]: {
+    marginLeft: '0 !important'
   }
-`
+})
+
 export default function Dashboard() {
   const types = ['earned', 'unlocked', 'vested', 'withdrawn']
 
