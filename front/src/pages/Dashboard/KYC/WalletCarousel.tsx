@@ -23,7 +23,9 @@ export function WalletCarousel(props: { walletProps: WalletInfoType[] }) {
       <div style={{ width: '100%', position: 'relative' }}>
         <div style={{ paddingLeft: '20px', paddingRight: '20px' }}>
           <Swiper
-            slidesPerView={window.innerWidth > 600 ? 1 : 1}
+            slidesPerView={
+              window.innerWidth > 1200 ? 3 : window.innerWidth > 768 ? 2 : 1
+            }
             pagination={{
               clickable: true
             }}
@@ -36,7 +38,7 @@ export function WalletCarousel(props: { walletProps: WalletInfoType[] }) {
                 slidesPerView: 2,
                 spaceBetween: 10
               },
-              1024: {
+              1200: {
                 slidesPerView: 3,
                 spaceBetween: 10
               }
