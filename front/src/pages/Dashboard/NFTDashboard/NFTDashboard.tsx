@@ -3,14 +3,16 @@ import styled from '@emotion/styled'
 import TableSection from 'components/TableSection/TableSection'
 import Autocomplete from '@ui/Autocomplete/Autocomplete'
 import Icon from '@ui/Icon/Icon'
+import Media from './../../../theme/mediaQueries'
 
-const CardWrapper = styled.div`
-  display: flex;
-  flex-flow: wrap;
-  @media only screen and (max-width: 600px) {
-    align-items: center;
+const CardWrapper = styled.div({
+  display: 'flex',
+  flexFlow: 'wrap',
+  [Media.phone]: {
+    alignItems: 'center'
   }
-`
+})
+
 export default function NFTDashboard() {
   const cards = ['1', '2', '3', '4', '5', '6', '7']
 
@@ -139,43 +141,45 @@ export default function NFTDashboard() {
   )
 }
 
-const Wrapper = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-`
+const Wrapper = styled.div({
+  width: '100%',
+  display: 'flex',
+  alignItems: 'center',
+  flexDirection: 'column'
+})
 
-const Container = styled.div`
-  max-width: 1300px;
-  width: 100%;
-`
+const Container = styled.div({
+  maxWidth: '1300px',
+  width: '100%'
+})
 
-const AutocompleteWrapper = styled.div`
-  max-width: 320px;
-  display: none;
-`
-const AutocompleteStyle = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+const AutocompleteWrapper = styled.div({
+  maxWidth: '320px',
+  display: 'none'
+})
 
-  span {
-    font-family: 'Satoshi-Regular';
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 19px;
-    color: ${(props) => props.theme.palette.text.secondary};
+const AutocompleteStyle = styled.div((props) => ({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+
+  span: {
+    fontFamily: 'Satoshi-Regular',
+    fontWeight: '400',
+    fontSize: '14px',
+    lineHeight: '19px',
+    color: props.theme.palette.text.secondary
   }
-`
-const TitleWrapper = styled.div`
-  display: flex;
-  align-items: center;
+}))
 
-  img {
-    width: 40px;
-    height: 40px;
-    border-radius: 10px;
-    margin-right: 16px;
+const TitleWrapper = styled.div({
+  display: 'flex',
+  alignItems: 'center',
+
+  img: {
+    width: '40px',
+    height: '40px',
+    borderRadius: '10px',
+    marginRight: '16px'
   }
-`
+})

@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom'
 import { ROUTES } from 'Router'
-import styled from 'styled-components'
+import styled from '@emotion/styled'
 
 interface OtherOptionsProps {
   hideSMS?: boolean
@@ -39,6 +39,6 @@ export const OtherOptions = ({
   </div>
 )
 
-const Options = styled.ul`
-  list-style-type: none;
-`
+const Options = styled.ul({
+  listStyleType: 'none'
+})

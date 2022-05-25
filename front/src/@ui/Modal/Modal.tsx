@@ -2,6 +2,7 @@ import styled from '@emotion/styled'
 import Icon, { IconProps } from '@ui/Icon/Icon'
 import { IAnim } from '@ui/utils/useAnimated'
 import { ReactNode } from 'react'
+import Media from './../../theme/mediaQueries'
 
 export type ModalProps = {
   children: ReactNode
@@ -57,56 +58,61 @@ interface StyledModalProps {
   scrollable: boolean
 }
 
-const ModalWrapper = styled.div<ModalWrapperProps>`
-  height: 100vh;
-  width: 100vw;
-  padding: 8rem;
-  background-color: ${(props) => props.theme.palette.background.modal};
-  position: fixed;
-  top: 0;
-  left: 0;
-  align-items: center;
-  justify-content: center;
-  z-index: 1300;
-  display: ${({ anim }) => (anim.state === 'closed' ? 'none' : 'flex')};
-  opacity: ${({ anim }) =>
-    anim.state === 'open' || anim.state === 'beforeOpening' ? '1' : '0'};
-  transition: opacity ${({ anim }) => anim.delay}ms ease;
-`
-const IconWrapper = styled.div`
-  width: 100%;
-  padding: 16px;
-  display: flex;
-  justify-content: end;
-`
-const StyledModal = styled.div<StyledModalProps>`
-  min-width: 642px;
-  height: ${({ scrollable }) => (scrollable ? '100%' : 'unset')};
-  overflow: auto;
-  background: ${(props) => props.theme.palette.background.modalSecondary};
-  border: 1px solid ${(props) => props.theme.palette.border.light};
-  box-sizing: border-box;
-  border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  line-height: 24px;
+const ModalWrapper = styled.div<ModalWrapperProps>((props) => ({
+  height: '100vh',
+  width: '100vw',
+  padding: '8rem',
+  backgroundColor: props.theme.palette.background.modal,
+  position: 'fixed',
+  top: 0,
+  left: 0,
+  alignItems: 'center',
+  justifyContent: 'center',
+  zIndex: '1300',
+  display: props.anim.state === 'closed' ? 'none' : 'flex',
+  opacity:
+    props.anim.state === 'open' || props.anim.state === 'beforeOpening'
+      ? '1'
+      : '0',
+  transition: `opacity ${props.anim.delay}ms ease`
+}))
 
-  color: ${(props) => props.theme.palette.text.secondary};
+const IconWrapper = styled.div({
+  width: '100%',
+  padding: '16px',
+  display: 'flex',
+  justifyContent: 'end'
+})
 
-  h1 {
-    font-size: 18px;
-    margin-top: 24px;
-    padding-bottom: 8px;
+const StyledModal = styled.div<StyledModalProps>((props) => ({
+  minWidth: '642px',
+  overflow: 'auto',
+  height: props.scrollable ? '100%' : 'unset',
+  background: props.theme.palette.background.modalSecondary,
+  border: `1px solid ${props.theme.palette.border.light}`,
+  display: 'flex',
+  boxSizing: 'border-box',
+  flexDirection: 'column',
+  alignItems: 'center',
+  borderRadius: '10px',
+  textAlign: 'center',
+  lineHeight: '24px',
+
+  color: props.theme.palette.text.secondary,
+
+  h1: {
+    fontSize: '18px',
+    marginTop: '24px',
+    paddingBottom: '8px'
+  },
+
+  [Media.phone]: {
+    minWidth: '95vw',
+    maxWidth: '95vw'
   }
+}))
 
-  @media only screen and (max-width: 600px) {
-    min-width: 95vw;
-    max-width: 95vw;
-  }
-`
-const Footer = styled.div`
-  padding-top: 23px;
-  padding-bottom: 40px;
-`
+const Footer = styled.div({
+  paddingTop: '23px',
+  paddingBottom: '40px'
+})

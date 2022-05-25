@@ -6,7 +6,7 @@ import Button from '@ui/Button/Button'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Message } from '@ui/Dashboard/Form'
 import { getFieldIssues } from 'utils/FormUtils'
-
+import Media from './../../theme/mediaQueries'
 interface VerifyEmailFields {
   email: string
 }
@@ -61,31 +61,30 @@ export function VerifyEmail() {
   )
 }
 
-const Form = styled.form`
-  padding: 0 112px;
-  width: 100%;
-  margin-bottom: 40px;
-  display: flex;
-  flex-flow: column;
+const Form = styled.form({
+  padding: '0 112px',
+  width: '100%',
+  marginBottom: '40px',
+  display: 'flex',
+  flexFlow: 'column',
 
-  @media only screen and (max-width: 600px) {
-    padding: 0 10px;
+  [Media.phone]: {
+    padding: '0 10px'
   }
-`
+})
 
-const Title = styled.h1`
-  font-style: normal;
-  font-weight: 100;
-  font-size: 32px !important;
-  line-height: 43.2px;
-  margin: 0 !important;
-  padding: 0 !important;
-  b {
-    font-weight: 900;
-  }
-
-  color: ${(props) => props.theme.palette.text.primary};
-`
+const Title = styled.h1((props) => ({
+  fontStyle: 'normal',
+  fontWeight: '100',
+  fontSize: '32px !important',
+  lineHeight: '43.2px',
+  margin: '0 !important',
+  padding: '0 !important',
+  b: {
+    fontWeight: 900
+  },
+  color: props.theme.palette.text.primary
+}))
 
 type HelpTextProps = {
   response: ServiceProps<typeof authState.sendVerificationEmail>['data']
@@ -106,6 +105,6 @@ const HelpText = ({ response }: HelpTextProps) => {
   }
 }
 
-const HelpTextContainer = styled.div`
-  margin: 32px 0 24px 0;
-`
+const HelpTextContainer = styled.div({
+  margin: '32px 0 24px 0'
+})

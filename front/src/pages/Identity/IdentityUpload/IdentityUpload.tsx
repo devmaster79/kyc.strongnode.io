@@ -54,26 +54,26 @@ export default function IdentityUpload(props: UploadProps) {
   )
 }
 
-const UploadWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-size: 18px;
+const UploadWrapper = styled.div((props) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  fontSize: '18px',
 
-  p {
-    max-width: 450px;
-    padding-bottom: 40px;
-  }
+  p: {
+    maxWidth: '450px',
+    paddingBottom: '40px'
+  },
 
-  button {
-    margin-top: 32px;
-  }
+  button: {
+    marginTop: '32px'
+  },
 
-  img {
-    width: 354px;
-    height: 196px;
-    object-fit: cover;
-    border: 1px solid ${(props) => props.theme.palette.border.light};
-    border-radius: 8px;
+  img: {
+    width: '354px',
+    height: '196px',
+    objectFit: 'cover',
+    border: `1px solid ${props.theme.palette.border.light}`,
+    borderRadius: '8px'
   }
-`
+}))

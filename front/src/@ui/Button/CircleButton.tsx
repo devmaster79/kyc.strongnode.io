@@ -33,16 +33,17 @@ export default function CircleButton(props: { name: IconProps['name'] }) {
     (obj) => obj[0] === props.name
   )?.[1]
 
-  const Container = styled.div`
-    display: flex;
-    width: 40px;
-    height: 40px;
-    cursor: pointer;
-    background: ${data?.color};
-    justify-content: center;
-    align-items: center;
-    border-radius: 50%;
-  `
+  const Container = styled.div({
+    display: 'flex',
+    width: '40px',
+    height: '40px',
+    cursor: 'pointer',
+    background: data?.color,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: '50%'
+  })
+
   return (
     <Container>
       <Icon

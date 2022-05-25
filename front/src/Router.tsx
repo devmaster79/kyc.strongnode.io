@@ -28,7 +28,7 @@ export const ROUTES = {
     CONTACT_SUPORT: 'contact-support',
     GROWTH: '/dashboard/growth',
     SYNC: '/dashboard/sync',
-    SHIELD: '/dashboard/shield',
+    SHIELD: '/dashboard/shield'
   },
   AUTH: {
     VERIFY_EMAIL: SHARED_ROUTES.VERIFY_EMAIL,
