@@ -10,7 +10,7 @@ const RootStyle = styled.div((props) => ({
   display: 'flex',
   minHeight: '100%',
   overflow: 'hidden',
-  background: `${props.theme.palette.background.gradient}`,
+  background: props.theme.palette.background.gradient,
   backgroundSize: '100% 100%'
 }))
 

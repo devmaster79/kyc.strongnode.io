@@ -44,7 +44,7 @@ export const InputContainer = styled.div({
 export const HelpText = styled.div<{ error: boolean }>((props) => ({
   textAlign: 'left',
   padding: '0.3em 2em',
-  color: `${props.error ? props.theme.palette.error.main : ''}`
+  color: props.error ? props.theme.palette.error.main : ''
 }))
 
 export const FloatingLabel = styled.label({
@@ -75,7 +75,7 @@ export const FloatingLabelWrapper = styled('div', {
       transform: 'translateY(-18px)',
       transitionDuration: '300ms',
       fontSize: '12px',
-      backgroundColor: `${props.theme.palette.background.label}`,
+      backgroundColor: props.theme.palette.background.label,
       left: '3px'
       // `${props.onFocusStyle}`
     }
@@ -86,19 +86,17 @@ export const StyledInputWrapper = styled.div<{
   error: boolean
 }>((props) => ({
   flex: 1,
-  background: `${props.theme.palette.background.light}`,
-  border: `${
-    props.error
-      ? `1px solid ${props.theme.palette.error.light}`
-      : `1px solid ${props.theme.palette.border.light}`
-  }`,
+  background: props.theme.palette.background.light,
+  border: props.error
+    ? `1px solid ${props.theme.palette.error.light}`
+    : `1px solid ${props.theme.palette.border.light}`,
   boxSizing: 'border-box',
   borderRadius: '8px',
-  color: `${props.theme.palette.text.secondary}`,
+  color: props.theme.palette.text.secondary,
   display: 'flex',
   alignItems: 'center',
   minWidth: '260px',
-  opacity: `${props.disabled ? '0.5' : '1'}`,
+  opacity: props.disabled ? '0.5' : '1',
 
   svg: {
     marginLeft: '8px'
@@ -111,28 +109,28 @@ export const StyledInputField = styled.input((props) => ({
   height: '40px',
   background: 'transparent',
   border: '0px',
-  color: `${props.theme.palette.text.primary}`,
+  color: props.theme.palette.text.primary,
   fontSize: '14px',
   paddingLeft: '8px',
 
   '::placeholder': {
     /* Chrome, Firefox, Opera, Safari 10.1+ */
-    color: `${props.theme.palette.text.secondary}`,
+    color: props.theme.palette.text.secondary,
     opacity: 1 /* Firefox */
   },
 
   ':-ms-input-placeholder': {
     /* Internet Explorer 10-11 */
-    color: `${props.theme.palette.text.secondary}`
+    color: props.theme.palette.text.secondary
   },
 
   '::-ms-input-placeholder': {
     /* Microsoft Edge */
-    color: `${props.theme.palette.text.secondary}`
+    color: props.theme.palette.text.secondary
   },
 
   '&:-webkit-autofill': {
-    '-webkit-text-fill-color': `${props.theme.palette.text.primary}`,
+    '-webkit-text-fill-color': props.theme.palette.text.primary,
     '-webkit-box-shadow': `0 0 0px 1000px
     ${props.theme.palette.background.primary} inset`,
     borderRadius: '7px'

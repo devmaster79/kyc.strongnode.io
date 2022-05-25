@@ -152,7 +152,7 @@ const Secret = styled.div((props) => ({
   boxSizing: 'border-box',
   borderRadius: '8px',
   code: {
-    color: `${props.theme.palette.text.primary}`,
+    color: props.theme.palette.text.primary,
     wordWrap: 'break-word',
     overflowWrap: 'anywhere',
     flex: 1

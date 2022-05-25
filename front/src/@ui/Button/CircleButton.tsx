@@ -38,7 +38,7 @@ export default function CircleButton(props: { name: IconProps['name'] }) {
     width: '40px',
     height: '40px',
     cursor: 'pointer',
-    background: `${data?.color}`,
+    background: data?.color,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: '50%'

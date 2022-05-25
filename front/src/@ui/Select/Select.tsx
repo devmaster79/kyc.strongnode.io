@@ -101,12 +101,12 @@ const HeaderWrapper = styled.div({
 })
 
 const OptionsWrapper = styled.div((props) => ({
-  background: `${props.theme.palette.background.secondary}`,
+  background: props.theme.palette.background.secondary,
   border: `1px solid ${props.theme.palette.border.light}`,
   boxSizing: 'border-box',
   borderRadius: '10px',
 
-  color: `${props.theme.palette.text.secondary}`,
+  color: props.theme.palette.text.secondary,
   textAlign: 'left',
   padding: '24px',
 
@@ -114,7 +114,7 @@ const OptionsWrapper = styled.div((props) => ({
   marginTop: '10px',
 
   '.active': {
-    color: `${props.theme.palette.text.primary}`
+    color: props.theme.palette.text.primary
   },
 
   ul: {

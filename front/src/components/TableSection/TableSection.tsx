@@ -86,20 +86,20 @@ const TableSectionWrapper = styled.div((props) => ({
   width: '100%',
   marginBottom: '200px',
   marginTop: '32px',
-  background: `${props.theme.palette.background.primary}`,
+  background: props.theme.palette.background.primary,
   border: `1px solid ${props.theme.palette.border.light}`,
   boxSizing: 'border-box',
   borderRadius: '10px',
   padding: '32px',
   h2: {
     fontSize: '18px',
-    color: `${props.theme.palette.text.primary}`,
+    color: props.theme.palette.text.primary,
     fontWeight: '900',
 
     span: {
       fontFamily: 'Satoshi-Regular',
       fontSize: '14px',
-      color: `${props.theme.palette.text.secondary}`,
+      color: props.theme.palette.text.secondary,
       paddingLeft: '7px'
     }
   },
@@ -140,6 +140,6 @@ const ComingSoonWrapper = styled.div((props) => ({
   span: {
     fontFamily: 'Satoshi-Regular',
     fontSize: '14px',
-    color: `${props.theme.palette.text.secondary}`
+    color: props.theme.palette.text.secondary
   }
 }))

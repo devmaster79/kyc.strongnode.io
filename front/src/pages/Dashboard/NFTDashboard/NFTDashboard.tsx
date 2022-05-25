@@ -168,7 +168,7 @@ const AutocompleteStyle = styled.div((props) => ({
     fontWeight: '400',
     fontSize: '14px',
     lineHeight: '19px',
-    color: `${props.theme.palette.text.secondary}`
+    color: props.theme.palette.text.secondary
   }
 }))
 

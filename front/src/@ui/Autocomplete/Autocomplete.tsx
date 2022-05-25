@@ -82,12 +82,12 @@ Autocomplete.defaultProps = {
 }
 
 const OptionsWrapper = styled.div((props) => ({
-  background: `${props.theme.palette.background.secondary}`,
+  background: props.theme.palette.background.secondary,
   border: `1px solid ${props.theme.palette.border.light}`,
   boxSizing: 'border-box',
   borderRadius: '10px',
   minWidth: '483px',
-  color: `${props.theme.palette.text.secondary}`,
+  color: props.theme.palette.text.secondary,
   textAlign: 'left',
   padding: '24px',
 
@@ -109,7 +109,7 @@ const OptionsWrapper = styled.div((props) => ({
       fontStyle: 'normal',
       fontWeight: '900',
       textTransform: 'none',
-      color: `${props.theme.palette.text.primary}`,
+      color: props.theme.palette.text.primary,
       paddingTop: '16px',
 
       li: {

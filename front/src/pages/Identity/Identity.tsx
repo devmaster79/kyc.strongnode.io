@@ -193,7 +193,7 @@ const IdentityWrapper = styled.div((props) => ({
     padding: '15px',
 
     a: {
-      color: `${props.theme.palette.text.secondary}`,
+      color: props.theme.palette.text.secondary,
       textDecoration: 'underline'
     }
   }

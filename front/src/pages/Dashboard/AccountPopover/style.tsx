@@ -15,7 +15,7 @@ export const AccountPopoverWrapper = styled.div((props) => ({
   right: '0px',
   display: 'flex',
   flexDirection: 'column',
-  background: `${props.theme.palette.background.primary}`,
+  background: props.theme.palette.background.primary,
   border: `1px solid rgba(255, 255, 255, 0.1)`,
   boxSizing: 'border-box',
   borderRadius: '10px',
@@ -23,10 +23,10 @@ export const AccountPopoverWrapper = styled.div((props) => ({
   lineHeight: '140%',
   fontSize: '16px',
   textAlign: 'center',
-  color: `${props.theme.palette.text.primary}`,
+  color: props.theme.palette.text.primary,
 
   '& > span': {
-    color: `${props.theme.palette.text.secondary}`
+    color: props.theme.palette.text.secondary
   },
 
   '& > ul': {
@@ -47,7 +47,7 @@ export const AccountPopoverWrapper = styled.div((props) => ({
 export const AvatarIconWrapper = styled.div((props) => ({
   width: '40px',
   height: '40px',
-  background: `${props.theme.palette.icon.wrapper}`,
+  background: props.theme.palette.icon.wrapper,
   boxShadow: `0px 1px 0px rgba(255, 255, 255, 0.25)
   inset 0px 0px 18px rgba(255, 255, 255, 0.12)`,
   borderRadius: '102px',

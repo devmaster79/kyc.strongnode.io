@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 
 export const StyledButton = styled.button((props) => ({
-  width: `${props.full ? '100%' : null}`,
+  width: props.full ? '100%' : null,
   minWidth: '64px',
   height: '40px',
   border: 'none',

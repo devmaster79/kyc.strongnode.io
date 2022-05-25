@@ -2,7 +2,7 @@ import styled from '@emotion/styled'
 
 export const StyledEntryCard = styled.div((props) => ({
   width: '100%',
-  maxWidth: `${props.emailsent ? '449px' : '482px'}`,
+  maxWidth: props.emailsent ? '449px' : '482px',
   padding: '40px',
   marginBottom: '40px',
   background: 'rgba(255, 255, 255, 0.1)',

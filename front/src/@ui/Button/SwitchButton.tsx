@@ -77,7 +77,7 @@ const StyledButton = styled.label((props) => ({
   width: '50px',
   height: '24px',
   borderRadius: '20px',
-  background: `${props.theme.palette.background.switch}`,
+  background: props.theme.palette.background.switch,
   verticalAlign: 'middle',
   cursor: 'pointer',
   marginLeft: '14px',
@@ -98,7 +98,5 @@ const StyledButton = styled.label((props) => ({
 const Help = styled.div((props) => ({
   fontWeight: '500',
   fontSize: '0.9em',
-  color: `${
-    props.theme.palette.primary ? props.theme.palette.primary[75] : null
-  }`
+  color: props.theme.palette.primary ? props.theme.palette.primary[75] : null
 }))

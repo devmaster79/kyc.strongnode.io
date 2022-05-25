@@ -36,8 +36,8 @@ export function Step(props: ProgressCircleProps) {
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    cursor: `${props.disabled ? 'no-drop' : 'pointer'}`,
-    opacity: `${props.disabled ? '0.4' : '1'}`,
+    cursor: props.disabled ? 'no-drop' : 'pointer',
+    opacity: props.disabled ? '0.4' : '1',
 
     [Media.phone]: {
       marginBottom: '70px'
@@ -50,7 +50,7 @@ export function Step(props: ProgressCircleProps) {
     display: 'block',
     width: '98px',
     height: '98px',
-    border: `${props.border ? '3px solid transparent' : '0px'}`,
+    border: props.border ? '3px solid transparent' : '0px',
     borderRadius: '50%',
     fontFamily: 'Satoshi-Variable',
     fontStyle: 'normal',
@@ -77,7 +77,7 @@ export function Step(props: ProgressCircleProps) {
     fontStyle: 'regular',
     fontWeight: '400',
     fontSize: '14px',
-    fontColor: `${props.theme.palette.text.primary}`,
+    fontColor: props.theme.palette.text.primary,
     lineHeight: '14px',
     textAlign: 'center',
     opacity: 0.6
@@ -92,12 +92,10 @@ export function Step(props: ProgressCircleProps) {
           styles={buildStyles({
             textSize: '14px',
             textColor: '#FFF',
-            pathColor: `${progressBorder ? '#13124A' : '#AA1FEC'}`,
-            trailColor: `${
-              progressBorder
-                ? theme.palette.progressCircle.trailColorPrimary
-                : theme.palette.progressCircle.trailColorSecondary
-            }`,
+            pathColor: progressBorder ? '#13124A' : '#AA1FEC',
+            trailColor: progressBorder
+              ? theme.palette.progressCircle.trailColorPrimary
+              : theme.palette.progressCircle.trailColorSecondary,
             strokeLinecap: 'butt'
           })}
         />

@@ -171,7 +171,7 @@ const Title = styled.h1((props) => ({
   b: {
     fontWeight: '900'
   },
-  color: `${props.theme.palette.text.primary}`
+  color: props.theme.palette.text.primary
 }))
 
 const Note = styled.p({

@@ -13,7 +13,7 @@ const SidebarWrapper = styled.div((props) => ({
   flex: '1 0 auto',
   zIndex: '1200',
   position: 'fixed',
-  background: `${props.theme.palette.background.primary}`,
+  background: props.theme.palette.background.primary,
   boxShadow: 'inset -1px 0px 0px rgba(255, 255, 255, 0.12)',
 
   [Media.phone]: {

@@ -90,11 +90,11 @@ const ButtonWrapper = styled.button((props) => ({
   border: 'none',
   background: 'transparent',
 
-  [`:hover`]: {
+  '&:hover': {
     background: 'rgba(170, 31, 236, 0.12)'
   },
 
   [`:hover ${Svg}`]: {
-    stroke: `${props.theme.palette.icon.primary}`
+    stroke: props.theme.palette.icon.primary
   }
 }))

@@ -6,8 +6,8 @@ export const TableWrapper = styled.div({
 })
 
 export const Table = styled.table((props) => ({
-  color: `${props.theme.palette.text.primary}`,
-  backgroundColor: `${props.theme.palette.background.primary}`,
+  color: props.theme.palette.text.primary,
+  backgroundColor: props.theme.palette.background.primary,
   width: '100%',
   borderCollapse: 'collapse',
 
@@ -23,6 +23,6 @@ export const Table = styled.table((props) => ({
   th: {
     textAlign: 'left',
     textTransform: 'uppercase',
-    color: `${props.theme.palette.text.secondary}`
+    color: props.theme.palette.text.secondary
   }
 }))

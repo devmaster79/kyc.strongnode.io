@@ -62,19 +62,18 @@ const ModalWrapper = styled.div<ModalWrapperProps>((props) => ({
   height: '100vh',
   width: '100vw',
   padding: '8rem',
-  backgroundColor: `${props.theme.palette.background.modal}`,
+  backgroundColor: props.theme.palette.background.modal,
   position: 'fixed',
   top: 0,
   left: 0,
   alignItems: 'center',
   justifyContent: 'center',
   zIndex: '1300',
-  display: `${props.anim.state === 'closed' ? 'none' : 'flex'}`,
-  opacity: `${
+  display: props.anim.state === 'closed' ? 'none' : 'flex',
+  opacity:
     props.anim.state === 'open' || props.anim.state === 'beforeOpening'
       ? '1'
-      : '0'
-  }`,
+      : '0',
   transition: `opacity ${props.anim.delay}ms ease`
 }))
 
@@ -88,8 +87,8 @@ const IconWrapper = styled.div({
 const StyledModal = styled.div<StyledModalProps>((props) => ({
   minWidth: '642px',
   overflow: 'auto',
-  height: `${props.scrollable ? '100%' : 'unset'}`,
-  background: `${props.theme.palette.background.modalSecondary}`,
+  height: props.scrollable ? '100%' : 'unset',
+  background: props.theme.palette.background.modalSecondary,
   border: `1px solid ${props.theme.palette.border.light}`,
   display: 'flex',
   boxSizing: 'border-box',
@@ -99,7 +98,7 @@ const StyledModal = styled.div<StyledModalProps>((props) => ({
   textAlign: 'center',
   lineHeight: '24px',
 
-  color: `${props.theme.palette.text.secondary}`,
+  color: props.theme.palette.text.secondary,
 
   h1: {
     fontSize: '18px',

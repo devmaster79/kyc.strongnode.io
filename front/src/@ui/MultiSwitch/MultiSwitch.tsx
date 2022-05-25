@@ -62,7 +62,7 @@ export default MultiSwitch
 
 const SelectWrapper = styled.div((props) => ({
   display: 'flex',
-  background: `${props.theme.palette.background.secondary}`,
+  background: props.theme.palette.background.secondary,
   border: `1px solid ${props.theme.palette.border.light}`,
   borderRadius: '126px',
   width: 'fit-content',
@@ -80,7 +80,7 @@ const SelectWrapper = styled.div((props) => ({
       textTransform: 'uppercase',
       fontWeight: '400',
       margin: '3px',
-      color: `${props.theme.palette.text.secondary}`,
+      color: props.theme.palette.text.secondary,
       cursor: 'pointer',
       backgroundColor: 'none',
       transition: '500ms background-color'
@@ -90,6 +90,6 @@ const SelectWrapper = styled.div((props) => ({
   '.active': {
     background: 'linear-gradient(90.39deg, #aa1fec 0.24%, #7a3bfe 101.6%)',
     backgroundColor: '#7a3bfe',
-    color: `${props.theme.palette.button.text}`
+    color: props.theme.palette.button.text
   }
 }))

@@ -25,74 +25,66 @@ const Button = styled.button<StyledButtonProps>(
     whiteSpace: 'nowrap'
   },
 
-  (props) =>
-    `
-    color: ${props.theme.palette.button.text};
-`,
+  (props) => ({
+    color: props.theme.palette.button.text
+  }),
 
   (props) =>
-    props.variant === 'medium' &&
-    `
-  font-size: 14px;
-  padding: 21px;
-  min-width: 200px;
-  margin: 8px;
-  `,
+    props.variant === 'medium' && {
+      fontSize: '14px',
+      padding: '21px',
+      minWidth: '200px',
+      margin: '8px'
+    },
 
   (props) =>
-    props.variant === 'xl' &&
-    `
-    min-width: 530px;
-    font-size: 14px;
-    padding: 15px 24px;
-    @media only screen and (max-width: 550px) {
-      min-width: 85vw;
-    }
-  `,
-
-  (props) =>
-    props.variant === 'large' &&
-    `
-      min-width: 360px;
-      font-size: 14px;
-      padding: 21px;
-
-      @media only screen and (max-width: 400px) {
-        min-width: 85vw;
+    props.variant === 'xl' && {
+      minWidth: '530px',
+      fontSize: '14px',
+      padding: '15px 24px',
+      '@media only screen and (max-width: 550px)': {
+        minWidth: '85vw'
       }
-    `,
+    },
 
   (props) =>
-    props.justify === 'space-between' &&
-    `
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  `,
+    props.variant === 'large' && {
+      minWidth: '360px',
+      fontSize: '14px',
+      padding: '21px',
+
+      '@media only screen and (max-width: 400px)': {
+        minWidth: '85vw'
+      }
+    },
 
   (props) =>
-    props.color === 'invert' &&
-    `
-      background: ${props.theme.palette.button.background.invert};
-      border: 1px solid ${props.theme.palette.border.button};
-      box-shadow: none;
-      color: ${props.theme.palette.button.invert};
-    `,
+    props.justify === 'space-between' && {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between'
+    },
 
   (props) =>
-    props.color === 'white' &&
-    `
-    background: ${props.theme.palette.background.white};
-    color: ${props.theme.palette.text.whiteButton};
-    box-shadow: none;
-  `,
+    props.color === 'invert' && {
+      background: props.theme.palette.button.background.invert,
+      border: `1px solid ${props.theme.palette.border.button}`,
+      boxShadow: 'none',
+      color: props.theme.palette.button.invert
+    },
 
   (props) =>
-    props.disabled &&
-    `
-  cursor: inherit;
-  opacity: 0.4;
-`
+    props.color === 'white' && {
+      background: props.theme.palette.background.white,
+      color: props.theme.palette.text.whiteButton,
+      boxShadow: 'none'
+    },
+
+  (props) =>
+    props.disabled && {
+      cursor: 'inherit',
+      opacity: 0.4
+    }
 )
 
 export default Button

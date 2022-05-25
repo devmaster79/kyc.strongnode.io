@@ -2,7 +2,7 @@ import styled from '@emotion/styled'
 
 export const Card = styled.div((props) => ({
   background: `props.theme.palette.background.light`,
-  color: `${props.theme.palette.text.primary}`,
+  color: props.theme.palette.text.primary,
   padding: '8px',
   border: `1px solid ${props.theme.palette.border.light}`,
   boxSizing: 'border-box',
@@ -34,6 +34,6 @@ export const CardContent = styled.div((props) => ({
 
   span: {
     fontFamily: 'Satoshi-Regular',
-    color: `${props.theme.palette.text.secondary}`
+    color: props.theme.palette.text.secondary
   }
 }))

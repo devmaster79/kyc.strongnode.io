@@ -42,13 +42,13 @@ const CustomSvg = styled.svg((props) => ({
   },
 
   'path:nth-child(3)': {
-    fill: `${props.theme.palette.icon.active}`
+    fill: props.theme.palette.icon.active
   }
 }))
 
 const ValueIndicatorWrapper = styled.div((props) => ({
   width: 'max-content',
-  color: `${props.theme.palette.text.primary}`,
+  color: props.theme.palette.text.primary,
 
   p: {
     fontWeight: 900,
@@ -56,7 +56,7 @@ const ValueIndicatorWrapper = styled.div((props) => ({
     display: 'inline-block',
     verticalAlign: 'middle',
     opacity: '0.4',
-    color: `${props.theme.palette.text.primary}`
+    color: props.theme.palette.text.primary
   },
 
   svg: {
