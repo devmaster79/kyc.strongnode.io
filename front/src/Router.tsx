@@ -9,7 +9,6 @@ import { SignInWithAuthenticator } from './pages/auth/SingInWithAuthenticator'
 import { SignInWithSMS } from './pages/auth/SignInWithSMS'
 import { SignInWithToken } from './pages/auth/SignInWithToken'
 import PrivateSaleInterestForm from './pages/privatesaleinterestform'
-import AddData from './pages/AddData'
 import * as SHARED_ROUTES from 'shared/routes'
 import NFTDashboard from 'pages/Dashboard/NFTDashboard/NFTDashboard'
 import Kyc from 'pages/Dashboard/KYC/KYC'
@@ -30,7 +29,6 @@ export const ROUTES = {
     GROWTH: '/dashboard/growth',
     SYNC: '/dashboard/sync',
     SHIELD: '/dashboard/shield',
-    ADD_DATA: '/dashboard/add_data'
   },
   AUTH: {
     VERIFY_EMAIL: SHARED_ROUTES.VERIFY_EMAIL,
@@ -59,7 +57,6 @@ export default function Router () {
             <Route path={ROUTES.DASHBOARD.GROWTH} element={<Dashboard />} />
             <Route path={ROUTES.DASHBOARD.SYNC} element={<Dashboard />} />
             <Route path={ROUTES.DASHBOARD.SHIELD} element={<Dashboard />} />
-            <Route path={ROUTES.DASHBOARD.ADD_DATA} element={<AddData />} />
             <Route path={ROUTES.DASHBOARD.NFT} element={<NFTDashboard />} />
             <Route path={ROUTES.DASHBOARD.KYC} element={<Kyc />} />
             <Route path={ROUTES.DASHBOARD.IDENTITY} element={<Identity />} />
