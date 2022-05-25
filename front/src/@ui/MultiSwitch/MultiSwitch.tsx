@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import { MouseEvent } from 'react'
+import { useState } from 'react'
 
 export type MultiSwitchProps<
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -20,19 +20,36 @@ function MultiSwitch<
   Option extends Record<string, any>,
   TrackBy extends keyof Option
 >(props: MultiSwitchProps<Option, TrackBy>) {
-  function onSelectValue(event: MouseEvent<HTMLLIElement>): void {
-    const selectedOption = props.options.find((option) => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const target: { value: Option[TrackBy] } = event.target as any
-      return option[props.trackBy].toString() === target.value.toString()
-    })
-    if (selectedOption) {
-      props.onChange(selectedOption)
-    }
+  const [activeXOffset, setActiveXOffset] = useState<string>('3px')
+
+  const onSelectValue = async (selectedValue: string) => {
+    const selectedIndex = props.options.findIndex(
+      (option) => option[props.searchBy] === selectedValue
+    )
+    setXOffset(selectedIndex)
+
+    // waits until the animation gets done
+    await new Promise((resolve) => setTimeout(resolve, 350))
+
+    props.onChange(props.options[selectedIndex])
+  }
+
+  const animWidthOffset = 132
+  const animMarginOffset = 6
+  const animBaseMarginOffset = 3
+
+  const setXOffset = (index: number) => {
+    setActiveXOffset(
+      index * animWidthOffset +
+        index * animMarginOffset +
+        animBaseMarginOffset +
+        'px'
+    )
   }
 
   return (
     <SelectWrapper>
+      <AnimatedBackground style={{ left: activeXOffset }} />
       <ul>
         {props.options.map((option) => (
           <li
@@ -44,7 +61,9 @@ function MultiSwitch<
                 ? 'active'
                 : ''
             }
-            onClick={onSelectValue}>
+            onClick={() => {
+              onSelectValue(option[props.searchBy])
+            }}>
             {option[props.searchBy]}
           </li>
         ))}
@@ -93,3 +112,18 @@ const SelectWrapper = styled.div((props) => ({
     color: props.theme.palette.button.text
   }
 }))
+
+const AnimatedBackground = styled.div({
+  width: '132px',
+  height: '49px',
+  borderRadius: '92px',
+  position: 'absolute',
+  top: '50%',
+  transform: 'translateY(-50%)',
+  left: '3px',
+  background: 'linear-gradient(90.39deg, #aa1fec 0.24%, #7a3bfe 101.6%)',
+  backgroundColor: '#7a3bfe',
+  transition: '250ms ease',
+  zIndex: 8,
+  pointerEvents: 'none'
+})
