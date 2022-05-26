@@ -10,7 +10,7 @@ import Icon from '@ui/Icon/Icon'
 import { useTheme } from '@mui/styles'
 import { useEthers } from '@usedapp/core'
 import { useGetTokenBalanceFormatted } from '../../../hooks/useGetTokenBalanceFormatted'
-import { tokenAddressDictionary } from '../../../services/walletService'
+import { getTokenAddress } from '../../../services/walletService'
 import { CustomTheme } from 'theme'
 
 export default function AccountPopover() {
@@ -22,7 +22,7 @@ export default function AccountPopover() {
   const [showModal, setShowModal] = useState(false)
   const SNEBalance = useGetTokenBalanceFormatted(
     account,
-    tokenAddressDictionary.strongnode
+    getTokenAddress('strongnode')
   )
 
   useEffect(() => {
