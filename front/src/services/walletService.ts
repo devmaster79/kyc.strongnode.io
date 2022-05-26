@@ -1,6 +1,20 @@
 import { getDefaultProvider } from 'ethers'
-import { Polygon, Config, Mainnet } from '@usedapp/core'
+import { Polygon, Config, Mainnet, ChainId } from '@usedapp/core'
 import WalletConnectProvider from '@walletconnect/web3-provider/dist/umd/index.min.js'
+
+// checking if .env file has setted localhost blockchain info
+const usingLocalBlockchain: boolean =
+  import.meta.env.VITE_APP_LOCAL_BLOCKCHAIN_RPC &&
+  import.meta.env.VITE_APP_LOCAL_BLOCKCHAIN_CHAIN_ID
+
+let localBlockchainAddressDictionary: IStringDictionary = {}
+if (usingLocalBlockchain) {
+  import('./../contracts/contract-address.json')
+    .then((module) => {
+      localBlockchainAddressDictionary = module.default
+    })
+    .catch((err) => console.error(err))
+}
 
 interface IStringDictionary {
   [key: string]: string
@@ -36,17 +50,37 @@ export const networksRpcDictionary: IStringDictionary = {
 }
 
 /**
+ * Config object for DAppProvider that uses localhost blockchain.
+ */
+const DAppReadOnlyUrlsLocalBlockchain = {
+  [import.meta.env.VITE_APP_LOCAL_BLOCKCHAIN_CHAIN_ID]: import.meta.env
+    .VITE_APP_LOCAL_BLOCKCHAIN_RPC
+}
+
+/**
+ * Config object for DAppProvider readOnlyUrls.
+ */
+const DAppReadOnlyUrls = {
+  [Polygon.chainId]: networksRpcDictionary.polygon,
+  [Mainnet.chainId]: getDefaultProvider('mainnet')
+}
+
+/**
  * Config object for DAppProvider
  * @type {Config}
  */
-export const DAppProviderConfig = {
-  readOnlyChainId: Polygon.chainId,
-  readOnlyUrls: {
-    [Polygon.chainId]: networksRpcDictionary.polygon,
-    [Mainnet.chainId]: getDefaultProvider('mainnet')
-  },
-  networks: [Polygon, Mainnet],
-  autoConnect: true
+export const DAppProviderConfig: Config = {
+  readOnlyChainId: usingLocalBlockchain
+    ? import.meta.env.VITE_APP_LOCAL_BLOCKCHAIN_CHAIN_ID
+    : Polygon.chainId,
+  readOnlyUrls: usingLocalBlockchain
+    ? DAppReadOnlyUrlsLocalBlockchain
+    : DAppReadOnlyUrls,
+  networks: usingLocalBlockchain
+    ? [import.meta.env.VITE_APP_LOCAL_BLOCKCHAIN_CHAIN_ID]
+    : [Polygon, Mainnet],
+  autoConnect: true,
+  supportedChains: [31337]
 }
 
 /**
@@ -71,5 +105,20 @@ export const connectWallet = async (activate: any, force = false) => {
     return true
   } catch (error) {
     return false
+  }
+}
+
+/**
+ * Method that returns correct address dictionary.
+ */
+export const getTokenAddress = (token: string) => {
+  if (usingLocalBlockchain) {
+    return localBlockchainAddressDictionary[token]
+      ? localBlockchainAddressDictionary[token]
+      : undefined
+  } else {
+    return tokenAddressDictionary[token]
+      ? tokenAddressDictionary[token]
+      : undefined
   }
 }
