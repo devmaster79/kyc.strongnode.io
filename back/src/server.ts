@@ -25,7 +25,6 @@ app.use(express.urlencoded({ extended: true, limit: '25mb' }))
 // simple route
 app.use(express.static(path.join(__dirname, '../front/build')))
 
-require('./app/routes/history.routes')(app)
 require('./app/routes/news.routes')(app)
 require('./app/routes/user.routes')(app)
 require('./app/routes/auth.routes')(app)
