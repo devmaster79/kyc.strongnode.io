@@ -3,7 +3,7 @@ import { useGetTokenBalanceFormatted } from '../../../hooks/useGetTokenBalanceFo
 import { useEthers } from '@usedapp/core'
 
 type UserOwnedTokensProps = {
-  tokenAddress: string
+  tokenAddress: string | undefined
   default: string
 }
 
