@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import { sendSMSAndSaveNumber, enableSMSAuth } from 'services/auth'
 import { useServices, ServicesProps } from 'hooks/useService'
 import PhoneInput from 'material-ui-phone-number'
 import Modal from '@ui/Modal/Modal'
@@ -7,11 +6,12 @@ import Button from '@ui/Button/Button'
 import * as DashboardForm from '@ui/Dashboard/Form'
 import styled from '@emotion/styled'
 import { IAnim } from '@ui/utils/useAnimated'
+import authService from 'services/auth'
 const { Message } = DashboardForm
 
 const __initAuthServices = {
-  sendSMSAndSaveNumber,
-  verifyOTPAndEnableSMSAuth: enableSMSAuth
+  sendSMSAndSaveNumber: authService.sendSMSAndSaveNumber,
+  verifyOTPAndEnableSMSAuth: authService.enableSMSAuth
 }
 
 interface SMSSetupModalProps {
@@ -35,7 +35,9 @@ export function SMSSetupModal({
   }
 
   const verifySMSCode = async () => {
-    const data = await authServices.verifyOTPAndEnableSMSAuth(smsCode)
+    const data = await authServices.verifyOTPAndEnableSMSAuth({
+      body: { smscode: smsCode }
+    })
     if (data.result === 'success') {
       onSuccess()
     }
@@ -76,7 +78,13 @@ export function SMSSetupModal({
             }}
           />
           <SendButtonWithCounter
-            onClick={() => authServices.sendSMSAndSaveNumber(phoneNumber)}
+            onClick={() =>
+              authServices.sendSMSAndSaveNumber({
+                body: {
+                  number: phoneNumber
+                }
+              })
+            }
             disabled={authServices.data.result === 'loading'}
           />
         </DashboardForm.Row>

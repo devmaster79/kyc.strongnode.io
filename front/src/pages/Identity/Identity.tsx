@@ -172,35 +172,35 @@ export default function Identity() {
   )
 }
 
-const IdentityWrapper = styled.div`
-  font-size: 18px;
-  display: flex;
-  flex-direction: column;
+const IdentityWrapper = styled.div((props) => ({
+  fontSize: '18px',
+  display: 'flex',
+  flexDirection: 'column',
 
-  h1 {
-    font-size: 32px;
-    padding-bottom: 32px;
+  h1: {
+    fontSize: '32px',
+    paddingBottom: '32px',
 
-    span {
-      font-family: 'Satoshi-Regular';
-      font-weight: 300;
-      display: block;
-      padding-top: 15px;
+    span: {
+      fontFamily: 'Satoshi-Regular',
+      fontWeight: '300',
+      display: 'block',
+      paddingTop: '15px'
+    }
+  },
+  p: {
+    textAlign: 'left',
+    padding: '15px',
+
+    a: {
+      color: props.theme.palette.text.secondary,
+      textDecoration: 'underline'
     }
   }
-  p {
-    text-align: left;
-    padding: 15px;
+}))
 
-    a {
-      color: ${(props) => props.theme.palette.text.secondary};
-      text-decoration: underline;
-    }
-  }
-`
-
-const Separator = styled.hr`
-  width: 354px;
-  border: 1px solid ${(props) => props.theme.palette.border.light};
-  margin: 32px 0;
-`
+const Separator = styled.hr((props) => ({
+  width: '354px',
+  border: `1px solid ${props.theme.palette.border.light}`,
+  margin: '32px 0'
+}))

@@ -12,17 +12,17 @@ export const Navbar = () => {
   )
 }
 
-const NavbarWrapper = styled.div`
-  width: calc(100% - 32px - 176px);
-  height: 20px;
-  position: fixed;
-  top: 32px;
-  right: 32px;
-  z-index: 15;
-`
+const NavbarWrapper = styled.div({
+  width: 'calc(100% - 32px - 176px)',
+  height: '20px',
+  position: 'fixed',
+  top: '32px',
+  right: '32px',
+  zIndex: '15'
+})
 
-const AccountPopoverWrapper = styled.div`
-  position: absolute;
-  top: 0;
-  right: 0;
-`
+const AccountPopoverWrapper = styled.div({
+  position: 'absolute',
+  top: 0,
+  right: 0
+})

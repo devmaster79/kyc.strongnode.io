@@ -7,7 +7,8 @@ import styled from '@emotion/styled'
 import Button from '@ui/Button/Button'
 import { useNavigate } from 'react-router-dom'
 import { getFieldIssues } from 'utils/FormUtils'
-import * as authServices from 'services/auth'
+import authService from 'services/auth'
+import Media from './../../theme/mediaQueries'
 interface SignInWithAuthenticatorFields {
   totp: string
 }
@@ -15,7 +16,7 @@ interface SignInWithAuthenticatorFields {
 export function SignInWithAuthenticator() {
   const navigate = useNavigate()
   const { data: authResponse, call: authByAuthenticator } = useService(
-    authServices.authByAuthenticator
+    authService.authByAuthenticator
   )
 
   const { register, handleSubmit, setError, formState } =
@@ -28,7 +29,11 @@ export function SignInWithAuthenticator() {
   const onSubmit: SubmitHandler<SignInWithAuthenticatorFields> = async (
     data: SignInWithAuthenticatorFields
   ) => {
-    const response = await authByAuthenticator(data.totp)
+    const response = await authByAuthenticator({
+      body: {
+        token: data.totp
+      }
+    })
     if (response.result === 'success') {
       navigate('/sign-in-with-token')
     } else if (response.result === 'validation-error') {
@@ -73,7 +78,7 @@ export function SignInWithAuthenticator() {
 }
 
 type HelpTextProps = {
-  response: ServiceProps<typeof authServices.authByAuthenticator>['data']
+  response: ServiceProps<typeof authService.authByAuthenticator>['data']
 }
 
 const HelpText = ({ response }: HelpTextProps) => {
@@ -91,34 +96,35 @@ const HelpText = ({ response }: HelpTextProps) => {
   }
 }
 
-const Form = styled.form`
-  padding: 0 112px;
-  width: 100%;
-  margin-bottom: 40px;
-  display: flex;
-  flex-flow: column;
+const Form = styled.form({
+  padding: '0 112px',
+  width: '100%',
+  marginBottom: '40px',
+  display: 'flex',
+  flexFlow: 'column',
 
-  @media only screen and (max-width: 600px) {
-    padding: 0 10px;
+  [Media.phone]: {
+    padding: '0 10px'
   }
-`
+})
 
-const StyledInputField = styled(InputField)`
-  margin: 10px 0;
-`
-const Title = styled.h1`
-  font-style: normal;
-  font-weight: 100;
-  font-size: 32px !important;
-  line-height: 43.2px;
-  margin: 0 !important;
-  padding: 0 !important;
-  b {
-    font-weight: 900;
-  }
-  color: ${(props) => props.theme.palette.text.primary};
-`
+const StyledInputField = styled(InputField)({
+  margin: '10px 0'
+})
 
-const HelpTextContainer = styled.div`
-  margin: 32px 0 24px 0;
-`
+const Title = styled.h1((props) => ({
+  fontStyle: 'normal',
+  fontWeight: '100',
+  fontSize: '32px !important',
+  lineHeight: '43.2px',
+  margin: '0 !important',
+  padding: '0 !important',
+  b: {
+    fontWeight: '900'
+  },
+  color: props.theme.palette.text.primary
+}))
+
+const HelpTextContainer = styled.div({
+  margin: '32px 0 24px 0'
+})

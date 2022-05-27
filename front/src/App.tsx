@@ -2,7 +2,7 @@ import React, { Suspense } from 'react'
 import Router from './Router'
 import { SnackbarProvider } from 'notistack'
 import { useSearchParams } from 'react-router-dom'
-import * as authService from 'services/auth'
+import authService from 'services/auth'
 import { isExpired } from 'react-jwt'
 const ThemeConfig = React.lazy(async () => ({
   default: (await import('./theme')).ThemeConfig

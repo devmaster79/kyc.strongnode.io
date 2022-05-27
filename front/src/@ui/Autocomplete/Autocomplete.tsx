@@ -81,46 +81,45 @@ Autocomplete.defaultProps = {
   searchBy: 'label'
 }
 
-const OptionsWrapper = styled.div`
-  background: ${(props) => props.theme.palette.background.secondary};
-  border: 1px solid ${(props) => props.theme.palette.border.light};
-  box-sizing: border-box;
-  border-radius: 10px;
-  min-width: 483px;
+const OptionsWrapper = styled.div((props) => ({
+  background: props.theme.palette.background.secondary,
+  border: `1px solid ${props.theme.palette.border.light}`,
+  boxSizing: 'border-box',
+  borderRadius: '10px',
+  minWidth: '483px',
+  color: props.theme.palette.text.secondary,
+  textAlign: 'left',
+  padding: '24px',
 
-  color: ${(props) => props.theme.palette.text.secondary};
-  text-align: left;
-  padding: 24px;
+  position: 'absolute',
+  marginTop: '10px',
 
-  position: absolute;
-  margin-top: 10px;
+  ul: {
+    listStyle: 'none',
+    fontSize: '12px',
+    textTransform: 'uppercase',
 
-  ul {
-    list-style-type: none;
-    font-size: 12px;
-    text-transform: uppercase;
+    '& > li:not(:first-child)': {
+      paddingTop: '16px'
+    },
 
-    & > li:not(:first-child) {
-      padding-top: 16px;
-    }
+    '& > li > ul': {
+      fontSize: '16px',
+      fontFamily: 'Satoshi-Variable',
+      fontStyle: 'normal',
+      fontWeight: '900',
+      textTransform: 'none',
+      color: props.theme.palette.text.primary,
+      paddingTop: '16px',
 
-    & > li > ul {
-      font-size: 16px;
-      font-family: 'Satoshi-Variable';
-      font-style: normal;
-      font-weight: 900;
-      text-transform: none;
-      color: ${(props) => props.theme.palette.text.primary};
-      padding-top: 16px;
-
-      li {
-        padding-top: 8px;
-        padding-bottom: 8px;
+      li: {
+        paddingTop: '8px',
+        paddingBottom: '8px'
       }
-    }
+    },
 
-    li {
-      cursor: pointer;
+    li: {
+      cursor: 'pointer'
     }
   }
-`
+}))

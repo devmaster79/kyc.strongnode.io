@@ -1,7 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import DashboardLayout from './layouts/dashboard'
 import Dashboard from './pages/Dashboard'
-import Profile from './pages/profile'
 import ContactSupport from './pages/contactSupport'
 import { Register } from './pages/auth/Register'
 import { VerifyEmail } from './pages/auth/VerifyEmail'
@@ -10,7 +9,6 @@ import { SignInWithAuthenticator } from './pages/auth/SingInWithAuthenticator'
 import { SignInWithSMS } from './pages/auth/SignInWithSMS'
 import { SignInWithToken } from './pages/auth/SignInWithToken'
 import PrivateSaleInterestForm from './pages/privatesaleinterestform'
-import AddData from './pages/AddData'
 import * as SHARED_ROUTES from 'shared/routes'
 import NFTDashboard from 'pages/Dashboard/NFTDashboard/NFTDashboard'
 import Kyc from 'pages/Dashboard/KYC/KYC'
@@ -30,8 +28,7 @@ export const ROUTES = {
     CONTACT_SUPORT: 'contact-support',
     GROWTH: '/dashboard/growth',
     SYNC: '/dashboard/sync',
-    SHIELD: '/dashboard/shield',
-    ADD_DATA: '/dashboard/add_data'
+    SHIELD: '/dashboard/shield'
   },
   AUTH: {
     VERIFY_EMAIL: SHARED_ROUTES.VERIFY_EMAIL,
@@ -42,7 +39,6 @@ export const ROUTES = {
     SIGN_IN_WITH_TOKEN: SHARED_ROUTES.SIGN_IN_WITH_TOKEN
   },
   // TODO: review these routes, and rename/relocate/remove if needed
-  PROFILE: '/profile',
   PRIVATE_SALE_INTEREST_FORM: '/private-sale-interest-form',
   TERMS_OF_USE: '/terms-of-use',
   PRIVACY_POLICY: '/privacy-policy'
@@ -61,7 +57,6 @@ export default function Router () {
             <Route path={ROUTES.DASHBOARD.GROWTH} element={<Dashboard />} />
             <Route path={ROUTES.DASHBOARD.SYNC} element={<Dashboard />} />
             <Route path={ROUTES.DASHBOARD.SHIELD} element={<Dashboard />} />
-            <Route path={ROUTES.DASHBOARD.ADD_DATA} element={<AddData />} />
             <Route path={ROUTES.DASHBOARD.NFT} element={<NFTDashboard />} />
             <Route path={ROUTES.DASHBOARD.KYC} element={<Kyc />} />
             <Route path={ROUTES.DASHBOARD.IDENTITY} element={<Identity />} />
@@ -86,7 +81,6 @@ export default function Router () {
           <Route path={ROUTES.AUTH.SIGN_IN_WITH_SMS} element={<SignInWithSMS />} />
           <Route path={ROUTES.AUTH.SIGN_IN_WITH_TOKEN} element={<SignInWithToken />} />
         </Route>
-        <Route path={ROUTES.PROFILE} element={<Profile />} />
         <Route path={ROUTES.PRIVATE_SALE_INTEREST_FORM} element={<PrivateSaleInterestForm />} />
         <Route path={ROUTES.PRIVACY_POLICY} element={<PrivacyPolicy />} />
         <Route path={ROUTES.TERMS_OF_USE} element={<TermsOfUse />} />

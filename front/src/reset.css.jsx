@@ -1,20 +1,26 @@
-import { createGlobalStyle } from 'styled-components'
+import { Global, css } from '@emotion/react'
 
-export const GlobalStyle = createGlobalStyle`
-  * {
-    margin: 0;
-    padding: 0;
-    outline: 0;
-    text-decoration: none;
-    box-sizing: border-box;
-  }
-
-  body {
-    font-size: 16px;
-    font-family: -apple-system, BlinkMacSystemFont, 'Satoshi-Regular', 'Inter','Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-    color: #333;
-    background: #F3F5F9;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
-`
+export const GlobalStyle = () => {
+  return (
+    <Global
+      styles={css({
+        '*': {
+          margin: 0,
+          padding: 0,
+          outline: 0,
+          textDecoration: 'none',
+          boxSizing: 'border-box'
+        },
+        body: {
+          fontSize: '16px',
+          fontFamily:
+            '-apple-system, BlinkMacSystemFont, Satoshi-Regular, Inter, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif',
+          color: ' #333',
+          background: '#f3f5f9',
+          '-webkit-font-smoothing': 'antialiased',
+          '-moz-osx-font-smoothing': 'grayscale'
+        }
+      })}
+    />
+  )
+}

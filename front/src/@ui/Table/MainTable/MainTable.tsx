@@ -1,7 +1,6 @@
 import format from 'date-fns/format'
-import { useRef, useState, useEffect } from 'react'
+import { useRef, useState } from 'react'
 import { Table, TableWrapper } from './style'
-import { IFormattedTokenObject } from '../CoinMetrics'
 
 function fDate(date: string) {
   return format(new Date(date), 'dd/MM/yyyy')

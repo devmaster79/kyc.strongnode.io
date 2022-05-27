@@ -1,10 +1,7 @@
 import styled from '@emotion/styled'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { ServicesProps, useServices } from 'hooks/useService'
-import {
-  enableAuthenticatorAuth,
-  generateAuthenticatorQRCode
-} from 'services/auth'
+import authService from 'services/auth'
 import Button from '@ui/Button/Button'
 import Modal from '@ui/Modal/Modal'
 import * as DashboardForm from '@ui/Dashboard/Form'
@@ -18,8 +15,8 @@ export type AuthenticatorSetupModalProps = {
 }
 
 const __initAuthServices = {
-  enableAuthenticatorAuth,
-  generateAuthenticatorQRCode
+  enableAuthenticatorAuth: authService.enableAuthenticatorAuth,
+  generateAuthenticatorQRCode: authService.generateAuthenticatorQRCode
 }
 
 export function AuthenticatorSetupModal({
@@ -40,7 +37,9 @@ export function AuthenticatorSetupModal({
   }
 
   const enableAuthenticatorAuth = async () => {
-    const data = await authServices.enableAuthenticatorAuth(totp)
+    const data = await authServices.enableAuthenticatorAuth({
+      body: { token: totp }
+    })
     if (data.result === 'success') {
       onSuccess()
     }
@@ -141,22 +140,23 @@ const WaitingMessage = () => (
   </Message>
 )
 
-const Qr = styled.img`
-  image-rendering: pixelated;
-  object-fit: contain;
-  flex: 1 2 100px;
-`
-const Secret = styled.div`
-  text-align: left;
-  box-sizing: border-box;
-  border-radius: 8px;
-  code {
-    color: ${(props) => props.theme.palette.text.primary};
-    word-wrap: break-word;
-    overflow-wrap: anywhere;
-    flex: 1;
+const Qr = styled.img({
+  imageRendering: 'pixelated',
+  objectFit: 'contain',
+  flex: '1 2 100px'
+})
+
+const Secret = styled.div((props) => ({
+  textAlign: 'left',
+  boxSizing: 'border-box',
+  borderRadius: '8px',
+  code: {
+    color: props.theme.palette.text.primary,
+    wordWrap: 'break-word',
+    overflowWrap: 'anywhere',
+    flex: 1
   }
-`
+}))
 
 const ModalForm = styled('div')({
   display: 'flex',

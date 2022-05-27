@@ -34,37 +34,37 @@ export const ValueTrendIndicator = (props: ValueTrendIndicatorProps) => {
   )
 }
 
-const CustomSvg = styled.svg`
-  path {
-    transition: 250ms ease;
-    transform-origin: center;
-    transform: rotate(0deg);
-  }
+const CustomSvg = styled.svg((props) => ({
+  path: {
+    transition: '250ms ease',
+    transformOrigin: 'center',
+    transform: 'rotate(0deg)'
+  },
 
-  path:nth-child(3) {
-    fill: ${(props) => props.theme.palette.icon.active};
+  'path:nth-child(3)': {
+    fill: props.theme.palette.icon.active
   }
-`
+}))
 
-const ValueIndicatorWrapper = styled.div`
-  width: max-content;
-  color: ${(props) => props.theme.palette.text.primary};
+const ValueIndicatorWrapper = styled.div((props) => ({
+  width: 'max-content',
+  color: props.theme.palette.text.primary,
 
-  p {
-    font-weight: 900;
-    width: max-content;
-    display: inline-block;
-    vertical-align: middle;
-    opacity: 0.4;
-    color: ${(props) => props.theme.palette.text.primary};
+  p: {
+    fontWeight: 900,
+    width: 'max-content',
+    display: 'inline-block',
+    verticalAlign: 'middle',
+    opacity: '0.4',
+    color: props.theme.palette.text.primary
+  },
+
+  svg: {
+    display: 'inline-block',
+    verticalAlign: 'middle',
+    marginLeft: '8px'
   }
-
-  svg {
-    display: inline-block;
-    vertical-align: middle;
-    margin-left: 8px;
-  }
-`
+}))
 
 const arrowDownStyle = {
   transform: 'rotate(180deg)',

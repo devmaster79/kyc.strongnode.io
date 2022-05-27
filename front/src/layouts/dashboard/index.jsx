@@ -6,13 +6,13 @@ import Sidebar from './Sidebar'
 import { Navbar } from './Navbar'
 import styled from '@emotion/styled'
 
-const RootStyle = styled.div`
-  display: flex;
-  min-height: 100%;
-  overflow: hidden;
-  background: ${(props) => props.theme.palette.background.gradient};
-  background-size: 100% 100%;
-`
+const RootStyle = styled.div((props) => ({
+  display: 'flex',
+  minHeight: '100%',
+  overflow: 'hidden',
+  background: props.theme.palette.background.gradient,
+  backgroundSize: '100% 100%'
+}))
 
 const MainStyle = styled('div')(({ theme }) => ({
   flexGrow: 1,

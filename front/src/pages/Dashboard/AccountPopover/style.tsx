@@ -1,77 +1,64 @@
 import styled from '@emotion/styled'
 
-export const IconWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  & :first-child {
-    margin-right: 8px;
+export const IconWrapper = styled.div({
+  display: 'flex',
+  alignItems: 'center',
+  cursor: 'pointer',
+  '& :first-child': {
+    marginRight: '8px'
   }
-`
+})
 
-export const AccountPopoverWrapper = styled.div`
-  position: absolute;
-  top: 65px;
-  right: 0px;
-  display: flex;
-  flex-direction: column;
-  background: ${(props) => props.theme.palette.background.primary};
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-sizing: border-box;
-  border-radius: 10px;
-  padding: 32px 40px;
-  line-height: 140%;
-  font-size: 16px;
-  text-align: center;
-  color: ${(props) => props.theme.palette.text.primary};
+export const AccountPopoverWrapper = styled.div((props) => ({
+  position: 'absolute',
+  top: '65px',
+  right: '0px',
+  display: 'flex',
+  flexDirection: 'column',
+  background: props.theme.palette.background.primary,
+  border: `1px solid rgba(255, 255, 255, 0.1)`,
+  boxSizing: 'border-box',
+  borderRadius: '10px',
+  padding: '32px 40px',
+  lineHeight: '140%',
+  fontSize: '16px',
+  textAlign: 'center',
+  color: props.theme.palette.text.primary,
 
-  & > span {
-    color: ${(props) => props.theme.palette.text.secondary};
-  }
+  '& > span': {
+    color: props.theme.palette.text.secondary
+  },
 
-  & > ul {
-    list-style: none;
-    text-transform: uppercase;
-    font-size: 14px;
-    text-align: left;
-    margin-bottom: 32px;
+  '& > ul': {
+    listStyle: 'none',
+    textTransform: 'uppercase',
+    fontSize: '14px',
+    textAlign: 'left',
+    marginBottom: '32px',
 
-    & > li {
-      padding: 16px 0px;
-      border-bottom: 1px solid ${(props) => props.theme.palette.border.light};
-      cursor: pointer;
+    '& > li': {
+      padding: '16px 0px',
+      borderBottom: `1px solid ${props.theme.palette.border.light}`,
+      cursor: 'pointer'
     }
   }
+}))
 
-  & > ol {
-    list-style: none;
-    text-transform: uppercase;
-    font-size: 14px;
-    text-align: left;
-    margin-bottom: 0;
+export const AvatarIconWrapper = styled.div((props) => ({
+  width: '40px',
+  height: '40px',
+  background: props.theme.palette.icon.wrapper,
+  boxShadow: `0px 1px 0px rgba(255, 255, 255, 0.25)
+  inset 0px 0px 18px rgba(255, 255, 255, 0.12)`,
+  borderRadius: '102px',
+  display: 'block',
+  position: 'relative',
+  cursor: 'pointer',
 
-    & > li {
-      padding: 16px 0px;
-      border-bottom: 1px solid ${(props) => props.theme.palette.border.light};
-    }
+  '& svg': {
+    position: 'absolute',
+    left: '50%',
+    top: '50%',
+    transform: 'translate(-50%, -50%)'
   }
-`
-
-export const AvatarIconWrapper = styled.div`
-  width: 40px;
-  height: 40px;
-  background: ${(props) => props.theme.palette.icon.wrapper};
-  box-shadow: 0px 1px 0px rgba(255, 255, 255, 0.25),
-    inset 0px 0px 18px rgba(255, 255, 255, 0.12);
-  border-radius: 102px;
-  display: block;
-  position: relative;
-  cursor: pointer;
-
-  & svg {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-  }
-`
+}))

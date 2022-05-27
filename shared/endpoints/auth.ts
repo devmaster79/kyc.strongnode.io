@@ -10,133 +10,175 @@ import {
   UnexpectedError,
   ZodValidationError
 } from './responses'
-
-if (typeof window !== 'undefined') {
-  // This stops leaking backend validation rules, but it gives us the possibility
-  // to infer the validation types for frontend and backend at the same time.
-  //
-  // NOTE: TS will remove normal imports as well that imports only type.
-  // So you can use both `import` and `import type`.
-  // But if you see this message it means you import
-  // something that you really should not.
-  alert('THE FRONTEND SHOULD ONLY IMPORT THIS FILE AS TYPE (use import type)')
-}
+import { userNameRule } from './common'
 
 export namespace SendVerificationEmail {
+  export const METHOD = 'post'
+  export const PATH = '/api/auth/sendVerificationEmail'
   export const schema = z.object({
     email: z.string().email()
   })
   export type Request = { body: z.infer<typeof schema> }
   export type Response =
-    | Success<{}>
+    | Success<{ message: string }>
     | ZodValidationError<Request['body']>
     | UnexpectedError
+
+  export const request: Request | null = null
+  export const response: Response | null = null
 }
 
 export namespace Register {
+  export const METHOD = 'post'
+  export const PATH = '/api/auth/register'
   export const schema = z.object({
-    user_name: z
-      .string()
-      .min(3, { message: 'Username should be at least 3 characters' })
-      .regex(/^[a-z\-_]+$/g, {
-        message:
-          'Username should only contain lowercase letters including hypen (-) and underscore (_)'
-      }),
+    user_name: userNameRule,
     first_name: z.string(),
     last_name: z.string()
   })
   export type Request = { body: z.infer<typeof schema> }
   export type Response =
-    | Success<{ token: string }>
+    | Success<{ message: string; token: string }>
     | ApiResponse<'limit-reached-error', 403, { message: string }>
     | ZodValidationError<Request['body']>
     | UnauthorizedError
     | UnexpectedError
+
+  export const request: Request | null = null
+  export const response: Response | null = null
 }
 
 export namespace EnablePasswordAuth {
+  export const METHOD = 'post'
+  export const PATH = '/api/auth/enablePasswordAuth'
   export const schema = z.object({
     password: z.string().min(6)
   })
   export type Request = { body: z.infer<typeof schema> }
   export type Response =
-    | Success<{}>
+    | Success<{ message: string }>
     | ZodValidationError<Request['body']>
     | UnauthorizedError
     | UnexpectedError
+
+  export const request: Request | null = null
+  export const response: Response | null = null
 }
 
 export namespace DisablePasswordAuth {
-  export type Request = { body: undefined }
-  export type Response = Success<{}> | UnauthorizedError | UnexpectedError
+  export const METHOD = 'post'
+  export const PATH = '/api/auth/disablePasswordAuth'
+  export type Request = void
+  export type Response =
+    | Success<{ message: string }>
+    | UnauthorizedError
+    | UnexpectedError
+
+  export const request: Request | null = null
+  export const response: Response | null = null
 }
 
 export namespace AuthByPassword {
+  export const METHOD = 'post'
+  export const PATH = '/api/auth/authByPassword'
   export const schema = z.object({
     password: z.string()
   })
   export type Request = { body: z.infer<typeof schema> }
   export type Response =
-    | Success<{ token: string }>
+    | Success<{ message: string; token: string }>
     | BannedError
     | ZodValidationError<Request['body']>
     | UnauthorizedError
     | UnexpectedError
+
+  export const request: Request | null = null
+  export const response: Response | null = null
 }
 
 export namespace SendSMSToUser {
-  export type Request = { body: undefined }
+  export const METHOD = 'post'
+  export const PATH = '/api/auth/sendSMSToUser'
+  export type Request = void
   export type Response =
-    | Success<{}>
+    | Success<{ message: string }>
     | BannedError
     | UnauthorizedError
     | UnexpectedError
+
+  export const request: Request | null = null
+  export const response: Response | null = null
 }
 
 export namespace AuthBySMSCode {
+  export const METHOD = 'post'
+  export const PATH = '/api/auth/authBySMSCode'
   export const schema = z.object({
     smscode: z.string()
   })
   export type Request = { body: z.infer<typeof schema> }
   export type Response =
-    | Success<{ token: string }>
+    | Success<{ message: string; token: string }>
     | BannedError
     | ZodValidationError<Request['body']>
     | UnauthorizedError
     | UnexpectedError
+
+  export const request: Request | null = null
+  export const response: Response | null = null
 }
 
 export namespace SendSMSAndSaveNumber {
+  export const METHOD = 'post'
+  export const PATH = '/api/auth/sendSMSAndSaveNumber'
   export const schema = z.object({
     number: z.string()
   })
   export type Request = { body: z.infer<typeof schema> }
   export type Response =
-    | Success<{}>
+    | Success<{ message: string }>
     | BannedError
     | ZodValidationError<Request['body']>
     | UnauthorizedError
     | UnexpectedError
+
+  export const request: Request | null = null
+  export const response: Response | null = null
 }
 
 export namespace EnableSMSAuth {
+  export const METHOD = 'post'
+  export const PATH = '/api/auth/enableSMSAuth'
   export const schema = z.object({
     smscode: z.string()
   })
   export type Request = { body: z.infer<typeof schema> }
   export type Response =
-    | Success<{}>
+    | Success<{ message: string }>
     | ZodValidationError<Request['body']>
     | UnauthorizedError
     | UnexpectedError
+
+  export const request: Request | null = null
+  export const response: Response | null = null
 }
 
 export namespace DisableSMSAuth {
-  export type Request = { body: undefined }
-  export type Response = Success<{}> | UnauthorizedError | UnexpectedError
+  export const METHOD = 'post'
+  export const PATH = '/api/auth/disableSMSAuth'
+  export type Request = void
+  export type Response =
+    | Success<{ message: string }>
+    | UnauthorizedError
+    | UnexpectedError
+
+  export const request: Request | null = null
+  export const response: Response | null = null
 }
 
 export namespace AuthByAuthenticator {
+  export const METHOD = 'post'
+  export const PATH = '/api/auth/authByAuthenticator'
   export const schema = z.object({
     token: z
       .string()
@@ -145,34 +187,55 @@ export namespace AuthByAuthenticator {
   })
   export type Request = { body: z.infer<typeof schema> }
   export type Response =
-    | Success<{ token: string }>
+    | Success<{ message: string; token: string }>
     | BannedError
     | ZodValidationError<Request['body']>
     | UnauthorizedError
     | UnexpectedError
+
+  export const request: Request | null = null
+  export const response: Response | null = null
 }
 
 export namespace GenerateAuthenticatorQRCode {
-  export type Request = { body: undefined }
+  export const METHOD = 'post'
+  export const PATH = '/api/auth/generateAuthenticatorQRCode'
+  export type Request = void
   export type Response =
-    | Success<{ qrcode: string; secret: string }>
+    | Success<{ message: string; qrcode: string; secret: string }>
     | UnauthorizedError
     | UnexpectedError
+
+  export const request: Request | null = null
+  export const response: Response | null = null
 }
 
 export namespace EnableAuthenticatorAuth {
+  export const METHOD = 'post'
+  export const PATH = '/api/auth/enableAuthenticatorAuth'
   export const schema = z.object({
     token: z.string()
   })
   export type Request = { body: z.infer<typeof schema> }
   export type Response =
-    | Success<{}>
+    | Success<{ message: string }>
     | ZodValidationError<Request['body']>
     | UnauthorizedError
     | UnexpectedError
+
+  export const request: Request | null = null
+  export const response: Response | null = null
 }
 
 export namespace DisableAuthenticatorAuth {
-  export type Request = { body: undefined }
-  export type Response = Success<{}> | UnauthorizedError | UnexpectedError
+  export const METHOD = 'post'
+  export const PATH = '/api/auth/disableAuthenticatorAuth'
+  export type Request = void
+  export type Response =
+    | Success<{ message: string }>
+    | UnauthorizedError
+    | UnexpectedError
+
+  export const request: Request | null = null
+  export const response: Response | null = null
 }

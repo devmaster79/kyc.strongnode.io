@@ -1,7 +1,7 @@
 import { PasswordSwitch } from './PasswordSwitch'
 import styled from '@emotion/styled'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
-import * as userService from 'services/userService'
+import userService from 'services/userService'
 import * as DashboardForm from '@ui/Dashboard/Form'
 import { useEffect } from 'react'
 import { AuthenticatorSwitch } from './AuthenticatorSwitch'
@@ -10,6 +10,7 @@ import { WalletCarousel } from './WalletCarousel'
 import * as ProgressCircleSteps from '@ui/Dashboard/ProgressCircleSteps'
 import { Banner } from '../../../@ui/Banner/Banner'
 import { useSnackbar } from 'notistack'
+import Media from './../../../theme/mediaQueries'
 
 interface FormFields {
   firstName: string
@@ -59,16 +60,18 @@ export default function KYC() {
   useEffect(() => {
     userService
       .getProfile()
-      .then((result) => {
-        const data = result.data[0]
+      .then((response) => {
+        if (response.result !== 'success') {
+          throw new Error('Could not get the profile')
+        }
         reset({
-          firstName: data.first_name,
-          lastName: data.last_name,
-          username: data.user_name,
-          email: data.email,
-          enablePasswordAuth: data.enable_password,
-          enableSMSAuth: data.enable_sms,
-          enableAuthenticatorAuth: data.enable_authenticator
+          firstName: response.data.first_name,
+          lastName: response.data.last_name,
+          username: response.data.user_name,
+          email: response.data.email,
+          enablePasswordAuth: response.data.enable_password,
+          enableSMSAuth: response.data.enable_sms,
+          enableAuthenticatorAuth: response.data.enable_authenticator
         })
       })
       .catch((err) => {
@@ -79,15 +82,17 @@ export default function KYC() {
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     await userService
       .updateProfile({
-        first_name: data.firstName,
-        last_name: data.lastName,
-        user_name: data.username,
-        enable_password: data.enablePasswordAuth,
-        enable_sms: data.enableSMSAuth,
-        enable_authenticator: data.enableAuthenticatorAuth
+        body: {
+          first_name: data.firstName,
+          last_name: data.lastName,
+          user_name: data.username,
+          enable_password: data.enablePasswordAuth,
+          enable_sms: data.enableSMSAuth,
+          enable_authenticator: data.enableAuthenticatorAuth
+        }
       })
       .then((result) => {
-        enqueueSnackbar(result.data.message, {
+        enqueueSnackbar(result.message, {
           variant: 'success'
         })
       })
@@ -202,28 +207,28 @@ export default function KYC() {
   )
 }
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding-top: 95px;
-  padding-bottom: 70px;
-  gap: 32px;
-  width: 80%;
-  margin: auto;
-  text-align: center;
-`
+const Container = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+  paddingTop: '95px',
+  paddingBottom: '70px',
+  gap: '32px',
+  width: '80%',
+  margin: 'auto',
+  textAlign: 'center'
+})
 
-const FormContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 32px;
-  width: 65%;
-  margin: auto;
-  @media only screen and (max-width: 600px) {
-    width: 100%;
+const FormContainer = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+  gap: '32px',
+  width: '65%',
+  margin: 'auto',
+  [Media.phone]: {
+    width: '100%'
   }
-`
+})

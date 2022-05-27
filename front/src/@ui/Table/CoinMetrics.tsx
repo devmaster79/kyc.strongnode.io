@@ -104,7 +104,7 @@ const overwrittenFields = {
   }
 }
 
-let searchTimeout: any = null
+let searchTimeout: ReturnType<typeof setTimeout>
 
 export const CoinMetrics = (props: CoinMetricsProps) => {
   const [tableData, setTableData] = useState<{
@@ -114,6 +114,12 @@ export const CoinMetrics = (props: CoinMetricsProps) => {
   })
 
   useEffect(() => {
+    const loadTokenMetrics = async () => {
+      const data = await cryptoDataService.getTokenMetricsFunc()
+      // console.log(data.data)
+      const formatedData = formatTableData(data.data)
+      setTableData(formatedData as DataSet<IFormattedTokenObject>)
+    }
     loadTokenMetrics()
 
     const refreshDataInterval = setInterval(() => {
@@ -124,12 +130,6 @@ export const CoinMetrics = (props: CoinMetricsProps) => {
   }, [])
 
   // makes request and sets tableData to state
-  const loadTokenMetrics = async () => {
-    const data = await cryptoDataService.getTokenMetrics()
-    // console.log(data.data)
-    const formatedData = formatTableData(data.data)
-    setTableData(formatedData as DataSet<IFormattedTokenObject>)
-  }
 
   // formats object for table
   const formatTableData = (data: Array<IGetTokenMetricsObject>) => {
@@ -150,6 +150,7 @@ export const CoinMetrics = (props: CoinMetricsProps) => {
         }
       }
       temporaryData.push(tokenObject)
+      return null
     })
     return { items: temporaryData }
   }
@@ -186,24 +187,24 @@ export const CoinMetrics = (props: CoinMetricsProps) => {
   )
 }
 
-const CryptoWrapper = styled.div`
-  height: max-content;
-  width: max-content;
+const CryptoWrapper = styled.div({
+  height: 'max-content',
+  width: 'max-content',
 
-  p {
-    display: inline-block;
-    vertical-align: middle;
-    margin-left: 16px;
+  p: {
+    display: 'inline-block',
+    verticalAlign: 'middle',
+    marginLeft: '16px'
+  },
+
+  img: {
+    display: 'inline-block',
+    verticalAlign: 'middle'
   }
+})
 
-  img {
-    display: inline-block;
-    vertical-align: middle;
-  }
-`
-
-const GrowthWrapper = styled.div`
-  text-align: right;
-  text-transform: uppercase;
-  color: #54c093;
-`
+const GrowthWrapper = styled.div({
+  textAlign: 'right',
+  textTransform: 'uppercase',
+  color: '#54c093'
+})
