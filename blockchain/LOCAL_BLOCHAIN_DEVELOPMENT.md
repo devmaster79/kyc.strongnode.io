@@ -84,3 +84,13 @@ POSITIONAL ARGUMENTS:
 ```
 
 This script is going to give you 5 ETH and 100 tokens.
+
+
+# 🔫 Trouble shooting
+
+## #1 ❌ Error deploying contract. Nonce too high
+This is a metamask error, it can be fixed by resetting the account in MetaMask extension.
+
+Simply do it by following: **MetaMask -> account bubble –> Settings -> Advanced -> Reset account**. (gif ⬇️)
+
+![MetaMask guide](https://miro.medium.com/max/596/1*3mQe7MwIJFugo7E7h_F1kg.gif)
