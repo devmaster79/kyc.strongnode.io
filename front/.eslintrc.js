@@ -21,7 +21,7 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module'
   },
-  ignorePatterns: ['*.md', 'src/assets', '*.css'],
+  ignorePatterns: ['*.md', 'src/assets', '*.css', 'src/contracts'],
   plugins: [
     'react',
     'prettier',
