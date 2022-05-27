@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 import { useState } from 'react'
 import { ServicesProps, useServices } from 'hooks/useService'
-import { enablePasswordAuth } from 'services/auth'
+import authService from 'services/auth'
 import * as DashboardForm from '@ui/Dashboard/Form'
 
 import Modal from '@ui/Modal/Modal'
@@ -9,7 +9,7 @@ import Button from '@ui/Button/Button'
 import { IAnim } from '@ui/utils/useAnimated'
 
 const authServices = {
-  enablePasswordAuth
+  enablePasswordAuth: authService.enablePasswordAuth
 }
 
 export interface PasswordSetupModalProps {
@@ -28,7 +28,9 @@ export function PasswordSetupModal({
   const authService = useServices(authServices)
 
   const enablePasswordAuth = async () => {
-    const data = await authService.enablePasswordAuth(password1)
+    const data = await authService.enablePasswordAuth({
+      body: { password: password1 }
+    })
     if (data.result === 'success') {
       onSuccess()
     }

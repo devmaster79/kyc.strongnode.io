@@ -7,7 +7,7 @@ import styled from '@emotion/styled'
 import Button from '@ui/Button/Button'
 import { useNavigate } from 'react-router-dom'
 import { getFieldIssues } from 'utils/FormUtils'
-import * as authServices from 'services/auth'
+import authService from 'services/auth'
 import Media from './../../theme/mediaQueries'
 interface SignInWithAuthenticatorFields {
   totp: string
@@ -16,7 +16,7 @@ interface SignInWithAuthenticatorFields {
 export function SignInWithAuthenticator() {
   const navigate = useNavigate()
   const { data: authResponse, call: authByAuthenticator } = useService(
-    authServices.authByAuthenticator
+    authService.authByAuthenticator
   )
 
   const { register, handleSubmit, setError, formState } =
@@ -29,7 +29,11 @@ export function SignInWithAuthenticator() {
   const onSubmit: SubmitHandler<SignInWithAuthenticatorFields> = async (
     data: SignInWithAuthenticatorFields
   ) => {
-    const response = await authByAuthenticator(data.totp)
+    const response = await authByAuthenticator({
+      body: {
+        token: data.totp
+      }
+    })
     if (response.result === 'success') {
       navigate('/sign-in-with-token')
     } else if (response.result === 'validation-error') {
@@ -74,7 +78,7 @@ export function SignInWithAuthenticator() {
 }
 
 type HelpTextProps = {
-  response: ServiceProps<typeof authServices.authByAuthenticator>['data']
+  response: ServiceProps<typeof authService.authByAuthenticator>['data']
 }
 
 const HelpText = ({ response }: HelpTextProps) => {

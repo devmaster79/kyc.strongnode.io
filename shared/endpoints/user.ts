@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 /* eslint-disable @typescript-eslint/ban-types */
 
-import '../utils/frontend-should-only-import-types-guard'
 import { z } from 'zod'
 import {
   ApiResponse,
@@ -14,6 +13,8 @@ import {
 import { userNameRule } from './common'
 
 export namespace CreateInvestor {
+  export const METHOD = 'put'
+  export const PATH = '/api/users/createInvestor'
   export const schema = z.object({
     investor_name: z.string().min(3),
     investor_telegram_id: z
@@ -37,10 +38,14 @@ export namespace CreateInvestor {
     | ZodValidationError<Request['body']>
     | UnauthorizedError
     | UnexpectedError
+  export const request: Request | null = null
+  export const response: Response | null = null
 }
 
 export namespace GetInvestorDetails {
-  export type Request = { body: undefined }
+  export const METHOD = 'get'
+  export const PATH = '/api/users/profile/getInvestorProfile'
+  export type Request = void
   export type InvestorDetail = {
     investor_name: string
     investor_email: string
@@ -56,10 +61,14 @@ export namespace GetInvestorDetails {
     | NotFoundError<{}>
     | UnauthorizedError
     | UnexpectedError
+  export const request: Request | null = null
+  export const response: Response | null = null
 }
 
 export namespace GetProfile {
-  export type Request = { body: undefined }
+  export const METHOD = 'get'
+  export const PATH = '/api/users/profile'
+  export type Request = void
   export type Profile = {
     email: string
     user_name: string
@@ -73,9 +82,13 @@ export namespace GetProfile {
     | Success<{ data: Profile }>
     | UnauthorizedError
     | UnexpectedError
+  export const request: Request | null = null
+  export const response: Response | null = null
 }
 
 export namespace UpdateProfile {
+  export const METHOD = 'put'
+  export const PATH = '/api/users/profile'
   export const schema = z.object({
     email: z.string().email().optional(),
     user_name: userNameRule.optional(),
@@ -96,9 +109,13 @@ export namespace UpdateProfile {
     | ZodValidationError<Request['body']>
     | UnauthorizedError
     | UnexpectedError
+  export const request: Request | null = null
+  export const response: Response | null = null
 }
 
 export namespace CreateSupportRequest {
+  export const METHOD = 'post'
+  export const PATH = '/api/users/support/create-request'
   export const schema = z.object({
     subject: z.string(),
     message: z.string()
@@ -109,9 +126,13 @@ export namespace CreateSupportRequest {
     | ZodValidationError<Request['body']>
     | UnauthorizedError
     | UnexpectedError
+  export const request: Request | null = null
+  export const response: Response | null = null
 }
 
 export namespace AddOrUpdateWallet {
+  export const METHOD = 'post'
+  export const PATH = '/api/users/wallets'
   export const schema = z.object({
     wallet: z.string()
   })
@@ -121,12 +142,18 @@ export namespace AddOrUpdateWallet {
     | ZodValidationError<Request['body']>
     | UnauthorizedError
     | UnexpectedError
+  export const request: Request | null = null
+  export const response: Response | null = null
 }
 
 export namespace GetUserWallets {
-  export type Request = { body: undefined }
+  export const METHOD = 'get'
+  export const PATH = '/api/users/wallets'
+  export type Request = void
   export type Response =
     | Success<{ email: string; wallets: string[] }>
     | UnauthorizedError
     | UnexpectedError
+  export const request: Request | null = null
+  export const response: Response | null = null
 }

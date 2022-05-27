@@ -1,10 +1,7 @@
 import styled from '@emotion/styled'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { ServicesProps, useServices } from 'hooks/useService'
-import {
-  enableAuthenticatorAuth,
-  generateAuthenticatorQRCode
-} from 'services/auth'
+import authService from 'services/auth'
 import Button from '@ui/Button/Button'
 import Modal from '@ui/Modal/Modal'
 import * as DashboardForm from '@ui/Dashboard/Form'
@@ -18,8 +15,8 @@ export type AuthenticatorSetupModalProps = {
 }
 
 const __initAuthServices = {
-  enableAuthenticatorAuth,
-  generateAuthenticatorQRCode
+  enableAuthenticatorAuth: authService.enableAuthenticatorAuth,
+  generateAuthenticatorQRCode: authService.generateAuthenticatorQRCode
 }
 
 export function AuthenticatorSetupModal({
@@ -40,7 +37,9 @@ export function AuthenticatorSetupModal({
   }
 
   const enableAuthenticatorAuth = async () => {
-    const data = await authServices.enableAuthenticatorAuth(totp)
+    const data = await authServices.enableAuthenticatorAuth({
+      body: { token: totp }
+    })
     if (data.result === 'success') {
       onSuccess()
     }

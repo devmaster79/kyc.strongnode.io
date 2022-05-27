@@ -1,7 +1,7 @@
 import { PasswordSwitch } from './PasswordSwitch'
 import styled from '@emotion/styled'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
-import * as userService from 'services/userService'
+import userService from 'services/userService'
 import * as DashboardForm from '@ui/Dashboard/Form'
 import { useEffect } from 'react'
 import { AuthenticatorSwitch } from './AuthenticatorSwitch'
@@ -82,12 +82,14 @@ export default function KYC() {
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     await userService
       .updateProfile({
-        first_name: data.firstName,
-        last_name: data.lastName,
-        user_name: data.username,
-        enable_password: data.enablePasswordAuth,
-        enable_sms: data.enableSMSAuth,
-        enable_authenticator: data.enableAuthenticatorAuth
+        body: {
+          first_name: data.firstName,
+          last_name: data.lastName,
+          user_name: data.username,
+          enable_password: data.enablePasswordAuth,
+          enable_sms: data.enableSMSAuth,
+          enable_authenticator: data.enableAuthenticatorAuth
+        }
       })
       .then((result) => {
         enqueueSnackbar(result.message, {

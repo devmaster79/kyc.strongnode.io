@@ -1,7 +1,7 @@
 import Button from '../@ui/Button/Button'
 import { useEthers, shortenIfAddress } from '@usedapp/core'
 import { connectWallet } from '../services/walletService'
-import { addOrUpdateUserWallet } from '../services/userService'
+import userService from '../services/userService'
 import { useEffect } from 'react'
 
 export const ConnectButton = () => {
@@ -9,7 +9,7 @@ export const ConnectButton = () => {
 
   useEffect(() => {
     if (account) {
-      addOrUpdateUserWallet(account)
+      userService.addOrUpdateWallet(account)
     }
   }, [account])
 

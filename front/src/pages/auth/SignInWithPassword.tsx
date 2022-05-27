@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import * as authService from 'services/auth'
+import authService from 'services/auth'
 import { ServiceProps, useService } from 'hooks/useService'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Message } from '@ui/Dashboard/Form'
@@ -29,7 +29,11 @@ export function SignInWithPassword() {
   const onSubmit: SubmitHandler<SignInWithPasswordFields> = async (
     data: SignInWithPasswordFields
   ) => {
-    const response = await authByPassword(data.password)
+    const response = await authByPassword({
+      body: {
+        password: data.password
+      }
+    })
     if (response.result === 'success') {
       navigate('/sign-in-with-token')
     } else if (response.result === 'validation-error') {

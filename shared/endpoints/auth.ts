@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 /* eslint-disable @typescript-eslint/ban-types */
 
-import '../utils/frontend-should-only-import-types-guard'
 import { z } from 'zod'
 import {
   ApiResponse,
@@ -14,6 +13,8 @@ import {
 import { userNameRule } from './common'
 
 export namespace SendVerificationEmail {
+  export const METHOD = 'post'
+  export const PATH = '/api/auth/sendVerificationEmail'
   export const schema = z.object({
     email: z.string().email()
   })
@@ -22,9 +23,14 @@ export namespace SendVerificationEmail {
     | Success<{ message: string }>
     | ZodValidationError<Request['body']>
     | UnexpectedError
+
+  export const request: Request | null = null
+  export const response: Response | null = null
 }
 
 export namespace Register {
+  export const METHOD = 'post'
+  export const PATH = '/api/auth/register'
   export const schema = z.object({
     user_name: userNameRule,
     first_name: z.string(),
@@ -37,9 +43,14 @@ export namespace Register {
     | ZodValidationError<Request['body']>
     | UnauthorizedError
     | UnexpectedError
+
+  export const request: Request | null = null
+  export const response: Response | null = null
 }
 
 export namespace EnablePasswordAuth {
+  export const METHOD = 'post'
+  export const PATH = '/api/auth/enablePasswordAuth'
   export const schema = z.object({
     password: z.string().min(6)
   })
@@ -49,17 +60,27 @@ export namespace EnablePasswordAuth {
     | ZodValidationError<Request['body']>
     | UnauthorizedError
     | UnexpectedError
+
+  export const request: Request | null = null
+  export const response: Response | null = null
 }
 
 export namespace DisablePasswordAuth {
-  export type Request = { body: undefined }
+  export const METHOD = 'post'
+  export const PATH = '/api/auth/disablePasswordAuth'
+  export type Request = void
   export type Response =
     | Success<{ message: string }>
     | UnauthorizedError
     | UnexpectedError
+
+  export const request: Request | null = null
+  export const response: Response | null = null
 }
 
 export namespace AuthByPassword {
+  export const METHOD = 'post'
+  export const PATH = '/api/auth/authByPassword'
   export const schema = z.object({
     password: z.string()
   })
@@ -70,18 +91,28 @@ export namespace AuthByPassword {
     | ZodValidationError<Request['body']>
     | UnauthorizedError
     | UnexpectedError
+
+  export const request: Request | null = null
+  export const response: Response | null = null
 }
 
 export namespace SendSMSToUser {
-  export type Request = { body: undefined }
+  export const METHOD = 'post'
+  export const PATH = '/api/auth/sendSMSToUser'
+  export type Request = void
   export type Response =
     | Success<{ message: string }>
     | BannedError
     | UnauthorizedError
     | UnexpectedError
+
+  export const request: Request | null = null
+  export const response: Response | null = null
 }
 
 export namespace AuthBySMSCode {
+  export const METHOD = 'post'
+  export const PATH = '/api/auth/authBySMSCode'
   export const schema = z.object({
     smscode: z.string()
   })
@@ -92,9 +123,14 @@ export namespace AuthBySMSCode {
     | ZodValidationError<Request['body']>
     | UnauthorizedError
     | UnexpectedError
+
+  export const request: Request | null = null
+  export const response: Response | null = null
 }
 
 export namespace SendSMSAndSaveNumber {
+  export const METHOD = 'post'
+  export const PATH = '/api/auth/sendSMSAndSaveNumber'
   export const schema = z.object({
     number: z.string()
   })
@@ -105,9 +141,14 @@ export namespace SendSMSAndSaveNumber {
     | ZodValidationError<Request['body']>
     | UnauthorizedError
     | UnexpectedError
+
+  export const request: Request | null = null
+  export const response: Response | null = null
 }
 
 export namespace EnableSMSAuth {
+  export const METHOD = 'post'
+  export const PATH = '/api/auth/enableSMSAuth'
   export const schema = z.object({
     smscode: z.string()
   })
@@ -117,17 +158,27 @@ export namespace EnableSMSAuth {
     | ZodValidationError<Request['body']>
     | UnauthorizedError
     | UnexpectedError
+
+  export const request: Request | null = null
+  export const response: Response | null = null
 }
 
 export namespace DisableSMSAuth {
-  export type Request = { body: undefined }
+  export const METHOD = 'post'
+  export const PATH = '/api/auth/disableSMSAuth'
+  export type Request = void
   export type Response =
     | Success<{ message: string }>
     | UnauthorizedError
     | UnexpectedError
+
+  export const request: Request | null = null
+  export const response: Response | null = null
 }
 
 export namespace AuthByAuthenticator {
+  export const METHOD = 'post'
+  export const PATH = '/api/auth/authByAuthenticator'
   export const schema = z.object({
     token: z
       .string()
@@ -141,17 +192,27 @@ export namespace AuthByAuthenticator {
     | ZodValidationError<Request['body']>
     | UnauthorizedError
     | UnexpectedError
+
+  export const request: Request | null = null
+  export const response: Response | null = null
 }
 
 export namespace GenerateAuthenticatorQRCode {
-  export type Request = { body: undefined }
+  export const METHOD = 'post'
+  export const PATH = '/api/auth/generateAuthenticatorQRCode'
+  export type Request = void
   export type Response =
     | Success<{ message: string; qrcode: string; secret: string }>
     | UnauthorizedError
     | UnexpectedError
+
+  export const request: Request | null = null
+  export const response: Response | null = null
 }
 
 export namespace EnableAuthenticatorAuth {
+  export const METHOD = 'post'
+  export const PATH = '/api/auth/enableAuthenticatorAuth'
   export const schema = z.object({
     token: z.string()
   })
@@ -161,12 +222,20 @@ export namespace EnableAuthenticatorAuth {
     | ZodValidationError<Request['body']>
     | UnauthorizedError
     | UnexpectedError
+
+  export const request: Request | null = null
+  export const response: Response | null = null
 }
 
 export namespace DisableAuthenticatorAuth {
-  export type Request = { body: undefined }
+  export const METHOD = 'post'
+  export const PATH = '/api/auth/disableAuthenticatorAuth'
+  export type Request = void
   export type Response =
     | Success<{ message: string }>
     | UnauthorizedError
     | UnexpectedError
+
+  export const request: Request | null = null
+  export const response: Response | null = null
 }

@@ -1,4 +1,4 @@
-import * as authState from '../../services/auth'
+import authService from 'services/auth'
 import styled from '@emotion/styled'
 import { ServiceProps, useService } from '../../hooks/useService'
 import InputField from '@ui/Input/InputField'
@@ -19,11 +19,13 @@ export function VerifyEmail() {
       }
     })
   const { data: sendResponse, call: sendVerificationEmail } = useService(
-    authState.sendVerificationEmail
+    authService.sendVerificationEmail
   )
 
   const onSubmit: SubmitHandler<VerifyEmailFields> = async (data) => {
-    const response = await sendVerificationEmail(data.email)
+    const response = await sendVerificationEmail({
+      body: data
+    })
     if (response.result === 'validation-error') {
       getFieldIssues(response).forEach(
         (val: { path: 'email'; message: string }) => {
@@ -87,7 +89,7 @@ const Title = styled.h1((props) => ({
 }))
 
 type HelpTextProps = {
-  response: ServiceProps<typeof authState.sendVerificationEmail>['data']
+  response: ServiceProps<typeof authService.sendVerificationEmail>['data']
 }
 
 const HelpText = ({ response }: HelpTextProps) => {

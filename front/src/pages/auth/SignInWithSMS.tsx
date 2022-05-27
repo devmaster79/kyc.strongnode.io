@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import * as authService from 'services/auth'
+import authService from 'services/auth'
 import { OtherOptions } from '../../components/OtherOptions'
 import { ServicesProps, useServices } from 'hooks/useService'
 import { SubmitHandler, useForm } from 'react-hook-form'
@@ -33,7 +33,11 @@ export function SignInWithSMS() {
   const onSubmit: SubmitHandler<SignInWithSMSFields> = async (
     data: SignInWithSMSFields
   ) => {
-    const response = await services.authBySMSCode(data.smsCode)
+    const response = await services.authBySMSCode({
+      body: {
+        smscode: data.smsCode
+      }
+    })
     if (response.result === 'success') {
       navigate('/sign-in-with-token')
     } else if (response.result === 'validation-error') {

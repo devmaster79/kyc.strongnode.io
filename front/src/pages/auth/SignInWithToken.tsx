@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { getProfile } from 'services/userService'
+import userService from 'services/userService'
 import { Message } from '@ui/Dashboard/Form'
 import styled from '@emotion/styled'
 
@@ -14,7 +14,7 @@ export function SignInWithToken() {
   useEffect(() => {
     ;(async function () {
       try {
-        const response = await getProfile()
+        const response = await userService.getProfile()
         if (response.result === 'success') {
           localStorage.setItem('email', response.data.email)
           localStorage.setItem('username', response.data.user_name)

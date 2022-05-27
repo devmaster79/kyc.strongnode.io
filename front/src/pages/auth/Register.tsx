@@ -1,4 +1,4 @@
-import * as authService from '../../services/auth'
+import authService from 'services/auth'
 import { ServiceProps, useService } from 'hooks/useService'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import InputField from '@ui/Input/InputField'
@@ -35,9 +35,11 @@ export function Register() {
     data: RegisterFields
   ) => {
     const response = await registration({
-      first_name: data.first_name,
-      last_name: data.last_name,
-      user_name: data.user_name
+      body: {
+        first_name: data.first_name,
+        last_name: data.last_name,
+        user_name: data.user_name
+      }
     })
     if (response.result === 'success') {
       navigate('/sign-in-with-token')

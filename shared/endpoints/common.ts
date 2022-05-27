@@ -1,4 +1,3 @@
-import '../utils/frontend-should-only-import-types-guard'
 import { z } from 'zod'
 
 export const userNameRule = z
