@@ -9,6 +9,8 @@ Here is the list of tools you'll need for development:
 ## 🪖 Setuping the Hardhat
 In order to run your own localhost blockchain you need to run a few Hardhat scripts.
 
+😮 life hack: if you want to skip node & deploy command, you can run the `run.sh` script.
+
 First, install dependencies ⬇️️
 
 ```
