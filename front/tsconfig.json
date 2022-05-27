@@ -2,7 +2,7 @@
   "compilerOptions": {
     "outDir": "./dist/",
     "jsx": "react-jsx",
-    "target": "es2021",
+    "target": "ESNext",
     "module": "esnext",
     "baseUrl": "./src",
     "allowJs": true,
@@ -14,7 +14,7 @@
     "strictNullChecks": true,
     "moduleResolution": "Node",
     "noEmit": true,
-    "typeRoots": ["./src/types", "./node_modules/@types"],
+    "typeRoots": ["./src/types", "./node_modules/@types", "vite/client"],
     "rootDirs": ["src"],
     "sourceMap": true,
     "allowSyntheticDefaultImports": true,
