@@ -4,8 +4,10 @@ import WalletConnectProvider from '@walletconnect/web3-provider/dist/umd/index.m
 
 // checking if .env file has setted localhost blockchain info
 const usingLocalBlockchain: boolean =
-  import.meta.env.VITE_APP_LOCAL_BLOCKCHAIN_RPC &&
-  import.meta.env.VITE_APP_LOCAL_BLOCKCHAIN_CHAIN_ID
+  typeof import.meta.env.VITE_APP_LOCAL_BLOCKCHAIN_RPC != undefined &&
+  typeof import.meta.env.VITE_APP_LOCAL_BLOCKCHAIN_CHAIN_ID != undefined
+    ? true
+    : false
 
 let localBlockchainAddressDictionary: IStringDictionary = {}
 if (usingLocalBlockchain) {
@@ -76,9 +78,7 @@ export const DAppProviderConfig: Config = {
   readOnlyUrls: usingLocalBlockchain
     ? DAppReadOnlyUrlsLocalBlockchain
     : DAppReadOnlyUrls,
-  networks: usingLocalBlockchain
-    ? [import.meta.env.VITE_APP_LOCAL_BLOCKCHAIN_CHAIN_ID]
-    : [Polygon, Mainnet],
+  networks: [Polygon, Mainnet],
   autoConnect: true,
   supportedChains: [31337]
 }
