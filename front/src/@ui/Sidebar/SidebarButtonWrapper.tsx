@@ -1,8 +1,11 @@
 import React from 'react'
 import styled from '@emotion/styled/macro'
 import SidebarButton, { SidebarButtonProps } from './SidebarButton'
+import Media from 'theme/mediaQueries'
 
-interface SidebarButtonWrapperProps {}
+interface SidebarButtonWrapperProps {
+  isBottombar?: boolean
+}
 
 type SidebarButtonWrapperState = {
   activeButton: string
@@ -15,7 +18,7 @@ interface IButtonItem {
   path: string
 }
 
-const buttonItems = [
+let buttonItems = [
   {
     type: 'defi',
     tooltipHint: 'Defi',
@@ -50,6 +53,11 @@ class SidebarButtonWrapper extends React.Component<
     props: SidebarButtonWrapperProps | Readonly<SidebarButtonWrapperProps>
   ) {
     super(props)
+
+    // remove vpn from bottom bar
+    if (props.isBottombar) {
+      buttonItems = buttonItems.filter((item) => item.type !== 'vpn')
+    }
 
     // this handles default animation state on refresh
     let defaultActiveButton = 'kyc'
@@ -93,6 +101,7 @@ class SidebarButtonWrapper extends React.Component<
             active={item.type === this.state.activeButton}
             disabled={!item.active}
             url={item.path}
+            isBottombar={this.props.isBottombar}
           />
         ))}
       </ButtonWrapper>
@@ -105,7 +114,10 @@ export default SidebarButtonWrapper
 const ButtonWrapper = styled.div({
   width: '100%',
   height: 'max-content',
-  position: 'relative'
+  position: 'relative',
+  [Media.phone]: {
+    display: 'flex'
+  }
 })
 
 const VerticalActiveLine = styled.div({

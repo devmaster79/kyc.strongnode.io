@@ -4,6 +4,7 @@ import { useTheme } from '@mui/material/styles'
 import useCollapseDrawer from '../../hooks/useCollapseDrawer'
 import Sidebar from './Sidebar'
 import { Navbar } from './Navbar'
+import { BottomBar } from './BottomBar'
 import styled from '@emotion/styled'
 
 const RootStyle = styled.div((props) => ({
@@ -20,6 +21,9 @@ const MainStyle = styled('div')(({ theme }) => ({
   minHeight: '100%',
   marginLeft: 'auto',
   maxWidth: 'calc(100% - 104px - ' + theme.spacing(2) + ')',
+  '@media only screen and (max-width: 600px)': {
+    maxWidth: '100vw'
+  },
   paddingTop: 32,
   paddingLeft: theme.spacing(2),
   paddingRight: theme.spacing(2),
@@ -51,6 +55,7 @@ export default function DashboardLayout() {
         }}>
         <Outlet />
       </MainStyle>
+      <BottomBar></BottomBar>
     </RootStyle>
   )
 }

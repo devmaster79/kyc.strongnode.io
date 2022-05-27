@@ -12,6 +12,7 @@ export type SidebarButtonProps = {
   disabled?: boolean
   onPress?: unknown
   url?: string
+  isBottombar?: boolean
 }
 
 const SidebarButton = ({
@@ -20,13 +21,15 @@ const SidebarButton = ({
   active,
   onPress,
   url,
-  disabled
+  disabled,
+  isBottombar
 }: SidebarButtonProps) => {
   const navigate = useNavigate()
   const theme: CustomTheme = useTheme()
 
   const buttonActiveStyle = {
-    backgroundColor: 'rgba(170, 31, 236, 0.12)'
+    backgroundColor: 'rgba(170, 31, 236, 0.12)',
+    borderTop: isBottombar ? '2px #AA1FEC solid' : ''
   }
 
   const onClick = () => {
@@ -47,7 +50,13 @@ const SidebarButton = ({
             }
           : undefined
       }
-      style={active ? buttonActiveStyle : { opacity: disabled ? 0.2 : 1 }}>
+      style={
+        active
+          ? buttonActiveStyle
+          : {
+              opacity: disabled ? 0.2 : 1
+            }
+      }>
       <Tooltip tooltip={tooltipHint}>
         <Svg
           name={icon}
