@@ -25,6 +25,7 @@ const MainStyle = styled('div')(({ theme }) => ({
     maxWidth: '100vw'
   },
   paddingTop: 32,
+  paddingBottom: 32,
   paddingLeft: theme.spacing(2),
   paddingRight: theme.spacing(2),
   [theme.breakpoints.up('lg')]: {
