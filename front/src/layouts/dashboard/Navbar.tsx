@@ -52,7 +52,7 @@ const NavbarWrapper = styled.div({
   [Media.phone]: {
     width: '100%',
     right: '0px',
-    padding: '0px 10px'
+    padding: '0px 24px'
   }
 })
 
