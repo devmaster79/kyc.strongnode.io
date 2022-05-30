@@ -22,9 +22,6 @@ const MainStyle = styled('div')(({ theme }) => ({
   minHeight: '100%',
   marginLeft: 'auto',
   maxWidth: 'calc(100% - 104px - ' + theme.spacing(2) + ')',
-  '@media only screen and (max-width: 600px)': {
-    maxWidth: '100vw'
-  },
   paddingTop: 32,
   paddingBottom: 32,
   paddingLeft: theme.spacing(2),
@@ -33,7 +30,8 @@ const MainStyle = styled('div')(({ theme }) => ({
     paddingTop: 32
   },
   [Media.phone]: {
-    paddingTop: 20
+    paddingTop: 20,
+    maxWidth: '100vw'
   }
 }))
 
