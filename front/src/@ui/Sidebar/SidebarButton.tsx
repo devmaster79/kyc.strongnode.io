@@ -92,7 +92,7 @@ const Svg = styled(Icon)({
 
 const ButtonWrapper = styled.button((props) => ({
   width: '100%',
-  height: '72px',
+  height: '79px',
   position: 'relative',
   cursor: 'pointer',
   transition: '250ms ease',
