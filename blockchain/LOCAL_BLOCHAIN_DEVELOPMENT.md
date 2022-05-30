@@ -11,7 +11,7 @@ In order to run your own localhost blockchain you need to run a few Hardhat scri
 
 😮 **life hack**: if you want to skip node & deploy command, you can run the `run.sh` script.
 
-First, install dependencies ⬇️️
+First, install dependencies ⬇️️ (made automatically if you ran `make install`)
 
 ```
 cd blockchain
