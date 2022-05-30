@@ -48,8 +48,8 @@ export function Step(props: ProgressCircleProps) {
     border: boolean
   }>((props) => ({
     display: 'block',
-    width: '98px',
-    height: '98px',
+    width: '96px',
+    height: '96px',
     border: props.border ? '3px solid transparent' : '0px',
     borderRadius: '50%',
     fontFamily: 'Satoshi-Variable',
@@ -69,7 +69,11 @@ export function Step(props: ProgressCircleProps) {
       ${props.border ? '#AA1FEC' : '#13124A'},
       ${props.border ? '#1FC7EC' : '#13124A'}
     )
-    border-box`
+    border-box`,
+    [Media.phone]: {
+      width: '72px',
+      height: '72px'
+    }
   }))
 
   const Label = styled.p((props) => ({
