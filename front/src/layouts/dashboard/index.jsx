@@ -31,7 +31,9 @@ const MainStyle = styled('div')(({ theme }) => ({
   },
   [Media.phone]: {
     paddingTop: 20,
-    maxWidth: '100vw'
+    maxWidth: '100vw',
+    paddingLeft: theme.spacing(3),
+    paddingRight: theme.spacing(3)
   }
 }))
 

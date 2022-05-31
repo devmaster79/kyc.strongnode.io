@@ -16,10 +16,16 @@ export const Container = styled.div({
   display: 'flex',
   paddingTop: '32px',
   paddingBottom: '128px',
-
+  scrollbarWidth: 'none',
+  msOverflowStyle: 'none',
+  '&::-webkit-scrollbar': {
+    display: 'none'
+  },
   [Media.phone]: {
     paddingTop: '10px',
-    paddingBottom: '30px'
+    paddingBottom: '30px',
+    width: '100%',
+    justifyContent: 'center'
   }
 })
 
@@ -35,7 +41,7 @@ export function Step(props: ProgressCircleProps) {
   }>((props) => ({
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     cursor: props.disabled ? 'no-drop' : 'pointer',
     opacity: props.disabled ? '0.4' : '1'
@@ -70,7 +76,7 @@ export function Step(props: ProgressCircleProps) {
     [Media.phone]: {
       width: '72px',
       height: '72px',
-      margin: '0px 8px 0px 8px'
+      margin: '0px 8px 8px 8px'
     }
   }))
 
@@ -78,7 +84,7 @@ export function Step(props: ProgressCircleProps) {
     fontFamily: 'Satoshi-Variable',
     fontStyle: 'regular',
     fontWeight: '400',
-    fontSize: '14px',
+    fontSize: '12px',
     fontColor: props.theme.palette.text.primary,
     lineHeight: '14px',
     textAlign: 'center',
@@ -113,7 +119,10 @@ export function Separator() {
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: '18px',
-    opacity: '0.12'
+    opacity: '0.12',
+    [Media.phone]: {
+      marginBottom: '36px'
+    }
   })
 
   const Line = styled.div({
