@@ -18,7 +18,8 @@ export const Container = styled.div({
   paddingBottom: '128px',
 
   [Media.phone]: {
-    flexDirection: 'column'
+    paddingTop: '10px',
+    paddingBottom: '30px'
   }
 })
 
@@ -37,11 +38,7 @@ export function Step(props: ProgressCircleProps) {
     justifyContent: 'center',
     alignItems: 'center',
     cursor: props.disabled ? 'no-drop' : 'pointer',
-    opacity: props.disabled ? '0.4' : '1',
-
-    [Media.phone]: {
-      marginBottom: '70px'
-    }
+    opacity: props.disabled ? '0.4' : '1'
   }))
 
   const ProgressContainer = styled.div<{
@@ -57,7 +54,7 @@ export function Step(props: ProgressCircleProps) {
     fontWeight: 900,
     fontSize: '14px',
     lineHeight: '14px',
-    margin: '0px 19px 16px 19px',
+    margin: '0px 18px 0px 18px',
 
     background: `linear-gradient(
       ${props.border ? '#AA1FEC' : '#13124A'},
@@ -72,7 +69,8 @@ export function Step(props: ProgressCircleProps) {
     border-box`,
     [Media.phone]: {
       width: '72px',
-      height: '72px'
+      height: '72px',
+      margin: '0px 8px 0px 8px'
     }
   }))
 
@@ -113,17 +111,18 @@ export function Separator() {
   const Container = styled.div({
     display: 'flex',
     alignItems: 'center',
+    justifyContent: 'center',
     marginBottom: '18px',
-    opacity: '0.12',
-
-    [Media.phone]: {
-      transform: 'rotate(90deg)'
-    }
+    opacity: '0.12'
   })
 
   const Line = styled.div({
     border: '1px solid #fff',
-    width: '83px'
+    width: '83px',
+
+    [Media.phone]: {
+      width: '24px'
+    }
   })
 
   return (
