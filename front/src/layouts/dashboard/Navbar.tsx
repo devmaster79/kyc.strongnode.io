@@ -34,8 +34,9 @@ export const Navbar = () => {
 }
 
 const ThemeSwitchWrapper = styled.div({
-  '@media only screen and (min-width: 600px)': {
-    display: 'none'
+  display: 'none',
+  [Media.phone]: {
+    display: 'block'
   },
   marginTop: '8px'
 })
