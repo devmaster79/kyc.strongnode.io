@@ -12,6 +12,8 @@ import { useEthers } from '@usedapp/core'
 import { useGetTokenBalanceFormatted } from '../../../hooks/useGetTokenBalanceFormatted'
 import { tokenAddressDictionary } from '../../../services/walletService'
 import { CustomTheme } from 'theme'
+import { ConnectWalletModal } from '../../../@ui/Modal/ConnectWalletModal'
+import { useAnimated } from '../../../@ui/utils/useAnimated'
 
 export default function AccountPopover() {
   const navigate = useNavigate()
@@ -19,6 +21,7 @@ export default function AccountPopover() {
   const [userName, setUserName] = useState('')
   const [email, setEmail] = useState('')
   const [showModal, setShowModal] = useState(false)
+  const [showConnectWalletModal, setShowConnectWalletModal] = useState(false)
   const SNEBalance = useGetTokenBalanceFormatted(
     account,
     tokenAddressDictionary.strongnode
@@ -51,6 +54,12 @@ export default function AccountPopover() {
 
   return (
     <>
+      <ConnectWalletModal
+        opened={showConnectWalletModal}
+        onClose={() => {
+          setShowConnectWalletModal(false)
+        }}
+      />
       <IconWrapper onClick={() => setShowModal(!showModal)}>
         <Icon
           name="arrowDown"
@@ -79,12 +88,11 @@ export default function AccountPopover() {
         <AccountPopoverWrapper>
           {userName}
           <span>{email}</span>
-          <ConnectButton />
-          {!account && (
-            <MetamaskBrowserLink onClick={activateBrowserWallet}>
-              connect Metamask extension
-            </MetamaskBrowserLink>
-          )}
+          <ConnectButton
+            onClick={() => {
+              setShowConnectWalletModal(true)
+            }}
+          />
           <ol>
             <li>
               SNE balance{' '}
