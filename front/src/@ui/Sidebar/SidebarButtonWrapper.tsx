@@ -2,7 +2,6 @@ import React from 'react'
 import styled from '@emotion/styled/macro'
 import SidebarButton, { SidebarButtonProps } from './SidebarButton'
 import Media from 'theme/mediaQueries'
-import { padding } from '@mui/system'
 
 interface SidebarButtonWrapperProps {
   isBottombar?: boolean

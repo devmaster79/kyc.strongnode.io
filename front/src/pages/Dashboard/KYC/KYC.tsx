@@ -219,13 +219,13 @@ const Container = styled.div({
   margin: 'auto',
   textAlign: 'center',
   [Media.phone]: {
-    width: '100%'    
+    width: '100%'
   }
 })
 
 const Title = styled.h1({
-  [Media.phone]:{
-    fontSize:'20px'
+  [Media.phone]: {
+    fontSize: '20px'
   }
 })
 
