@@ -59,8 +59,9 @@ const NavbarWrapper = styled.div({
 const AccountPopoverWrapper = styled.div({})
 
 const StyledThemedLogo = styled(ThemedLogo)({
-  '@media only screen and (min-width: 600px)': {
-    display: 'none'
+  display: 'none',
+  [Media.phone]: {
+    display: 'block'
   },
   margin: '0px'
 })
