@@ -73,10 +73,14 @@ export function Step(props: ProgressCircleProps) {
       ${props.border ? '#1FC7EC' : '#13124A'}
     )
     border-box`,
+    [Media.tablet]: {
+      width: '84px',
+      height: '84px',
+      margin: '0px 8px 8px 8px'
+    },
     [Media.phone]: {
       width: '72px',
-      height: '72px',
-      margin: '0px 8px 8px 8px'
+      height: '72px'
     }
   }))
 
@@ -129,6 +133,9 @@ export function Separator() {
     border: '1px solid #fff',
     width: '83px',
 
+    [Media.tablet]: {
+      width: '48px'
+    },
     [Media.phone]: {
       width: '24px'
     }
