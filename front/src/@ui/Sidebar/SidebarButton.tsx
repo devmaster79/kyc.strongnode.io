@@ -47,7 +47,14 @@ const SidebarButton = ({
             }
           : undefined
       }
-      style={active ? buttonActiveStyle : { opacity: disabled ? 0.2 : 1 }}>
+      style={
+        active
+          ? buttonActiveStyle
+          : {
+              opacity: disabled ? 0.2 : 1,
+              borderTop: '0px'
+            }
+      }>
       <Tooltip tooltip={tooltipHint}>
         <Svg
           name={icon}
@@ -80,9 +87,9 @@ const Svg = styled(Icon)({
   }
 })
 
-const ButtonWrapper = styled.button((props) => ({
+export const ButtonWrapper = styled.button((props) => ({
   width: '100%',
-  height: '72px',
+  height: '79px',
   position: 'relative',
   cursor: 'pointer',
   transition: '250ms ease',
