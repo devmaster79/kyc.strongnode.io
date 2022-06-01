@@ -53,7 +53,6 @@ const SidebarButton = ({
           name={icon}
           height={24}
           width={24}
-          viewBox="0 0 24 24"
           color={
             active ? theme.palette.icon.active : theme.palette.icon.primary
           }>

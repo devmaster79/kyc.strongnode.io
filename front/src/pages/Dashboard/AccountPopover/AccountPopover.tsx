@@ -56,7 +56,6 @@ export default function AccountPopover() {
           name="arrowDown"
           width={8}
           height={6}
-          viewBox="0 0 8 6"
           style={
             showModal
               ? { transform: 'rotate(180deg)', transition: '450ms ease' }
@@ -70,7 +69,6 @@ export default function AccountPopover() {
             name="avatar"
             width={20}
             height={20}
-            viewBox="0 0 20 20"
             color={theme.palette.icon.active}
           />
         </AvatarIconWrapper>
