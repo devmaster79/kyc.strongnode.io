@@ -98,7 +98,7 @@ const StyledModal = styled.div<StyledModalProps>((props) => ({
   backgroundImage: props.background
     ? props.theme.palette.background.modalBackground
     : 'none',
-  backgorundSize: props.background ? 'cover' : 'none',
+  backgroundSize: props.background ? 'cover' : 'none',
   border: `1px solid ${props.theme.palette.border.light}`,
   display: 'flex',
   boxSizing: 'border-box',
