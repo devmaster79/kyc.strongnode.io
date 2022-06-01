@@ -4,7 +4,7 @@ import SidebarButton, { SidebarButtonProps } from './SidebarButton'
 import Media from './../../theme/mediaQueries'
 
 interface SidebarButtonWrapperProps {
-  withBorderTop?: boolean
+  isBottomBar?: boolean
 }
 
 type SidebarButtonWrapperState = {
@@ -55,7 +55,7 @@ class SidebarButtonWrapper extends React.Component<
     super(props)
 
     // remove vpn from bottom bar
-    if (props.withBorderTop) {
+    if (props.isBottomBar) {
       buttonItems = buttonItems.filter((item) => item.type !== 'vpn')
     }
 

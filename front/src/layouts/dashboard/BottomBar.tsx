@@ -8,7 +8,7 @@ import { ButtonWrapper } from '@ui/Sidebar/SidebarButton'
 export const BottomBar = () => {
   return (
     <BottombarWrapper>
-      <SidebarButtonWrapper withBorderTop={true}></SidebarButtonWrapper>
+      <SidebarButtonWrapper isBottomBar={true}></SidebarButtonWrapper>
     </BottombarWrapper>
   )
 }
