@@ -1,4 +1,5 @@
 import styled from '@emotion/styled'
+import Media from 'theme/mediaQueries'
 interface StyledButtonProps {
   variant?: 'normal' | 'medium' | 'large' | 'xl'
   justify?: 'center' | 'space-between'
@@ -42,7 +43,7 @@ const Button = styled.button<StyledButtonProps>(
       minWidth: '530px',
       fontSize: '14px',
       padding: '15px 24px',
-      '@media only screen and (max-width: 550px)': {
+      [Media.phone]: {
         minWidth: '85vw'
       }
     },
@@ -53,7 +54,7 @@ const Button = styled.button<StyledButtonProps>(
       fontSize: '14px',
       padding: '21px',
 
-      '@media only screen and (max-width: 400px)': {
+      [Media.phone]: {
         minWidth: '85vw'
       }
     },

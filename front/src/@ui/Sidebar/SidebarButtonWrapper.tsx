@@ -4,7 +4,7 @@ import SidebarButton, { SidebarButtonProps } from './SidebarButton'
 import Media from 'theme/mediaQueries'
 
 interface SidebarButtonWrapperProps {
-  isBottombar?: boolean
+  isBottomBar?: boolean
 }
 
 type SidebarButtonWrapperState = {
@@ -55,7 +55,7 @@ class SidebarButtonWrapper extends React.Component<
     super(props)
 
     // remove vpn from bottom bar
-    if (props.isBottombar) {
+    if (props.isBottomBar) {
       buttonItems = buttonItems.filter((item) => item.type !== 'vpn')
     }
 
@@ -101,7 +101,6 @@ class SidebarButtonWrapper extends React.Component<
             active={item.type === this.state.activeButton}
             disabled={!item.active}
             url={item.path}
-            isBottombar={this.props.isBottombar}
           />
         ))}
       </ButtonWrapper>
@@ -111,7 +110,7 @@ class SidebarButtonWrapper extends React.Component<
 
 export default SidebarButtonWrapper
 
-const ButtonWrapper = styled.div({
+export const ButtonWrapper = styled.div({
   width: '100%',
   height: 'max-content',
   position: 'relative',
