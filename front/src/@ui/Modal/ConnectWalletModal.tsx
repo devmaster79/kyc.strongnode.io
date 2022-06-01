@@ -1,57 +1,68 @@
 import Modal from '@ui/Modal/Modal'
-import { useAnimated } from '../utils/useAnimated'
-import React, { useState } from 'react'
+import { IAnim, useAnimated } from '../utils/useAnimated'
+import React, { ReactNode, useEffect, useState } from 'react'
 import styled from '@emotion/styled/macro'
 import { IconRectangleButton } from '../Button/IconRectangleButton'
 import { connectWallet } from '../../services/walletService'
 import { useEthers } from '@usedapp/core'
 
-export const ConnectWalletModal = () => {
-  const [showTurnOnModal, setShowTurnOnModal] = useState(true)
-  const turnOnModalAnim = useAnimated(showTurnOnModal, 500)
+interface IConnectWalletModal {
+  opened: boolean
+  onClose: () => void
+}
+
+export const ConnectWalletModal = (props: IConnectWalletModal) => {
   const { activate, activateBrowserWallet } = useEthers()
+  const [showConnectWalletModal, setShowConnectWaletModal] = useState(
+    props.opened
+  )
+
+  useEffect(() => {
+    setShowConnectWaletModal(props.opened)
+  }, [props.opened])
+
+  const turnOnModalAnim = useAnimated(showConnectWalletModal, 500)
 
   const downloadWallet = () => {
     window.open('https://metamask.io/download/', '_blank')
   }
 
   return (
-    <Modal
-      onClose={() => {
-        setShowTurnOnModal(false)
-      }}
-      anim={turnOnModalAnim}
-      background={true}>
-      <WAIcon src="/icons/connect_wallet.svg" alt="Connect wallet icon" />
-      <Title>Connect to Wallet</Title>
-      <DescriptionText>Connect your favourite wallet</DescriptionText>
+    <span>
+      {turnOnModalAnim.state !== 'closed' && (
+        <Modal onClose={props.onClose} anim={turnOnModalAnim} background={true}>
+          <WAIcon src="/icons/connect_wallet.svg" alt="Connect wallet icon" />
+          <Title>Connect to Wallet</Title>
+          <DescriptionText>Connect your favourite wallet</DescriptionText>
 
-      <IconRectangleButton
-        style={{ marginTop: '32px' }}
-        title={'Metamask'}
-        description={'Connect using browser wallet'}
-        icon={'/icons/metamask.png'}
-        iconAlt={'Metamask browser extension connect option'}
-        onClick={() => {
-          setShowTurnOnModal(false)
-          activateBrowserWallet()
-        }}
-      />
-      <IconRectangleButton
-        style={{ marginTop: '16px' }}
-        title={'WalletConnect'}
-        description={'Connect using mobile connect'}
-        icon={'/icons/walletconnect_logo.png'}
-        iconAlt={'WalletConnect option'}
-        onClick={() => {
-          setShowTurnOnModal(false)
-          connectWallet(activate)
-        }}
-      />
+          <IconRectangleButton
+            style={{ marginTop: '32px' }}
+            title={'Metamask'}
+            description={'Connect using browser wallet'}
+            icon={'/icons/metamask.png'}
+            iconAlt={'Metamask browser extension connect option'}
+            onClick={() => {
+              activateBrowserWallet()
+              props.onClose()
+            }}
+          />
+          <IconRectangleButton
+            style={{ marginTop: '16px' }}
+            title={'WalletConnect'}
+            description={'Connect using mobile connect'}
+            icon={'/icons/walletconnect_logo.png'}
+            iconAlt={'WalletConnect option'}
+            onClick={() => {
+              connectWallet(activate)
+              props.onClose()
+            }}
+          />
 
-      <NoWallet>Don&apos;t have wallet?</NoWallet>
-      <Link onClick={downloadWallet}>Download here</Link>
-    </Modal>
+          <NoWallet>Don&apos;t have wallet?</NoWallet>
+          <Link onClick={downloadWallet}>Download here</Link>
+        </Modal>
+      )}
+    </span>
   )
 }
 

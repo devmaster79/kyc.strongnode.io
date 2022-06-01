@@ -4,17 +4,18 @@ import { connectWallet } from '../services/walletService'
 import userService from '../services/userService'
 import { useEffect } from 'react'
 
-export const ConnectButton = () => {
-  const { activate, deactivate, account } = useEthers()
+interface IConnectButton {
+  onClick: () => void
+}
+
+export const ConnectButton = (props: IConnectButton) => {
+  const { deactivate, account } = useEthers()
 
   useEffect(() => {
     if (account) {
       userService.addOrUpdateWallet(account)
     }
   }, [account])
-
-  // todo this fragment of code will be in wallet carousel too
-  // todo its duplicated since callback for WalletConnect (maticnetwork does not work)
 
   return (
     <>
@@ -30,7 +31,7 @@ export const ConnectButton = () => {
         <Button
           variant="normal"
           onClick={() => {
-            connectWallet(activate)
+            props.onClick()
           }}>
           Connect Wallet
         </Button>
