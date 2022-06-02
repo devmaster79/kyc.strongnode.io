@@ -26,7 +26,6 @@ export default function Modal(props: ModalProps) {
               name="close"
               width={18}
               height={18}
-              viewBox="0 0 18 18"
               style={{ cursor: 'pointer' }}
             />
           </IconWrapper>

@@ -1,0 +1,39 @@
+<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path
+    d="M7 13H1V1H19V9.171"
+    stroke="CurrentColor"
+    strokeWidth="2"
+    strokeMiterlimit="10"
+  />
+  <path
+    stroke="CurrentColor"
+    d="M11 12V16C11 17.657 13.686 19 17 19C20.314 19 23 17.657 23 16V12"
+    strokeWidth="2"
+    strokeMiterlimit="10"
+  />
+  <path
+    stroke="CurrentColor"
+    d="M11 16V20C11 21.657 13.686 23 17 23C20.314 23 23 21.657 23 20V16"
+    strokeWidth="2"
+    strokeMiterlimit="10"
+  />
+  <path
+    stroke="CurrentColor"
+    d="M17 15C20.3137 15 23 13.6569 23 12C23 10.3431 20.3137 9 17 9C13.6863 9 11 10.3431 11 12C11 13.6569 13.6863 15 17 15Z"
+    strokeWidth="2"
+    strokeMiterlimit="10"
+    strokeLinecap="square"
+  />
+  <path
+    stroke="CurrentColor"
+    d="M10 8C10.5523 8 11 7.55228 11 7C11 6.44772 10.5523 6 10 6C9.44772 6 9 6.44772 9 7C9 7.55228 9.44772 8 10 8Z"
+    strokeWidth="2"
+    strokeMiterlimit="10"
+    strokeLinecap="square"
+  />
+  <path
+    stroke="CurrentColor"
+    d="M10 8C10.5523 8 11 7.55228 11 7C11 6.44772 10.5523 6 10 6C9.44772 6 9 6.44772 9 7C9 7.55228 9.44772 8 10 8Z"
+    fill="#9593C8"
+  />
+</svg>

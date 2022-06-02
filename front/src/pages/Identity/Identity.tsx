@@ -41,8 +41,7 @@ export default function Identity() {
             variant="xl"
             onClick={() => setShowPassportModal(true)}
             justify="space-between">
-            Passport{' '}
-            <Icon name="passport" width={24} height={24} viewBox="0 0 24 24" />
+            Passport <Icon name="passport" width={24} height={24} />
           </Button>
           <Button
             variant="xl"
@@ -50,13 +49,7 @@ export default function Identity() {
               setShowNationalIDModal(true)
             }}
             justify="space-between">
-            National ID{' '}
-            <Icon
-              name="nationalID"
-              width={24}
-              height={24}
-              viewBox="0 0 24 24"
-            />
+            National ID <Icon name="nationalID" width={24} height={24} />
           </Button>
           <Button
             variant="xl"
@@ -65,12 +58,7 @@ export default function Identity() {
             }}
             justify="space-between">
             Driving licence{' '}
-            <Icon
-              name="drivingLicense"
-              width={24}
-              height={24}
-              viewBox="0 0 24 24"
-            />
+            <Icon name="drivingLicense" width={24} height={24} />
           </Button>
           <p>See the list of supported documents</p>
         </IdentityWrapper>

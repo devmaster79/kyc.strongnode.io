@@ -69,7 +69,6 @@ export function WalletCarousel(props: { walletProps: WalletInfoType[] }) {
                     style={{ color: theme.palette.icon.wallet }}
                     width={22}
                     height={26}
-                    viewBox="0 0 22 22"
                   />
                   <div style={{ paddingTop: '46px' }}>
                     <div style={{ display: 'flex' }}>

@@ -31,7 +31,6 @@ export default function SwitchButton(props: SwitchButtonProps) {
                   color="rgba(255, 255, 255, 0.5)"
                   height={12}
                   width={12}
-                  viewBox="0 0 12 12"
                 />
               </LeftIconWrapper>
               <RightIconWrapper>
@@ -40,7 +39,6 @@ export default function SwitchButton(props: SwitchButtonProps) {
                   color="rgba(255, 255, 255, 0.5)"
                   height={12}
                   width={12}
-                  viewBox="0 0 12 12"
                 />
               </RightIconWrapper>
               <IconWrapper className="iconWrapper">
@@ -49,7 +47,6 @@ export default function SwitchButton(props: SwitchButtonProps) {
                   color="black"
                   height={12}
                   width={12}
-                  viewBox="0 0 12 12"
                 />
               </IconWrapper>
             </>
