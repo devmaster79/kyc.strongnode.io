@@ -237,7 +237,7 @@ const FormContainer = styled.div({
   gap: '32px',
   width: '65%',
   margin: 'auto',
-  [Media.phone]: {
+  [Media.tablet]: {
     width: '100%'
   }
 })

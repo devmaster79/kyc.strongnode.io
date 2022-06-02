@@ -25,7 +25,11 @@ export const Container = styled.div({
     paddingTop: '10px',
     paddingBottom: '30px',
     width: '100%',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    alignItems: 'flex-start '
+  },
+  [Media.tablet]: {
+    width: '100%'
   }
 })
 
@@ -76,7 +80,7 @@ export function Step(props: ProgressCircleProps) {
     [Media.tablet]: {
       width: '84px',
       height: '84px',
-      margin: '0px 8px 8px 8px'
+      margin: '0px 8px'
     },
     [Media.phone]: {
       width: '72px',
@@ -92,7 +96,8 @@ export function Step(props: ProgressCircleProps) {
     fontColor: props.theme.palette.text.primary,
     lineHeight: '14px',
     textAlign: 'center',
-    opacity: 0.6
+    opacity: 0.6,
+    marginTop: '8px'
   }))
   return (
     <Container disabled={disabled}>
@@ -122,10 +127,14 @@ export function Separator() {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: '18px',
+    marginBottom: '40px',
+    height: '96px',
     opacity: '0.12',
     [Media.phone]: {
-      marginBottom: '36px'
+      height: '72px !important'
+    },
+    [Media.tablet]: {
+      height: '84px'
     }
   })
 
