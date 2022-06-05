@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from '@emotion/styled/macro'
 import SidebarButton, { SidebarButtonProps } from './SidebarButton'
-import Media from './../../theme/mediaQueries'
+import Media from 'theme/mediaQueries'
 
 interface SidebarButtonWrapperProps {
   isBottomBar?: boolean
@@ -61,12 +61,12 @@ class SidebarButtonWrapper extends React.Component<
 
     // this handles default animation state on refresh
     let defaultActiveButton = 'kyc'
-    let defaultOffset = 2 * 72 + 'px'
+    let defaultOffset = 2 * 79 + 'px'
     buttonItems.forEach((item: IButtonItem, index: number) => {
       if (window.location.href.includes(item.path)) {
         // todo temporary disabled until Matthew transforms this into Functional component to useEffect for url updates
         defaultActiveButton = item.type
-        defaultOffset = index * 72 + 'px'
+        defaultOffset = index * 79 + 'px'
       }
     })
 
@@ -80,7 +80,7 @@ class SidebarButtonWrapper extends React.Component<
   handleOnClick(path: string, activeType: string, index: number) {
     this.setState({
       activeButton: activeType,
-      verticaLineTopOffset: index * 72 + 'px'
+      verticaLineTopOffset: index * 79 + 'px'
     })
   }
 
@@ -125,7 +125,7 @@ const VerticalActiveLine = styled.div({
   right: 0,
   top: 0,
   width: '2px',
-  height: '72px',
+  height: '79px',
   background: '#aa1fec',
   transition: '250ms ease'
 })
