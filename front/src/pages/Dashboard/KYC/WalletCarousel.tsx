@@ -150,7 +150,7 @@ const Container = styled.div({
   fontStyle: 'normal',
   fontWeight: '900',
   paddingTop: '100px',
-
+  maxWidth: '822px',
   [Media.phone]: {
     width: '100%'
   }
