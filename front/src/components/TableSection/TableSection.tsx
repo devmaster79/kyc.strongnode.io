@@ -104,7 +104,7 @@ const TableSectionWrapper = styled.div((props) => ({
     }
   },
 
-  [Media.phone]: {
+  [Media.tablet]: {
     marginBottom: '20px'
   }
 }))

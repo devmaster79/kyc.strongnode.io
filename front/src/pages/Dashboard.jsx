@@ -97,7 +97,7 @@ const Grid = styled.div({
   width: '100%',
   margin: '8px',
 
-  [Media.phone]: {
+  [Media.tablet]: {
     flexDirection: 'column',
     margin: '0px'
   }

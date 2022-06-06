@@ -1,5 +1,6 @@
 import styled from '@emotion/styled'
 import { useState } from 'react'
+import Media from 'theme/mediaQueries'
 
 export type MultiSwitchProps<
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -94,6 +95,9 @@ const SelectWrapper = styled.div((props) => ({
       padding: '14px 0',
       borderRadius: '92px',
       minWidth: '132px',
+      [Media.phone]: {
+        minWidth: '112px'
+      },
       textAlign: 'center',
       fontSize: '14px',
       textTransform: 'uppercase',

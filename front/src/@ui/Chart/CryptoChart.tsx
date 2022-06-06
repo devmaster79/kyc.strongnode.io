@@ -5,6 +5,7 @@ import cryptoDataService from '../../services/cryptoDataService'
 import { ValueTrendIndicator } from './ValueTrendIndicator'
 import { ChartScopeSelector, SelectorItem } from './ChartScopeSelector'
 import MultiSwitch from '@ui/MultiSwitch/MultiSwitch'
+import Media from 'theme/mediaQueries'
 
 // sample placeholder data
 const placeholderData = [
@@ -152,8 +153,12 @@ const CryptoPair = styled.div({
 
 const HeadingWrapper = styled.div({
   display: 'flex',
+  paddingRight: '30px',
   alignItems: 'center',
-  justifyContent: 'space-between'
+  justifyContent: 'space-between',
+  [Media.tablet]: {
+    flexWrap: 'wrap'
+  }
 })
 
 const Pair = styled.div({
@@ -177,5 +182,8 @@ const TrendPairWrapper = styled.div({
 
   'div:first-child': {
     marginLeft: '0px'
+  },
+  [Media.phone]: {
+    width: '80%'
   }
 })
