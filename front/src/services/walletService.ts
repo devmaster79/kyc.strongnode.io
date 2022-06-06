@@ -4,10 +4,8 @@ import WalletConnectProvider from '@walletconnect/web3-provider/dist/umd/index.m
 
 // checking if .env file has setted localhost blockchain info
 const usingLocalBlockchain: boolean =
-  typeof import.meta.env.VITE_APP_LOCAL_BLOCKCHAIN_RPC != undefined &&
-  typeof import.meta.env.VITE_APP_LOCAL_BLOCKCHAIN_CHAIN_ID != undefined
-    ? true
-    : false
+  import.meta.env.VITE_APP_LOCAL_BLOCKCHAIN_RPC !== undefined &&
+  import.meta.env.VITE_APP_LOCAL_BLOCKCHAIN_CHAIN_ID !== undefined
 
 let localBlockchainAddressDictionary: IStringDictionary = {}
 if (usingLocalBlockchain) {
