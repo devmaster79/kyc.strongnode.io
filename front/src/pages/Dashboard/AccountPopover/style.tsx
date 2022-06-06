@@ -29,6 +29,20 @@ export const AccountPopoverWrapper = styled.div((props) => ({
     color: props.theme.palette.text.secondary
   },
 
+  '& > ol': {
+    listStyle: 'none',
+    textTransform: 'uppercase',
+    fontSize: '14px',
+    textAlign: 'left',
+    marginBottom: '0',
+
+    '& > li': {
+      padding: '16px 0px',
+      borderBottom: `1px solid ${props.theme.palette.border.light}`,
+      cursor: 'pointer'
+    }
+  },
+
   '& > ul': {
     listStyle: 'none',
     textTransform: 'uppercase',
