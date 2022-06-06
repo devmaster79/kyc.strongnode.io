@@ -1,5 +1,5 @@
 import Modal from '@ui/Modal/Modal'
-import { IAnim, useAnimated } from '../utils/useAnimated'
+import { useAnimated } from '../utils/useAnimated'
 import React, { ReactNode, useEffect, useState } from 'react'
 import styled from '@emotion/styled/macro'
 import { IconRectangleButton } from '../Button/IconRectangleButton'

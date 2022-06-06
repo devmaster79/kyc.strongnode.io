@@ -1,6 +1,5 @@
 import Button from '../@ui/Button/Button'
 import { useEthers, shortenIfAddress } from '@usedapp/core'
-import { connectWallet } from '../services/walletService'
 import userService from '../services/userService'
 import { useEffect } from 'react'
 
