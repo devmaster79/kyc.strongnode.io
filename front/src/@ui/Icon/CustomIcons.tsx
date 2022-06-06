@@ -35,6 +35,7 @@ import { ReactComponent as DrivingLicenseFrontLight } from './Icons/DrivingLicen
 import { ReactComponent as Identity } from './Icons/Identity.svg'
 import { ReactComponent as Sun } from './Icons/Sun.svg'
 import { ReactComponent as Moon } from './Icons/Moon.svg'
+import { ReactComponent as WalletConnectIcon } from './Icons/connect_wallet.svg'
 
 export const Icons = {
   arrowUp: ArrowUp,
@@ -73,5 +74,6 @@ export const Icons = {
   drivingLicenseFront: DrivingLicenseFront,
   drivingLicenseFrontLight: DrivingLicenseFrontLight,
   sun: Sun,
-  moon: Moon
+  moon: Moon,
+  walletConnect: WalletConnectIcon
 }

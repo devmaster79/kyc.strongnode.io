@@ -5,6 +5,7 @@ import styled from '@emotion/styled/macro'
 import { IconRectangleButton } from '../Button/IconRectangleButton'
 import { connectWallet } from '../../services/walletService'
 import { useEthers } from '@usedapp/core'
+import Icon from '@ui/Icon/Icon'
 
 interface IConnectWalletModal {
   opened: boolean
@@ -31,7 +32,18 @@ export const ConnectWalletModal = (props: IConnectWalletModal) => {
     <span>
       {turnOnModalAnim.state !== 'closed' && (
         <Modal onClose={props.onClose} anim={turnOnModalAnim} background={true}>
-          <WAIcon src="/icons/connect_wallet.svg" alt="Connect wallet icon" />
+          <Icon
+            name={'walletConnect'}
+            height={64}
+            width={64}
+            style={{
+              display: 'block',
+              marginLeft: 'auto',
+              marginRight: 'auto',
+              marginTop: '6px',
+              marginBottom: '32px'
+            }}
+          />
           <Title>Connect to Wallet</Title>
           <DescriptionText>Connect your favourite wallet</DescriptionText>
 
@@ -93,16 +105,6 @@ const NoWallet = styled.p((props) => ({
   textAlign: 'center',
   color: props.theme.palette.text.primary,
   marginTop: '56px'
-}))
-
-const WAIcon = styled.img((props) => ({
-  display: 'block',
-  marginLeft: 'auto',
-  marginRight: 'auto',
-  marginTop: '6px',
-  marginBottom: '32px',
-  width: '64px',
-  height: '64px'
 }))
 
 const Link = styled.p((props) => ({
