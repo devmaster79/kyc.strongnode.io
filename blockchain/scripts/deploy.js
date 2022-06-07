@@ -42,7 +42,7 @@ function saveFrontendFiles(
   tokenName = "Token"
 ) {
   const fs = require("fs");
-  const contractsDir = __dirname + "/../../front/src/contracts";
+  const contractsDir = __dirname + "/../../front/public/contracts";
 
   if (!fs.existsSync(contractsDir)) {
     fs.mkdirSync(contractsDir);
