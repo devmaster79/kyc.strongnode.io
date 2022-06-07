@@ -8,6 +8,9 @@
 docker/.localstack/*
 docker/.aws/*
 
+.localstack
+.aws
+
 docker/.localstack
 .DS_Store
 .idea/codeStyles/codeStyleConfig.xml
