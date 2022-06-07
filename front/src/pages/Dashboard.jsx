@@ -60,7 +60,7 @@ export default function Dashboard() {
         />
         <h1 style={{ marginTop: '56px' }}>DeFi Dashboard</h1>
         <CryptoChart wrapperStyles={{ marginTop: '16px', width: '100%' }} />
-        <Grid>
+        <GridContainer>
           <Grid>
             <CoinMetrics title="Coin Metrics" hideHeading />
           </Grid>
@@ -71,7 +71,7 @@ export default function Dashboard() {
               subtitle="NFT 18"
             />
           </Grid>
-        </Grid>
+        </GridContainer>
       </Container>
     </Wrapper>
   )
@@ -91,11 +91,28 @@ const Container = styled.div({
   marginTop: '70px'
 })
 
+const GridContainer = styled.div({
+  display: 'flex',
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  width: '100%',
+  paddingRight: '5px',
+
+  [Media.tablet]: {
+    paddingRight: '15px',
+    flexDirection: 'column',
+    margin: '0px'
+  },
+  [Media.phone]: {
+    paddingRight: '0px'
+  }
+})
+
 const Grid = styled.div({
   display: 'flex',
   flexDirection: 'row',
   width: '100%',
-  margin: '8px',
+  margin: '10px',
 
   [Media.tablet]: {
     flexDirection: 'column',

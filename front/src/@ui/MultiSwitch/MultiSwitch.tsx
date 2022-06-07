@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Media from 'theme/mediaQueries'
 
 export type MultiSwitchProps<
@@ -22,7 +22,17 @@ function MultiSwitch<
   TrackBy extends keyof Option
 >(props: MultiSwitchProps<Option, TrackBy>) {
   const [activeXOffset, setActiveXOffset] = useState<string>('3px')
+  const [windowSize, setWindowSize] = useState(window.innerWidth)
 
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowSize(window.innerWidth)
+    }
+
+    window.addEventListener('resize', handleResize)
+
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
   const onSelectValue = async (selectedValue: string) => {
     const selectedIndex = props.options.findIndex(
       (option) => option[props.searchBy] === selectedValue
@@ -35,11 +45,12 @@ function MultiSwitch<
     props.onChange(props.options[selectedIndex])
   }
 
-  const animWidthOffset = 132
   const animMarginOffset = 6
   const animBaseMarginOffset = 3
 
   const setXOffset = (index: number) => {
+    const animWidthOffset = windowSize > 600 ? 132 : 112
+    // console.log('window.innerHeight:::', windowSize)
     setActiveXOffset(
       index * animWidthOffset +
         index * animMarginOffset +
@@ -86,6 +97,7 @@ const SelectWrapper = styled.div((props) => ({
   border: `1px solid ${props.theme.palette.border.light}`,
   borderRadius: '126px',
   width: 'fit-content',
+  position: 'relative',
 
   ul: {
     display: 'flex',
@@ -113,7 +125,8 @@ const SelectWrapper = styled.div((props) => ({
   '.active': {
     background: 'linear-gradient(90.39deg, #aa1fec 0.24%, #7a3bfe 101.6%)',
     backgroundColor: '#7a3bfe',
-    color: props.theme.palette.button.text
+    color: props.theme.palette.button.text,
+    zIndex: 10
   }
 }))
 
@@ -129,5 +142,8 @@ const AnimatedBackground = styled.div({
   backgroundColor: '#7a3bfe',
   transition: '250ms ease',
   zIndex: 8,
-  pointerEvents: 'none'
+  pointerEvents: 'none',
+  [Media.phone]: {
+    width: '112px'
+  }
 })

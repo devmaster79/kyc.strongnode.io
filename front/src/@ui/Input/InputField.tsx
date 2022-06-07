@@ -99,7 +99,9 @@ export const StyledInputWrapper = styled.div<{
   opacity: props.disabled ? '0.5' : '1',
 
   svg: {
-    marginLeft: '8px'
+    marginLeft: '8px',
+    height: '16px',
+    width: '16px'
   }
 }))
 

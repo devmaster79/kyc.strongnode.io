@@ -153,7 +153,7 @@ const CryptoPair = styled.div({
 
 const HeadingWrapper = styled.div({
   display: 'flex',
-  paddingRight: '30px',
+  paddingRight: '15px',
   alignItems: 'center',
   justifyContent: 'space-between',
   [Media.tablet]: {
