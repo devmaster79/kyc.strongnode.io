@@ -159,6 +159,7 @@ const palette = {
       modal: 'rgba(151,151,176,0.8)',
       floatingLabel: WHITE[100],
       modalSecondary: WHITE[100],
+      modalBackground: 'url(/modal_background_light.png)',
       wallet: 'rgba(110, 109, 143, 0.12)'
     },
     button: {
@@ -214,6 +215,7 @@ const palette = {
       modal: NIGHTBLUE[85],
       floatingLabel: '#232264',
       modalSecondary: NIGHTBLUE[100],
+      modalBackground: 'url(/modal_background_dark.png)',
       wallet: WHITE[8]
     },
     button: {
