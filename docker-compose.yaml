@@ -8,7 +8,7 @@ services:
     ports:
       - "8545:8545"
     volumes:
-      - .:/user/src/app
+      - .:/usr/src/app
     entrypoint: /usr/src/app/blockchain/run.sh
 
   localstack:
@@ -27,7 +27,6 @@ services:
       - './.localstack:/tmp/localstack'
       - './.aws:/root/.aws'
       - '/var/run/docker.sock:/var/run/docker.sock'
-      -
   localstack-settings:
     build:
       context: ./docker
