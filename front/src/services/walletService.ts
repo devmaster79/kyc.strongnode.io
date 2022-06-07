@@ -53,8 +53,10 @@ export const networksRpcDictionary: IStringDictionary = {
  * Config object for DAppProvider that uses localhost blockchain.
  */
 const DAppReadOnlyUrlsLocalBlockchain = {
-  [import.meta.env.VITE_APP_LOCAL_BLOCKCHAIN_CHAIN_ID]: import.meta.env
+  [Number(import.meta.env.VITE_APP_LOCAL_BLOCKCHAIN_CHAIN_ID)]: import.meta.env
     .VITE_APP_LOCAL_BLOCKCHAIN_RPC
+    ? import.meta.env.VITE_APP_LOCAL_BLOCKCHAIN_RPC
+    : ''
 }
 
 /**
@@ -71,7 +73,7 @@ const DAppReadOnlyUrls = {
  */
 export const DAppProviderConfig: Config = {
   readOnlyChainId: usingLocalBlockchain
-    ? import.meta.env.VITE_APP_LOCAL_BLOCKCHAIN_CHAIN_ID
+    ? Number(import.meta.env.VITE_APP_LOCAL_BLOCKCHAIN_CHAIN_ID)
     : Polygon.chainId,
   readOnlyUrls: usingLocalBlockchain
     ? DAppReadOnlyUrlsLocalBlockchain
