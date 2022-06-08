@@ -42,7 +42,7 @@ function saveFrontendFiles(
   tokenName = "Token"
 ) {
   const fs = require("fs");
-  const contractsDir = __dirname + "/../../front/public/contracts";
+  const contractsDir = __dirname + "/../../front/src/contracts/generated";
 
   if (!fs.existsSync(contractsDir)) {
     fs.mkdirSync(contractsDir);
@@ -53,7 +53,7 @@ function saveFrontendFiles(
 
   // todo, we will be using more contracts, just edit this json if exists
   fs.writeFileSync(
-    contractsDir + "/contract-address.json",
+    contractsDir + "/tokenAddressDictionary.json",
     JSON.stringify(contractAddresses, undefined, 2)
   );
 
