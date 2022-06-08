@@ -1,20 +1,13 @@
 import { getDefaultProvider } from 'ethers'
 import { Polygon, Config, Mainnet } from '@usedapp/core'
 import WalletConnectProvider from '@walletconnect/web3-provider/dist/umd/index.min.js'
+import defaultTokenAddresses from './../contracts/defaultTokenDictionary.json'
+import generatedTokenAddressDictionary from './../contracts/generated/tokenAddressDictionary.json'
 
 // checking if .env file has setted localhost blockchain info
 const usingLocalBlockchain: boolean =
   import.meta.env.VITE_APP_LOCAL_BLOCKCHAIN_RPC !== undefined &&
   import.meta.env.VITE_APP_LOCAL_BLOCKCHAIN_CHAIN_ID !== undefined
-
-let localBlockchainAddressDictionary: IStringDictionary = {}
-if (usingLocalBlockchain) {
-  import('./../contracts/contract-address.json')
-    .then((module) => {
-      localBlockchainAddressDictionary = module.default
-    })
-    .catch((err) => console.error(err))
-}
 
 interface IStringDictionary {
   [key: string]: string
@@ -27,10 +20,9 @@ interface IDictionary {
 /**
  * Token addresses' dictionary.
  */
-export const tokenAddressDictionary: IStringDictionary = {
-  strongnode: '0x32934CB16DA43fd661116468c1B225Fc26CF9A8c',
-  'matic-network': '0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0'
-}
+export const tokenAddressDictionary: IStringDictionary = usingLocalBlockchain
+  ? generatedTokenAddressDictionary
+  : defaultTokenAddresses
 
 /**
  * Network types dictionary.
@@ -115,13 +107,7 @@ export const connectWallet = async (
  * Method that returns correct address dictionary.
  */
 export const getTokenAddress = (token: string) => {
-  if (usingLocalBlockchain) {
-    return localBlockchainAddressDictionary[token]
-      ? localBlockchainAddressDictionary[token]
-      : undefined
-  } else {
-    return tokenAddressDictionary[token]
-      ? tokenAddressDictionary[token]
-      : undefined
-  }
+  return tokenAddressDictionary[token]
+    ? tokenAddressDictionary[token]
+    : undefined
 }
