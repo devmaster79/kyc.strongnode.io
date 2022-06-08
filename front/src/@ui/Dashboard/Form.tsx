@@ -73,7 +73,7 @@ export const InputGroup = styled.div({
   gap: '16px',
   width: '530px',
 
-  [Media.phone]: {
+  [Media.tablet]: {
     width: '100%'
   }
 })
@@ -86,7 +86,7 @@ export const ButtonGroup = styled.div({
   paddingTop: '24px',
   paddingBottom: '40px',
 
-  [Media.phone]: {
+  [Media.tablet]: {
     width: '100%'
   }
 })

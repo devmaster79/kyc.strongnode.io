@@ -106,7 +106,7 @@ export default function KYC() {
         soon
       />
 
-      <h1>StrongNode ID and KYC</h1>
+      <Title>StrongNode ID and KYC</Title>
       <FormContainer>
         <ProgressCircleSteps.Container>
           <ProgressCircleSteps.Step
@@ -217,7 +217,16 @@ const Container = styled.div({
   gap: '32px',
   width: '80%',
   margin: 'auto',
-  textAlign: 'center'
+  textAlign: 'center',
+  [Media.phone]: {
+    width: '100%'
+  }
+})
+
+const Title = styled.h1({
+  [Media.phone]: {
+    fontSize: '20px'
+  }
 })
 
 const FormContainer = styled.div({
@@ -228,7 +237,7 @@ const FormContainer = styled.div({
   gap: '32px',
   width: '65%',
   margin: 'auto',
-  [Media.phone]: {
+  [Media.tablet]: {
     width: '100%'
   }
 })

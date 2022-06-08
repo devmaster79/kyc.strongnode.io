@@ -52,7 +52,7 @@ function TableSection<Item extends Record<string, unknown>>(
     <TableSectionWrapper {...props}>
       {props.comingSoon ? (
         <ComingSoonWrapper>
-          <Icon name="info" height={24} width={24} viewBox="0 0 24 24" />
+          <Icon name="info" height={24} width={24} />
           <h2>{props.title}</h2>
           <span>Coming soon</span>
         </ComingSoonWrapper>

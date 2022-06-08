@@ -12,6 +12,8 @@ import { useEthers } from '@usedapp/core'
 import { useGetTokenBalanceFormatted } from '../../../hooks/useGetTokenBalanceFormatted'
 import { getTokenAddress } from '../../../services/walletService'
 import { CustomTheme } from 'theme'
+import { ConnectWalletModal } from '../../../@ui/Modal/ConnectWalletModal'
+import { useAnimated } from '../../../@ui/utils/useAnimated'
 
 export default function AccountPopover() {
   const navigate = useNavigate()
@@ -19,6 +21,7 @@ export default function AccountPopover() {
   const [userName, setUserName] = useState('')
   const [email, setEmail] = useState('')
   const [showModal, setShowModal] = useState(false)
+  const [showConnectWalletModal, setShowConnectWalletModal] = useState(false)
   const SNEBalance = useGetTokenBalanceFormatted(
     account,
     getTokenAddress('strongnode')
@@ -51,12 +54,17 @@ export default function AccountPopover() {
 
   return (
     <>
+      <ConnectWalletModal
+        opened={showConnectWalletModal}
+        onClose={() => {
+          setShowConnectWalletModal(false)
+        }}
+      />
       <IconWrapper onClick={() => setShowModal(!showModal)}>
         <Icon
           name="arrowDown"
           width={8}
           height={6}
-          viewBox="0 0 8 6"
           style={
             showModal
               ? { transform: 'rotate(180deg)', transition: '450ms ease' }
@@ -70,7 +78,6 @@ export default function AccountPopover() {
             name="avatar"
             width={20}
             height={20}
-            viewBox="0 0 20 20"
             color={theme.palette.icon.active}
           />
         </AvatarIconWrapper>
@@ -79,12 +86,11 @@ export default function AccountPopover() {
         <AccountPopoverWrapper>
           {userName}
           <span>{email}</span>
-          <ConnectButton />
-          {!account && (
-            <MetamaskBrowserLink onClick={activateBrowserWallet}>
-              connect Metamask extension
-            </MetamaskBrowserLink>
-          )}
+          <ConnectButton
+            onClick={() => {
+              setShowConnectWalletModal(true)
+            }}
+          />
           <ol>
             <li>
               SNE balance{' '}

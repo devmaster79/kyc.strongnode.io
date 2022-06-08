@@ -85,7 +85,6 @@ const SelectWrapper = styled.div((props) => ({
   border: `1px solid ${props.theme.palette.border.light}`,
   borderRadius: '126px',
   width: 'fit-content',
-
   ul: {
     display: 'flex',
     listStyleType: 'none',

@@ -14,19 +14,21 @@ export type ModalProps = {
   footer?: ReactNode
   anim: IAnim
   scrollable: boolean
+  background?: boolean
 }
 
 export default function Modal(props: ModalProps) {
   return (
     <ModalWrapper anim={props.anim}>
-      <StyledModal scrollable={props.scrollable}>
+      <StyledModal
+        scrollable={props.scrollable}
+        background={props.background ? props.background : false}>
         {!props.closeIconHidden && (
           <IconWrapper onClick={() => props.onClose && props.onClose()}>
             <Icon
               name="close"
               width={18}
               height={18}
-              viewBox="0 0 18 18"
               style={{ cursor: 'pointer' }}
             />
           </IconWrapper>
@@ -56,6 +58,7 @@ interface ModalWrapperProps {
 
 interface StyledModalProps {
   scrollable: boolean
+  background: boolean
 }
 
 const ModalWrapper = styled.div<ModalWrapperProps>((props) => ({
@@ -88,7 +91,13 @@ const StyledModal = styled.div<StyledModalProps>((props) => ({
   minWidth: '642px',
   overflow: 'auto',
   height: props.scrollable ? '100%' : 'unset',
-  background: props.theme.palette.background.modalSecondary,
+  background: props.background
+    ? props.theme.palette.background.modalSecondary
+    : '#FFFFFF',
+  backgroundImage: props.background
+    ? props.theme.palette.background.modalBackground
+    : 'none',
+  backgroundSize: props.background ? 'cover' : 'none',
   border: `1px solid ${props.theme.palette.border.light}`,
   display: 'flex',
   boxSizing: 'border-box',

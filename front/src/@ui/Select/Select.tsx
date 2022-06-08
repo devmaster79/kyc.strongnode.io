@@ -46,7 +46,6 @@ function Select<
           name="arrowDown"
           width={8}
           height={6}
-          viewBox="0 0 8 6"
           style={
             opened
               ? { transform: 'rotate(180deg)', transition: '450ms ease' }

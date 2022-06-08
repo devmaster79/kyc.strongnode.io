@@ -16,31 +16,13 @@ function Icon(props: IconProps) {
   const CurrentIcon = Icons[props.name]
 
   return (
-    <SvgIcon
+    <CurrentIcon
       height={props.height}
       width={props.width}
-      viewBox={props.viewBox}
       color={props.color || theme.palette.text.secondary}
-      style={props.style}>
-      {CurrentIcon}
-    </SvgIcon>
+      style={props.style}
+    />
   )
 }
 
 export default Icon
-
-export function SvgIcon(props: SVGProps<SVGSVGElement>) {
-  return (
-    <svg
-      {...props}
-      height={props.height || 16}
-      width={props.width || 16}
-      viewBox={props.viewBox || '0 0 16 16'}
-      version={props.version || '1.1'}
-      xmlns={props.xmlns || 'http://www.w3.org/2000/svg'}
-      xmlnsXlink={props.xmlnsXlink || 'http://www.w3.org/1999/xlink'}
-      fill={props.fill || 'none'}
-      style={{ ...props.style, overflow: 'initial' }}
-    />
-  )
-}

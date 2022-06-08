@@ -96,7 +96,7 @@ export default function NFTDashboard() {
           {option.label}
         </TitleWrapper>
         <span>
-          <Icon name="eth" height={8} width={13} viewBox="0 0 8 13" />
+          <Icon name="eth" height={8} width={13} />
           9000
         </span>
       </AutocompleteStyle>

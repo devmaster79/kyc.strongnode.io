@@ -87,7 +87,8 @@ const Wrapper = styled.div({
 const Container = styled.div({
   maxWidth: '1536px',
   width: '100%',
-  paddingBottom: '100px'
+  paddingBottom: '100px',
+  marginTop: '70px'
 })
 
 const Grid = styled.div({

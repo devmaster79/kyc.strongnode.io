@@ -62,6 +62,7 @@ declare module '@mui/material/styles' {
     wallet: string
     primary: string
     modalSecondary: string
+    modalBackground: string
     modal: string
     input: string
     label: string
