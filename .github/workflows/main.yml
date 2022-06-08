@@ -33,7 +33,7 @@ jobs:
           npm i
           echo "REACT_APP_BASE_URL=https://stage.strongnode.io:8080" > .env
           ls
-          cp front/src/contracts/defaultTokenDictionary.json front/src/contracts/generated/tokenAddressDictionary.json
+          cp src/contracts/defaultTokenDictionary.json src/contracts/generated/tokenAddressDictionary.json
       - name: Setup backend
         run: |
           cd back
