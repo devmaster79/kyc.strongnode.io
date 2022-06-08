@@ -26,5 +26,4 @@ docker/.localstack
 blockchain/artifacts
 blockchain/cache
 /blockchain/node_modules/
-
-front/public/contracts
+front/src/contracts/generated
