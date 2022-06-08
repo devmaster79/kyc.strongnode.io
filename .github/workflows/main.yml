@@ -60,6 +60,8 @@ jobs:
       - name: Add frontend .env file
         shell: bash
         run: echo "REACT_APP_BASE_URL=https://stage.strongnode.io:8080" > front/.env
+      - name: Add tokenDictionary
+        run: cp front/src/contracts/defaultTokenDictionary.json front/src/contracts/generated/tokenAddressDictionary.json
       - name: Run build task
         run: cd front && npm run build
         env:
@@ -119,6 +121,8 @@ jobs:
       - name: Add frontend .env file
         shell: bash
         run: echo "REACT_APP_BASE_URL=https://stage.strongnode.io:8080" > front/.env # TODO
+      - name: Add tokenDictionary
+        run: cp front/src/contracts/defaultTokenDictionary.json front/src/contracts/generated/tokenAddressDictionary.json
       - name: Run build task
         run: cd front && npm run build
         env:
