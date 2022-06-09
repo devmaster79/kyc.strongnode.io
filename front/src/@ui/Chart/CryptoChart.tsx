@@ -71,7 +71,7 @@ export const CryptoChart = (props: CryptoChartProps) => {
 
   const switchOptions = [
     { label: 'Price', value: 1, dataKey: 'prices' },
-    { label: 'Market Cap', value: 2, dataKey: 'market_caps' }
+    { label: 'Market Cap', value: 2, dataKey: 'marketCaps' }
   ] as SwitchOption[]
 
   const [selectedSwitchOption, setSelectedSwitchOption] =

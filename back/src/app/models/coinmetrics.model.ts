@@ -4,9 +4,9 @@ export class CoinMetricsModel extends Model {
   public id!: number
   public token!: string
   public image!: object
-  public usd_value!: string
-  public market_cap!: string
-  public day_change!: string
+  public usdValue!: string
+  public marketCap!: string
+  public dayChange!: string
   public readonly createdAt!: Date
   public readonly updatedAt!: Date
 }
@@ -20,13 +20,13 @@ export const create = (sequelize: Sequelize) =>
       image: {
         type: DataTypes.JSON
       },
-      usd_value: {
+      usdValue: {
         type: DataTypes.DECIMAL(30, 10)
       },
-      market_cap: {
+      marketCap: {
         type: DataTypes.DECIMAL(30, 10)
       },
-      day_change: {
+      dayChange: {
         type: DataTypes.DECIMAL(30, 10)
       }
     },
