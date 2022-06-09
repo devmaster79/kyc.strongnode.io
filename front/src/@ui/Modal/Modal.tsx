@@ -22,7 +22,7 @@ export default function Modal(props: ModalProps) {
     <ModalWrapper anim={props.anim}>
       <StyledModal
         scrollable={props.scrollable}
-        background={props.background ? props.background : false}>
+        background={props.background || false}>
         {!props.closeIconHidden && (
           <IconWrapper onClick={() => props.onClose && props.onClose()}>
             <Icon
@@ -91,9 +91,7 @@ const StyledModal = styled.div<StyledModalProps>((props) => ({
   minWidth: '642px',
   overflow: 'auto',
   height: props.scrollable ? '100%' : 'unset',
-  background: props.background
-    ? props.theme.palette.background.modalSecondary
-    : '#FFFFFF',
+  background: props.theme.palette.background.modalSecondary,
   backgroundImage: props.background
     ? props.theme.palette.background.modalBackground
     : 'none',
