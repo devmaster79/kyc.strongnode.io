@@ -1,3 +1,4 @@
+import { sanitizeText, sanitizeUrl } from 'app/services/Sanitizer'
 import { template, Sendable } from './BaseTemplate'
 
 export interface SignInTemplateParams {
@@ -12,8 +13,8 @@ export class SignInTemplate implements Sendable<SignInTemplateParams> {
 
   renderBody({ link, userName }: SignInTemplateParams) {
     return template({
-      title: this.renderSubject(),
-      body: /* html */ `<table
+      rawTitle: this.renderSubject(),
+      rawBody: /* html */ `<table
         role="presentation"
         border="0"
         cellpadding="0"
@@ -21,7 +22,7 @@ export class SignInTemplate implements Sendable<SignInTemplateParams> {
       >
         <tr>
           <td>
-            <p><b>Hello ${userName},</b></p>
+            <p><b>Hello ${sanitizeText(userName)},</b></p>
             <p>It is good to see you again!</p>
             <table
               role="presentation"
@@ -42,7 +43,7 @@ export class SignInTemplate implements Sendable<SignInTemplateParams> {
                       <tbody>
                         <tr>
                           <td>
-                            <a href="${link}" target="_blank">
+                            <a href="${sanitizeUrl(link)}" target="_blank">
                               Sign In
                             </a>
                           </td>
@@ -57,7 +58,9 @@ export class SignInTemplate implements Sendable<SignInTemplateParams> {
               If you have problems visiting the button above just
               copy and paste the following link into your browser:
             </p>
-            <a href="${link}" target="_blank">${link}</a>
+            <a href="${sanitizeUrl(link)}" target="_blank">
+              ${sanitizeUrl(link)}
+            </a>
             <hr />
             <p class="small">In case this email was not requested by you, please do not do anything.</p>
           </td>

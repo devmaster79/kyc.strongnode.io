@@ -92,14 +92,14 @@ class SMSAuthService {
   async __sendOneTimePasswordSMS(destinationNumber, email) {
     const OTP = this.__generateRandomNumber(1000, 9999)
     this.__logger.devLog('The SMS password was', OTP)
-    const message =
+    const rawMessage =
       'Here is your SMS 2-factor authentication code for StrongNode : ' + OTP
     const updateResult = await this.__userRepository.update(
       { smscode: OTP },
       { where: { email } }
     )
     if (updateResult != 1) throw new Error('Unable to store OTP')
-    await this.__smsService.send(destinationNumber, message)
+    await this.__smsService.send(destinationNumber, rawMessage)
   }
 
   __generateRandomNumber(min, max) {
