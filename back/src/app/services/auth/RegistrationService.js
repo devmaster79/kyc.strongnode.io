@@ -17,9 +17,9 @@ class RegistrationService {
    * Create a new user
    * @param {Object} props
    * @param {string} props.email
-   * @param {string} props.user_name
-   * @param {string} props.first_name
-   * @param {string} props.last_name
+   * @param {string} props.username
+   * @param {string} props.firstName
+   * @param {string} props.lastName
    *
    * @throws {EmailIsAlreadyRegisteredError}
    * @throws {UserNameIsAlreadyTakenError}
@@ -32,21 +32,24 @@ class RegistrationService {
       // because if email is registered user will only see the login screen or dashboard.
       throw new EmailIsAlreadyRegisteredError()
     }
-    if (await this.__isUserNameRegistered(props.user_name)) {
+    if (await this.__isUserNameRegistered(props.username)) {
       throw new UserNameIsAlreadyTakenError()
     }
     if (await this.__isLimitReached()) {
       throw new LimitReachedError()
     }
-    const profile_img_url = await this.__gravatarService.getProfileImageURL(
+    const profileImgUrl = await this.__gravatarService.getProfileImageURL(
       props.email
     )
     const user = await this.__userRepository.create({
       email: props.email,
-      user_name: props.user_name,
-      first_name: props.first_name,
-      last_name: props.last_name,
-      ...(profile_img_url ? { profile_img_url } : {})
+      username: props.username,
+      firstName: props.firstName,
+      lastName: props.lastName,
+      enableAuthenticator: false,
+      enablePassword: false,
+      enableSms: false,
+      ...(profileImgUrl ? { profileImgUrl } : {})
     })
     if (!user) throw new new UnableToCreateUserError()()
     const nextMode = this.__tokenService.determineNextMode(
@@ -55,7 +58,7 @@ class RegistrationService {
     )
     return this.__tokenService.generateToken(
       user.email,
-      user.user_name,
+      user.username,
       nextMode
     )
   }
@@ -71,12 +74,12 @@ class RegistrationService {
   }
 
   /**
-   * Check whether the user_name exists or not
-   * @param {string} user_name
+   * Check whether the username exists or not
+   * @param {string} username
    * @returns {Promise<boolean>}
    */
-  async __isUserNameRegistered(user_name) {
-    const user = await this.__userRepository.findOne({ where: { user_name } })
+  async __isUserNameRegistered(username) {
+    const user = await this.__userRepository.findOne({ where: { username } })
     return !!user
   }
 

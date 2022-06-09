@@ -148,14 +148,14 @@ function PrivateSaleInterestForm() {
     event.preventDefault()
 
     const data = {
-      investor_name: investorName,
-      investor_telegram_id: investorTelegramId,
-      investor_country: investorCountry,
-      investor_commitment_amount: investorCommitmentAmount,
-      investor_wallet_address: investorWalletAddress,
-      investor_email: investorEmail,
-      investor_fund_name: investorFundName,
-      investor_fund_website: investorFundWebsite
+      investorName: investorName,
+      investorTelegramId: investorTelegramId,
+      investorCountry: investorCountry,
+      investorCommitmentAmount: investorCommitmentAmount,
+      investorWalletAddress: investorWalletAddress,
+      investorEmail: investorEmail,
+      investorFundName: investorFundName,
+      investorFundWebsite: investorFundWebsite
     }
     handleCreateInvestor(data)
   }

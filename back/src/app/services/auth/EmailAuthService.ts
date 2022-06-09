@@ -33,13 +33,13 @@ export class EmailAuthService {
       const mode = this.__tokenService.determineNextMode(user, MODE_GUEST)
       const token = this.__tokenService.generateToken(
         email,
-        user.user_name,
+        user.username,
         mode
       )
       link = this.__getURL(mode, token, user)
       await this.__emailService.sendTemplate(email, new SignInTemplate(), {
         link,
-        userName: user.user_name
+        userName: user.username
       })
     } else {
       const mode = MODE_REGISTRATION
@@ -65,11 +65,11 @@ export class EmailAuthService {
       case MODE_REGISTRATION.id:
         return `${routes.REGISTER}?token=${token}`
       case MODE_2FA.id:
-        if (user && user.enable_authenticator)
+        if (user && user.enableAuthenticator)
           return `${routes.SIGN_IN_WITH_AUTHENTICATOR}?token=${token}`
-        if (user && user.enable_sms)
+        if (user && user.enableSms)
           return `${routes.SIGN_IN_WITH_SMS}?token=${token}`
-        if (user && user.enable_password)
+        if (user && user.enablePassword)
           return `${routes.SIGN_IN_WITH_PASSWORD}?token=${token}`
         return `${routes.SIGN_IN_WITH_TOKEN}?token=${token}`
       case MODE_FULL.id:

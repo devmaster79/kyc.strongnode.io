@@ -14,18 +14,18 @@ export class InvestorDetailService {
     detail: GetInvestorDetails.InvestorDetail
   ): Promise<CreateResult> {
     // data for investor creating
-    const user = await this.__getUser(detail.investor_email)
+    const user = await this.__getUser(detail.investorEmail)
     const data = {
-      user_id: user.id,
+      userId: user.id,
       reviewed: false,
-      investor_name: detail.investor_name,
-      investor_telegram_id: detail.investor_telegram_id,
-      investor_country: detail.investor_country,
-      investor_commitment_amount: detail.investor_commitment_amount,
-      investor_wallet_address: detail.investor_wallet_address,
-      investor_email: detail.investor_email,
-      investor_fund_name: detail.investor_fund_name,
-      investor_fund_website: detail.investor_fund_website
+      investorName: detail.investorName,
+      investorTelegramId: detail.investorTelegramId,
+      investorCountry: detail.investorCountry,
+      investorCommitmentAmount: detail.investorCommitmentAmount,
+      investorWalletAddress: detail.investorWalletAddress,
+      investorEmail: detail.investorEmail,
+      investorFundName: detail.investorFundName,
+      investorFundWebsite: detail.investorFundWebsite
     }
 
     if (await this.__getInvestorDetail(user.id)) {
@@ -57,10 +57,10 @@ export class InvestorDetailService {
     return user
   }
 
-  private async __getInvestorDetail(user_id: number, reviewed?: boolean) {
+  private async __getInvestorDetail(userId: number, reviewed?: boolean) {
     return await this.__investorDetailRepository.findOne({
       where: {
-        user_id,
+        userId,
         ...(reviewed !== undefined ? { reviewed } : {})
       }
     })

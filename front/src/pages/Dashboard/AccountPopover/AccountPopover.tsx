@@ -33,7 +33,7 @@ export default function AccountPopover() {
       .getProfile()
       .then((response) => {
         if (response.result === 'success') {
-          setUserName(response.data.first_name + ' ' + response.data.last_name)
+          setUserName(response.data.firstName + ' ' + response.data.lastName)
         }
       })
       .catch((error) => console.error(error))

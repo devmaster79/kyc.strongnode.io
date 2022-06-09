@@ -17,7 +17,7 @@ describe('TokenService', () => {
       )
       let decoded = tokenService.decode(token, [originalMode])
       assert.equal(decoded.email, 'test@test.com')
-      assert.equal(decoded.user_name, 'testUserName')
+      assert.equal(decoded.username, 'testUserName')
 
       for (let mode of modes) {
         if (mode.id != originalMode.id) {
@@ -52,9 +52,9 @@ describe('TokenService', () => {
   it('should be able to determine the next mode', () => {
     let nextMode = tokenService.determineNextMode(
       {
-        enable_sms: false,
-        enable_authenticator: false,
-        enable_password: false
+        enableSms: false,
+        enableAuthenticator: false,
+        enablePassword: false
       },
       TokenService.MODE_GUEST
     )
@@ -65,9 +65,9 @@ describe('TokenService', () => {
   it('should be able to determine the next mode 2fa', () => {
     let nextMode = tokenService.determineNextMode(
       {
-        enable_sms: true,
-        enable_authenticator: true,
-        enable_password: true
+        enableSms: true,
+        enableAuthenticator: true,
+        enablePassword: true
       },
       TokenService.MODE_GUEST
     )

@@ -10,9 +10,9 @@ import { useState } from 'react'
 import { getFieldIssues } from 'utils/FormUtils'
 import Media from './../../theme/mediaQueries'
 interface RegisterFields {
-  first_name: string
-  last_name: string
-  user_name: string
+  firstName: string
+  lastName: string
+  username: string
 }
 
 export function Register() {
@@ -25,9 +25,9 @@ export function Register() {
   const { register, handleSubmit, setError, formState } =
     useForm<RegisterFields>({
       defaultValues: {
-        first_name: '',
-        last_name: '',
-        user_name: ''
+        firstName: '',
+        lastName: '',
+        username: ''
       }
     })
 
@@ -36,9 +36,9 @@ export function Register() {
   ) => {
     const response = await registration({
       body: {
-        first_name: data.first_name,
-        last_name: data.last_name,
-        user_name: data.user_name
+        firstName: data.firstName,
+        lastName: data.lastName,
+        username: data.username
       }
     })
     if (response.result === 'success') {
@@ -46,7 +46,7 @@ export function Register() {
     } else if (response.result === 'validation-error') {
       getFieldIssues(response).forEach(
         (val: {
-          path: 'first_name' | 'last_name' | 'user_name'
+          path: 'firstName' | 'lastName' | 'username'
           message: string
         }) => {
           setError(val.path, {
@@ -69,27 +69,27 @@ export function Register() {
       </HelpTextContainer>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <StyledInputField
-          error={!!formState.errors.user_name}
-          helpText={formState.errors.user_name?.message}
+          error={!!formState.errors.username}
+          helpText={formState.errors.username?.message}
           inputProps={{
             placeholder: 'Username',
-            ...register('user_name')
+            ...register('username')
           }}
         />
         <StyledInputField
-          error={!!formState.errors.first_name}
-          helpText={formState.errors.first_name?.message}
+          error={!!formState.errors.firstName}
+          helpText={formState.errors.firstName?.message}
           inputProps={{
             placeholder: 'First name',
-            ...register('first_name')
+            ...register('firstName')
           }}
         />
         <StyledInputField
-          error={!!formState.errors.last_name}
-          helpText={formState.errors.last_name?.message}
+          error={!!formState.errors.lastName}
+          helpText={formState.errors.lastName?.message}
           inputProps={{
             placeholder: 'Last name',
-            ...register('last_name')
+            ...register('lastName')
           }}
         />
         <span>

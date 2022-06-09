@@ -20,7 +20,7 @@ export class SMSAuthService {
 
     async sendSMS(email: string): Promise<void> {
         const user = await this.__userRepository.findOne({ where: { email } });
-        await this.__sendOneTimePasswordSMS(user.phone_number, email)
+        await this.__sendOneTimePasswordSMS(user.phoneNumber, email)
     }
     // ...
 }
@@ -29,7 +29,7 @@ Wrong:
 ```ts
 export async function sendSMS(email: string): Promise<void> {
     const user = await users.findOne({ where: { email } });
-    await sendOneTimePasswordSMS(user.phone_number, email)
+    await sendOneTimePasswordSMS(user.phoneNumber, email)
 }
 ```
 

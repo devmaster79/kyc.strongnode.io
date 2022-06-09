@@ -19,7 +19,7 @@ describe('Registration service', () => {
   it('should throw error when email is registered', async () => {
     let userRecord = {
       email: 'test@test.com',
-      user_name: 'test'
+      username: 'test'
     }
 
     const fakeUserRepository = {
@@ -45,9 +45,9 @@ describe('Registration service', () => {
     try {
       await registrationService.createUser({
         email: userRecord.email, // same email
-        user_name: 'test2',
-        first_name: 'Test',
-        last_name: 'Test'
+        username: 'test2',
+        firstName: 'Test',
+        lastName: 'Test'
       })
       assert.ok(false, 'There were no errors but there should be.')
     } catch (e) {
@@ -58,15 +58,15 @@ describe('Registration service', () => {
   // NOTE: The current auth flow does not tell us that the email is registered or not.
   // Unfortunately we cannot provide this for the username.
   // Afaik username is part of the requirements, therefore this test case:
-  it('should throw error when user_name is registered', async () => {
+  it('should throw error when username is registered', async () => {
     let userRecord = {
       email: 'test@test.com',
-      user_name: 'test'
+      username: 'test'
     }
 
     const fakeUserRepository = {
       findOne(query) {
-        if (query.where.user_name == userRecord.user_name) {
+        if (query.where.username == userRecord.username) {
           return userRecord
         } else {
           return null
@@ -87,9 +87,9 @@ describe('Registration service', () => {
     try {
       await registrationService.createUser({
         email: 'test2@test2.com', // different email
-        user_name: userRecord.user_name, // same user_name
-        first_name: 'Test',
-        last_name: 'Test'
+        username: userRecord.username, // same username
+        firstName: 'Test',
+        lastName: 'Test'
       })
       assert.ok(false, 'There were no errors but there should be.')
     } catch (e) {
@@ -104,7 +104,7 @@ describe('Registration service', () => {
         return null
       },
       create(data) {
-        assert.equal(data.profile_img_url, profileURL)
+        assert.equal(data.profileImgUrl, profileURL)
         return data
       },
       async count() {
@@ -118,9 +118,9 @@ describe('Registration service', () => {
     )
     const token = await registrationService.createUser({
       email: 'test2@test2.com',
-      user_name: 'test',
-      first_name: 'Test',
-      last_name: 'Test'
+      username: 'test',
+      firstName: 'Test',
+      lastName: 'Test'
     })
     assert.equal(typeof token, 'string')
   })
@@ -144,9 +144,9 @@ describe('Registration service', () => {
     )
     const token = await registrationService.createUser({
       email: 'test2@test2.com',
-      user_name: 'test',
-      first_name: 'Test',
-      last_name: 'Test'
+      username: 'test',
+      firstName: 'Test',
+      lastName: 'Test'
     })
     assert.equal(typeof token, 'string')
   })
@@ -171,9 +171,9 @@ describe('Registration service', () => {
     try {
       await registrationService.createUser({
         email: 'test2@test2.com',
-        user_name: 'test',
-        first_name: 'Test',
-        last_name: 'Test'
+        username: 'test',
+        firstName: 'Test',
+        lastName: 'Test'
       })
       assert.ok(false)
     } catch (e) {

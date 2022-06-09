@@ -16,16 +16,16 @@ export namespace CreateInvestor {
   export const METHOD = 'put'
   export const PATH = '/api/users/createInvestor'
   export const schema = z.object({
-    investor_name: z.string().min(3),
-    investor_telegram_id: z
+    investorName: z.string().min(3),
+    investorTelegramId: z
       .string()
       .regex(/^@/, 'Id should start with the "@" character')
       .min(3),
-    investor_country: z.string(),
-    investor_commitment_amount: z.string(),
-    investor_wallet_address: z.string(),
-    investor_fund_name: z.string(),
-    investor_fund_website: z.string()
+    investorCountry: z.string(),
+    investorCommitmentAmount: z.string(),
+    investorWalletAddress: z.string(),
+    investorFundName: z.string(),
+    investorFundWebsite: z.string()
   })
   export type Request = { body: z.infer<typeof schema> }
   export type Response =
@@ -47,14 +47,14 @@ export namespace GetInvestorDetails {
   export const PATH = '/api/users/profile/getInvestorProfile'
   export type Request = void
   export type InvestorDetail = {
-    investor_name: string
-    investor_email: string
-    investor_telegram_id: string
-    investor_country: string
-    investor_commitment_amount: string
-    investor_wallet_address: string
-    investor_fund_name: string
-    investor_fund_website: string
+    investorName: string
+    investorEmail: string
+    investorTelegramId: string
+    investorCountry: string
+    investorCommitmentAmount: string
+    investorWalletAddress: string
+    investorFundName: string
+    investorFundWebsite: string
   }
   export type Response =
     | Success<{ data: InvestorDetail }>
@@ -71,12 +71,12 @@ export namespace GetProfile {
   export type Request = void
   export type Profile = {
     email: string
-    user_name: string
-    first_name: string
-    last_name: string
-    enable_authenticator: boolean
-    enable_sms: boolean
-    enable_password: boolean
+    username: string
+    firstName: string
+    lastName: string
+    enableAuthenticator: boolean
+    enableSms: boolean
+    enablePassword: boolean
   }
   export type Response =
     | Success<{ data: Profile }>
@@ -91,16 +91,16 @@ export namespace UpdateProfile {
   export const PATH = '/api/users/profile'
   export const schema = z.object({
     email: z.string().email().optional(),
-    user_name: userNameRule.optional(),
-    first_name: z.string().optional(),
-    last_name: z.string().optional(),
-    enable_authenticator: z.boolean().optional(),
-    enable_sms: z.boolean().optional(),
-    enable_password: z.boolean().optional()
+    username: userNameRule.optional(),
+    firstName: z.string().optional(),
+    lastName: z.string().optional(),
+    enableAuthenticator: z.boolean().optional(),
+    enableSms: z.boolean().optional(),
+    enablePassword: z.boolean().optional()
   })
   export type Request = { body: z.infer<typeof schema> }
   export type Response =
-    | Success<{ message: string }>
+    | Success<{ body: z.infer<typeof schema>; message: string }>
     | ApiResponse<
         'email-and-username-are-not-updateable-error',
         400,
@@ -109,6 +109,7 @@ export namespace UpdateProfile {
     | ZodValidationError<Request['body']>
     | UnauthorizedError
     | UnexpectedError
+    | NotFoundError<{}>
   export const request: Request | null = null
   export const response: Response | null = null
 }

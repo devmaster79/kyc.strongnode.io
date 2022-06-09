@@ -31,7 +31,7 @@ class PasswordAuthService {
     const verified = await this.__verifyPasswordHash(user.password, password)
     if (verified) {
       const mode = this.__tokenService.determineNextMode(user, MODE_2FA)
-      return this.__tokenService.generateToken(user.email, user.user_name, mode)
+      return this.__tokenService.generateToken(user.email, user.username, mode)
     }
     return null
   }
@@ -47,7 +47,7 @@ class PasswordAuthService {
     const result = await this.__userRepository.update(
       {
         password: hash,
-        enable_password: true
+        enablePassword: true
       },
       { where: { email } }
     )
@@ -63,7 +63,7 @@ class PasswordAuthService {
     const result = await this.__userRepository.update(
       {
         password: '',
-        enable_password: false
+        enablePassword: false
       },
       { where: { email } }
     )

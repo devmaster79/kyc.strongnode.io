@@ -83,10 +83,11 @@ export const register = withResponse<Register.Response>(async (req) => {
   try {
     const token = await registrationService.createUser({
       email: req.user.email,
-      user_name: data.user_name,
-      first_name: data.first_name,
-      last_name: data.last_name
+      username: data.username,
+      firstName: data.firstName,
+      lastName: data.lastName
     })
+
     return success({
       token,
       message: 'Successful registration. You can sign in now.'
@@ -96,7 +97,7 @@ export const register = withResponse<Register.Response>(async (req) => {
       return zodValidationError([
         {
           code: 'custom',
-          path: ['user_name'],
+          path: ['username'],
           message: 'This username is already taken'
         }
       ])

@@ -10,6 +10,7 @@ import { WalletCarousel } from './WalletCarousel'
 import * as ProgressCircleSteps from '@ui/Dashboard/ProgressCircleSteps'
 import { Banner } from '../../../@ui/Banner/Banner'
 import { useSnackbar } from 'notistack'
+import { getFieldIssues } from 'utils/FormUtils'
 import Media from './../../../theme/mediaQueries'
 
 interface FormFields {
@@ -17,9 +18,9 @@ interface FormFields {
   lastName: string
   username: string
   email: string
-  enablePasswordAuth: boolean
-  enableSMSAuth: boolean
-  enableAuthenticatorAuth: boolean
+  enablePassword: boolean
+  enableSms: boolean
+  enableAuthenticator: boolean
 }
 
 const walletsObject = [
@@ -43,17 +44,16 @@ const walletsObject = [
 export default function KYC() {
   const { enqueueSnackbar } = useSnackbar()
 
-  const { register, handleSubmit, reset, control, formState } =
+  const { register, handleSubmit, setError, formState, reset, control } =
     useForm<FormFields>({
-      mode: 'all',
       defaultValues: {
         firstName: '',
         lastName: '',
         username: '',
         email: '',
-        enablePasswordAuth: false,
-        enableSMSAuth: false,
-        enableAuthenticatorAuth: false
+        enablePassword: false,
+        enableSms: false,
+        enableAuthenticator: false
       }
     })
 
@@ -65,13 +65,13 @@ export default function KYC() {
           throw new Error('Could not get the profile')
         }
         reset({
-          firstName: response.data.first_name,
-          lastName: response.data.last_name,
-          username: response.data.user_name,
+          firstName: response.data.firstName,
+          lastName: response.data.lastName,
+          username: response.data.username,
           email: response.data.email,
-          enablePasswordAuth: response.data.enable_password,
-          enableSMSAuth: response.data.enable_sms,
-          enableAuthenticatorAuth: response.data.enable_authenticator
+          enablePassword: response.data.enablePassword,
+          enableSms: response.data.enableSms,
+          enableAuthenticator: response.data.enableAuthenticator
         })
       })
       .catch((err) => {
@@ -83,17 +83,40 @@ export default function KYC() {
     await userService
       .updateProfile({
         body: {
-          first_name: data.firstName,
-          last_name: data.lastName,
-          user_name: data.username,
-          enable_password: data.enablePasswordAuth,
-          enable_sms: data.enableSMSAuth,
-          enable_authenticator: data.enableAuthenticatorAuth
+          firstName: data.firstName,
+          lastName: data.lastName,
+          username: data.username,
+          enablePassword: data.enablePassword || false,
+          enableSms: data.enableSms || false,
+          enableAuthenticator: data.enableAuthenticator || false
         }
       })
       .then((result) => {
         enqueueSnackbar(result.message, {
-          variant: 'success'
+          variant: result.statusCode === 200 ? 'success' : 'error'
+        })
+
+        if (result.result === 'validation-error') {
+          getFieldIssues(result).forEach((val) => {
+            setError(val.path, {
+              message: val.message
+            })
+          })
+        }
+        if (result.statusCode !== 200) return
+
+        if (result.body?.username) {
+          localStorage.setItem('username', result.body.username)
+        }
+
+        reset({
+          firstName: result.body?.firstName,
+          lastName: result.body?.lastName,
+          username: result.body?.username,
+          email: result.body?.email,
+          enablePassword: result.body?.enablePassword,
+          enableSms: result.body?.enableSms,
+          enableAuthenticator: result.body?.enableAuthenticator
         })
       })
   }
@@ -146,18 +169,22 @@ export default function KYC() {
           autoComplete="off">
           <DashboardForm.InputGroup>
             <DashboardForm.Input
+              error={!!formState.errors.firstName}
               inputProps={{
                 placeholder: 'First name',
                 ...register('firstName')
               }}
             />
             <DashboardForm.Input
+              error={!!formState.errors.lastName}
               inputProps={{ placeholder: 'Last name', ...register('lastName') }}
             />
             <DashboardForm.Input
+              error={!!formState.errors.username}
               inputProps={{ placeholder: 'Username', ...register('username') }}
             />
             <DashboardForm.Input
+              error={!!formState.errors.email}
               inputProps={{
                 placeholder: 'Email',
                 ...register('email'),
@@ -169,7 +196,7 @@ export default function KYC() {
           <DashboardForm.ButtonGroup>
             <Controller
               control={control}
-              name="enablePasswordAuth"
+              name="enablePassword"
               render={({ field, fieldState }) => (
                 <PasswordSwitch
                   isDirty={fieldState.isDirty}
@@ -179,7 +206,7 @@ export default function KYC() {
             />
             <Controller
               control={control}
-              name="enableAuthenticatorAuth"
+              name="enableAuthenticator"
               render={({ field, fieldState }) => (
                 <AuthenticatorSwitch
                   isDirty={fieldState.isDirty}
@@ -189,7 +216,7 @@ export default function KYC() {
             />
             <Controller
               control={control}
-              name="enableSMSAuth"
+              name="enableSms"
               render={({ field, fieldState }) => (
                 <SMSSwitch isDirty={fieldState.isDirty} registerProps={field} />
               )}

@@ -25,7 +25,7 @@ export default function InputField(props: InputParams) {
         <FloatingLabelWrapper {...props.floatingLabelWrapperProps}>
           <StyledInputField {...props.inputProps} placeholder=" " />
           <FloatingLabel className="floating-label">
-            {props.inputProps?.placeholder}
+            {props.inputProps?.placeholder} {props.error}
           </FloatingLabel>
         </FloatingLabelWrapper>
       </StyledInputWrapper>
