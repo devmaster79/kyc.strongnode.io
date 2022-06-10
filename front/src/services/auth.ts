@@ -1,4 +1,4 @@
-import { generateApiCalls } from './utils'
+import { generateApiCalls, Response } from './utils'
 import * as authEndpoints from 'shared/endpoints/auth'
 import axios from 'axios'
 
@@ -8,7 +8,7 @@ const rawCalls = generateApiCalls(authEndpoints)
 function withSettingToken<
   TResponse extends { result: string; token?: string },
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  TCall extends (...args: any[]) => Promise<TResponse>
+  TCall extends (...args: any[]) => Response<TResponse>
 >(apiCall: TCall) {
   return async (
     ...args: Parameters<TCall>

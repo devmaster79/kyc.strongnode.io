@@ -88,7 +88,8 @@ export function AuthenticatorSetupModal({
             {secret && (
               <Secret>
                 <p>
-                  Scan the QR with an Authenticator or type the code manually:{' '}
+                  If you are on mobile and you can&apos;t scan the QR code,
+                  input the following key into your authenticator app:
                 </p>
                 <code>{secret.secret}</code>
               </Secret>

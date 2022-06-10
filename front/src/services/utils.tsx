@@ -1,4 +1,6 @@
 import axios from 'axios'
+import { SnackbarKey, useSnackbar } from 'notistack'
+
 type HTTPVerb = 'get' | 'post' | 'put' | 'delete' | 'patch'
 
 type IRequestData<Body, Params> = {
@@ -6,28 +8,101 @@ type IRequestData<Body, Params> = {
   params?: Params
 } | void
 
+type IMessageWithResult = {
+  message: string
+  result: string
+}
+
+/** A custom promise type */
+export class ApiResponse<TResponse> {
+  constructor(private promise: Promise<TResponse>) {}
+
+  /**
+   * The mandatory catch is useful but fetchAPI will allways resolve the request.
+   * So the rest of the errors are language errors that we can write to the console.
+   * So the catch would be the same everywhere. That's why this "done".
+   */
+  done() {
+    this.promise.catch(console.error)
+  }
+
+  then<TReturnType>(
+    callback: (response: TResponse) => TReturnType
+  ): ApiResponse<TReturnType> {
+    return new ApiResponse(
+      new Promise((resolve) => {
+        this.promise
+          .then((response) => {
+            // eslint-disable-next-line promise/no-callback-in-promise
+            resolve(callback(response))
+          })
+          .catch(console.error)
+      })
+    )
+  }
+
+  /**
+   * If the response has message and result, then we know everything for enquing a snackbar.
+   */
+  thenEnqueueSnackbar(
+    enqueueSnackbar: ReturnType<typeof useSnackbar>['enqueueSnackbar']
+  ): ApiResponse<SnackbarKey> {
+    return this.then((response) => {
+      // This method is hidden when the response don't have this type.
+      // So we can assume it has it:
+      const responseWithMessageAndResult = response as unknown as {
+        message: string
+        result: string
+      }
+      return enqueueSnackbar(responseWithMessageAndResult.message, {
+        variant:
+          responseWithMessageAndResult.result === 'success'
+            ? 'success'
+            : 'error'
+      })
+    })
+  }
+}
+
+/**
+ * A generic Response.
+ * You should use this for types instead of ApiResponse!
+ *
+ * It has an additional feature: If the response type does not have result and message,
+ * the thenEnqueueSnackbar should be hidden.
+ */
+export type Response<T> = T extends IMessageWithResult
+  ? ApiResponse<T>
+  : Omit<ApiResponse<T>, 'thenEnqueueSnackbar'>
+
 /** Get the response data even if the response status is not 2xx */
-export async function fetchAPI<
+export function fetchAPI<
   Body,
   Params,
   RequestData extends IRequestData<Body, Params>,
   ResponseData
->(verb: HTTPVerb, path: string, data: RequestData): Promise<ResponseData> {
-  try {
-    const response = await axios({
-      method: verb,
-      url: path,
-      params: data?.params,
-      data: data?.body
+>(verb: HTTPVerb, path: string, data: RequestData): ApiResponse<ResponseData> {
+  const promise = axios({
+    method: verb,
+    url: path,
+    params: data?.params,
+    data: data?.body
+  })
+  return new ApiResponse(
+    new Promise<ResponseData>((resolve) => {
+      promise
+        .then((response) => {
+          resolve(response.data)
+        })
+        .catch((error) => {
+          if (axios.isAxiosError(error) && error.response) {
+            resolve(error.response.data)
+          } else {
+            console.error('Something went wrong, there is no data: ' + error)
+          }
+        })
     })
-    return response.data
-  } catch (error: unknown) {
-    if (axios.isAxiosError(error) && error.response) {
-      return error.response.data
-    } else {
-      throw new Error('Something went wrong, there is no data: ' + error)
-    }
-  }
+  )
 }
 
 /** The structure of the endpoint definition namespaces */
@@ -61,15 +136,18 @@ export function generateApiCalls<
   const output: {
     [Key in keyof T as Uncapitalize<string & Key>]?: (
       data: Exclude<T[Key]['request'], null>
-    ) => Promise<Exclude<T[Key]['response'], null>>
+    ) => Response<Exclude<T[Key]['response'], null>>
   } = {}
 
   for (const endpointName in endpoints) {
     const endpoint = endpoints[endpointName]
     const lowerEndpointName = uncapitalize(endpointName)
-    output[lowerEndpointName] = async (data) => {
-      return await fetchAPI(endpoints[endpointName].METHOD, endpoint.PATH, data)
-    }
+    // ApiResponse always have the thenEnqueueSnackbar, even if it should not be visible.
+    // Of course this will never be compatible with the "Response" type but that's a helper type that hides the thenEnqueueSnackbar when it is not usable.
+    // so we can safely erase the current type
+    output[lowerEndpointName] = ((data: never) => {
+      return fetchAPI(endpoints[endpointName].METHOD, endpoint.PATH, data)
+    }) as never
   }
 
   return output as unknown as Required<typeof output>

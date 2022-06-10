@@ -45,6 +45,10 @@ module.exports = {
     'no-use-before-define': 'off',
     // it doesn't make any sense
     'promise/always-return': 'off',
+    'promise/catch-or-return': [
+      'error',
+      { terminationMethod: ['catch', 'done'] }
+    ],
     // ts validates implicit anys anyways
     'react/prop-types': 'off',
     // usually not useful

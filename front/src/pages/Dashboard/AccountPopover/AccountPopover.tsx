@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import TextButton from '../../../@ui/Button/TextButton'
-import styled from '@emotion/styled/macro'
 import { AccountPopoverWrapper, AvatarIconWrapper, IconWrapper } from './style'
 import { ConnectButton } from 'components/ConnectButton'
 import { useNavigate } from 'react-router-dom'
@@ -13,11 +12,10 @@ import { useGetTokenBalanceFormatted } from '../../../hooks/useGetTokenBalanceFo
 import { tokenAddressDictionary } from '../../../services/walletService'
 import { CustomTheme } from 'theme'
 import { ConnectWalletModal } from '../../../@ui/Modal/ConnectWalletModal'
-import { useAnimated } from '../../../@ui/utils/useAnimated'
 
 export default function AccountPopover() {
   const navigate = useNavigate()
-  const { account, activateBrowserWallet } = useEthers()
+  const { account } = useEthers()
   const [userName, setUserName] = useState('')
   const [email, setEmail] = useState('')
   const [showModal, setShowModal] = useState(false)
@@ -36,7 +34,7 @@ export default function AccountPopover() {
           setUserName(response.data.firstName + ' ' + response.data.lastName)
         }
       })
-      .catch((error) => console.error(error))
+      .done()
   }, [])
 
   const signOut = () => {
@@ -108,8 +106,3 @@ export default function AccountPopover() {
     </>
   )
 }
-
-const MetamaskBrowserLink = styled.div({
-  marginBottom: '16px',
-  cursor: 'pointer'
-})

@@ -1,6 +1,6 @@
 import Modal from '@ui/Modal/Modal'
 import { useAnimated } from '../utils/useAnimated'
-import React, { ReactNode, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import styled from '@emotion/styled/macro'
 import { IconRectangleButton } from '../Button/IconRectangleButton'
 import { connectWallet } from '../../services/walletService'
