@@ -30,7 +30,6 @@ type CryptoChartProps = {
 type SwitchOption = {
   label: string
   value: number
-  dataKey: string
 }
 
 type ChartDataType = Array<{ timestamp: string; value: string }>
@@ -70,8 +69,8 @@ export const CryptoChart = (props: CryptoChartProps) => {
   ] as SelectorItem[]
 
   const switchOptions = [
-    { label: 'Price', value: 1, dataKey: 'prices' },
-    { label: 'Market Cap', value: 2, dataKey: 'marketCaps' }
+    { label: 'Price', value: 1 },
+    { label: 'Market Cap', value: 2 }
   ] as SwitchOption[]
 
   const [selectedSwitchOption, setSelectedSwitchOption] =
@@ -128,9 +127,7 @@ export const CryptoChart = (props: CryptoChartProps) => {
           <MultiSwitch
             options={switchOptions}
             value={selectedSwitchOption}
-            onChange={(option) => {
-              setSelectedSwitchOption(option)
-            }}
+            onChange={setSelectedSwitchOption}
           />
         )}
         <ChartScopeSelector selectors={chartSelectors} />
