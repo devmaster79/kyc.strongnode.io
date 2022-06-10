@@ -1,5 +1,7 @@
 import styled from '@emotion/styled'
+import { debounce } from '@mui/material'
 import { useEffect, useState } from 'react'
+import breakpoints from 'theme/breakpoints'
 import Media from 'theme/mediaQueries'
 
 export type MultiSwitchProps<
@@ -22,15 +24,11 @@ function MultiSwitch<
   TrackBy extends keyof Option
 >(props: MultiSwitchProps<Option, TrackBy>) {
   const [activeXOffset, setActiveXOffset] = useState<string>('3px')
-  const [windowSize, setWindowSize] = useState(window.innerWidth)
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth)
 
   useEffect(() => {
-    const handleResize = () => {
-      setWindowSize(window.innerWidth)
-    }
-
+    const handleResize = debounce(() => setWindowWidth(window.innerWidth), 200)
     window.addEventListener('resize', handleResize)
-
     return () => window.removeEventListener('resize', handleResize)
   }, [])
   const onSelectValue = async (selectedValue: string) => {
@@ -49,8 +47,7 @@ function MultiSwitch<
   const animBaseMarginOffset = 3
 
   const setXOffset = (index: number) => {
-    const animWidthOffset = windowSize > 600 ? 132 : 112
-    // console.log('window.innerHeight:::', windowSize)
+    const animWidthOffset = windowWidth > breakpoints.values.sm ? 132 : 112
     setActiveXOffset(
       index * animWidthOffset +
         index * animMarginOffset +
