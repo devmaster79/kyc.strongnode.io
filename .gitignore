@@ -8,6 +8,9 @@
 docker/.localstack/*
 docker/.aws/*
 
+.localstack
+.aws
+
 docker/.localstack
 .DS_Store
 .idea/codeStyles/codeStyleConfig.xml
@@ -19,3 +22,9 @@ docker/.localstack
 .idea/shelf/Uncommitted_changes_before_rebase_[Default_Changelist]/shelved.patch
 .idea/shelf/Uncommitted_changes_before_rebase__Default_Changelist_.xml
 .idea/
+
+blockchain/artifacts
+blockchain/cache
+/blockchain/node_modules/
+/blockchain/package-lock.json
+front/src/contracts/generated

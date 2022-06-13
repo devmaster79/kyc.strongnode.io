@@ -8,7 +8,7 @@ import cryptoDataService, {
 import { UserOwnedTokens } from './UserOwned/UserOwnedTokens'
 import { UserOwnedEthereum } from './UserOwned/UserOwnedEthereum'
 import {
-  tokenAddressDictionary,
+  getTokenAddress,
   coinTypesDictionary
 } from '../../services/walletService'
 import { DataSet } from './MainTable/MainTable'
@@ -46,7 +46,7 @@ interface IDataIcon {
 }
 
 interface IOwnedObject {
-  tokenAddress: string
+  tokenAddress: string | undefined
   default: string
   type: string | undefined | boolean
 }
@@ -138,7 +138,7 @@ export const CoinMetrics = (props: CoinMetricsProps) => {
     data.map((token: IGetTokenMetricsObject) => {
       const tokenObject: IFormattedTokenObject = {
         owned: {
-          tokenAddress: tokenAddressDictionary.strongnode,
+          tokenAddress: getTokenAddress(token.token.toLowerCase()),
           default: '-',
           type: coinTypesDictionary[token.token.toLowerCase()]
         },
