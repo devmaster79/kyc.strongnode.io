@@ -50,7 +50,7 @@
 			"description": "",
 			"collectionId": "5222e8f6-a3e7-aa7b-d607-94cde11316d4",
 			"responses": [],
-			"rawModeData": "{\n\t\"telegram_id\": \"@telegramusername\",\n\t\"twitter_id\": \"@twitterusername\",\n\t\"wallet_address\": \"@0xB173CCB9db57862e9D58836a5Ae93e9e60A4aD57\"\n}"
+			"rawModeData": "{\n\t\"telegramId\": \"@telegramusername\",\n\t\"twitterId\": \"@twitterusername\",\n\t\"walletAddress\": \"@0xB173CCB9db57862e9D58836a5Ae93e9e60A4aD57\"\n}"
 		},
 		{
 			"id": "59b4ed92-d788-534b-8f46-6303ae58d0cb",
@@ -143,7 +143,7 @@
 			"description": "",
 			"collectionId": "5222e8f6-a3e7-aa7b-d607-94cde11316d4",
 			"responses": [],
-			"rawModeData": "{\n\t\"investor_name\": \"Oscar Buck\",\n\t\"investor_telegram_id\": \"@investor_telegram_id\",\n\t\"investor_country\": \"Canada\",\n\t\"investor_commitment_amount\": \"500\",\n\t\"investor_wallet_address\": \"0xB173CCB9db57862e9D58836a5Ae93e9e60A4aD57\",\n\t\"investor_email\": \"buckoscarengr@gmail.com\",\n\t\"investor_fund_name\": \"0xOscar\",\n\t\"investor_fund_website\": \"https://kyc.strongnode.io\"\n}"
+			"rawModeData": "{\n\t\"investorName\": \"Oscar Buck\",\n\t\"investorTelegramId\": \"@investorTelegramId\",\n\t\"investorCountry\": \"Canada\",\n\t\"investorCommitmentAmount\": \"500\",\n\t\"investorWalletAddress\": \"0xB173CCB9db57862e9D58836a5Ae93e9e60A4aD57\",\n\t\"investorEmail\": \"buckoscarengr@gmail.com\",\n\t\"investorFundName\": \"0xOscar\",\n\t\"investorFundWebsite\": \"https://kyc.strongnode.io\"\n}"
 		},
 		{
 			"id": "b16efa85-97b8-b409-cbd7-ca8bec37ed1b",
@@ -173,7 +173,7 @@
 			"description": "",
 			"collectionId": "5222e8f6-a3e7-aa7b-d607-94cde11316d4",
 			"responses": [],
-			"rawModeData": "{\n\t\"first_name\": \"TEST\",\n\t\"last_name\": \"TEST\",\n\t\"email\": \"TEST@gmail.com\",\n\t\"user_name\": \"TESTESTSET\",\n\t\"email_verified\": \"false\"\n}"
+			"rawModeData": "{\n\t\"firstName\": \"TEST\",\n\t\"lastName\": \"TEST\",\n\t\"email\": \"TEST@gmail.com\",\n\t\"username\": \"TESTESTSET\",\n\t\"emailVerified\": \"false\"\n}"
 		},
 		{
 			"id": "e9fd9fa9-561b-9d15-b905-442c2e4edd07",
@@ -203,7 +203,7 @@
 			"description": "",
 			"collectionId": "5222e8f6-a3e7-aa7b-d607-94cde11316d4",
 			"responses": [],
-			"rawModeData": "{\n\t\"password_token\": \"3e6c5bdfa69288a5ae78328b64b2129aa2248660\",\n\t\"password\": \"234234234\"\n}"
+			"rawModeData": "{\n\t\"passwordToken\": \"3e6c5bdfa69288a5ae78328b64b2129aa2248660\",\n\t\"password\": \"234234234\"\n}"
 		}
 	]
 }

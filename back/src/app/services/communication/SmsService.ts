@@ -14,7 +14,7 @@ export class SmsService {
    */
   async send(
     destinationNumber: string,
-    message: string,
+    rawMessage: string,
     messageType: MessageType = 'TRANSACTIONAL'
   ): Promise<void> {
     const params: SendMessagesRequest = {
@@ -29,7 +29,7 @@ export class SmsService {
         },
         MessageConfiguration: {
           SMSMessage: {
-            Body: message,
+            Body: rawMessage,
             Keyword: SMS_CONFIG.registeredKeyword,
             MessageType: messageType,
             OriginationNumber: SMS_CONFIG.origin,

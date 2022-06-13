@@ -9,10 +9,10 @@ export interface IGetTokenMetricsData {
 export interface IGetTokenMetricsObject {
   id: number
   image: IGetTokenMetricsImageObject
-  day_change: string
-  market_cap: string
+  dayChange: string
+  marketCap: string
   token: string
-  usd_value: string
+  usdValue: string
   updatedAt: string
   createdAt: string
 }
@@ -24,7 +24,7 @@ export interface IGetTokenMetricsImageObject {
 }
 
 export interface IGetChartData {
-  market_caps: Array<Array<string>>
+  marketCaps: Array<Array<string>>
   prices: Array<Array<string>>
   total_volumes: Array<Array<string>>
 }

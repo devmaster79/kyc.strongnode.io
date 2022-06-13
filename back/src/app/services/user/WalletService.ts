@@ -10,19 +10,19 @@ export class WalletService {
   async addOrUpdateWallet(email: string, wallet: string) {
     const user = await this.__getUser(email)
     const userWallets = await this.__userWalletsRepository.findAll({
-      where: { user_id: user.id, wallet }
+      where: { userId: user.id, wallet }
     })
 
     if (userWallets.length > 0) {
       await this.__userWalletsRepository.update(
         { wallet },
-        { where: { user_id: user.id, wallet } }
+        { where: { userId: user.id, wallet } }
       )
       return 'updated'
     } else {
       await this.__userWalletsRepository.create({
         wallet,
-        user_id: user.id
+        userId: user.id
       })
       return 'created'
     }
@@ -31,7 +31,7 @@ export class WalletService {
   async getUserWallets(email: string) {
     const user = await this.__getUser(email)
     const userWallets = await this.__userWalletsRepository.findAll({
-      where: { user_id: user.id }
+      where: { userId: user.id }
     })
     const wallets = userWallets.map((wallet) => wallet.wallet)
     return { email, wallets }

@@ -9,9 +9,9 @@ describe('Password authentication', () => {
     let userRecord = {
       email: 'test@test.com',
       password: '',
-      enable_password: false,
-      enable_authenticator: false,
-      enable_sms: false
+      enablePassword: false,
+      enableAuthenticator: false,
+      enableSms: false
     }
 
     const fakeUserRepository = {
@@ -30,13 +30,13 @@ describe('Password authentication', () => {
     )
 
     await passwordAuthService.setPassword(userRecord.email, 'something')
-    assert.equal(userRecord.enable_password, true)
+    assert.equal(userRecord.enablePassword, true)
     const authResult = await passwordAuthService.authByPassword(
       userRecord.email,
       'something'
     )
     assert.equal(typeof authResult, 'string')
     await passwordAuthService.removePassword(userRecord.email)
-    assert.equal(userRecord.enable_password, false)
+    assert.equal(userRecord.enablePassword, false)
   })
 })

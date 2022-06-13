@@ -1,5 +1,5 @@
 import useTheme from '@mui/material/styles/useTheme'
-import { CSSProperties, SVGProps } from 'react'
+import { CSSProperties } from 'react'
 import { Icons } from './CustomIcons'
 
 export type IconProps = {

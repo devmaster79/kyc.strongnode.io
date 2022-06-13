@@ -77,10 +77,10 @@ exports.refreshTokenDataList = async (req, res) => {
     for (const el of Object.keys(data)) {
       const tokenUpdate = await coinMetricsData.update(
         {
-          usd_value: Number(data[el].usd).toFixed(30),
-          market_cap: Number(data[el].usd_market_cap).toFixed(30),
-          day_volume: Number(data[el].usd_24h_vol).toFixed(30),
-          day_change: Number(data[el].usd_24h_change).toFixed(30)
+          usdValue: Number(data[el].usd).toFixed(30),
+          marketCap: Number(data[el].usd_market_cap).toFixed(30),
+          dayVolume: Number(data[el].usd_24h_vol).toFixed(30),
+          dayChange: Number(data[el].usd_24h_change).toFixed(30)
         },
         { where: { token: el } }
       )
@@ -90,10 +90,10 @@ exports.refreshTokenDataList = async (req, res) => {
 
         await coinMetricsData.create({
           token: el,
-          usd_value: Number(data[el].usd).toFixed(30),
-          market_cap: Number(data[el].usd_market_cap).toFixed(30),
-          day_volume: Number(data[el].usd_24h_vol).toFixed(30),
-          day_change: Number(data[el].usd_24h_change).toFixed(30),
+          usdValue: Number(data[el].usd).toFixed(30),
+          marketCap: Number(data[el].usd_market_cap).toFixed(30),
+          dayVolume: Number(data[el].usd_24h_vol).toFixed(30),
+          dayChange: Number(data[el].usd_24h_change).toFixed(30),
           image: tokenDetails.data.image
         })
       }

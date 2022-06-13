@@ -1,80 +1,93 @@
 import styled from '@emotion/styled'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import Media from 'theme/mediaQueries'
 
 export type MultiSwitchProps<
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  Option extends Record<string, any>,
-  TrackBy extends keyof Option
+  TOption extends { [k: string]: string | number },
+  TLabelKey extends keyof TOption,
+  TValueKey extends keyof TOption
 > = {
-  options: Option[]
+  options: TOption[]
   /** the column that the MultiSwitch will use as value */
-  trackBy: TrackBy
+  trackBy?: TValueKey
   /** the column that the MultiSwitch will show */
-  searchBy: keyof Option
-  value: Option
-  onChange: (selectedValue: Option) => void
+  searchBy?: TLabelKey
+  value: TOption
+  onChange: (selectedValue: TOption) => void
 }
 
+const ANIMATION_DURATION_MS = 250
+const BUTTON_WIDTH_PX = 132
+const BUTTON_MARGIN_PX = 3
+
 function MultiSwitch<
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  Option extends Record<string, any>,
-  TrackBy extends keyof Option
->(props: MultiSwitchProps<Option, TrackBy>) {
-  const [activeXOffset, setActiveXOffset] = useState<string>('3px')
-
-  const onSelectValue = async (selectedValue: string) => {
-    const selectedIndex = props.options.findIndex(
-      (option) => option[props.searchBy] === selectedValue
+  TOption extends { [k: string]: string | number },
+  TLabelKey extends string,
+  TValueKey extends string
+>(
+  props: TValueKey extends void
+    ? MultiSwitchProps<
+        { label: string | number; value: string | number },
+        'label',
+        'value'
+      >
+    : MultiSwitchProps<TOption, TLabelKey, TValueKey>
+) {
+  const trackBy = props.trackBy || 'value'
+  const searchBy = props.searchBy || 'label'
+  const [animationTimeout, setAnimationTimeout] = useState<
+    NodeJS.Timeout | undefined
+  >(undefined)
+  const [activeItem, setActiveItem] = useState(() => {
+    return props.options.findIndex(
+      (option) => option[trackBy] === props.value[trackBy]
     )
-    setXOffset(selectedIndex)
+  })
 
-    // waits until the animation gets done
-    await new Promise((resolve) => setTimeout(resolve, 350))
-
-    props.onChange(props.options[selectedIndex])
+  /**
+   * Calls onChange after the animation is done
+   * @param key of the options array
+   */
+  const onSelectValue = (key: number) => {
+    clearTimeout(animationTimeout)
+    setActiveItem(key)
+    setAnimationTimeout(
+      setTimeout(() => {
+        props.onChange(props.options[key])
+      }, ANIMATION_DURATION_MS)
+    )
   }
 
-  const animWidthOffset = 132
-  const animMarginOffset = 6
-  const animBaseMarginOffset = 3
+  /**
+   * In case of unmount, reamove the active timeout as well.
+   */
+  useEffect(() => {
+    return () => {
+      clearTimeout(animationTimeout)
+    }
+  })
 
-  const setXOffset = (index: number) => {
-    setActiveXOffset(
-      index * animWidthOffset +
-        index * animMarginOffset +
-        animBaseMarginOffset +
-        'px'
-    )
-  }
+  const activeXOffset =
+    activeItem * BUTTON_WIDTH_PX +
+    activeItem * BUTTON_MARGIN_PX * 2 +
+    BUTTON_MARGIN_PX
 
   return (
     <SelectWrapper>
-      <AnimatedBackground style={{ left: activeXOffset }} />
+      <AnimatedBackground style={{ left: `${activeXOffset}px` }} />
       <ul>
-        {props.options.map((option) => (
+        {props.options.map((option, key) => (
           <li
-            key={option[props.trackBy]}
-            value={option[props.trackBy]}
-            className={
-              props.value &&
-              option[props.trackBy] === props.value[props.trackBy]
-                ? 'active'
-                : ''
-            }
-            onClick={() => {
-              onSelectValue(option[props.searchBy])
-            }}>
-            {option[props.searchBy]}
+            key={option[trackBy]}
+            value={option[trackBy]}
+            className={key === activeItem ? 'active' : ''}
+            onClick={() => onSelectValue(key)}>
+            {option[searchBy]}
           </li>
         ))}
       </ul>
     </SelectWrapper>
   )
-}
-
-MultiSwitch.defaultProps = {
-  trackBy: 'value',
-  searchBy: 'label'
 }
 
 export default MultiSwitch
@@ -85,44 +98,48 @@ const SelectWrapper = styled.div((props) => ({
   border: `1px solid ${props.theme.palette.border.light}`,
   borderRadius: '126px',
   width: 'fit-content',
+  position: 'relative',
+  userSelect: 'none',
   ul: {
     display: 'flex',
     listStyleType: 'none',
 
     li: {
+      zIndex: 10,
       padding: '14px 0',
       borderRadius: '92px',
-      minWidth: '132px',
+      minWidth: `${BUTTON_WIDTH_PX}px`,
       textAlign: 'center',
       fontSize: '14px',
       textTransform: 'uppercase',
       fontWeight: '400',
-      margin: '3px',
+      margin: `${BUTTON_MARGIN_PX}px`,
       color: props.theme.palette.text.secondary,
       cursor: 'pointer',
-      backgroundColor: 'none',
-      transition: '500ms background-color'
+      backgroundColor: 'none'
     }
   },
 
   '.active': {
-    background: 'linear-gradient(90.39deg, #aa1fec 0.24%, #7a3bfe 101.6%)',
-    backgroundColor: '#7a3bfe',
-    color: props.theme.palette.button.text
+    color: props.theme.palette.button.text,
+    zIndex: 10
   }
 }))
 
 const AnimatedBackground = styled.div({
-  width: '132px',
+  width: `${BUTTON_WIDTH_PX}px`,
   height: '49px',
   borderRadius: '92px',
   position: 'absolute',
   top: '50%',
   transform: 'translateY(-50%)',
-  left: '3px',
+  left: `${BUTTON_MARGIN_PX}px`,
   background: 'linear-gradient(90.39deg, #aa1fec 0.24%, #7a3bfe 101.6%)',
   backgroundColor: '#7a3bfe',
-  transition: '250ms ease',
+  transition: `${ANIMATION_DURATION_MS}ms ease`,
   zIndex: 8,
-  pointerEvents: 'none'
+  pointerEvents: 'none',
+  [Media.phone]: {
+    width: '112px'
+  }
 })

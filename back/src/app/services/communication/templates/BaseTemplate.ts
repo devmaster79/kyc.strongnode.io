@@ -2,8 +2,8 @@
 // https://marketplace.visualstudio.com/items?itemName=Tobermory.es6-string-html
 
 export interface TemplateParams {
-  body: string
-  title: string
+  rawBody: string
+  rawTitle: string
 }
 
 export interface Sendable<Params> {
@@ -11,11 +11,14 @@ export interface Sendable<Params> {
   renderBody(p: Params): string
 }
 
-export const template = ({ body, title }: TemplateParams) => /*html*/ `<html>
+export const template = ({
+  rawBody,
+  rawTitle
+}: TemplateParams) => /*html*/ `<html>
   <head>
     <meta name="viewport" content="width=device-width" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>${title}</title>
+    <title>${rawTitle}</title>
     <style>
       img {
         border: none;
@@ -363,7 +366,7 @@ export const template = ({ body, title }: TemplateParams) => /*html*/ `<html>
                   >
                     <tr>
                       <td>
-                        ${body}
+                        ${rawBody}
                       </td>
                     </tr>
                   </table>

@@ -2,12 +2,12 @@ import { User } from 'app/models/user.model'
 
 type UpdateableUserFields = {
   email: string
-  first_name: string
-  last_name: string
-  user_name: string
-  enable_authenticator: boolean
-  enable_sms: boolean
-  enable_password: boolean
+  firstName: string
+  lastName: string
+  username: string
+  enableAuthenticator: boolean
+  enableSms: boolean
+  enablePassword: boolean
 }
 type NonUpdateableUserFields = Omit<User, keyof UpdateableUserFields>
 type UpdateableWithNonUpdateableUserFields = UpdateableUserFields & {
@@ -24,12 +24,12 @@ export class ProfileService {
     if (user) {
       return {
         email,
-        user_name: user.user_name,
-        first_name: user.first_name,
-        last_name: user.last_name,
-        enable_authenticator: user.enable_authenticator,
-        enable_sms: user.enable_sms,
-        enable_password: user.enable_password
+        username: user.username,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        enableAuthenticator: user.enableAuthenticator,
+        enableSms: user.enableSms,
+        enablePassword: user.enablePassword
       }
     } else {
       throw new Error('Could not find the user')
@@ -38,25 +38,29 @@ export class ProfileService {
 
   async update(
     email: string,
-    user_name: string,
+    username: string,
     newValues: Partial<UpdateableWithNonUpdateableUserFields>
   ) {
     const data = {
       email: newValues.email,
-      first_name: newValues.first_name,
-      last_name: newValues.last_name,
-      user_name: newValues.user_name,
-      enable_authenticator: newValues.enable_authenticator,
-      enable_sms: newValues.enable_sms,
-      enable_password: newValues.enable_password
+      firstName: newValues.firstName,
+      lastName: newValues.lastName,
+      username: newValues.username,
+      enableAuthenticator: newValues.enableAuthenticator,
+      enableSms: newValues.enableSms,
+      enablePassword: newValues.enablePassword
     }
 
     if (newValues.email && email !== newValues.email) {
-      return 'unimplemented'
+      return { result: 'unimplemented' }
     }
 
-    if (newValues.user_name && user_name !== newValues.user_name) {
-      return 'unimplemented'
+    if (newValues.username && username !== newValues.username) {
+      const username = newValues.username
+      const user = await this.__userRepository.findOne({
+        where: { username: username }
+      })
+      if (user) return { result: 'username-is-already-taken' }
     }
 
     const updateResult = await this.__userRepository.update(data, {
@@ -66,7 +70,10 @@ export class ProfileService {
     if (updateResult[0] !== 1) {
       throw new Error(`Could not find user with email: ${email}`)
     }
-
-    return 'success'
+    const user = await this.get(newValues.email || email)
+    return {
+      result: 'success',
+      modifiedUser: user
+    }
   }
 }

@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import styled from '@emotion/styled/macro'
 import { XAxisFormat } from './BaseChart'
+import Media from 'theme/mediaQueries'
 
 export type SelectorItem = {
   title: XAxisFormat
@@ -77,6 +78,9 @@ const SelectorWrapper = styled.div({
 
   [`${SelectorButton}:first-child`]: {
     marginLeft: '0px'
+  },
+  [Media.tablet]: {
+    margin: 'auto'
   }
 })
 

@@ -2,7 +2,12 @@ import styled from '@emotion/styled'
 
 export const TableWrapper = styled.div({
   overflow: 'auto',
-  height: '400px'
+  height: '400px',
+  scrollbarWidth: 'none',
+  msOverflowStyle: 'none',
+  '&::-webkit-scrollbar': {
+    display: 'none'
+  }
 })
 
 export const Table = styled.table((props) => ({

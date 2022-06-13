@@ -2,7 +2,7 @@ import { Model, DataTypes, Sequelize } from 'sequelize'
 
 export interface IWalletObject {
   id: number
-  user_id: number
+  userId: number
   wallet: string
   createdAt: Date
   updatedAt: Date
@@ -10,7 +10,7 @@ export interface IWalletObject {
 
 export class UserWallets extends Model {
   public id!: number
-  public user_id!: number
+  public userId!: number
   public wallet!: string
   public readonly createdAt!: Date
   public readonly updatedAt!: Date
@@ -19,7 +19,7 @@ export class UserWallets extends Model {
 export const create = (sequelize: Sequelize) =>
   UserWallets.init(
     {
-      user_id: {
+      userId: {
         type: DataTypes.INTEGER,
         references: { model: 'users', key: 'id' }
       },

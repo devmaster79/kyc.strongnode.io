@@ -2,9 +2,9 @@ import { Model, DataTypes, Sequelize } from 'sequelize'
 
 export class History extends Model {
   public id!: number
-  public user_name!: string
-  public action_type!: 'vested' | 'earned' | 'unlocked' | 'withdrawn'
-  public token_amount!: string
+  public username!: string
+  public actionType!: 'vested' | 'earned' | 'unlocked' | 'withdrawn'
+  public tokenAmount!: string
   public date!: string
   public readonly createdAt!: Date
   public readonly updatedAt!: Date
@@ -12,13 +12,13 @@ export class History extends Model {
 export const create = (sequelize: Sequelize) =>
   History.init(
     {
-      user_name: {
+      username: {
         type: DataTypes.STRING
       },
-      action_type: {
+      actionType: {
         type: DataTypes.ENUM('vested', 'earned', 'unlocked', 'withdrawn')
       },
-      token_amount: {
+      tokenAmount: {
         type: DataTypes.STRING
       },
       date: {

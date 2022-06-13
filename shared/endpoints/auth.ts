@@ -32,9 +32,9 @@ export namespace Register {
   export const METHOD = 'post'
   export const PATH = '/api/auth/register'
   export const schema = z.object({
-    user_name: userNameRule,
-    first_name: z.string(),
-    last_name: z.string()
+    username: userNameRule,
+    firstName: z.string(),
+    lastName: z.string()
   })
   export type Request = { body: z.infer<typeof schema> }
   export type Response =

@@ -13,12 +13,12 @@ describe('Email Authentication', () => {
   const tokenService = new TokenService()
   it('should work for registered users', async () => {
     let userRecord = {
-      user_name: 'test',
+      username: 'test',
       email: 'test@test.com',
       password: '',
-      enable_password: false,
-      enable_authenticator: false,
-      enable_sms: false
+      enablePassword: false,
+      enableAuthenticator: false,
+      enableSms: false
     }
     const fakeUserRepository = {
       async findOne() {
@@ -38,7 +38,7 @@ describe('Email Authentication', () => {
         let decoded = tokenService.decode(token, [MODE_FULL])
         assert.notEqual(decoded, null)
         assert.equal(decoded.email, userRecord.email)
-        assert.equal(decoded.user_name, userRecord.user_name)
+        assert.equal(decoded.username, userRecord.username)
       }
     }
     const emailAuthService = new EmailAuthService(
@@ -52,12 +52,12 @@ describe('Email Authentication', () => {
 
   it('should work for registered users with 2fa', async () => {
     let userRecord = {
-      user_name: 'test',
+      username: 'test',
       email: 'test@test.com',
       password: '',
-      enable_password: true,
-      enable_authenticator: true,
-      enable_sms: true
+      enablePassword: true,
+      enableAuthenticator: true,
+      enableSms: true
     }
     const fakeUserRepository = {
       async findOne() {
@@ -77,7 +77,7 @@ describe('Email Authentication', () => {
         let decoded = tokenService.decode(token, [MODE_2FA])
         assert.notEqual(decoded, null)
         assert.equal(decoded.email, userRecord.email)
-        assert.equal(decoded.user_name, userRecord.user_name)
+        assert.equal(decoded.username, userRecord.username)
       }
     }
     const emailAuthService = new EmailAuthService(
@@ -107,7 +107,7 @@ describe('Email Authentication', () => {
         let decoded = tokenService.decode(token, [MODE_REGISTRATION])
         assert.notEqual(decoded, null)
         assert.equal(decoded.email, email)
-        assert.equal(decoded.user_name, null)
+        assert.equal(decoded.username, null)
       }
     }
     const emailAuthService = new EmailAuthService(

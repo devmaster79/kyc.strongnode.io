@@ -10,16 +10,19 @@ import { WalletCarousel } from './WalletCarousel'
 import * as ProgressCircleSteps from '@ui/Dashboard/ProgressCircleSteps'
 import { Banner } from '../../../@ui/Banner/Banner'
 import { useSnackbar } from 'notistack'
+import { getFieldIssues } from 'utils/FormUtils'
 import Media from './../../../theme/mediaQueries'
+import authService from 'services/auth'
+import { Response } from 'services/utils'
 
 interface FormFields {
   firstName: string
   lastName: string
   username: string
   email: string
-  enablePasswordAuth: boolean
-  enableSMSAuth: boolean
-  enableAuthenticatorAuth: boolean
+  enablePassword: boolean
+  enableSms: boolean
+  enableAuthenticator: boolean
 }
 
 const walletsObject = [
@@ -43,17 +46,16 @@ const walletsObject = [
 export default function KYC() {
   const { enqueueSnackbar } = useSnackbar()
 
-  const { register, handleSubmit, reset, control, formState } =
+  const { register, handleSubmit, setError, formState, reset, control } =
     useForm<FormFields>({
-      mode: 'all',
       defaultValues: {
         firstName: '',
         lastName: '',
         username: '',
         email: '',
-        enablePasswordAuth: false,
-        enableSMSAuth: false,
-        enableAuthenticatorAuth: false
+        enablePassword: false,
+        enableSms: false,
+        enableAuthenticator: false
       }
     })
 
@@ -65,37 +67,56 @@ export default function KYC() {
           throw new Error('Could not get the profile')
         }
         reset({
-          firstName: response.data.first_name,
-          lastName: response.data.last_name,
-          username: response.data.user_name,
+          firstName: response.data.firstName,
+          lastName: response.data.lastName,
+          username: response.data.username,
           email: response.data.email,
-          enablePasswordAuth: response.data.enable_password,
-          enableSMSAuth: response.data.enable_sms,
-          enableAuthenticatorAuth: response.data.enable_authenticator
+          enablePassword: response.data.enablePassword,
+          enableSms: response.data.enableSms,
+          enableAuthenticator: response.data.enableAuthenticator
         })
       })
-      .catch((err) => {
-        console.error(err)
-      })
+      .done()
   }, [reset])
 
-  const onSubmit: SubmitHandler<FormFields> = async (data) => {
-    await userService
+  const onSubmit: SubmitHandler<FormFields> = (data) => {
+    // eslint-disable-next-line promise/catch-or-return
+    userService
       .updateProfile({
         body: {
-          first_name: data.firstName,
-          last_name: data.lastName,
-          user_name: data.username,
-          enable_password: data.enablePasswordAuth,
-          enable_sms: data.enableSMSAuth,
-          enable_authenticator: data.enableAuthenticatorAuth
+          firstName: data.firstName,
+          lastName: data.lastName,
+          username: data.username,
+          enablePassword: data.enablePassword || false,
+          enableSms: data.enableSms || false,
+          enableAuthenticator: data.enableAuthenticator || false
         }
       })
-      .then((result) => {
-        enqueueSnackbar(result.message, {
-          variant: 'success'
-        })
+      .then((response) => {
+        switch (response.result) {
+          case 'validation-error':
+            getFieldIssues(response).forEach((val) => {
+              setError(val.path, {
+                message: val.message
+              })
+            })
+            break
+          case 'success':
+            localStorage.setItem('username', response.body.username)
+            reset({
+              firstName: response.body?.firstName,
+              lastName: response.body?.lastName,
+              username: response.body?.username,
+              email: response.body?.email,
+              enablePassword: response.body?.enablePassword,
+              enableSms: response.body?.enableSms,
+              enableAuthenticator: response.body?.enableAuthenticator
+            })
+        }
+        return response
       })
+      .thenEnqueueSnackbar(enqueueSnackbar)
+      .done()
   }
 
   return (
@@ -146,18 +167,22 @@ export default function KYC() {
           autoComplete="off">
           <DashboardForm.InputGroup>
             <DashboardForm.Input
+              error={!!formState.errors.firstName}
               inputProps={{
                 placeholder: 'First name',
                 ...register('firstName')
               }}
             />
             <DashboardForm.Input
+              error={!!formState.errors.lastName}
               inputProps={{ placeholder: 'Last name', ...register('lastName') }}
             />
             <DashboardForm.Input
+              error={!!formState.errors.username}
               inputProps={{ placeholder: 'Username', ...register('username') }}
             />
             <DashboardForm.Input
+              error={!!formState.errors.email}
               inputProps={{
                 placeholder: 'Email',
                 ...register('email'),
@@ -166,32 +191,64 @@ export default function KYC() {
             />
           </DashboardForm.InputGroup>
           <DashboardForm.Hr />
+
+          {/*
+            Note that the switches below have their own API calls. We use it in this form for just populating their values.
+            This however limit their modal's abilities, because forms in forms are not valid, and buttons in forms submit the form by default.
+            So keep attention for this.
+            We cannot move them out because in the UI they are above the "Update" button, and manually submitting the form will be more complicated.
+            Currently the best we can do is this.
+          */}
           <DashboardForm.ButtonGroup>
             <Controller
               control={control}
-              name="enablePasswordAuth"
+              name="enablePassword"
               render={({ field, fieldState }) => (
                 <PasswordSwitch
                   isDirty={fieldState.isDirty}
-                  registerProps={field}
+                  registerProps={{
+                    ...field,
+                    onChange: withDisableOnTurningOff(
+                      field.onChange,
+                      enqueueSnackbar,
+                      authService.disablePasswordAuth
+                    )
+                  }}
                 />
               )}
             />
             <Controller
               control={control}
-              name="enableAuthenticatorAuth"
+              name="enableAuthenticator"
               render={({ field, fieldState }) => (
                 <AuthenticatorSwitch
                   isDirty={fieldState.isDirty}
-                  registerProps={field}
+                  registerProps={{
+                    ...field,
+                    onChange: withDisableOnTurningOff(
+                      field.onChange,
+                      enqueueSnackbar,
+                      authService.disableAuthenticatorAuth
+                    )
+                  }}
                 />
               )}
             />
             <Controller
               control={control}
-              name="enableSMSAuth"
+              name="enableSms"
               render={({ field, fieldState }) => (
-                <SMSSwitch isDirty={fieldState.isDirty} registerProps={field} />
+                <SMSSwitch
+                  isDirty={fieldState.isDirty}
+                  registerProps={{
+                    ...field,
+                    onChange: withDisableOnTurningOff(
+                      field.onChange,
+                      enqueueSnackbar,
+                      authService.disableSMSAuth
+                    )
+                  }}
+                />
               )}
             />
           </DashboardForm.ButtonGroup>
@@ -205,6 +262,25 @@ export default function KYC() {
       <WalletCarousel walletProps={walletsObject} />
     </Container>
   )
+}
+
+/**
+ * An onChange decorator HOF that catches turning offs and in that case, it will disable the auth method for the user.
+ * @param onChange The function that will be decorated
+ * @param enqueueSnackbar Snackbar handler for messages about the result
+ * @param disableEndpoint The endpoint which this function will call. Assuming that there will be no promise rejections, which is true for the the most the API calls.
+ */
+function withDisableOnTurningOff(
+  onChange: (value: boolean) => void,
+  enqueueSnackbar: ReturnType<typeof useSnackbar>['enqueueSnackbar'],
+  disableEndpoint: () => Response<{ message: string; result: string }>
+) {
+  return (value: boolean) => {
+    onChange(value)
+    if (!value) {
+      disableEndpoint().thenEnqueueSnackbar(enqueueSnackbar)
+    }
+  }
 }
 
 const Container = styled.div({

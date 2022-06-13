@@ -25,7 +25,7 @@ export default function InputField(props: InputParams) {
         <FloatingLabelWrapper {...props.floatingLabelWrapperProps}>
           <StyledInputField {...props.inputProps} placeholder=" " />
           <FloatingLabel className="floating-label">
-            {props.inputProps?.placeholder}
+            {props.inputProps?.placeholder} {props.error}
           </FloatingLabel>
         </FloatingLabelWrapper>
       </StyledInputWrapper>
@@ -99,7 +99,9 @@ export const StyledInputWrapper = styled.div<{
   opacity: props.disabled ? '0.5' : '1',
 
   svg: {
-    marginLeft: '8px'
+    marginLeft: '8px',
+    height: '16px',
+    width: '16px'
   }
 }))
 

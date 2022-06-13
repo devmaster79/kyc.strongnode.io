@@ -2,45 +2,45 @@ import { Model, DataTypes, Sequelize } from 'sequelize'
 
 export class User extends Model {
   public id!: number
-  public first_name!: string
-  public last_name!: string
+  public firstName!: string
+  public lastName!: string
   public email!: string
-  public user_name!: string
-  public profile_img_type!: string
-  public profile_img_url!: string
-  public profile_img_data!: string
-  public profile_img_key!: string
-  public email_verified!: boolean
+  public username!: string
+  public profileImgType!: string
+  public profileImgUrl!: string
+  public profileImgData!: string
+  public profileImgKey!: string
+  public emailVerified!: boolean
   public token!: string
-  public password_token!: string
+  public passwordToken!: string
   public password!: string
   public smscode!: string
-  public authenticator_qr_secret!: string
-  public phone_number!: string
-  public enable_password!: boolean
-  public enable_authenticator!: boolean
-  public enable_sms!: boolean
-  public telegram_id!: string
-  public twitter_id!: string
-  public wallet_address!: string
-  public investor_name!: string
-  public investor_telegram_id!: string
-  public investor_country!: string
-  public investor_commitment_amount!: string
-  public investor_wallet_address!: string
-  public investor_email!: string
-  public investor_fund_name!: string
-  public investor_fund_website!: string
-  public vested_amount!: string
-  public locked_bonus_amount!: string
-  public earned_amount!: string
-  public lockedup_amount!: string
-  public withdrawn_total_amount!: string
-  public remaining_total_amount!: string
-  public purchased_date!: string
-  public purchased_round!: string
-  public purchased_total!: string
-  public investment_amount!: string
+  public authenticatorQrSecret!: string
+  public phoneNumber!: string
+  public enablePassword!: boolean
+  public enableAuthenticator!: boolean
+  public enableSms!: boolean
+  public telegramId!: string
+  public twitterId!: string
+  public walletAddress!: string
+  public investorName!: string
+  public investorTelegramId!: string
+  public investorCountry!: string
+  public investorCommitmentAmount!: string
+  public investorWalletAddress!: string
+  public investorEmail!: string
+  public investorFundName!: string
+  public investorFundWebsite!: string
+  public vestedAmount!: string
+  public lockedBonusAmount!: string
+  public earnedAmount!: string
+  public lockedupAmount!: string
+  public withdrawnTotalAmount!: string
+  public remainingTotalAmount!: string
+  public purchasedDate!: string
+  public purchasedRound!: string
+  public purchasedTotal!: string
+  public investmentAmount!: string
 
   public readonly createdAt!: Date
   public readonly updatedAt!: Date
@@ -49,37 +49,37 @@ export class User extends Model {
 export const create = (sequelize: Sequelize) =>
   User.init(
     {
-      first_name: {
+      firstName: {
         type: DataTypes.STRING
       },
-      last_name: {
+      lastName: {
         type: DataTypes.STRING
       },
       email: {
         type: DataTypes.STRING
       },
-      user_name: {
+      username: {
         type: DataTypes.STRING
       },
-      profile_img_type: {
+      profileImgType: {
         type: DataTypes.STRING
       },
-      profile_img_url: {
+      profileImgUrl: {
         type: DataTypes.STRING
       },
-      profile_img_data: {
+      profileImgData: {
         type: DataTypes.BLOB('long')
       },
-      profile_img_key: {
+      profileImgKey: {
         type: DataTypes.STRING
       },
-      email_verified: {
+      emailVerified: {
         type: DataTypes.BOOLEAN
       },
       token: {
         type: DataTypes.STRING
       },
-      password_token: {
+      passwordToken: {
         type: DataTypes.STRING
       },
       password: {
@@ -88,82 +88,82 @@ export const create = (sequelize: Sequelize) =>
       smscode: {
         type: DataTypes.STRING
       },
-      authenticator_qr_secret: {
+      authenticatorQrSecret: {
         type: DataTypes.STRING
       },
-      phone_number: {
+      phoneNumber: {
         type: DataTypes.STRING
       },
-      enable_password: {
+      enablePassword: {
         type: DataTypes.BOOLEAN
       },
-      enable_authenticator: {
+      enableAuthenticator: {
         type: DataTypes.BOOLEAN
       },
-      enable_sms: {
+      enableSms: {
         type: DataTypes.BOOLEAN
       },
-      telegram_id: {
+      telegramId: {
         type: DataTypes.STRING
       },
-      twitter_id: {
+      twitterId: {
         type: DataTypes.STRING
       },
-      wallet_address: {
+      walletAddress: {
         type: DataTypes.STRING
       },
-      investor_name: {
+      investorName: {
         type: DataTypes.STRING
       },
-      investor_telegram_id: {
+      investorTelegramId: {
         type: DataTypes.STRING
       },
-      investor_country: {
+      investorCountry: {
         type: DataTypes.STRING
       },
-      investor_commitment_amount: {
+      investorCommitmentAmount: {
         type: DataTypes.STRING
       },
-      investor_wallet_address: {
+      investorWalletAddress: {
         type: DataTypes.STRING
       },
-      investor_email: {
+      investorEmail: {
         type: DataTypes.STRING
       },
-      investor_fund_name: {
+      investorFundName: {
         type: DataTypes.STRING
       },
-      investor_fund_website: {
+      investorFundWebsite: {
         type: DataTypes.STRING
       },
-      vested_amount: {
+      vestedAmount: {
         type: DataTypes.STRING
       },
-      locked_bonus_amount: {
+      lockedBonusAmount: {
         type: DataTypes.STRING
       },
-      earned_amount: {
+      earnedAmount: {
         type: DataTypes.STRING
       },
-      lockedup_amount: {
+      lockedupAmount: {
         type: DataTypes.STRING
       },
-      withdrawn_total_amount: {
+      withdrawnTotalAmount: {
         type: DataTypes.STRING
       },
-      remaining_total_amount: {
+      remainingTotalAmount: {
         type: DataTypes.STRING
       },
-      purchased_date: {
+      purchasedDate: {
         type: DataTypes.DATE
       },
-      purchased_round: {
+      purchasedRound: {
         type: DataTypes.STRING
       },
-      purchased_total: {
+      purchasedTotal: {
         type: DataTypes.STRING
       },
-      investment_amount: {
+      investmentAmount: {
         type: DataTypes.STRING
       }
     },

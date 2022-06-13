@@ -23,7 +23,7 @@ class AuthenticatorAuthService {
     const secret = speakeasy.generateSecret({ name: 'StrongNode' })
     const qrcode = await QRCode.toDataURL(secret.otpauth_url)
 
-    const data = { authenticator_qr_secret: secret.base32 }
+    const data = { authenticatorQrSecret: secret.base32 }
     const result = await this.__userRepository.update(data, {
       where: { email }
     })
@@ -43,13 +43,13 @@ class AuthenticatorAuthService {
   async activateAuthenticatorAuth(email, token) {
     const user = await this.__userRepository.findOne({ where: { email } })
     const verified = speakeasy.totp.verify({
-      secret: user.authenticator_qr_secret,
+      secret: user.authenticatorQrSecret,
       encoding: 'base32',
       token
     })
     if (verified) {
       const result = await this.__userRepository.update(
-        { enable_authenticator: true },
+        { enableAuthenticator: true },
         { where: { email } }
       )
       if (result != 1) throw new Error('Unable to activate Authenticator auth')
@@ -65,7 +65,7 @@ class AuthenticatorAuthService {
    */
   async deactivateAuthenticatorAuth(email) {
     const result = await this.__userRepository.update(
-      { enable_authenticator: false },
+      { enableAuthenticator: false },
       { where: { email } }
     )
     if (result != 1) throw new Error('Unable to deactivate Authenticator auth')
@@ -80,13 +80,13 @@ class AuthenticatorAuthService {
   async authByAuthenticator(email, token) {
     const user = await this.__userRepository.findOne({ where: { email } })
     const verified = speakeasy.totp.verify({
-      secret: user.authenticator_qr_secret,
+      secret: user.authenticatorQrSecret,
       encoding: 'base32',
       token
     })
     if (verified) {
       const mode = this.__tokenService.determineNextMode(user, MODE_2FA)
-      return this.__tokenService.generateToken(user.email, user.user_name, mode)
+      return this.__tokenService.generateToken(user.email, user.username, mode)
     }
     return null
   }

@@ -1,4 +1,5 @@
 import { template, Sendable } from './BaseTemplate'
+import { sanitizeUrl } from 'app/services/Sanitizer'
 
 export interface RegistrationTemplateParams {
   link: string
@@ -13,8 +14,8 @@ export class RegistrationTemplate
 
   renderBody({ link }: RegistrationTemplateParams) {
     return template({
-      title: this.renderSubject(),
-      body: /* html */ `<table
+      rawTitle: this.renderSubject(),
+      rawBody: /* html */ `<table
         role="presentation"
         border="0"
         cellpadding="0"
@@ -42,7 +43,7 @@ export class RegistrationTemplate
                       <tbody>
                         <tr>
                           <td>
-                            <a href="${link}" target="_blank">
+                            <a href="${sanitizeUrl(link)}" target="_blank">
                               CONTINUE REGISTRATION
                             </a>
                           </td>
@@ -57,7 +58,9 @@ export class RegistrationTemplate
               If you have problems visiting the button above just
               copy and paste the following link into your browser:
             </p>
-            <a href="${link}" target="_blank">${link}</a>
+            <a href="${sanitizeUrl(link)}" target="_blank">
+              ${sanitizeUrl(link)}
+            </a>
             <hr />
             <p class="small">If you have registered already, please try signing in with a different email because this email was not in our database.</p>
             <p class="small">In case this email was not requested by you, please do not do anything.</p>

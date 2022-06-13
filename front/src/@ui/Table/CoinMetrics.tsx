@@ -142,8 +142,8 @@ export const CoinMetrics = (props: CoinMetricsProps) => {
           default: '-',
           type: coinTypesDictionary[token.token.toLowerCase()]
         },
-        value: Number(token.usd_value).toFixed(4) + ' USD',
-        value_trend: Number(Number(token.day_change).toFixed(2)),
+        value: Number(token.usdValue).toFixed(4) + ' USD',
+        value_trend: Number(Number(token.dayChange).toFixed(2)),
         icon: {
           url: token.image,
           name: token.token.toUpperCase()

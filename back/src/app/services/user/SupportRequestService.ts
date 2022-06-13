@@ -23,12 +23,12 @@ export class SupportRequestService {
       new SupportRequestTemplate(),
       {
         email: user.email,
-        username: user.user_name,
+        username: user.username,
         message: supportRequestData.message
       }
     )
     await this.__supportRequestRepository.create({
-      user_id: user.id,
+      userId: user.id,
       subject: supportRequestData.subject,
       message: supportRequestData.message
     })
