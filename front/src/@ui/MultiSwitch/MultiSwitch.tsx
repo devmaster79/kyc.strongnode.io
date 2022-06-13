@@ -49,7 +49,7 @@ function MultiSwitch<
    * @param key of the options array
    */
   const onSelectValue = (key: number) => {
-    clearTimeout(animationTimeout)
+    clearTimeout(animationTimeout as NodeJS.Timeout)
     setActiveItem(key)
     setAnimationTimeout(
       setTimeout(() => {
@@ -59,11 +59,11 @@ function MultiSwitch<
   }
 
   /**
-   * In case of unmount, reamove the active timeout as well.
+   * In case of unmount, remove the active timeout as well.
    */
   useEffect(() => {
     return () => {
-      clearTimeout(animationTimeout)
+      clearTimeout(animationTimeout as NodeJS.Timeout)
     }
   })
 
