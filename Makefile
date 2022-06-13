@@ -7,5 +7,3 @@ install:
 	cp back/.env.sample back/.env
 	cd front && npm i && cd ..
 	cd back && npm i && cd ..
-	cd blockchain && npm i && cd ..
-	
