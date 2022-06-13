@@ -1,7 +1,5 @@
 import styled from '@emotion/styled'
-import { debounce } from '@mui/material'
 import { useEffect, useState } from 'react'
-import breakpoints from 'theme/breakpoints'
 import Media from 'theme/mediaQueries'
 
 export type MultiSwitchProps<
