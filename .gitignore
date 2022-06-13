@@ -26,4 +26,5 @@ docker/.localstack
 blockchain/artifacts
 blockchain/cache
 /blockchain/node_modules/
+/blockchain/package-lock.json
 front/src/contracts/generated
