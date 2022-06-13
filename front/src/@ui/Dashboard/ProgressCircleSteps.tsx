@@ -15,7 +15,7 @@ interface ProgressCircleProps {
 export const Container = styled.div({
   display: 'flex',
   paddingTop: '32px',
-  paddingBottom: '128px',
+  paddingBottom: '98px',
   scrollbarWidth: 'none',
   msOverflowStyle: 'none',
   '&::-webkit-scrollbar': {

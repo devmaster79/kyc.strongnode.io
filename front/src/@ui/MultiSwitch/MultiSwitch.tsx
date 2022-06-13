@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
-import React from 'react'
 import { useEffect, useState } from 'react'
+import Media from 'theme/mediaQueries'
 
 export type MultiSwitchProps<
   TOption extends { [k: string]: string | number },
@@ -121,7 +121,8 @@ const SelectWrapper = styled.div((props) => ({
   },
 
   '.active': {
-    color: props.theme.palette.button.text
+    color: props.theme.palette.button.text,
+    zIndex: 10
   }
 }))
 
@@ -137,5 +138,8 @@ const AnimatedBackground = styled.div({
   backgroundColor: '#7a3bfe',
   transition: `${ANIMATION_DURATION_MS}ms ease`,
   zIndex: 8,
-  pointerEvents: 'none'
+  pointerEvents: 'none',
+  [Media.phone]: {
+    width: '112px'
+  }
 })
