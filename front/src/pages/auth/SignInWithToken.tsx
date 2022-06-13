@@ -5,7 +5,7 @@ import { Message } from '@ui/Dashboard/Form'
 import styled from '@emotion/styled'
 
 /**
- * Get user data like email and user_name by the stored token
+ * Get user data like email and username by the stored token
  */
 export function SignInWithToken() {
   const navigate = useNavigate()
@@ -17,7 +17,7 @@ export function SignInWithToken() {
         const response = await userService.getProfile()
         if (response.result === 'success') {
           localStorage.setItem('email', response.data.email)
-          localStorage.setItem('username', response.data.user_name)
+          localStorage.setItem('username', response.data.username)
           localStorage.setItem('loggedin', 'true')
           navigate('/dashboard/kyc')
         }

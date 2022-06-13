@@ -23,9 +23,9 @@ describe('Authenticator Authentication', () => {
     let userRecord = {
       email: 'test@test.com',
       password: '',
-      enable_password: false,
-      enable_authenticator: false,
-      enable_sms: false
+      enablePassword: false,
+      enableAuthenticator: false,
+      enableSms: false
     }
 
     const fakeUserRepository = {
@@ -34,12 +34,9 @@ describe('Authenticator Authentication', () => {
       },
       update(data, query) {
         assert.equal(userRecord.email, query.where.email)
-        if (
-          data.authenticator_qr_secret &&
-          data.authenticator_qr_secret.length
-        ) {
+        if (data.authenticatorQrSecret && data.authenticatorQrSecret.length) {
           setTime(1000)
-          data.authenticator_qr_secret = 'GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ'
+          data.authenticatorQrSecret = 'GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ'
           // with this date and secret the token will be this:
           actualToken = '755224'
         }

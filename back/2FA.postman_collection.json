@@ -142,7 +142,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"first_name\": \"Cool\",\r\n    \"last_name\": \"F\",\r\n    \"email\": \"cool.developer24@gmail.com\",\r\n    \"user_name\": \"CoolF\",\r\n    \"email_verified\": true,\r\n    \"password_token\": \"3c4e4d7e39eeb58b36f21581249231904642af6d\"\r\n}",
+					"raw": "{\r\n    \"firstName\": \"Cool\",\r\n    \"lastName\": \"F\",\r\n    \"email\": \"cool.developer24@gmail.com\",\r\n    \"username\": \"CoolF\",\r\n    \"emailVerified\": true,\r\n    \"passwordToken\": \"3c4e4d7e39eeb58b36f21581249231904642af6d\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -219,7 +219,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"password_token\": \"800074d881fd4949d034351b60443921b735ee11\",\r\n    \"password\": \"1234qwer\"\r\n}",
+					"raw": "{\r\n    \"passwordToken\": \"800074d881fd4949d034351b60443921b735ee11\",\r\n    \"password\": \"1234qwer\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -282,7 +282,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"first_name\": \"Testt\",\r\n    \"last_name\": \"AAA\",\r\n    \"user_name\": \"TestAAA\",\r\n    \"telegram_id\": \"@testttaa\",\r\n    \"email\": \"zaloveki@musiccode.me\",\r\n    \"twitter_id\": \"@Agggggg\",\r\n    \"wallet_address\": \"0xfwkljwef231312e4we3r3k2pe23ek23f4g432\",\r\n    \"enable_totp\": false\r\n}",
+					"raw": "{\r\n    \"firstName\": \"Testt\",\r\n    \"lastName\": \"AAA\",\r\n    \"username\": \"TestAAA\",\r\n    \"telegramId\": \"@testttaa\",\r\n    \"email\": \"zaloveki@musiccode.me\",\r\n    \"twitterId\": \"@Agggggg\",\r\n    \"walletAddress\": \"0xfwkljwef231312e4we3r3k2pe23ek23f4g432\",\r\n    \"enable_totp\": false\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -315,7 +315,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"email\": \"zaloveki@musiccode.me\",\r\n    \"first_name\": \"Tesss\",\r\n    \"last_name\": \"A\",\r\n    \"termsAgreement\": true,\r\n    \"user_name\": \"GssA\"\r\n}",
+					"raw": "{\r\n    \"email\": \"zaloveki@musiccode.me\",\r\n    \"firstName\": \"Tesss\",\r\n    \"lastName\": \"A\",\r\n    \"termsAgreement\": true,\r\n    \"username\": \"GssA\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"

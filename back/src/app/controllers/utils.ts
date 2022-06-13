@@ -9,7 +9,7 @@ import { AppLogger } from 'app/services/Logger'
 /** This type enstrict the express' weak Request type, so use this instead of the originial */
 type Request = express.Request & { body: unknown }
 /** This type is for the routes with auth middleware */
-type UserRequest = Request & { user: { email: string; user_name: string } }
+type UserRequest = Request & { user: { email: string; username: string } }
 
 /** Decorate the given controller with res.send */
 export const withResponse =

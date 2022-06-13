@@ -11,5 +11,5 @@ rm -r build
 
 # run linter on frontend
 cd ../front
-npm run lint -- --max-warnings=72 || exit 1
+npm run lint -- --max-warnings=0 || exit 1
 npm run build || exit 1

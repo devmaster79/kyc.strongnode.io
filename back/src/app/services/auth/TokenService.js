@@ -41,7 +41,7 @@ class TokenService {
    */
   determineNextMode(user, currentMode) {
     const enable_2fa =
-      user.enable_password || user.enable_authenticator || user.enable_sms
+      user.enablePassword || user.enableAuthenticator || user.enableSms
     const mode_2fa_if_enabled = enable_2fa ? [MODE_2FA] : []
 
     // When the current mode is completed, what will be the next.
@@ -69,7 +69,7 @@ class TokenService {
    * @returns {string}
    */
   generateToken(email, userName, mode) {
-    const jwt_data = { email, user_name: userName }
+    const jwt_data = { email, username: userName }
     const secret = this.__getTokenSecret(mode)
     return jwt.sign(jwt_data, secret, { expiresIn: mode.expiresIn })
   }
@@ -78,7 +78,7 @@ class TokenService {
    * Checks if the token is valid for at least one of the modes
    * @param {string} token
    * @param {AuthMode[]} listOfModes
-   * @returns {{ email: string, user_name: string }|null} null if the token is invalid
+   * @returns {{ email: string, username: string }|null} null if the token is invalid
    */
   decode(token, listOfModes) {
     for (let authMode of listOfModes) {

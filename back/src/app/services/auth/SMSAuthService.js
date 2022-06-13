@@ -20,21 +20,21 @@ class SMSAuthService {
    */
   async sendSMS(email) {
     const user = await this.__userRepository.findOne({ where: { email } })
-    await this.__sendOneTimePasswordSMS(user.phone_number, email)
+    await this.__sendOneTimePasswordSMS(user.phoneNumber, email)
   }
 
   /**
    * @param {string} email
-   * @param {string} phone_number
+   * @param {string} phoneNumber
    * @returns {Promise<void>}
    */
-  async sendSMSAndStoreNumber(email, phone_number) {
+  async sendSMSAndStoreNumber(email, phoneNumber) {
     const updateResult = await this.__userRepository.update(
-      { phone_number },
+      { phoneNumber },
       { where: { email } }
     )
     if (updateResult != 1) throw new Error('Unable to store phone number.')
-    await this.__sendOneTimePasswordSMS(phone_number, email)
+    await this.__sendOneTimePasswordSMS(phoneNumber, email)
   }
 
   /**
@@ -47,7 +47,7 @@ class SMSAuthService {
     const verified = user.smscode === smscode
     if (verified) {
       const mode = this.__tokenService.determineNextMode(user, MODE_2FA)
-      return this.__tokenService.generateToken(user.email, user.user_name, mode)
+      return this.__tokenService.generateToken(user.email, user.username, mode)
     }
     return null
   }
@@ -62,7 +62,7 @@ class SMSAuthService {
     const verified = user.smscode === smscode
     if (verified) {
       let result = await this.__userRepository.update(
-        { enable_sms: true },
+        { enableSms: true },
         { where: { email } }
       )
       if (result != 1) throw new Error('Unable to activate SMS Auth')
@@ -77,7 +77,7 @@ class SMSAuthService {
    */
   async deactivate(email) {
     let result = await this.__userRepository.update(
-      { enable_sms: false, smscode: '' },
+      { enableSms: false, smscode: '' },
       { where: { email } }
     )
     if (result != 1) throw new Error('Unable to deactivate SMS auth')
@@ -92,14 +92,14 @@ class SMSAuthService {
   async __sendOneTimePasswordSMS(destinationNumber, email) {
     const OTP = this.__generateRandomNumber(1000, 9999)
     this.__logger.devLog('The SMS password was', OTP)
-    const message =
+    const rawMessage =
       'Here is your SMS 2-factor authentication code for StrongNode : ' + OTP
     const updateResult = await this.__userRepository.update(
       { smscode: OTP },
       { where: { email } }
     )
     if (updateResult != 1) throw new Error('Unable to store OTP')
-    await this.__smsService.send(destinationNumber, message)
+    await this.__smsService.send(destinationNumber, rawMessage)
   }
 
   __generateRandomNumber(min, max) {

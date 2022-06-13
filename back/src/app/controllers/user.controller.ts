@@ -7,7 +7,12 @@ import {
 import AWS from 'aws-sdk'
 import { EmailService } from 'app/services/communication/EmailService'
 import { AWS_CONFIG } from 'app/config/config'
-import { apiResponse, notFoundError, success } from 'shared/endpoints/responses'
+import {
+  apiResponse,
+  notFoundError,
+  success,
+  zodValidationError
+} from 'shared/endpoints/responses'
 import { withResponse } from './utils'
 import { InvestorDetailService } from 'app/services/user/InvestorDetailService'
 import {
@@ -65,7 +70,7 @@ export const createInvestor = withResponse<CreateInvestor.Response>(
     const data = CreateInvestor.schema.parse(req.body)
     const result = await investorDetailService.create({
       ...data,
-      investor_email: req.user.email
+      investorEmail: req.user.email
     })
     switch (result) {
       case 'investor-is-already-registered-error':
@@ -110,21 +115,39 @@ export const getProfile = withResponse<GetProfile.Response>(async (req) => {
 export const updateProfile = withResponse<UpdateProfile.Response>(
   async (req) => {
     const data = UpdateProfile.schema.parse(req.body)
-    const result = await profileService.update(
+
+    const { result, modifiedUser } = await profileService.update(
       req.user.email,
-      req.user.user_name,
+      req.user.username,
       data
     )
-    // TODO: implement email verification and user_name validation so to make it updateable
+
     switch (result) {
+      // TODO: implement email verification and username validation so to make it updateable
       case 'unimplemented':
         return apiResponse('email-and-username-are-not-updateable-error', 400, {
           message:
             'Sorry, but currently you cannot update your email and user_name.'
         })
+      case 'username-is-already-taken':
+        return zodValidationError([
+          {
+            code: 'custom',
+            path: ['username'],
+            message: 'This username is already taken'
+          }
+        ])
       case 'success':
-        return success({ message: 'Successfully updated the profile' })
+        if (!modifiedUser) return notFoundError({ message: 'User not found. ' })
+        return success({
+          body: modifiedUser,
+          message: 'Successfully updated the profile'
+        })
     }
+    return notFoundError({
+      message:
+        'Internal error occurred (while updating user profile), please take a look at the servers console.'
+    })
   }
 )
 
