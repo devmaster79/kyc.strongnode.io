@@ -1,0 +1,12 @@
+version: '3.2'
+services:
+  blockchain:
+    build:
+      context: ./../
+      dockerfile: docker/blockchain.Dockerfile
+    container_name: blockchain
+    ports:
+      - "8545:8545"
+    volumes:
+      - ./../:/user/src/app
+    entrypoint: /usr/src/app/blockchain/run.sh
