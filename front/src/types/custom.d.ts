@@ -100,3 +100,5 @@ declare module '@mui/material' {
     neutral: string
   }
 }
+
+declare const REACT_APP_BASE_URL: string

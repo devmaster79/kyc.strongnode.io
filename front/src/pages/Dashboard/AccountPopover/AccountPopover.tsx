@@ -21,7 +21,7 @@ import {
 } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import styled from '@emotion/styled'
-declare const REACT_APP_BASE_URL: string
+
 const baseUrl = REACT_APP_BASE_URL + '/uploads/'
 
 type FormValues = {
@@ -35,7 +35,7 @@ export default function AccountPopover() {
   const [email, setEmail] = useState('')
   const [avatar, setAvatar] = useState('')
   const [showModal, setShowModal] = useState(false)
-  const [openAvatarModel, setAvatarModel] = useState(false)
+  const [openAvatarModal, setAvatarModal] = useState(false)
   const [isError, setError] = useState(false)
   const { register, handleSubmit } = useForm()
   const [showConnectWalletModal, setShowConnectWalletModal] = useState(false)
@@ -63,12 +63,14 @@ export default function AccountPopover() {
   const theme: CustomTheme = useTheme()
 
   const getProfile = () => {
-    userService.getProfile().then((response) => {
-      if (response.result === 'success') {
-        setUserName(response.data.firstName + ' ' + response.data.lastName)
-        setAvatar(response.data.profileImgUrl)
-      }
-    })
+    try {
+      userService.getProfile().then((response) => {
+        if (response.result === 'success') {
+          setUserName(response.data.firstName + ' ' + response.data.lastName)
+          setAvatar(response.data.profileImgUrl)
+        }
+      })
+    } catch (error) {}
   }
 
   const getAvatar = () => {
@@ -76,21 +78,16 @@ export default function AccountPopover() {
       <img src={baseUrl + avatar}></img>
     ) : (
       <Icon
-        name="arrowDown"
-        width={8}
-        height={6}
-        style={
-          showModal
-            ? { transform: 'rotate(180deg)', transition: '450ms ease' }
-            : { transition: '450ms ease' }
-        }
-        color={theme.palette.icon.secondary}
+        name="avatar"
+        width={20}
+        height={20}
+        color={theme.palette.icon.active}
       />
     )
   }
 
   const onAvatarEdit = () => {
-    setAvatarModel(true)
+    setAvatarModal(true)
   }
   const onSubmit = async (data: FormValues) => {
     const file = data?.file ? data?.file[0] : null
@@ -105,7 +102,7 @@ export default function AccountPopover() {
       userService.updateAvatar({ body: formData }).then((response) => {
         if (response.result === 'success') {
           getProfile()
-          setAvatarModel(false)
+          setAvatarModal(false)
         }
       })
     }
@@ -162,8 +159,8 @@ export default function AccountPopover() {
       )}
 
       <Dialog
-        open={openAvatarModel}
-        onClose={() => setAvatarModel(false)}
+        open={openAvatarModal}
+        onClose={() => setAvatarModal(false)}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description">
         <DialogTitle id="alert-dialog-title">Upload Avatar Image</DialogTitle>
@@ -181,7 +178,7 @@ export default function AccountPopover() {
             {/* <input type="submit" /> */}
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => setAvatarModel(false)}>Close</Button>
+            <Button onClick={() => setAvatarModal(false)}>Close</Button>
             <Button type="submit">Save</Button>
           </DialogActions>
         </form>

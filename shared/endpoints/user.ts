@@ -116,6 +116,26 @@ export namespace UpdateProfile {
   export const response: Response | null = null
 }
 
+export namespace UpdateAvatar {
+  export const METHOD = 'post'
+  export const PATH = '/api/users/profile/image'
+  export const schema = z.object({
+    email: z.string().email().optional(),
+    file: z.string().optional()
+  })
+  export type Request = { body: FormData }
+  export type Response =
+    | Success<{ message: string }>
+    | ApiResponse<
+        'email-and-username-are-not-updateable-error',
+        400,
+        { message: string }
+      >
+    | UnauthorizedError
+    | UnexpectedError
+  export const request: Request | null = null
+  export const response: Response | null = null
+}
 export namespace CreateSupportRequest {
   export const METHOD = 'post'
   export const PATH = '/api/users/support/create-request'

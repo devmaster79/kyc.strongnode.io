@@ -9,7 +9,7 @@ type FileNameCallback = (error: Error | null, filename: string) => void
 
 var storage = multer.diskStorage({
   destination: (req:Request, file:Express.Multer.File, cb:DestinationCallback) => {
-    cb(null, path.resolve('uploads/'))
+    cb(null, path.resolve('../uploads/'))
   },
   filename: (req:Request, file:Express.Multer.File, cb:FileNameCallback) => {
     cb(null, `${Date.now()}-strongnode-${file.originalname}`)
