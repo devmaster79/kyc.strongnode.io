@@ -8,6 +8,7 @@ type UpdateableUserFields = {
   enableAuthenticator: boolean
   enableSms: boolean
   enablePassword: boolean
+  profileImgUrl:string
 }
 type NonUpdateableUserFields = Omit<User, keyof UpdateableUserFields>
 type UpdateableWithNonUpdateableUserFields = UpdateableUserFields & {
@@ -15,7 +16,7 @@ type UpdateableWithNonUpdateableUserFields = UpdateableUserFields & {
 }
 
 export class ProfileService {
-  constructor(private __userRepository: typeof User) {}
+  constructor(private __userRepository: typeof User) { }
 
   async get(email: string) {
     const user = await this.__userRepository.findOne({
@@ -29,7 +30,8 @@ export class ProfileService {
         lastName: user.lastName,
         enableAuthenticator: user.enableAuthenticator,
         enableSms: user.enableSms,
-        enablePassword: user.enablePassword
+        enablePassword: user.enablePassword,
+        profileImgUrl:user.profileImgUrl
       }
     } else {
       throw new Error('Could not find the user')
@@ -75,5 +77,29 @@ export class ProfileService {
       result: 'success',
       modifiedUser: user
     }
+  }
+
+
+  async updateAvatar(
+    email: string,
+    newValues: Partial<UpdateableWithNonUpdateableUserFields>
+  ) {
+    const data = {
+      profileImgUrl: newValues.profileImgUrl,
+    }
+
+    if (newValues.email && email !== newValues.email) {
+      return 'unimplemented'
+    }
+
+    const updateResult = await this.__userRepository.update(data, {
+      where: { email: email }
+    })
+
+    if (updateResult[0] !== 1) {
+      throw new Error(`Could not find user with email: ${email}`)
+    }
+
+    return 'success'
   }
 }

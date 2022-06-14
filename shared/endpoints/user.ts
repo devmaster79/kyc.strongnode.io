@@ -77,6 +77,7 @@ export namespace GetProfile {
     enableAuthenticator: boolean
     enableSms: boolean
     enablePassword: boolean
+    profileImgUrl: string
   }
   export type Response =
     | Success<{ data: Profile }>
@@ -96,7 +97,8 @@ export namespace UpdateProfile {
     lastName: z.string().optional(),
     enableAuthenticator: z.boolean().optional(),
     enableSms: z.boolean().optional(),
-    enablePassword: z.boolean().optional()
+    enablePassword: z.boolean().optional(),
+    profileImgUrl: z.string().optional()
   })
   export type Request = { body: z.infer<typeof schema> }
   export type Response =

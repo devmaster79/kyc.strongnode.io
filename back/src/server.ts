@@ -24,6 +24,7 @@ app.use(express.urlencoded({ extended: true, limit: '25mb' }))
 
 // simple route
 app.use(express.static(path.join(__dirname, '../front/build')))
+app.use('/uploads', express.static('uploads'));
 
 require('./app/routes/user.routes')(app)
 require('./app/routes/auth.routes')(app)
