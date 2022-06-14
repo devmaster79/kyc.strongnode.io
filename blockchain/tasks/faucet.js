@@ -25,7 +25,8 @@ task("faucet", "Sends ETH and SNE tokens to an address")
     };
 
     const addressesFile =
-      __dirname + "/../../front/src/contracts/contract-address.json";
+      __dirname +
+      "/../../front/src/contracts/generated/tokenAddressDictionary.json";
 
     if (!fs.existsSync(addressesFile)) {
       console.error("You need to deploy your contract first");

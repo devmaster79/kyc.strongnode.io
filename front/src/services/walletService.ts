@@ -71,8 +71,7 @@ export const DAppProviderConfig: Config = {
     ? DAppReadOnlyUrlsLocalBlockchain
     : DAppReadOnlyUrls,
   networks: [Polygon, Mainnet],
-  autoConnect: true,
-  supportedChains: [31337]
+  autoConnect: true
 }
 
 /**
