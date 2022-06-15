@@ -26,7 +26,7 @@ type CryptoChartProps = {
   selectedSwitchOption: SwitchOption
 }
 
-type ChartDataType = Array<{ timestamp: string; value: string }>
+type ChartDataType = Array<{ timestamp: number; value: number }>
 
 export const CryptoChart = (props: CryptoChartProps) => {
   const [chartScopeFormat, setChartScopeFormat] = useState<XAxisFormat>('days')
@@ -63,24 +63,24 @@ export const CryptoChart = (props: CryptoChartProps) => {
 
   useEffect(() => {
     const loadStrongnodeCurrency = async () => {
-      const data = await cryptoDataService.getChartDataAsync(chartScopeFormat)
-      const tempData: ChartDataType = []
-
-      data.data.prices.forEach((price: Array<string>) => {
-        tempData.push({
+      const data = await cryptoDataService.getTokenChartData({
+        params: {
+          scope: chartScopeFormat
+        }
+      })
+      if (data.result === 'success') {
+        const coordinates = data.data.prices.map((price) => ({
           timestamp: price[0],
           value: price[1]
-        })
-      })
+        }))
 
-      setValueTrendIndicator({
-        value:
-          Number(tempData[tempData.length - 1].value).toFixed(6) +
-          ' ' +
-          targetCurrency,
-        up: tempData[tempData.length - 1].value > tempData[0].value
-      })
-      setChartData(tempData)
+        const lastKnownValue = coordinates[coordinates.length - 1].value
+        setValueTrendIndicator({
+          value: `${lastKnownValue.toFixed(6)} ${targetCurrency}`,
+          up: lastKnownValue > coordinates[0].value
+        })
+        setChartData(coordinates)
+      }
     }
     // init load
     loadStrongnodeCurrency()

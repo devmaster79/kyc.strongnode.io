@@ -18,7 +18,7 @@ export namespace SendVerificationEmail {
   export const schema = z.object({
     email: z.string().email()
   })
-  export type Request = { body: z.infer<typeof schema> }
+  export type Request = { body: z.input<typeof schema> }
   export type Response =
     | Success<{ message: string }>
     | ZodValidationError<Request['body']>
@@ -36,7 +36,7 @@ export namespace Register {
     firstName: z.string(),
     lastName: z.string()
   })
-  export type Request = { body: z.infer<typeof schema> }
+  export type Request = { body: z.input<typeof schema> }
   export type Response =
     | Success<{ message: string; token: string }>
     | ApiResponse<'limit-reached-error', 403, { message: string }>
@@ -54,7 +54,7 @@ export namespace EnablePasswordAuth {
   export const schema = z.object({
     password: z.string().min(6)
   })
-  export type Request = { body: z.infer<typeof schema> }
+  export type Request = { body: z.input<typeof schema> }
   export type Response =
     | Success<{ message: string }>
     | ZodValidationError<Request['body']>
@@ -84,7 +84,7 @@ export namespace AuthByPassword {
   export const schema = z.object({
     password: z.string()
   })
-  export type Request = { body: z.infer<typeof schema> }
+  export type Request = { body: z.input<typeof schema> }
   export type Response =
     | Success<{ message: string; token: string }>
     | BannedError
@@ -116,7 +116,7 @@ export namespace AuthBySMSCode {
   export const schema = z.object({
     smscode: z.string()
   })
-  export type Request = { body: z.infer<typeof schema> }
+  export type Request = { body: z.input<typeof schema> }
   export type Response =
     | Success<{ message: string; token: string }>
     | BannedError
@@ -134,7 +134,7 @@ export namespace SendSMSAndSaveNumber {
   export const schema = z.object({
     number: z.string()
   })
-  export type Request = { body: z.infer<typeof schema> }
+  export type Request = { body: z.input<typeof schema> }
   export type Response =
     | Success<{ message: string }>
     | BannedError
@@ -152,7 +152,7 @@ export namespace EnableSMSAuth {
   export const schema = z.object({
     smscode: z.string()
   })
-  export type Request = { body: z.infer<typeof schema> }
+  export type Request = { body: z.input<typeof schema> }
   export type Response =
     | Success<{ message: string }>
     | ZodValidationError<Request['body']>
@@ -185,7 +185,7 @@ export namespace AuthByAuthenticator {
       .length(6, 'The token must be 6 characters')
       .regex(/^[0-9]+$/, 'The token must be a number')
   })
-  export type Request = { body: z.infer<typeof schema> }
+  export type Request = { body: z.input<typeof schema> }
   export type Response =
     | Success<{ message: string; token: string }>
     | BannedError
@@ -216,7 +216,7 @@ export namespace EnableAuthenticatorAuth {
   export const schema = z.object({
     token: z.string()
   })
-  export type Request = { body: z.infer<typeof schema> }
+  export type Request = { body: z.input<typeof schema> }
   export type Response =
     | Success<{ message: string }>
     | ZodValidationError<Request['body']>

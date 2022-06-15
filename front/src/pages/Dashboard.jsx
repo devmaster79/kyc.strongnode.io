@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
 import { useEffect, useCallback, useRef } from 'react'
-import * as userService from '../services/userService'
+import userService from '../services/userService'
 import { Banner } from '../@ui/Banner/Banner'
 import authService from 'services/auth'
 import TableSection from 'components/TableSection/TableSection'

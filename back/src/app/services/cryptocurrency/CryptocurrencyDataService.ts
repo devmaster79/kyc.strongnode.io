@@ -1,8 +1,9 @@
+import type CoinGeckoApi from 'coingecko-api'
 /**
  * Token ids for metrics table.
  * @type {string[]}
  */
-const tokensMetricsListIDs = [
+export const tokensMetricsListIDs = [
   'strongnode',
   'bitcoin',
   'ethereum',
@@ -10,32 +11,25 @@ const tokensMetricsListIDs = [
 ]
 
 /**
- * Scopes for Charts.
- * @type {string[]}
- */
-const availableScopes = ['days', 'weeks', 'months', 'years']
-
-/**
  * Number of days for each scope definition.
  * @type {{weeks: number, months: number, days: number, years: number}}
  */
-const scopeDays = {
+export const scopeDays = {
   days: 7,
   weeks: 30,
   months: 365,
   years: 1095
 }
 
+/** Typesafe validation for scopeDays' keys */
+export const isScope = (val: string): val is keyof typeof scopeDays =>
+  Object.keys(scopeDays).includes(val)
+
 /**
  * Cryptocurrency data service that takes care of getting data from coingecko api.
  */
-class CryptocurrencyDataService {
-  /**
-   * @param {typeof import('coingecko-api')} coingeckoClient
-   */
-  constructor(coingeckoClient) {
-    this.__coingeckoClient = new coingeckoClient()
-  }
+export class CryptocurrencyDataService {
+  constructor(private __coingeckoClient: CoinGeckoApi) {}
 
   /**
    * @throws something, check 'coingecko-api'
@@ -59,7 +53,7 @@ class CryptocurrencyDataService {
    * @throws something, check 'coingecko-api'
    * @returns {Promise<void>}
    */
-  async getTokenPrice(tokens = 'strongnode', vsCurrency = 'usd') {
+  async getTokenPrice(tokens = ['strongnode'], vsCurrency = 'usd') {
     const result = await this.__coingeckoClient.simple.price({
       ids: tokens,
       vs_currencies: vsCurrency,
@@ -77,14 +71,7 @@ class CryptocurrencyDataService {
    * @param tokenId
    * @returns {Promise<{code: number, data: (Object|*), message: string, success: boolean}>}
    */
-  async getTokenDetails(tokenId) {
-    return await this.__coingeckoClient.coins.fetch(tokenId)
+  async getTokenDetails(tokenId: string) {
+    return await this.__coingeckoClient.coins.fetch(tokenId, {})
   }
-}
-
-module.exports = {
-  CryptocurrencyDataService,
-  availableScopes,
-  tokensMetricsListIDs,
-  scopeDays
 }

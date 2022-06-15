@@ -57,6 +57,7 @@
     "@swc/cli": "^0.1.55",
     "@swc/core": "^1.2.157",
     "@types/bluebird": "^3.5.36",
+    "@types/coingecko-api": "^1.0.10",
     "@types/connect-livereload": "^0.6.0",
     "@types/livereload": "^0.9.2",
     "@types/mocha": "^9.1.1",

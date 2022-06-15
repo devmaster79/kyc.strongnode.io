@@ -1,10 +1,11 @@
 import { Model, DataTypes, Sequelize } from 'sequelize'
+import { GetTokenChartData } from 'shared/endpoints/cryptocurrency'
 
 export class StrongnodeCoinData extends Model {
   public id!: number
   public scope!: string
   public token!: string
-  public data!: string
+  public data!: GetTokenChartData.CoinMarketData
   public readonly createdAt!: Date
   public readonly updatedAt!: Date
 }
