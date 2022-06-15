@@ -98,7 +98,7 @@ export const getInvestorDetails = withResponse<GetInvestorDetails.Response>(
 
     return notFoundError({
       message:
-        'Internal error occurred (while creating investor profile), please take a look at the servers console.'
+        'Internal error occurred (while reading investor profile), please take a look at the servers console.'
     })
   }
 )

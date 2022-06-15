@@ -132,8 +132,8 @@ export const StyledInputField = styled.input((props) => ({
   },
 
   '&:-webkit-autofill': {
-    '-webkit-text-fill-color': props.theme.palette.text.primary,
-    '-webkit-box-shadow': `0 0 0px 1000px
+    WebkitTextFillColor: props.theme.palette.text.primary,
+    WebkitBoxShadow: `0 0 0px 1000px
     ${props.theme.palette.background.primary} inset`,
     borderRadius: '7px'
   }

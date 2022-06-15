@@ -23,24 +23,6 @@ export class User extends Model {
   public telegramId!: string
   public twitterId!: string
   public walletAddress!: string
-  public investorName!: string
-  public investorTelegramId!: string
-  public investorCountry!: string
-  public investorCommitmentAmount!: string
-  public investorWalletAddress!: string
-  public investorEmail!: string
-  public investorFundName!: string
-  public investorFundWebsite!: string
-  public vestedAmount!: string
-  public lockedBonusAmount!: string
-  public earnedAmount!: string
-  public lockedupAmount!: string
-  public withdrawnTotalAmount!: string
-  public remainingTotalAmount!: string
-  public purchasedDate!: string
-  public purchasedRound!: string
-  public purchasedTotal!: string
-  public investmentAmount!: string
 
   public readonly createdAt!: Date
   public readonly updatedAt!: Date
@@ -110,60 +92,6 @@ export const create = (sequelize: Sequelize) =>
         type: DataTypes.STRING
       },
       walletAddress: {
-        type: DataTypes.STRING
-      },
-      investorName: {
-        type: DataTypes.STRING
-      },
-      investorTelegramId: {
-        type: DataTypes.STRING
-      },
-      investorCountry: {
-        type: DataTypes.STRING
-      },
-      investorCommitmentAmount: {
-        type: DataTypes.STRING
-      },
-      investorWalletAddress: {
-        type: DataTypes.STRING
-      },
-      investorEmail: {
-        type: DataTypes.STRING
-      },
-      investorFundName: {
-        type: DataTypes.STRING
-      },
-      investorFundWebsite: {
-        type: DataTypes.STRING
-      },
-      vestedAmount: {
-        type: DataTypes.STRING
-      },
-      lockedBonusAmount: {
-        type: DataTypes.STRING
-      },
-      earnedAmount: {
-        type: DataTypes.STRING
-      },
-      lockedupAmount: {
-        type: DataTypes.STRING
-      },
-      withdrawnTotalAmount: {
-        type: DataTypes.STRING
-      },
-      remainingTotalAmount: {
-        type: DataTypes.STRING
-      },
-      purchasedDate: {
-        type: DataTypes.DATE
-      },
-      purchasedRound: {
-        type: DataTypes.STRING
-      },
-      purchasedTotal: {
-        type: DataTypes.STRING
-      },
-      investmentAmount: {
         type: DataTypes.STRING
       }
     },
