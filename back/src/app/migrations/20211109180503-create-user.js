@@ -29,7 +29,7 @@ async function up({ context: queryInterface }) {
     profile_img_type: {
       type: Sequelize.STRING
     },
-    profileImgUrl: {
+    profile_img_url: {
       type: Sequelize.STRING
     },
     profile_img_data: {

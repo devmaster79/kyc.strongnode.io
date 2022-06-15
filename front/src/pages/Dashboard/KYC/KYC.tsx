@@ -23,6 +23,7 @@ interface FormFields {
   enablePassword: boolean
   enableSms: boolean
   enableAuthenticator: boolean
+  profileImgUrl: string
 }
 
 const walletsObject = [
@@ -55,7 +56,8 @@ export default function KYC() {
         email: '',
         enablePassword: false,
         enableSms: false,
-        enableAuthenticator: false
+        enableAuthenticator: false,
+        profileImgUrl: ''
       }
     })
 

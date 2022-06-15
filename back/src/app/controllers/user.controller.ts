@@ -154,22 +154,21 @@ export const updateProfile = withResponse<UpdateProfile.Response>(
 /** Update User avatar*/
 export const updateAvatar = withResponse<UpdateProfile.Response>(
   async (req) => {
-    const data:any = {
+    const data: any = {
       profileImgUrl: req.file?.filename
     }
-    const result = await profileService.updateAvatar(
-      req.body.email,
-      data
-    )
+    const result = await profileService.updateAvatar(req.body.email, data)
     // TODO: implement email verification and user_name validation so to make it updateable
     switch (result) {
       case 'unimplemented':
         return apiResponse('email-and-username-are-not-updateable-error', 400, {
-          message:
-            'Sorry, but currently you cannot update your email'
+          message: 'Sorry, but currently you cannot update your email'
         })
       case 'success':
-        return success({ message: 'Successfully updated the profile',body:data })
+        return success({
+          message: 'Successfully updated the profile',
+          body: data
+        })
     }
   }
 )

@@ -8,7 +8,7 @@ type UpdateableUserFields = {
   enableAuthenticator: boolean
   enableSms: boolean
   enablePassword: boolean
-  profileImgUrl:string
+  profileImgUrl: string
 }
 type NonUpdateableUserFields = Omit<User, keyof UpdateableUserFields>
 type UpdateableWithNonUpdateableUserFields = UpdateableUserFields & {
@@ -16,7 +16,7 @@ type UpdateableWithNonUpdateableUserFields = UpdateableUserFields & {
 }
 
 export class ProfileService {
-  constructor(private __userRepository: typeof User) { }
+  constructor(private __userRepository: typeof User) {}
 
   async get(email: string) {
     const user = await this.__userRepository.findOne({
@@ -31,7 +31,7 @@ export class ProfileService {
         enableAuthenticator: user.enableAuthenticator,
         enableSms: user.enableSms,
         enablePassword: user.enablePassword,
-        profileImgUrl:user.profileImgUrl
+        profileImgUrl: user.profileImgUrl
       }
     } else {
       throw new Error('Could not find the user')
@@ -79,13 +79,12 @@ export class ProfileService {
     }
   }
 
-
   async updateAvatar(
     email: string,
     newValues: Partial<UpdateableWithNonUpdateableUserFields>
   ) {
     const data = {
-      profileImgUrl: newValues.profileImgUrl,
+      profileImgUrl: newValues.profileImgUrl
     }
 
     if (newValues.email && email !== newValues.email) {

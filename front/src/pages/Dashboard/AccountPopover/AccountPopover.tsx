@@ -64,13 +64,18 @@ export default function AccountPopover() {
 
   const getProfile = () => {
     try {
-      userService.getProfile().then((response) => {
-        if (response.result === 'success') {
-          setUserName(response.data.firstName + ' ' + response.data.lastName)
-          setAvatar(response.data.profileImgUrl)
-        }
-      })
-    } catch (error) {}
+      userService
+        .getProfile()
+        .then((response) => {
+          if (response.result === 'success') {
+            setUserName(response.data.firstName + ' ' + response.data.lastName)
+            setAvatar(response.data.profileImgUrl)
+          }
+        })
+        .done()
+    } catch (error) {
+      console.error('Error for set avatar', error)
+    }
   }
 
   const getAvatar = () => {
@@ -99,12 +104,15 @@ export default function AccountPopover() {
       const formData = new FormData()
       formData.append('file', file)
       formData.append('email', email)
-      userService.updateAvatar({ body: formData }).then((response) => {
-        if (response.result === 'success') {
-          getProfile()
-          setAvatarModal(false)
-        }
-      })
+      userService
+        .updateAvatar({ body: formData })
+        .then((response) => {
+          if (response.result === 'success') {
+            getProfile()
+            setAvatarModal(false)
+          }
+        })
+        .done()
     }
   }
 

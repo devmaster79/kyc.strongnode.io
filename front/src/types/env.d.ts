@@ -8,3 +8,5 @@ interface ImportMetaEnv {
 interface ImportMeta {
   readonly env: ImportMetaEnv
 }
+
+declare const REACT_APP_BASE_URL: string
