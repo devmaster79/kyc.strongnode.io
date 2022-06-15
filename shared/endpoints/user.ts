@@ -27,7 +27,7 @@ export namespace CreateInvestor {
     investorFundName: z.string(),
     investorFundWebsite: z.string()
   })
-  export type Request = { body: z.infer<typeof schema> }
+  export type Request = { body: z.input<typeof schema> }
   export type Response =
     | Success<{ message: string; status: 'created' }>
     | ApiResponse<
@@ -98,7 +98,7 @@ export namespace UpdateProfile {
     enableSms: z.boolean().optional(),
     enablePassword: z.boolean().optional()
   })
-  export type Request = { body: z.infer<typeof schema> }
+  export type Request = { body: z.input<typeof schema> }
   export type Response =
     | Success<{ body: Required<z.infer<typeof schema>>; message: string }>
     | ApiResponse<
@@ -121,7 +121,7 @@ export namespace CreateSupportRequest {
     subject: z.string(),
     message: z.string()
   })
-  export type Request = { body: z.infer<typeof schema> }
+  export type Request = { body: z.input<typeof schema> }
   export type Response =
     | Success<{ message: string }>
     | ZodValidationError<Request['body']>
@@ -137,7 +137,7 @@ export namespace AddOrUpdateWallet {
   export const schema = z.object({
     wallet: z.string()
   })
-  export type Request = { body: z.infer<typeof schema> }
+  export type Request = { body: z.input<typeof schema> }
   export type Response =
     | Success<{ message: string }>
     | ZodValidationError<Request['body']>
