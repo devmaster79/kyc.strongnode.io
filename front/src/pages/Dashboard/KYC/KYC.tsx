@@ -104,7 +104,7 @@ export default function KYC() {
             })
             break
           case 'success':
-            localStorage.setItem('username', response.body.username)
+            localStorage.setItem('username', response.body.username || '')
             reset({
               firstName: response.body?.firstName,
               lastName: response.body?.lastName,

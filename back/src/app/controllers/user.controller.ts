@@ -27,9 +27,12 @@ import {
 import { ProfileService } from 'app/services/user/ProfileService'
 import { SupportRequestService } from 'app/services/user/SupportRequestService'
 import { WalletService } from 'app/services/user/WalletService'
+import { GravatarService } from 'app/services/GravatarService'
 
 const emailService = new EmailService(new AWS.SES(AWS_CONFIG()))
-const profileService = new ProfileService(userRepository)
+const gravatarService = new GravatarService()
+
+const profileService = new ProfileService(userRepository, gravatarService)
 const walletService = new WalletService(userRepository, userWalletsRepository)
 const investorDetailService = new InvestorDetailService(
   investorDetailRepository,
@@ -154,7 +157,7 @@ export const updateProfile = withResponse<UpdateProfile.Response>(
 /** Update User avatar*/
 export const updateAvatar = withResponse<UpdateProfile.Response>(
   async (req) => {
-    const data: any = {
+    const data = {
       profileImgUrl: req.file?.filename
     }
     const result = await profileService.updateAvatar(req.body.email, data)

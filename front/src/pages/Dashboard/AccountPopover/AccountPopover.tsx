@@ -31,7 +31,7 @@ type FormValues = {
 export default function AccountPopover() {
   const navigate = useNavigate()
   const { account } = useEthers()
-  const [userName, setUserName] = useState('')
+  const [userName, setUserName] = useState<string>('')
   const [email, setEmail] = useState('')
   const [avatar, setAvatar] = useState('')
   const [showModal, setShowModal] = useState(false)
@@ -80,7 +80,7 @@ export default function AccountPopover() {
 
   const getAvatar = () => {
     return avatar ? (
-      <img src={baseUrl + avatar}></img>
+      <img src={avatar.includes('gravatar') ? avatar : baseUrl + avatar} />
     ) : (
       <Icon
         name="avatar"

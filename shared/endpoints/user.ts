@@ -102,7 +102,7 @@ export namespace UpdateProfile {
   })
   export type Request = { body: z.input<typeof schema> }
   export type Response =
-    | Success<{ body: Required<z.infer<typeof schema>>; message: string }>
+    | Success<{ body: Partial<z.infer<typeof schema>>; message: string }>
     | ApiResponse<
         'email-and-username-are-not-updateable-error',
         400,

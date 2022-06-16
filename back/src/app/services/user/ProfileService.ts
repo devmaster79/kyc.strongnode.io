@@ -1,4 +1,5 @@
 import { User } from 'app/models/user.model'
+import { GravatarService } from '../GravatarService'
 
 type UpdateableUserFields = {
   email: string
@@ -16,13 +17,23 @@ type UpdateableWithNonUpdateableUserFields = UpdateableUserFields & {
 }
 
 export class ProfileService {
-  constructor(private __userRepository: typeof User) {}
+  /**
+   * @param {typeof import('sequelize').Model} __userRepository
+   * @param {import('../GravatarService').GravatarService} __gravatarService
+   */
+  constructor(
+    private __userRepository: typeof User,
+    private __gravatarService: GravatarService
+  ) {}
 
   async get(email: string) {
     const user = await this.__userRepository.findOne({
       where: { email: email }
     })
     if (user) {
+      const profileImgUrl =
+        user.profileImgUrl ||
+        ((await this.__gravatarService.getProfileImageURL(email)) as string)
       return {
         email,
         username: user.username,
@@ -31,7 +42,7 @@ export class ProfileService {
         enableAuthenticator: user.enableAuthenticator,
         enableSms: user.enableSms,
         enablePassword: user.enablePassword,
-        profileImgUrl: user.profileImgUrl
+        profileImgUrl
       }
     } else {
       throw new Error('Could not find the user')
