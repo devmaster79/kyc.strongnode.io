@@ -13,6 +13,7 @@ export interface IGetTokenMetricsObject {
   marketCap: string
   token: string
   usdValue: string
+  symbol: string
   updatedAt: string
   createdAt: string
 }
