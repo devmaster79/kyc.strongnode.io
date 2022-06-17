@@ -94,7 +94,8 @@ exports.refreshTokenDataList = async (req, res) => {
           marketCap: Number(data[el].usd_market_cap).toFixed(30),
           dayVolume: Number(data[el].usd_24h_vol).toFixed(30),
           dayChange: Number(data[el].usd_24h_change).toFixed(30),
-          image: tokenDetails.data.image
+          image: tokenDetails.data.image,
+          symbol: tokenDetails.data.symbol
         })
       }
     }
