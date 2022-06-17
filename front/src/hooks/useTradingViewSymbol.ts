@@ -11,7 +11,7 @@ interface ISymbolExceptions {
 
 // todo research all of the exceptions
 const symbolsExceptions: ISymbolExceptions = {
-  BTC: 'BTCUSD'
+  SNE: 'SNEUSDC'
 }
 
 export const useTradingViewSymbol = (props: IUseTradingViewSymbol) => {
