@@ -20,6 +20,9 @@ export const create = (sequelize: Sequelize) =>
       },
       data: {
         type: DataTypes.JSON
+      },
+      symbol: {
+        type: DataTypes.STRING
       }
     },
     {
