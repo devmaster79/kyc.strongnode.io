@@ -3,7 +3,7 @@ export interface Registry {
 }
 
 export interface Callable {
-  [key: string]: () => void
+  [key: string]: (arg?: unknown) => void
 }
 
 export interface Subscriber {

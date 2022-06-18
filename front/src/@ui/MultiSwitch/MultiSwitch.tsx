@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import { CSSProperties, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Media from 'theme/mediaQueries'
 
 export type MultiSwitchProps<
