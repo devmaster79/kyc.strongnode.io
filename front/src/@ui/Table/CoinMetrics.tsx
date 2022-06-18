@@ -12,6 +12,7 @@ import {
   coinTypesDictionary
 } from '../../services/walletService'
 import { DataSet } from './MainTable/MainTable'
+import { EventBus } from '../../utils/EventBus'
 
 const sampleColumns = [
   {
@@ -43,6 +44,7 @@ const sampleData = {
 interface IDataIcon {
   name: string
   url: IGetTokenMetricsImageObject
+  symbol: string
 }
 
 interface IOwnedObject {
@@ -63,47 +65,6 @@ type CoinMetricsProps = {
   subtitle?: string
 }
 
-const overwrittenFields = {
-  icon: (icon: IDataIcon) => {
-    return (
-      <CryptoWrapper>
-        <img
-          style={{ width: 40, height: 40 }}
-          src={icon.url.large}
-          alt={icon.name + ' icon'}
-        />
-        <p>{icon.name}</p>
-      </CryptoWrapper>
-    )
-  },
-  value_trend: (value: number) => {
-    return (
-      <div>
-        <GrowthWrapper
-          style={Math.sign(value) === -1 ? { color: '#BB3353' } : {}}>
-          {value}
-        </GrowthWrapper>
-      </div>
-    )
-  },
-  owned: (data: IOwnedObject) => {
-    return (
-      <span>
-        {data.type === 'token' && (
-          <UserOwnedTokens
-            tokenAddress={data.tokenAddress}
-            default={data.default}
-          />
-        )}
-        {data.type === 'ethereum' && (
-          <UserOwnedEthereum default={data.default} />
-        )}
-        {!data.type && data.default}
-      </span>
-    )
-  }
-}
-
 let searchTimeout: ReturnType<typeof setTimeout>
 
 export const CoinMetrics = (props: CoinMetricsProps) => {
@@ -112,6 +73,60 @@ export const CoinMetrics = (props: CoinMetricsProps) => {
   }>({
     items: []
   })
+
+  const emitSymbolChange = (symbol: string) => {
+    EventBus.getInstance().dispatch<string>('symbol-change', symbol)
+    // scroll to top, so user can see the change
+    // todo is this suitable from UX side?
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    })
+  }
+
+  const overwrittenFields = {
+    icon: (icon: IDataIcon) => {
+      return (
+        <CryptoWrapper
+          onClick={() => {
+            emitSymbolChange(icon.symbol.toUpperCase())
+          }}>
+          <img
+            style={{ width: 40, height: 40 }}
+            src={icon.url.large}
+            alt={icon.name + ' icon'}
+          />
+          <p>{icon.name}</p>
+        </CryptoWrapper>
+      )
+    },
+    value_trend: (value: number) => {
+      return (
+        <div>
+          <GrowthWrapper
+            style={Math.sign(value) === -1 ? { color: '#BB3353' } : {}}>
+            {value}
+          </GrowthWrapper>
+        </div>
+      )
+    },
+    owned: (data: IOwnedObject) => {
+      return (
+        <span>
+          {data.type === 'token' && (
+            <UserOwnedTokens
+              tokenAddress={data.tokenAddress}
+              default={data.default}
+            />
+          )}
+          {data.type === 'ethereum' && (
+            <UserOwnedEthereum default={data.default} />
+          )}
+          {!data.type && data.default}
+        </span>
+      )
+    }
+  }
 
   useEffect(() => {
     const loadTokenMetrics = async () => {
@@ -146,7 +161,8 @@ export const CoinMetrics = (props: CoinMetricsProps) => {
         value_trend: Number(Number(token.dayChange).toFixed(2)),
         icon: {
           url: token.image,
-          name: token.token.toUpperCase()
+          name: token.token.toUpperCase(),
+          symbol: token.symbol
         }
       }
       temporaryData.push(tokenObject)
@@ -190,6 +206,7 @@ export const CoinMetrics = (props: CoinMetricsProps) => {
 const CryptoWrapper = styled.div({
   height: 'max-content',
   width: 'max-content',
+  cursor: 'pointer',
 
   p: {
     display: 'inline-block',

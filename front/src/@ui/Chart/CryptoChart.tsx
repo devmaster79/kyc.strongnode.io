@@ -4,7 +4,6 @@ import styled from '@emotion/styled/macro'
 import cryptoDataService from '../../services/cryptoDataService'
 import { ValueTrendIndicator } from './ValueTrendIndicator'
 import { ChartScopeSelector, SelectorItem } from './ChartScopeSelector'
-import MultiSwitch from '@ui/MultiSwitch/MultiSwitch'
 import Media from 'theme/mediaQueries'
 
 // sample placeholder data
@@ -12,25 +11,19 @@ const placeholderData = [
   {
     timestamp: 1637884800000,
     value: 0.007622691925608518
-  },
-  {
-    timestamp: 1637971200000,
-    value: 0.007554651042435728
-  },
-  {
-    timestamp: 1638057600000,
-    value: 0.007328889506987581
   }
 ]
-
-type CryptoChartProps = {
-  coin: string
-  wrapperStyles: object
-}
 
 type SwitchOption = {
   label: string
   value: number
+}
+
+type CryptoChartProps = {
+  coin?: string
+  wrapperStyles: object
+  cryptoCurrency: string
+  selectedSwitchOption: SwitchOption
 }
 
 type ChartDataType = Array<{ timestamp: string; value: string }>
@@ -38,7 +31,6 @@ type ChartDataType = Array<{ timestamp: string; value: string }>
 export const CryptoChart = (props: CryptoChartProps) => {
   const [chartScopeFormat, setChartScopeFormat] = useState<XAxisFormat>('days')
   const [chartData, setChartData] = useState<ChartDataType>([])
-  const [cryptoCurrency] = useState('SNE')
   const [targetCurrency] = useState('USD')
 
   const [valueTrendIndicator, setValueTrendIndicator] = useState({
@@ -69,14 +61,6 @@ export const CryptoChart = (props: CryptoChartProps) => {
     }
   ] as SelectorItem[]
 
-  const switchOptions = [
-    { label: 'Price', value: 1 },
-    { label: 'Market Cap', value: 2 }
-  ] as SwitchOption[]
-
-  const [selectedSwitchOption, setSelectedSwitchOption] =
-    useState<SwitchOption>(switchOptions[0])
-
   useEffect(() => {
     const loadStrongnodeCurrency = async () => {
       const data = await cryptoDataService.getChartDataAsync(chartScopeFormat)
@@ -106,7 +90,7 @@ export const CryptoChart = (props: CryptoChartProps) => {
     }, 10000)
 
     return () => clearInterval(refreshDataInterval)
-  }, [chartScopeFormat, targetCurrency, selectedSwitchOption])
+  }, [chartScopeFormat, targetCurrency, props.selectedSwitchOption])
 
   return (
     <div style={props.wrapperStyles}>
@@ -114,7 +98,7 @@ export const CryptoChart = (props: CryptoChartProps) => {
         <div>
           <CryptoPair>
             <Pair>
-              {cryptoCurrency}/{targetCurrency}
+              {props.cryptoCurrency}/{targetCurrency}
             </Pair>
           </CryptoPair>
           <TrendPairWrapper>
@@ -124,15 +108,9 @@ export const CryptoChart = (props: CryptoChartProps) => {
             />
           </TrendPairWrapper>
         </div>
-        {switchOptions && selectedSwitchOption && (
-          <MultiSwitch
-            options={switchOptions}
-            value={selectedSwitchOption}
-            onChange={setSelectedSwitchOption}
-          />
-        )}
         <ChartScopeSelector selectors={chartSelectors} />
       </HeadingWrapper>
+
       <BaseChart
         xAxisFormat={chartScopeFormat}
         data={chartData || placeholderData}
@@ -145,12 +123,14 @@ export const CryptoChart = (props: CryptoChartProps) => {
 }
 
 const CryptoPair = styled.div({
-  width: 'max-content'
+  width: 'max-content',
+  transition: '250ms ease'
 })
 
 const HeadingWrapper = styled.div({
   display: 'flex',
   paddingRight: '15px',
+  marginBottom: '32px',
   alignItems: 'center',
   justifyContent: 'space-between',
   [Media.tablet]: {
@@ -169,7 +149,6 @@ const Pair = styled.div({
 
 const TrendPairWrapper = styled.div({
   marginTop: '8px',
-  marginBottom: '32px',
 
   div: {
     display: 'inline-block',
