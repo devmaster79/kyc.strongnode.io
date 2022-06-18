@@ -25,8 +25,8 @@ export const CryptoWidget = () => {
 
   const handleOnSymbolChange = EventBus.getInstance().register(
     'symbol-change',
-    (crypto: string) => {
-      setCryptoCurrency(crypto)
+    (crypto) => {
+      setCryptoCurrency(crypto as string)
     }
   )
 

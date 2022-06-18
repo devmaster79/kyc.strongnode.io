@@ -42,7 +42,10 @@ export class EventBus implements IEventBus {
     Object.keys(subscriber).forEach((key) => subscriber[key](arg))
   }
 
-  public register(event: string, callback: () => void): Registry {
+  public register(
+    event: string,
+    callback: (parameter?: unknown) => void
+  ): Registry {
     const id = this.getNextId()
     if (!this.subscribers[event]) this.subscribers[event] = {}
 

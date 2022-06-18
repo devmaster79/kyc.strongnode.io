@@ -14,7 +14,7 @@ export type MultiSwitchProps<
   searchBy?: TLabelKey
   value: TOption
   onChange: (selectedValue: TOption) => void
-  style?: CSSProperties
+  style?: object
 }
 
 const ANIMATION_DURATION_MS = 250
