@@ -1,6 +1,9 @@
 import { SMS_CONFIG } from '../../config/config'
-import { Pinpoint } from 'aws-sdk'
-import { MessageType, SendMessagesRequest } from 'aws-sdk/clients/pinpoint'
+import {
+  Pinpoint,
+  MessageType,
+  SendMessagesRequest
+} from '@aws-sdk/client-pinpoint'
 import { Logger } from '../Logger'
 
 export class SmsService {
@@ -15,7 +18,7 @@ export class SmsService {
   async send(
     destinationNumber: string,
     rawMessage: string,
-    messageType: MessageType = 'TRANSACTIONAL'
+    messageType: MessageType = MessageType.TRANSACTIONAL
   ): Promise<void> {
     const params: SendMessagesRequest = {
       ApplicationId: process.env.ApplicationId
@@ -47,10 +50,6 @@ export class SmsService {
       return
     }
 
-    const response = await this.__awsPinpoint.sendMessages(params).promise()
-    if (response.$response.error) {
-      this.__logger.error('Unable to send SMS.', response.$response.error)
-      throw new Error('Unable to send SMS.')
-    }
+    await this.__awsPinpoint.sendMessages(params)
   }
 }
