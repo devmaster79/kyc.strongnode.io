@@ -18,8 +18,8 @@ export interface IGetTokenMetricsObject {
   token: string
   usdValue: string
   symbol: string
-  updatedAt: string
-  createdAt: string
+  updatedAt: Date
+  createdAt: Date
 }
 
 export interface IGetTokenMetricsImageObject {

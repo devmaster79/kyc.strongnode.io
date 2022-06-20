@@ -130,7 +130,7 @@ export const CoinMetrics = (props: CoinMetricsProps) => {
 
   useEffect(() => {
     const loadTokenMetrics = async () => {
-      const data = await cryptoDataService.getTokensMetrics()
+      const data = await cryptoDataService.getTokenMetricsFunc()
       if (data.result === 'success') {
         const formatedData = formatTableData(data.tokenMetrics)
         setTableData(formatedData as DataSet<IFormattedTokenObject>)
