@@ -4,7 +4,7 @@ import {
   InvestorDetail as investorDetailRepository,
   UserWallets as userWalletsRepository
 } from '../models'
-import AWS from 'aws-sdk'
+import { SES } from '@aws-sdk/client-ses'
 import { EmailService } from 'app/services/communication/EmailService'
 import { AWS_CONFIG } from 'app/config/config'
 import {
@@ -28,7 +28,7 @@ import { ProfileService } from 'app/services/user/ProfileService'
 import { SupportRequestService } from 'app/services/user/SupportRequestService'
 import { WalletService } from 'app/services/user/WalletService'
 
-const emailService = new EmailService(new AWS.SES(AWS_CONFIG()))
+const emailService = new EmailService(new SES(AWS_CONFIG()))
 const profileService = new ProfileService(userRepository)
 const walletService = new WalletService(userRepository, userWalletsRepository)
 const investorDetailService = new InvestorDetailService(

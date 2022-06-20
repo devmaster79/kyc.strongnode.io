@@ -1,5 +1,4 @@
-import { SES } from 'aws-sdk'
-import { SendEmailRequest } from 'aws-sdk/clients/ses'
+import { SendEmailRequest, SES } from '@aws-sdk/client-ses'
 import { EMAIL_CONFIG } from '../../config/config'
 import { Logger } from '../Logger'
 import { Sendable } from './templates/BaseTemplate'
@@ -53,12 +52,6 @@ export class EmailService {
       }
     }
 
-    const response = await this.__awsSes
-      .sendEmail(defaultEmailOptions)
-      .promise()
-    if (response.$response.error) {
-      this.__logger.error('Unable to send Email.', response.$response.error)
-      throw new Error('Unable to send Email.')
-    }
+    await this.__awsSes.sendEmail(defaultEmailOptions)
   }
 }

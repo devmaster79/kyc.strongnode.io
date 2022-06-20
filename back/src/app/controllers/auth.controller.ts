@@ -40,10 +40,11 @@ import {
   EnableAuthenticatorAuth,
   DisableAuthenticatorAuth
 } from 'shared/endpoints/auth'
-import AWS from 'aws-sdk'
+import { Pinpoint } from '@aws-sdk/client-pinpoint'
+import { SES } from '@aws-sdk/client-ses'
 
-const smsService = new SmsService(new AWS.Pinpoint(AWS_CONFIG()))
-const emailService = new EmailService(new AWS.SES(AWS_CONFIG()))
+const smsService = new SmsService(new Pinpoint(AWS_CONFIG()))
+const emailService = new EmailService(new SES(AWS_CONFIG()))
 const userRepository = require('../models').users
 const tokenService = new TokenService()
 const emailAuthService = new EmailAuthService(
