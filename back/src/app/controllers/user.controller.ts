@@ -172,7 +172,7 @@ export const updateAvatar = withResponse<UpdateAvatar.Response>(async (req) => {
       message: 'Successfully updated the profile'
     })
   } else {
-    return apiResponse('email-and-username-are-not-updateable-error', 400, {
+    return apiResponse('avatar-is-not-updateable-error', 400, {
       message: 'Cannot update avatar'
     })
   }

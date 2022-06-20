@@ -126,11 +126,7 @@ export namespace UpdateAvatar {
   export type Request = { body: FormData }
   export type Response =
     | Success<{ message: string }>
-    | ApiResponse<
-        'email-and-username-are-not-updateable-error',
-        400,
-        { message: string }
-      >
+    | ApiResponse<'avatar-is-not-updateable-error', 400, { message: string }>
     | UnauthorizedError
     | UnexpectedError
   export const request: Request | null = null
