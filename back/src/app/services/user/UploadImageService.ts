@@ -1,5 +1,5 @@
-import { AWS_CONFIG, bucketName } from 'app/config/config'
-import * as AWS from 'aws-sdk'
+import { AWS_CONFIG, AWS_BUCKET_NAME } from 'app/config/config'
+import * as AWS from '@aws-sdk/client-s3'
 import * as fs from 'fs'
 export class UploadImageService {
   private s3: AWS.S3
@@ -9,7 +9,7 @@ export class UploadImageService {
   async upload(file: Express.Multer.File) {
     const fileStream = fs.createReadStream(file.path)
     const uploadParams = {
-      Bucket: bucketName,
+      Bucket: AWS_BUCKET_NAME,
       Body: fileStream,
       Key: file.filename
     }

@@ -1,5 +1,4 @@
-import { ServiceConfigurationOptions } from 'aws-sdk/lib/service'
-
+import { SESClientConfig } from '@aws-sdk/client-ses'
 export const REGISTRATION_LIMIT = 1000
 
 export const EMAIL_CONFIG = {
@@ -13,8 +12,8 @@ export const SMS_CONFIG = {
   registeredKeyword: 'strongnode'
 }
 
-export const AWS_CONFIG = (): ServiceConfigurationOptions => {
-  const options: ServiceConfigurationOptions = {
+export const AWS_CONFIG = (): SESClientConfig => {
+  const options: SESClientConfig = {
     region: 'us-west-2'
   }
 
@@ -25,4 +24,8 @@ export const AWS_CONFIG = (): ServiceConfigurationOptions => {
   return options
 }
 
-export const bucketName = process.env.AWS_BUCKET_NAME || 'test'
+export const AWS_BUCKET_NAME = process.env.AWS_BUCKET_NAME || 'test'
+/** The collection name for the No-SQL db that stores the faces */
+export const AWS_REKOGNITION_COLLECTION_IDS = {
+  kycFaces: 'kyc-faces'
+}

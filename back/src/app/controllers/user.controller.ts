@@ -4,7 +4,7 @@ import {
   InvestorDetail as investorDetailRepository,
   UserWallets as userWalletsRepository
 } from '../models'
-import AWS from 'aws-sdk'
+import { SES } from '@aws-sdk/client-ses'
 import { EmailService } from 'app/services/communication/EmailService'
 import { AWS_CONFIG } from 'app/config/config'
 import {
@@ -31,7 +31,7 @@ import { WalletService } from 'app/services/user/WalletService'
 import { GravatarService } from 'app/services/GravatarService'
 import { UploadImageService } from 'app/services/user/UploadImageService'
 
-const emailService = new EmailService(new AWS.SES(AWS_CONFIG()))
+const emailService = new EmailService(new SES(AWS_CONFIG()))
 const gravatarService = new GravatarService()
 const uploadService = new UploadImageService()
 const profileService = new ProfileService(
