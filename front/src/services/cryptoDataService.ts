@@ -1,5 +1,9 @@
-import axios, { AxiosResponse } from 'axios'
-import { getCryptoChartData, getTokenMetrics } from '../utils/config'
+import * as cryptoEndpoints from 'shared/endpoints/cryptocurrency'
+import { generateApiCalls } from './utils'
+
+const rawCalls = generateApiCalls(cryptoEndpoints)
+
+type scopes = 'days' | 'weeks' | 'months' | 'years'
 
 export interface IGetTokenMetricsData {
   [key: string]: object | string | number
@@ -30,17 +34,12 @@ export interface IGetChartData {
   total_volumes: Array<Array<string>>
 }
 
-const getChartDataAsync = (
-  scope = 'days'
-): Promise<AxiosResponse<IGetChartData>> => {
-  const url: string = getCryptoChartData + '?scope=' + scope
-  return axios.get(url)
+const getChartDataAsync = (scope: scopes = 'days') => {
+  return rawCalls.getTokenChartData({ params: { scope: scope } })
 }
 
-const getTokenMetricsFunc = (): Promise<
-  AxiosResponse<Array<IGetTokenMetricsObject>>
-> => {
-  return axios.get(getTokenMetrics)
+const getTokenMetricsFunc = () => {
+  return rawCalls.getTokensMetrics()
 }
 
 const logger = {
