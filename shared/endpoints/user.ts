@@ -102,7 +102,7 @@ export namespace UpdateProfile {
   })
   export type Request = { body: z.input<typeof schema> }
   export type Response =
-    | Success<{ body: Partial<z.infer<typeof schema>>; message: string }>
+    | Success<{ body: Required<z.infer<typeof schema>>; message: string }>
     | ApiResponse<
         'email-and-username-are-not-updateable-error',
         400,
@@ -120,8 +120,8 @@ export namespace UpdateAvatar {
   export const METHOD = 'post'
   export const PATH = '/api/users/profile/image'
   export const schema = z.object({
-    email: z.string().email().optional(),
-    file: z.string().optional()
+    email: z.string().email(),
+    file: z.string()
   })
   export type Request = { body: FormData }
   export type Response =

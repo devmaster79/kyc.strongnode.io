@@ -22,17 +22,23 @@ import {
   GetInvestorDetails,
   GetProfile,
   GetUserWallets,
+  UpdateAvatar,
   UpdateProfile
 } from 'shared/endpoints/user'
 import { ProfileService } from 'app/services/user/ProfileService'
 import { SupportRequestService } from 'app/services/user/SupportRequestService'
 import { WalletService } from 'app/services/user/WalletService'
 import { GravatarService } from 'app/services/GravatarService'
+import { UploadImageService } from 'app/services/user/UploadImageService'
 
 const emailService = new EmailService(new AWS.SES(AWS_CONFIG()))
 const gravatarService = new GravatarService()
-
-const profileService = new ProfileService(userRepository, gravatarService)
+const uploadService = new UploadImageService()
+const profileService = new ProfileService(
+  userRepository,
+  gravatarService,
+  uploadService
+)
 const walletService = new WalletService(userRepository, userWalletsRepository)
 const investorDetailService = new InvestorDetailService(
   investorDetailRepository,
@@ -155,26 +161,22 @@ export const updateProfile = withResponse<UpdateProfile.Response>(
 )
 
 /** Update User avatar*/
-export const updateAvatar = withResponse<UpdateProfile.Response>(
-  async (req) => {
-    const data = {
-      profileImgUrl: req.file?.filename
-    }
-    const result = await profileService.updateAvatar(req.body.email, data)
-    // TODO: implement email verification and user_name validation so to make it updateable
-    switch (result) {
-      case 'unimplemented':
-        return apiResponse('email-and-username-are-not-updateable-error', 400, {
-          message: 'Sorry, but currently you cannot update your email'
-        })
-      case 'success':
-        return success({
-          message: 'Successfully updated the profile',
-          body: data
-        })
-    }
+export const updateAvatar = withResponse<UpdateAvatar.Response>(async (req) => {
+  const message = await profileService.updateAvatar(
+    req.body.email,
+    req.file as Express.Multer.File
+  )
+  // TODO: implement email verification and user_name validation so to make it updateable
+  if (message === 'success') {
+    return success({
+      message: 'Successfully updated the profile'
+    })
+  } else {
+    return apiResponse('email-and-username-are-not-updateable-error', 400, {
+      message: 'Cannot update avatar'
+    })
   }
-)
+})
 
 /** Method that requests support from members of SNE. */
 export const createSupportRequest = withResponse<CreateSupportRequest.Response>(

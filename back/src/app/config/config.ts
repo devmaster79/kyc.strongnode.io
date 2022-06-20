@@ -24,3 +24,5 @@ export const AWS_CONFIG = (): ServiceConfigurationOptions => {
 
   return options
 }
+
+export const bucketName = process.env.AWS_BUCKET_NAME || 'test'

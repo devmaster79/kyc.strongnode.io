@@ -1,5 +1,6 @@
 import { User } from 'app/models/user.model'
 import { GravatarService } from '../GravatarService'
+import { UploadImageService } from './UploadImageService'
 
 type UpdateableUserFields = {
   email: string
@@ -20,10 +21,12 @@ export class ProfileService {
   /**
    * @param {typeof import('sequelize').Model} __userRepository
    * @param {import('../GravatarService').GravatarService} __gravatarService
+   * @param {import('../UploadImageService').UploadImageService} __uploadImageService
    */
   constructor(
     private __userRepository: typeof User,
-    private __gravatarService: GravatarService
+    private __gravatarService: GravatarService,
+    private __uploadImageService: UploadImageService
   ) {}
 
   async get(email: string) {
@@ -90,18 +93,10 @@ export class ProfileService {
     }
   }
 
-  async updateAvatar(
-    email: string,
-    newValues: Partial<UpdateableWithNonUpdateableUserFields>
-  ) {
+  async updateAvatar(email: string, file: Express.Multer.File) {
     const data = {
-      profileImgUrl: newValues.profileImgUrl
+      profileImgUrl: (await this.__uploadImageService.upload(file)).Location
     }
-
-    if (newValues.email && email !== newValues.email) {
-      return 'unimplemented'
-    }
-
     const updateResult = await this.__userRepository.update(data, {
       where: { email: email }
     })
@@ -110,6 +105,6 @@ export class ProfileService {
       throw new Error(`Could not find user with email: ${email}`)
     }
 
-    return 'success'
+    return 'success' as const
   }
 }

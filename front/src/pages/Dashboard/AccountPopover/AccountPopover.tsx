@@ -12,21 +12,9 @@ import { useGetTokenBalanceFormatted } from '../../../hooks/useGetTokenBalanceFo
 import { getTokenAddress } from '../../../services/walletService'
 import { CustomTheme } from 'theme'
 import { ConnectWalletModal } from '../../../@ui/Modal/ConnectWalletModal'
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Button
-} from '@mui/material'
-import { useForm } from 'react-hook-form'
-import styled from '@emotion/styled'
+import AccountDialog from './AccountDialog'
 
 const baseUrl = REACT_APP_BASE_URL + '/uploads/'
-
-type FormValues = {
-  file?: File[]
-}
 
 export default function AccountPopover() {
   const navigate = useNavigate()
@@ -36,8 +24,6 @@ export default function AccountPopover() {
   const [avatar, setAvatar] = useState('')
   const [showModal, setShowModal] = useState(false)
   const [openAvatarModal, setAvatarModal] = useState(false)
-  const [isError, setError] = useState(false)
-  const { register, handleSubmit } = useForm()
   const [showConnectWalletModal, setShowConnectWalletModal] = useState(false)
   const SNEBalance = useGetTokenBalanceFormatted(
     account,
@@ -94,27 +80,6 @@ export default function AccountPopover() {
   const onAvatarEdit = () => {
     setAvatarModal(true)
   }
-  const onSubmit = async (data: FormValues) => {
-    const file = data?.file ? data?.file[0] : null
-    if (file) {
-      if (file.type && file.type.indexOf('image') === -1) {
-        setError(true)
-        return
-      }
-      const formData = new FormData()
-      formData.append('file', file)
-      formData.append('email', email)
-      userService
-        .updateAvatar({ body: formData })
-        .then((response) => {
-          if (response.result === 'success') {
-            getProfile()
-            setAvatarModal(false)
-          }
-        })
-        .done()
-    }
-  }
 
   return (
     <>
@@ -165,37 +130,15 @@ export default function AccountPopover() {
           <TextButton onClick={signOut}>Sign out</TextButton>
         </AccountPopoverWrapper>
       )}
-
-      <Dialog
-        open={openAvatarModal}
-        onClose={() => setAvatarModal(false)}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description">
-        <DialogTitle id="alert-dialog-title">Upload Avatar Image</DialogTitle>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <DialogContent>
-            <div>
-              <input
-                type="file"
-                accept="image/png, image/jpeg"
-                {...register('file')}
-              />
-              {isError ? <ErrorLabel>File is not an image</ErrorLabel> : ''}
-            </div>
-
-            {/* <input type="submit" /> */}
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={() => setAvatarModal(false)}>Close</Button>
-            <Button type="submit">Save</Button>
-          </DialogActions>
-        </form>
-      </Dialog>
+      {openAvatarModal ? (
+        <AccountDialog
+          email={email}
+          getProfile={getProfile}
+          setClose={(status: boolean) => setAvatarModal(status)}
+        />
+      ) : (
+        <></>
+      )}
     </>
   )
 }
-
-const ErrorLabel = styled.label({
-  margin: '16px 0px',
-  color: 'red'
-})
