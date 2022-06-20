@@ -25,7 +25,7 @@ export const TradingViewContainer = (props: ITradingViewContainer) => {
           width: '100%',
           height: '500px',
           allow_symbol_change: true,
-          symbol: tradingViewSymbol,
+          symbol: tradingViewSymbol ? tradingViewSymbol : 'SNEUSDC',
           theme: themeMode
         }}
       />
