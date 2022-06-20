@@ -63,11 +63,7 @@ export const CryptoChart = (props: CryptoChartProps) => {
 
   useEffect(() => {
     const loadStrongnodeCurrency = async () => {
-      const data = await cryptoDataService.getTokenChartData({
-        params: {
-          scope: chartScopeFormat
-        }
-      })
+      const data = await cryptoDataService.getChartDataAsync(chartScopeFormat)
       if (data.result === 'success') {
         const coordinates = data.data.prices.map((price) => ({
           timestamp: price[0],

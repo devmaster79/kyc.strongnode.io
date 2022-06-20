@@ -42,9 +42,9 @@ const getTokenMetricsFunc = () => {
   return rawCalls.getTokensMetrics()
 }
 
-const logger = {
+const cryptoDataService = {
   getChartDataAsync,
   getTokenMetricsFunc
 }
 
-export default logger
+export default cryptoDataService
