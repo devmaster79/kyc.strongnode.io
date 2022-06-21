@@ -95,7 +95,7 @@ export class ProfileService {
 
   async updateAvatar(email: string, file: Express.Multer.File) {
     const data = {
-      profileImgUrl: (await this.__uploadImageService.upload(file)).Location
+      profileImgUrl: await this.__uploadImageService.upload(file)
     }
     const updateResult = await this.__userRepository.update(data, {
       where: { email: email }

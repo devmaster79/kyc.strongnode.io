@@ -1,10 +1,10 @@
-import { AWS_CONFIG, AWS_BUCKET_NAME } from 'app/config/config'
-import * as AWS from '@aws-sdk/client-s3'
+import { AWS_BUCKET_NAME, S3_CONFIG } from 'app/config/config'
+import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3'
 import * as fs from 'fs'
 export class UploadImageService {
-  private s3: AWS.S3
+  private s3: S3Client
   constructor() {
-    this.s3 = new AWS.S3(AWS_CONFIG())
+    this.s3 = new S3Client(S3_CONFIG)
   }
   async upload(file: Express.Multer.File) {
     const fileStream = fs.createReadStream(file.path)
@@ -13,6 +13,16 @@ export class UploadImageService {
       Body: fileStream,
       Key: file.filename
     }
-    return this.s3.upload(uploadParams).promise()
+    const command = new PutObjectCommand(uploadParams)
+    return new Promise((resolve, reject) => {
+      this.s3
+        .send(command)
+        .then(() => {
+          resolve(
+            `${process.env.AWS_LOCALSTACK_URL}/${AWS_BUCKET_NAME}/${file.filename}`
+          )
+        })
+        .catch((e) => reject(e))
+    })
   }
 }
