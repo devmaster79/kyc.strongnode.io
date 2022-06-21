@@ -29,6 +29,9 @@ export const create = (sequelize: Sequelize) =>
       },
       dayChange: {
         type: DataTypes.DECIMAL(30, 10)
+      },
+      symbol: {
+        type: DataTypes.STRING
       }
     },
     {

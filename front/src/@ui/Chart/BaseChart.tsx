@@ -12,7 +12,7 @@ import {
 
 const ChartWrapper = styled.div({
   width: '100%',
-  height: '400px'
+  height: '500px'
 })
 
 export type RechartCompatibleKey<Data> = Exclude<keyof Data, symbol>

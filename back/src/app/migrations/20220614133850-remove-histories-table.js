@@ -1,7 +1,7 @@
 const { Sequelize } = require('sequelize')
 
 async function up({ context: queryInterface }) {
-  await queryInterface.removeTable('histories')
+  await queryInterface.dropTable('histories')
 }
 
 async function down({ context: queryInterface }) {

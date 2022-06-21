@@ -14,6 +14,7 @@ export type MultiSwitchProps<
   searchBy?: TLabelKey
   value: TOption
   onChange: (selectedValue: TOption) => void
+  style?: object
 }
 
 const ANIMATION_DURATION_MS = 250
@@ -73,7 +74,7 @@ function MultiSwitch<
     BUTTON_MARGIN_PX
 
   return (
-    <SelectWrapper>
+    <SelectWrapper style={props.style}>
       <AnimatedBackground style={{ left: `${activeXOffset}px` }} />
       <ul>
         {props.options.map((option, key) => (
@@ -106,13 +107,13 @@ const SelectWrapper = styled.div((props) => ({
 
     li: {
       zIndex: 10,
-      padding: '14px 0',
+      padding: '10.5px 0',
       borderRadius: '92px',
       minWidth: `${BUTTON_WIDTH_PX}px`,
       textAlign: 'center',
       fontSize: '14px',
       textTransform: 'uppercase',
-      fontWeight: '400',
+      fontWeight: '600',
       margin: `${BUTTON_MARGIN_PX}px`,
       color: props.theme.palette.text.secondary,
       cursor: 'pointer',
@@ -128,7 +129,7 @@ const SelectWrapper = styled.div((props) => ({
 
 const AnimatedBackground = styled.div({
   width: `${BUTTON_WIDTH_PX}px`,
-  height: '49px',
+  height: '42px',
   borderRadius: '92px',
   position: 'absolute',
   top: '50%',

@@ -80,6 +80,7 @@ export namespace GetTokensMetrics {
     marketCap: string
     token: string
     usdValue: string
+    symbol: string
     updatedAt: Date
     createdAt: Date
   }

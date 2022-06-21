@@ -3,12 +3,12 @@ import { useSnackbar } from 'notistack'
 import { useEffect, useCallback, useRef } from 'react'
 import userService from '../services/userService'
 import { Banner } from '../@ui/Banner/Banner'
-import { CryptoChart } from '../@ui/Chart/CryptoChart'
 import authService from 'services/auth'
 import TableSection from 'components/TableSection/TableSection'
 import { CoinMetrics } from '../@ui/Table/CoinMetrics'
 import styled from '@emotion/styled'
 import Media from './../theme/mediaQueries'
+import { CryptoWidget } from '../@ui/Crypto/CryptoWidget'
 
 export default function Dashboard() {
   const { enqueueSnackbar } = useSnackbar()
@@ -59,7 +59,7 @@ export default function Dashboard() {
           soon
         />
         <h1 style={{ marginTop: '56px' }}>DeFi Dashboard</h1>
-        <CryptoChart wrapperStyles={{ marginTop: '16px', width: '100%' }} />
+        <CryptoWidget />
         <GridContainer>
           <Grid>
             <CoinMetrics title="Coin Metrics" hideHeading />
