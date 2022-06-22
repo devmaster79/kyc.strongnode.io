@@ -1,3 +1,5 @@
+import { CoinMetricsData as coinMetricsData } from '../../models'
+
 import type CoinGeckoApi from 'coingecko-api'
 /**
  * Token ids for metrics table.
@@ -73,5 +75,15 @@ export class CryptocurrencyDataService {
    */
   async getTokenDetails(tokenId: string) {
     return await this.__coingeckoClient.coins.fetch(tokenId, {})
+  }
+
+  /**
+   * Helper method that returns token symbol from coinMetrics data by token ID.
+   * @param tokenId
+   */
+  async getTokenSymbol(tokenId: string) {
+    const result = await coinMetricsData.findOne({ where: { token: tokenId } })
+
+    return result ? result.symbol : false
   }
 }
