@@ -146,6 +146,7 @@ export const getTokensMetrics = withResponse<GetTokensMetrics.Response>(
   async () => {
     // todo add query option to get only one token
     const tokenMetrics = await coinMetricsData.findAll()
-    return success({ tokenMetrics })
+
+    return success({ tokenMetrics: tokenMetrics })
   }
 )

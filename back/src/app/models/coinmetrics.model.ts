@@ -8,6 +8,7 @@ export class CoinMetricsModel extends Model {
   public usdValue!: string
   public marketCap!: string
   public dayChange!: string
+  public symbol!: string
   public readonly createdAt!: Date
   public readonly updatedAt!: Date
 }
