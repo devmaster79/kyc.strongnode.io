@@ -6,7 +6,7 @@ import {
 } from '../models'
 import { SES } from '@aws-sdk/client-ses'
 import { EmailService } from 'app/services/communication/EmailService'
-import { AWS_CONFIG } from 'app/config/config'
+import { AWS_CONFIG, S3_CONFIG } from 'app/config/config'
 import {
   apiResponse,
   notFoundError,
@@ -30,10 +30,12 @@ import { SupportRequestService } from 'app/services/user/SupportRequestService'
 import { WalletService } from 'app/services/user/WalletService'
 import { GravatarService } from 'app/services/GravatarService'
 import { UploadImageService } from 'app/services/user/UploadImageService'
+import { S3Client } from '@aws-sdk/client-s3'
 
 const emailService = new EmailService(new SES(AWS_CONFIG()))
+const s3Service = new S3Client(S3_CONFIG)
 const gravatarService = new GravatarService()
-const uploadService = new UploadImageService()
+const uploadService = new UploadImageService(s3Service)
 const profileService = new ProfileService(
   userRepository,
   gravatarService,
@@ -166,7 +168,6 @@ export const updateAvatar = withResponse<UpdateAvatar.Response>(async (req) => {
     req.body.email,
     req.file as Express.Multer.File
   )
-  // TODO: implement email verification and user_name validation so to make it updateable
   if (message === 'success') {
     return success({
       message: 'Successfully updated the profile'

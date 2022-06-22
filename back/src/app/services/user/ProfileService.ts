@@ -18,11 +18,6 @@ type UpdateableWithNonUpdateableUserFields = UpdateableUserFields & {
 }
 
 export class ProfileService {
-  /**
-   * @param {typeof import('sequelize').Model} __userRepository
-   * @param {import('../GravatarService').GravatarService} __gravatarService
-   * @param {import('../UploadImageService').UploadImageService} __uploadImageService
-   */
   constructor(
     private __userRepository: typeof User,
     private __gravatarService: GravatarService,

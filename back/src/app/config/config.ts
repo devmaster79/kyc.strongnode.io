@@ -13,13 +13,14 @@ export const SMS_CONFIG = {
   senderId: 'MySenderID',
   registeredKeyword: 'strongnode'
 }
+export const AWS_REGION = process.env.AWS_REGION || 'us-west-2'
 
 export const AWS_CONFIG = (): SESClientConfig => {
   const options: SESClientConfig = {
-    region: process.env.AWS_REGION,
+    region: AWS_REGION,
     credentials: {
-      accessKeyId: process.env.AWS_ACCESS_KEY_ID || '',
-      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || ''
+      accessKeyId: process.env.AWS_ACCESS_KEY_ID || 'localhost',
+      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || 'localhost'
     }
   }
 
@@ -35,7 +36,8 @@ export const S3_CONFIG: S3ClientConfig = {
   forcePathStyle: true
 }
 
-export const AWS_BUCKET_NAME = process.env.AWS_BUCKET_NAME || ''
+export const AWS_BUCKET_NAME = process.env.AWS_BUCKET_NAME || 'local-bucket'
+
 /** The collection name for the No-SQL db that stores the faces */
 export const AWS_REKOGNITION_COLLECTION_IDS = {
   kycFaces: 'kyc-faces'
