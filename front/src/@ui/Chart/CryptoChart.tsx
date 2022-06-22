@@ -89,7 +89,12 @@ export const CryptoChart = (props: CryptoChartProps) => {
     }, 10000)
 
     return () => clearInterval(refreshDataInterval)
-  }, [chartScopeFormat, targetCurrency, props.selectedSwitchOption])
+  }, [
+    chartScopeFormat,
+    targetCurrency,
+    props.selectedSwitchOption,
+    props.cryptoCurrency
+  ])
 
   return (
     <div style={props.wrapperStyles}>
