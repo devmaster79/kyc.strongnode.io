@@ -66,6 +66,7 @@
     "@types/livereload": "^0.9.2",
     "@types/mocha": "^9.1.1",
     "@types/multer": "^1.4.7",
+    "@types/multer-s3": "^3.0.0",
     "@types/node": "^17.0.22",
     "@types/validator": "^13.7.1",
     "@types/websocket": "^1.0.5",

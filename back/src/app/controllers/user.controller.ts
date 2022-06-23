@@ -6,7 +6,7 @@ import {
 } from '../models'
 import { SES } from '@aws-sdk/client-ses'
 import { EmailService } from 'app/services/communication/EmailService'
-import { AWS_CONFIG, S3_CONFIG } from 'app/config/config'
+import { AWS_CONFIG } from 'app/config/config'
 import {
   apiResponse,
   notFoundError,
@@ -29,18 +29,10 @@ import { ProfileService } from 'app/services/user/ProfileService'
 import { SupportRequestService } from 'app/services/user/SupportRequestService'
 import { WalletService } from 'app/services/user/WalletService'
 import { GravatarService } from 'app/services/GravatarService'
-import { UploadImageService } from 'app/services/user/UploadImageService'
-import { S3Client } from '@aws-sdk/client-s3'
 
 const emailService = new EmailService(new SES(AWS_CONFIG()))
-const s3Service = new S3Client(S3_CONFIG)
 const gravatarService = new GravatarService()
-const uploadService = new UploadImageService(s3Service)
-const profileService = new ProfileService(
-  userRepository,
-  gravatarService,
-  uploadService
-)
+const profileService = new ProfileService(userRepository, gravatarService)
 const walletService = new WalletService(userRepository, userWalletsRepository)
 const investorDetailService = new InvestorDetailService(
   investorDetailRepository,
@@ -166,7 +158,7 @@ export const updateProfile = withResponse<UpdateProfile.Response>(
 export const updateAvatar = withResponse<UpdateAvatar.Response>(async (req) => {
   const message = await profileService.updateAvatar(
     req.body.email,
-    req.file as Express.Multer.File
+    req.file as Express.MulterS3.File
   )
   if (message === 'success') {
     return success({

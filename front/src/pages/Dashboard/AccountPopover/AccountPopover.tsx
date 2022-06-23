@@ -14,8 +14,6 @@ import { CustomTheme } from 'theme'
 import { ConnectWalletModal } from '../../../@ui/Modal/ConnectWalletModal'
 import AccountDialog from './AccountDialog'
 
-const baseUrl = REACT_APP_BASE_URL + '/uploads/'
-
 export default function AccountPopover() {
   const navigate = useNavigate()
   const { account } = useEthers()
@@ -66,7 +64,7 @@ export default function AccountPopover() {
 
   const getAvatar = () => {
     return avatar ? (
-      <img src={avatar.includes('gravatar') ? avatar : baseUrl + avatar} />
+      <img src={avatar} />
     ) : (
       <Icon
         name="avatar"

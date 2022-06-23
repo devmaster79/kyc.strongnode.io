@@ -1,21 +1,18 @@
 import { Request } from 'express'
+import { AWS_BUCKET_NAME, s3Service } from 'app/config/config'
 
-const path = require('path')
 const multer = require('multer')
-type DestinationCallback = (error: Error | null, destination: string) => void
+const multerS3 = require('multer-s3')
+
 type FileNameCallback = (error: Error | null, filename: string) => void
 
-const storage = multer.diskStorage({
-  destination: (
-    req: Request,
-    file: Express.Multer.File,
-    cb: DestinationCallback
-  ) => {
-    cb(null, path.resolve('../uploads/'))
-  },
-  filename: (req: Request, file: Express.Multer.File, cb: FileNameCallback) => {
-    cb(null, `${Date.now()}-strongnode-${file.originalname}`)
-  }
+export const uploadFileMiddleWare = multer({
+  storage: multerS3({
+    s3: s3Service,
+    acl: 'public-read',
+    bucket: AWS_BUCKET_NAME,
+    key: (req: Request, file: Express.Multer.File, cb: FileNameCallback) => {
+      cb(null, `${Date.now()}-strongnode-${file.originalname}`)
+    }
+  })
 })
-
-export const uploadFileMiddleWare = multer({ storage: storage })

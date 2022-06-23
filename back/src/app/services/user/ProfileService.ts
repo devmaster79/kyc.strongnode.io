@@ -1,6 +1,5 @@
 import { User } from 'app/models/user.model'
 import { GravatarService } from '../GravatarService'
-import { UploadImageService } from './UploadImageService'
 
 type UpdateableUserFields = {
   email: string
@@ -20,8 +19,7 @@ type UpdateableWithNonUpdateableUserFields = UpdateableUserFields & {
 export class ProfileService {
   constructor(
     private __userRepository: typeof User,
-    private __gravatarService: GravatarService,
-    private __uploadImageService: UploadImageService
+    private __gravatarService: GravatarService
   ) {}
 
   async get(email: string) {
@@ -88,10 +86,11 @@ export class ProfileService {
     }
   }
 
-  async updateAvatar(email: string, file: Express.Multer.File) {
+  async updateAvatar(email: string, file: Express.MulterS3.File) {
     const data = {
-      profileImgUrl: await this.__uploadImageService.upload(file)
+      profileImgUrl: file.location
     }
+
     const updateResult = await this.__userRepository.update(data, {
       where: { email: email }
     })
