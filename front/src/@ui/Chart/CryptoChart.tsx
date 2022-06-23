@@ -68,7 +68,10 @@ export const CryptoChart = (props: CryptoChartProps) => {
         props.cryptoCurrency.toLowerCase()
       )
       if (data.result === 'success') {
-        const coordinates = data.data.prices.map((price) => ({
+        const typeKey =
+          props.selectedSwitchOption.value === 2 ? 'market_caps' : 'prices'
+
+        const coordinates = data.data[typeKey].map((price) => ({
           timestamp: price[0],
           value: price[1]
         }))
