@@ -77,6 +77,7 @@ export namespace GetProfile {
     enableAuthenticator: boolean
     enableSms: boolean
     enablePassword: boolean
+    profileImgUrl: string
   }
   export type Response =
     | Success<{ data: Profile }>
@@ -96,7 +97,8 @@ export namespace UpdateProfile {
     lastName: z.string().optional(),
     enableAuthenticator: z.boolean().optional(),
     enableSms: z.boolean().optional(),
-    enablePassword: z.boolean().optional()
+    enablePassword: z.boolean().optional(),
+    profileImgUrl: z.string().optional()
   })
   export type Request = { body: z.input<typeof schema> }
   export type Response =
@@ -114,6 +116,22 @@ export namespace UpdateProfile {
   export const response: Response | null = null
 }
 
+export namespace UpdateAvatar {
+  export const METHOD = 'post'
+  export const PATH = '/api/users/profile/image'
+  export const schema = z.object({
+    email: z.string().email(),
+    file: z.string()
+  })
+  export type Request = { body: FormData }
+  export type Response =
+    | Success<{ message: string }>
+    | ApiResponse<'avatar-is-not-updateable-error', 400, { message: string }>
+    | UnauthorizedError
+    | UnexpectedError
+  export const request: Request | null = null
+  export const response: Response | null = null
+}
 export namespace CreateSupportRequest {
   export const METHOD = 'post'
   export const PATH = '/api/users/support/create-request'

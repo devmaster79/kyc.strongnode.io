@@ -12,13 +12,16 @@ import { useGetTokenBalanceFormatted } from '../../../hooks/useGetTokenBalanceFo
 import { getTokenAddress } from '../../../services/walletService'
 import { CustomTheme } from 'theme'
 import { ConnectWalletModal } from '../../../@ui/Modal/ConnectWalletModal'
+import AccountDialog from './AccountDialog'
 
 export default function AccountPopover() {
   const navigate = useNavigate()
   const { account } = useEthers()
-  const [userName, setUserName] = useState('')
+  const [userName, setUserName] = useState<string>('')
   const [email, setEmail] = useState('')
+  const [avatar, setAvatar] = useState('')
   const [showModal, setShowModal] = useState(false)
+  const [openAvatarModal, setAvatarModal] = useState(false)
   const [showConnectWalletModal, setShowConnectWalletModal] = useState(false)
   const SNEBalance = useGetTokenBalanceFormatted(
     account,
@@ -27,14 +30,7 @@ export default function AccountPopover() {
 
   useEffect(() => {
     setEmail(localStorage.getItem('email') || '')
-    userService
-      .getProfile()
-      .then((response) => {
-        if (response.result === 'success') {
-          setUserName(response.data.firstName + ' ' + response.data.lastName)
-        }
-      })
-      .done()
+    getProfile()
   }, [])
 
   const signOut = () => {
@@ -49,6 +45,39 @@ export default function AccountPopover() {
   }
 
   const theme: CustomTheme = useTheme()
+
+  const getProfile = () => {
+    try {
+      userService
+        .getProfile()
+        .then((response) => {
+          if (response.result === 'success') {
+            setUserName(response.data.firstName + ' ' + response.data.lastName)
+            setAvatar(response.data.profileImgUrl)
+          }
+        })
+        .done()
+    } catch (error) {
+      console.error('Error for set avatar', error)
+    }
+  }
+
+  const getAvatar = () => {
+    return avatar ? (
+      <img src={avatar} />
+    ) : (
+      <Icon
+        name="avatar"
+        width={20}
+        height={20}
+        color={theme.palette.icon.active}
+      />
+    )
+  }
+
+  const onAvatarEdit = () => {
+    setAvatarModal(true)
+  }
 
   return (
     <>
@@ -71,17 +100,13 @@ export default function AccountPopover() {
           color={theme.palette.icon.secondary}
         />
 
-        <AvatarIconWrapper>
-          <Icon
-            name="avatar"
-            width={20}
-            height={20}
-            color={theme.palette.icon.active}
-          />
-        </AvatarIconWrapper>
+        <AvatarIconWrapper>{getAvatar()}</AvatarIconWrapper>
       </IconWrapper>
       {showModal && (
         <AccountPopoverWrapper>
+          <AvatarIconWrapper style={{ margin: 'auto' }} onClick={onAvatarEdit}>
+            {getAvatar()}
+          </AvatarIconWrapper>
           {userName}
           <span>{email}</span>
           <ConnectButton
@@ -102,6 +127,15 @@ export default function AccountPopover() {
           </ul>
           <TextButton onClick={signOut}>Sign out</TextButton>
         </AccountPopoverWrapper>
+      )}
+      {openAvatarModal ? (
+        <AccountDialog
+          email={email}
+          getProfile={getProfile}
+          setClose={(status: boolean) => setAvatarModal(status)}
+        />
+      ) : (
+        <></>
       )}
     </>
   )

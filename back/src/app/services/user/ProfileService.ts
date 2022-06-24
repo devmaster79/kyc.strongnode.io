@@ -1,4 +1,5 @@
 import { User } from 'app/models/user.model'
+import { GravatarService } from '../GravatarService'
 
 type UpdateableUserFields = {
   email: string
@@ -8,6 +9,7 @@ type UpdateableUserFields = {
   enableAuthenticator: boolean
   enableSms: boolean
   enablePassword: boolean
+  profileImgUrl: string
 }
 type NonUpdateableUserFields = Omit<User, keyof UpdateableUserFields>
 type UpdateableWithNonUpdateableUserFields = UpdateableUserFields & {
@@ -15,13 +17,19 @@ type UpdateableWithNonUpdateableUserFields = UpdateableUserFields & {
 }
 
 export class ProfileService {
-  constructor(private __userRepository: typeof User) {}
+  constructor(
+    private __userRepository: typeof User,
+    private __gravatarService: GravatarService
+  ) {}
 
   async get(email: string) {
     const user = await this.__userRepository.findOne({
       where: { email: email }
     })
     if (user) {
+      const profileImgUrl =
+        user.profileImgUrl ||
+        ((await this.__gravatarService.getProfileImageURL(email)) as string)
       return {
         email,
         username: user.username,
@@ -29,7 +37,8 @@ export class ProfileService {
         lastName: user.lastName,
         enableAuthenticator: user.enableAuthenticator,
         enableSms: user.enableSms,
-        enablePassword: user.enablePassword
+        enablePassword: user.enablePassword,
+        profileImgUrl
       }
     } else {
       throw new Error('Could not find the user')
@@ -75,5 +84,21 @@ export class ProfileService {
       result: 'success',
       modifiedUser: user
     }
+  }
+
+  async updateAvatar(email: string, file: Express.MulterS3.File) {
+    const data = {
+      profileImgUrl: file.location
+    }
+
+    const updateResult = await this.__userRepository.update(data, {
+      where: { email: email }
+    })
+
+    if (updateResult[0] !== 1) {
+      throw new Error(`Could not find user with email: ${email}`)
+    }
+
+    return 'success' as const
   }
 }

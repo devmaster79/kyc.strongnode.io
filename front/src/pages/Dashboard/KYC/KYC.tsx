@@ -3,7 +3,7 @@ import styled from '@emotion/styled'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import userService from 'services/userService'
 import * as DashboardForm from '@ui/Dashboard/Form'
-import { useEffect } from 'react'
+import { useEffect, useCallback } from 'react'
 import { AuthenticatorSwitch } from './AuthenticatorSwitch'
 import { SMSSwitch } from './SMSSwitch'
 import { WalletCarousel } from './WalletCarousel'
@@ -23,6 +23,7 @@ interface FormFields {
   enablePassword: boolean
   enableSms: boolean
   enableAuthenticator: boolean
+  profileImgUrl: string
 }
 
 const walletsObject = [
@@ -59,8 +60,8 @@ export default function KYC() {
       }
     })
 
-  useEffect(() => {
-    userService
+  const getProfile = useCallback(() => {
+    return userService
       .getProfile()
       .then((response) => {
         if (response.result !== 'success') {
@@ -78,6 +79,10 @@ export default function KYC() {
       })
       .done()
   }, [reset])
+
+  useEffect(() => {
+    getProfile()
+  }, [getProfile])
 
   const onSubmit: SubmitHandler<FormFields> = (data) => {
     // eslint-disable-next-line promise/catch-or-return
@@ -102,7 +107,7 @@ export default function KYC() {
             })
             break
           case 'success':
-            localStorage.setItem('username', response.body.username)
+            localStorage.setItem('username', response.body.username as string)
             reset({
               firstName: response.body?.firstName,
               lastName: response.body?.lastName,

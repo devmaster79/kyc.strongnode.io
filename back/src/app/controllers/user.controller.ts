@@ -22,14 +22,17 @@ import {
   GetInvestorDetails,
   GetProfile,
   GetUserWallets,
+  UpdateAvatar,
   UpdateProfile
 } from 'shared/endpoints/user'
 import { ProfileService } from 'app/services/user/ProfileService'
 import { SupportRequestService } from 'app/services/user/SupportRequestService'
 import { WalletService } from 'app/services/user/WalletService'
+import { GravatarService } from 'app/services/GravatarService'
 
 const emailService = new EmailService(new SES(AWS_CONFIG()))
-const profileService = new ProfileService(userRepository)
+const gravatarService = new GravatarService()
+const profileService = new ProfileService(userRepository, gravatarService)
 const walletService = new WalletService(userRepository, userWalletsRepository)
 const investorDetailService = new InvestorDetailService(
   investorDetailRepository,
@@ -150,6 +153,23 @@ export const updateProfile = withResponse<UpdateProfile.Response>(
     })
   }
 )
+
+/** Update User avatar*/
+export const updateAvatar = withResponse<UpdateAvatar.Response>(async (req) => {
+  const message = await profileService.updateAvatar(
+    req.body.email,
+    req.file as Express.MulterS3.File
+  )
+  if (message === 'success') {
+    return success({
+      message: 'Successfully updated the profile'
+    })
+  } else {
+    return apiResponse('avatar-is-not-updateable-error', 400, {
+      message: 'Cannot update avatar'
+    })
+  }
+})
 
 /** Method that requests support from members of SNE. */
 export const createSupportRequest = withResponse<CreateSupportRequest.Response>(

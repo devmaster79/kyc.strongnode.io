@@ -117,7 +117,7 @@ async function down({ context: queryInterface }) {
     'profileImgType',
     'profile_img_type'
   )
-  await queryInterface.renameColumn('users', 'profileImgUrl', 'profileImgUrl')
+  await queryInterface.renameColumn('users', 'profileImgUrl', 'profile_img_url')
   await queryInterface.renameColumn(
     'users',
     'profileImgData',
