@@ -1,5 +1,5 @@
 import { SESClientConfig } from '@aws-sdk/client-ses'
-import { S3, S3ClientConfig } from '@aws-sdk/client-s3'
+import { S3ClientConfig } from '@aws-sdk/client-s3'
 
 export const REGISTRATION_LIMIT = 1000
 
@@ -31,12 +31,10 @@ export const AWS_CONFIG = (): SESClientConfig => {
   return options
 }
 
-const S3_CLIENT_CONFIG: S3ClientConfig = {
+export const S3_CLIENT_CONFIG: S3ClientConfig = {
   ...(AWS_CONFIG() as S3ClientConfig),
   forcePathStyle: true
 }
-
-export const s3Service = new S3(S3_CLIENT_CONFIG)
 
 export const AWS_BUCKET_NAME = process.env.AWS_BUCKET_NAME || 'local-bucket'
 
