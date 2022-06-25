@@ -86,14 +86,47 @@ export class CryptocurrencyDataService {
     return await this.__coingeckoClient.coins.fetch(tokenId, {})
   }
 
-  /**
-   * Helper method that returns token symbol from coinMetrics data by token ID.
-   * @param tokenId
-   */
   async getTokenSymbol(tokenId: string) {
     const result = await this.__coinMetricsData.findOne({
       where: { token: tokenId }
     })
+
+    return result ? result.symbol : false
+  }
+
+  /**
+   * Method that refreshes token list info and saves to DB.
+   */
+  async refreshTokenList() {
+    const data = await this.getTokenPrice(tokensMetricsListIDs)
+
+    // save or update each of this token data
+    if (data) {
+      for (const el of Object.keys(data)) {
+        const tokenUpdate = await this.__coinMetricsData.update(
+          {
+            usd_value: Number(data[el].usd).toFixed(30),
+            market_cap: Number(data[el].usd_market_cap).toFixed(30),
+            day_volume: Number(data[el].usd_24h_vol).toFixed(30),
+            day_change: Number(data[el].usd_24h_change).toFixed(30)
+          },
+          { where: { token: el } }
+        )
+
+        if (!tokenUpdate[0]) {
+          const tokenDetails = await this.getTokenDetails(el)
+
+          await this.__coinMetricsData.create({
+            token: el,
+            usd_value: Number(data[el].usd).toFixed(30),
+            market_cap: Number(data[el].usd_market_cap).toFixed(30),
+            day_volume: Number(data[el].usd_24h_vol).toFixed(30),
+            day_change: Number(data[el].usd_24h_change).toFixed(30),
+            image: tokenDetails.data.image
+          })
+        }
+      }
+    }
 
     return result ? result.symbol : false
   }
