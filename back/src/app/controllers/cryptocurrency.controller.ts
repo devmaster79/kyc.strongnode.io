@@ -1,19 +1,18 @@
 import {
   CryptocurrencyDataService,
   isScope,
-  scopeDays,
-  tokensMetricsListIDs
+  scopeDays
 } from '../services/cryptocurrency/CryptocurrencyDataService'
 import CoinGeckoApi from 'coingecko-api'
 import {
   StrongnodeCoinData as coinChartData,
-  CoinMetricsData as coinMetricsData
+  CoinMetricsData as coinMetricsData,
+  CoinMetricsData
 } from '../models'
 import {
   GetTokenChartData,
   GetTokensMetrics,
-  RefreshStrongnodeTokenData,
-  RefreshTokenDataList
+  RefreshStrongnodeTokenData
 } from 'shared/endpoints/cryptocurrency'
 import { success, zodValidationError } from 'shared/endpoints/responses'
 import { withResponse } from './utils'
@@ -21,7 +20,7 @@ const { Op } = require('sequelize')
 
 const cryptocurrencyDataService = new CryptocurrencyDataService(
   new CoinGeckoApi(),
-  coinMetricsData
+  CoinMetricsData
 )
 
 /**
@@ -68,51 +67,6 @@ export const refreshStrongnodeTokenData =
 
     return success({ message: 'succesfully refreshed' })
   })
-
-/**
- * Method that is used for refreshing data for a specified crypto tokens.
- * @param req
- * @param res
- * @returns {Promise<void>}
- */
-export const refreshTokenDataList = withResponse<RefreshTokenDataList.Response>(
-  async () => {
-    const data = await cryptocurrencyDataService.getTokenPrice(
-      tokensMetricsListIDs
-    )
-
-    // save or update each of this token data
-    if (data) {
-      for (const el of Object.keys(data)) {
-        const tokenUpdate = await coinMetricsData.update(
-          {
-            usdValue: data[el].current_price,
-            marketCap: data[el].market_cap,
-            dayVolume: data[el].total_volume,
-            dayChange: data[el].price_change_percentage_24h
-          },
-          { where: { token: data[el].id } }
-        )
-
-        if (!tokenUpdate[0]) {
-          await coinMetricsData.create({
-            token: data[el].id,
-            usdValue: data[el].current_price,
-            marketCap: data[el].market_cap,
-            dayVolume: data[el].total_volume,
-            dayChange: data[el].price_change_percentage_24h,
-            image: data[el].image,
-            symbol: data[el].symbol
-          })
-        }
-      }
-    }
-
-    return success({
-      message: 'Successfully updated.'
-    })
-  }
-)
 
 /**
  * Method that is used for getting token data for the client.

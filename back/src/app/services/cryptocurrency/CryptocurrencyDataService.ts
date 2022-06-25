@@ -1,3 +1,4 @@
+import type CoinGeckoApi from 'coingecko-api'
 import { CoinMetricsData } from '../../models'
 
 /**
@@ -30,9 +31,8 @@ export const isScope = (val: string): val is keyof typeof scopeDays =>
  * Cryptocurrency data service that takes care of getting data from coingecko api.
  */
 export class CryptocurrencyDataService {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   constructor(
-    private __coingeckoClient: any,
+    private __coingeckoClient: CoinGeckoApi,
     private __coinMetricsData: typeof CoinMetricsData
   ) {}
 
