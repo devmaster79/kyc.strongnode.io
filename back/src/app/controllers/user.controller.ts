@@ -157,7 +157,7 @@ export const updateProfile = withResponse<UpdateProfile.Response>(
 /** Update User avatar*/
 export const updateAvatar = withResponse<UpdateAvatar.Response>(async (req) => {
   const message = await profileService.updateAvatar(
-    req.body.email,
+    req.user.email,
     req.file as Express.MulterS3.File
   )
   if (message === 'success') {
