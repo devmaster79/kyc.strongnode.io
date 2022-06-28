@@ -120,7 +120,6 @@ export namespace UpdateAvatar {
   export const METHOD = 'post'
   export const PATH = '/api/users/profile/image'
   export const schema = z.object({
-    email: z.string().email(),
     file: z.string()
   })
   export type Request = { body: FormData }
