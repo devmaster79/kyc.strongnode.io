@@ -25,7 +25,6 @@ const AccountDialog: React.FC<Props> = ({ email, getProfile, setClose }) => {
       }
       const formData = new FormData()
       formData.append('file', file)
-      formData.append('email', email)
       return userService
         .updateAvatar({ body: formData })
         .then((response) => {
