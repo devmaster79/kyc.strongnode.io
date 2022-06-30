@@ -3,14 +3,15 @@
   "version": "1.0.0",
   "description": "Node.js Rest Apis with Express, Sequelize & MySQL",
   "scripts": {
-    "start": "NODE_PATH=./src NODE_ENV=development nodemon -x \"node -r ts-node/register --preserve-symlinks src/server.ts\"",
+    "start": "node src/swagger.js && NODE_PATH=./src NODE_ENV=development nodemon -x \"node -r ts-node/register --preserve-symlinks src/server.ts\"",
     "build": "swc src --copy-files -d build",
     "test": "NODE_PATH=./src mocha --preserve-symlinks -r ts-node/register $(find ./src/app -name '*.test.js') --exit",
     "test-watch": "NODE_PATH=./src mocha --preserve-symlinks -r ts-node/register $(find ./src/app -name '*.test.js') --watch",
     "migrate:up": "NODE_PATH=./src node -r ts-node/register ./src/app/scripts/run-migrations.ts up",
     "migrate:down": "NODE_PATH=./src node -r ts-node/register ./src/app/scripts/run-migrations.ts down",
     "templates": "NODE_PATH=./src NODE_ENV=development nodemon --ignore public -x \"node -r ts-node/register --preserve-symlinks ./src/app/scripts/try-template.ts\"",
-    "lint": "eslint \"src/**\""
+    "lint": "eslint \"src/**\"",
+    "swagger-autogen": "node src/swagger.js"
   },
   "keywords": [
     "nodejs",
@@ -52,6 +53,8 @@
     "qrcode": "^1.4.4",
     "sequelize": "^5.21.2",
     "sequelize-cli": "^6.3.0",
+    "swagger-autogen": "^2.21.4",
+    "swagger-ui-express": "^4.4.0",
     "ts-node": "^10.7.0",
     "umzug": "^3.0.0",
     "validator": "13.7.0",
