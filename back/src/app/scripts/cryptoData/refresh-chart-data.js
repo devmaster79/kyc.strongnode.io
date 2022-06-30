@@ -11,7 +11,7 @@ const url = '/api/cryptocurrency/refresh-strongnode-token?scope='
 const refreshChartData = async (event) => {
   for (let i = 0; i < baseUrls.length; i++) {
     await axios
-      .get(baseUrls[i] + url + event.scope)
+      .patch(baseUrls[i] + url,  { scope: event.scope})
       .then((response) => {
         return response.data
       })

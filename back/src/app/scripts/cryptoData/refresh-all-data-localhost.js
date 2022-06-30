@@ -6,9 +6,9 @@ dotenv.config({ path: path.join(__dirname, '../../../.env') })
 
 const port = process.env.port || 8080
 
-const baseUrl = 'http://' + ip.address() + ':' + port + '/api'
+const baseUrl = 'http://' + 'localhost' + ':' + port + '/api'
 const endpoints = {
-  chart: '/cryptocurrency/refresh-strongnode-token?scope=',
+  chart: '/cryptocurrency/refresh-strongnode-token',
   metrics: '/cryptocurrency/refresh-tokens'
 }
 
@@ -21,7 +21,7 @@ const scopes = ['days', 'weeks', 'months', 'years']
 const refreshChartData = async () => {
   for (let i = 0; i < scopes.length; i++) {
     await axios
-      .get(baseUrl + endpoints.chart + scopes[i])
+      .patch(baseUrl + endpoints.chart, { scope: scopes[i]})
       .then((response) => {
         return response.data
       })
@@ -40,7 +40,7 @@ const refreshChartData = async () => {
  */
 const refreshCoinMetrics = async () => {
   await axios
-    .get(baseUrl + endpoints.metrics)
+    .patch(baseUrl + endpoints.metrics)
     .then((response) => {
       return response.data
     })

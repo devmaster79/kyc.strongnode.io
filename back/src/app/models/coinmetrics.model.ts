@@ -1,10 +1,9 @@
 import { Model, DataTypes, Sequelize } from 'sequelize'
-import { GetTokensMetrics } from 'shared/endpoints/cryptocurrency'
 
 export class CoinMetricsModel extends Model {
   public id!: number
   public token!: string
-  public image!: GetTokensMetrics.IGetTokenMetricsImageObject
+  public image!: string
   public usdValue!: string
   public marketCap!: string
   public dayChange!: string

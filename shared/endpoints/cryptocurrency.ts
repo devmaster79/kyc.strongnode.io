@@ -72,10 +72,23 @@ export namespace GetTokenChartData {
 export namespace GetTokensMetrics {
   export const METHOD = 'get'
   export const PATH = '/api/cryptocurrency/token-metrics'
-  export type Request = void
+  export type Request = {
+    params: z.input<typeof schema>
+  }
+  export const schema = z.object({
+    search: z.string().default(''),
+    page: z
+      .string()
+      .regex(/[0-9]+/)
+      .default('1'),
+    perPage: z
+      .string()
+      .regex(/[0-9]+/)
+      .default('10')
+  })
   export interface IGetTokenMetricsObject {
     id: number
-    image: IGetTokenMetricsImageObject
+    image: string
     dayChange: string
     marketCap: string
     token: string
@@ -84,13 +97,8 @@ export namespace GetTokensMetrics {
     updatedAt: Date
     createdAt: Date
   }
-  export interface IGetTokenMetricsImageObject {
-    large: string
-    small: string
-    thumb: string
-  }
   export type Response =
-    | Success<{ tokenMetrics: IGetTokenMetricsObject[] }>
+    | Success<{ tokenMetrics: IGetTokenMetricsObject[]; total: number }>
     | UnauthorizedError
     | UnexpectedError
 

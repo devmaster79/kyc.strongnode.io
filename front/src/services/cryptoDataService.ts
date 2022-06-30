@@ -12,7 +12,7 @@ export interface IGetTokenMetricsData {
 
 export interface IGetTokenMetricsObject {
   id: number
-  image: IGetTokenMetricsImageObject
+  image: string
   dayChange: string
   marketCap: string
   token: string
@@ -20,12 +20,6 @@ export interface IGetTokenMetricsObject {
   symbol: string
   updatedAt: Date
   createdAt: Date
-}
-
-export interface IGetTokenMetricsImageObject {
-  large: string
-  small: string
-  thumb: string
 }
 
 export interface IGetChartData {
@@ -38,8 +32,14 @@ const getChartDataAsync = (scope: scopes = 'days') => {
   return rawCalls.getTokenChartData({ params: { scope: scope } })
 }
 
-const getTokenMetricsFunc = () => {
-  return rawCalls.getTokensMetrics()
+const getTokenMetricsFunc = (search = '', page = 1, perPage = 10) => {
+  return rawCalls.getTokensMetrics({
+    params: {
+      search: search,
+      page: page.toString(),
+      perPage: perPage.toString()
+    }
+  })
 }
 
 const cryptoDataService = {

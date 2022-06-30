@@ -1,4 +1,3 @@
-import type CoinGeckoApi from 'coingecko-api'
 /**
  * Token ids for metrics table.
  * @type {string[]}
@@ -29,7 +28,8 @@ export const isScope = (val: string): val is keyof typeof scopeDays =>
  * Cryptocurrency data service that takes care of getting data from coingecko api.
  */
 export class CryptocurrencyDataService {
-  constructor(private __coingeckoClient: CoinGeckoApi) {}
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  constructor(private __coingeckoClient: any) {}
 
   /**
    * @throws something, check 'coingecko-api'
@@ -54,15 +54,21 @@ export class CryptocurrencyDataService {
    * @returns {Promise<void>}
    */
   async getTokenPrice(tokens = ['strongnode'], vsCurrency = 'usd') {
-    const result = await this.__coingeckoClient.simple.price({
-      ids: tokens,
-      vs_currencies: vsCurrency,
-      include_24hr_vol: true,
-      include_last_updated_at: true,
-      include_24hr_change: true,
-      include_market_cap: true
-    })
+    let result = null
 
+    if (tokens.length > 1) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      result = await this.__coingeckoClient.coins.markets()
+    } else {
+      result = await this.__coingeckoClient.simple.price({
+        ids: tokens,
+        vs_currencies: vsCurrency,
+        include_24hr_vol: true,
+        include_last_updated_at: true,
+        include_24hr_change: true,
+        include_market_cap: true
+      })
+    }
     return result.data
   }
 

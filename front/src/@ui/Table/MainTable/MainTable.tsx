@@ -36,7 +36,7 @@ export default function MainTable<Item extends Record<string, unknown>>({
   overwrittenFields,
   hideHeading
 }: MainTableProps<Item>) {
-  const [page, setPage] = useState(0)
+  const [page, setPage] = useState(1)
 
   const listInnerRef = useRef() as React.MutableRefObject<HTMLInputElement>
 
@@ -46,7 +46,7 @@ export default function MainTable<Item extends Record<string, unknown>>({
       const { scrollTop, scrollHeight, clientHeight } = listInnerRef.current
       if (Math.abs(scrollHeight - clientHeight - scrollTop) < 1) {
         setPage(page + 1)
-        fetchData && fetchData(page + 1, 5)
+        fetchData && fetchData(page + 1, 10)
       }
     }
   }

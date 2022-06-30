@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react'
 import styled from '@emotion/styled/macro'
 import TableSection from 'components/TableSection/TableSection'
 import cryptoDataService, {
-  IGetTokenMetricsObject,
-  IGetTokenMetricsImageObject
+  IGetTokenMetricsObject
 } from '../../services/cryptoDataService'
 import { UserOwnedTokens } from './UserOwned/UserOwnedTokens'
 import { UserOwnedEthereum } from './UserOwned/UserOwnedEthereum'
@@ -43,7 +42,7 @@ const sampleData = {
 
 interface IDataIcon {
   name: string
-  url: IGetTokenMetricsImageObject
+  url: string
   symbol: string
 }
 
@@ -74,6 +73,9 @@ export const CoinMetrics = (props: CoinMetricsProps) => {
     items: []
   })
 
+  const [page, setPage] = useState(1)
+  const [search, setSearch] = useState('')
+
   const emitSymbolChange = (symbol: string) => {
     EventBus.getInstance().dispatch<string>('symbol-change', symbol)
     // scroll to top, so user can see the change
@@ -93,7 +95,7 @@ export const CoinMetrics = (props: CoinMetricsProps) => {
           }}>
           <img
             style={{ width: 40, height: 40 }}
-            src={icon.url.large}
+            src={icon.url}
             alt={icon.name + ' icon'}
           />
           <p>{icon.name}</p>
@@ -130,25 +132,36 @@ export const CoinMetrics = (props: CoinMetricsProps) => {
 
   useEffect(() => {
     const loadTokenMetrics = async () => {
-      const data = await cryptoDataService.getTokenMetricsFunc()
+      const data = await cryptoDataService.getTokenMetricsFunc(search, page)
       if (data.result === 'success') {
-        const formatedData = formatTableData(data.tokenMetrics)
+        const formatedData = formatTableData(data.tokenMetrics, data.total)
         setTableData(formatedData as DataSet<IFormattedTokenObject>)
       }
     }
     loadTokenMetrics()
 
-    const refreshDataInterval = setInterval(() => {
+    const refreshDataInterval = setInterval(async () => {
       loadTokenMetrics()
     }, 10000)
 
     return () => clearInterval(refreshDataInterval)
-  }, [])
+  }, [page, search])
+
+  const loadTokenMetrics = async () => {
+    const data = await cryptoDataService.getTokenMetricsFunc(search, page + 1)
+    if (data.result === 'success') {
+      const formatedData = formatTableData(data.tokenMetrics, data.total)
+      setTableData(formatedData as DataSet<IFormattedTokenObject>)
+    }
+  }
 
   // makes request and sets tableData to state
 
   // formats object for table
-  const formatTableData = (data: Array<IGetTokenMetricsObject>) => {
+  const formatTableData = (
+    data: Array<IGetTokenMetricsObject>,
+    total: number
+  ) => {
     const temporaryData: Array<IFormattedTokenObject> = []
 
     data.map((token: IGetTokenMetricsObject) => {
@@ -169,10 +182,15 @@ export const CoinMetrics = (props: CoinMetricsProps) => {
       temporaryData.push(tokenObject)
       return null
     })
-    return { items: temporaryData }
+    return { items: temporaryData, total: total }
   }
 
-  const addKeywords = async () => {
+  const fetchData = (page: number) => {
+    loadTokenMetrics()
+    setPage(page)
+  }
+
+  const addKeywords = async (value: string) => {
     // clear old timeout
     if (searchTimeout) {
       clearTimeout(searchTimeout)
@@ -180,9 +198,9 @@ export const CoinMetrics = (props: CoinMetricsProps) => {
 
     // add delay while user typing
     searchTimeout = setTimeout(() => {
-      //  To Do
-      // implement backend search
-    }, 2000)
+      setSearch(value)
+      loadTokenMetrics()
+    }, 300)
   }
 
   return (
@@ -200,6 +218,7 @@ export const CoinMetrics = (props: CoinMetricsProps) => {
           : (sampleData as DataSet<Record<string, IFormattedTokenObject>>)
       }
       columns={sampleColumns}
+      fetchData={fetchData}
     />
   )
 }

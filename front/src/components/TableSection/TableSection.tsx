@@ -33,10 +33,7 @@ function TableSection<Item extends Record<string, unknown>>(
   const onChangeValue = (event: ChangeEvent<HTMLInputElement>) => {
     const search = event.target.value.toLowerCase()
     // Check backend search function
-    if (
-      props.finder?.onChange &&
-      props.dataSet?.items?.length > (props.finder.searchMaxRow || 10)
-    ) {
+    if (props.finder?.onChange) {
       // emit onChange
       props.finder.onChange(search)
       return
