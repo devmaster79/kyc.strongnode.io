@@ -5,6 +5,8 @@ import cors from 'cors'
 import path from 'path'
 import { AppLogger } from 'app/services/Logger'
 
+const swaggerUi = require('swagger-ui-express')
+const swaggerFile = require('../swagger_output.json')
 const app = express()
 
 // var corsOptions = {
@@ -25,6 +27,7 @@ app.use(express.urlencoded({ extended: true, limit: '25mb' }))
 // simple route
 app.use(express.static(path.join(__dirname, '../front/build')))
 app.use('/uploads', express.static('./../uploads'))
+app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile))
 
 require('./app/routes/user.routes')(app)
 require('./app/routes/auth.routes')(app)
