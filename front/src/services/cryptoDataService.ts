@@ -28,8 +28,8 @@ export interface IGetChartData {
   total_volumes: Array<Array<string>>
 }
 
-const getChartDataAsync = (scope: scopes = 'days') => {
-  return rawCalls.getTokenChartData({ params: { scope: scope } })
+const getChartDataAsync = (scope: scopes = 'days', token = 'sne') => {
+  return rawCalls.getTokenChartData({ params: { scope: scope, token: token } })
 }
 
 const getTokenMetricsFunc = (search = '', page = 1, perPage = 10) => {

@@ -1,3 +1,5 @@
+import { CoinMetricsData } from '../../models'
+
 /**
  * Token ids for metrics table.
  * @type {string[]}
@@ -29,7 +31,10 @@ export const isScope = (val: string): val is keyof typeof scopeDays =>
  */
 export class CryptocurrencyDataService {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  constructor(private __coingeckoClient: any) {}
+  constructor(
+    private __coingeckoClient: any,
+    private __coinMetricsData: typeof CoinMetricsData
+  ) {}
 
   /**
    * @throws something, check 'coingecko-api'
@@ -79,5 +84,17 @@ export class CryptocurrencyDataService {
    */
   async getTokenDetails(tokenId: string) {
     return await this.__coingeckoClient.coins.fetch(tokenId, {})
+  }
+
+  /**
+   * Helper method that returns token symbol from coinMetrics data by token ID.
+   * @param tokenId
+   */
+  async getTokenSymbol(tokenId: string) {
+    const result = await this.__coinMetricsData.findOne({
+      where: { token: tokenId }
+    })
+
+    return result ? result.symbol : false
   }
 }

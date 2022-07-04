@@ -63,9 +63,15 @@ export const CryptoChart = (props: CryptoChartProps) => {
 
   useEffect(() => {
     const loadStrongnodeCurrency = async () => {
-      const data = await cryptoDataService.getChartDataAsync(chartScopeFormat)
+      const data = await cryptoDataService.getChartDataAsync(
+        chartScopeFormat,
+        props.cryptoCurrency.toLowerCase()
+      )
       if (data.result === 'success') {
-        const coordinates = data.data.prices.map((price) => ({
+        const typeKey =
+          props.selectedSwitchOption.value === 2 ? 'market_caps' : 'prices'
+
+        const coordinates = data.data[typeKey].map((price) => ({
           timestamp: price[0],
           value: price[1]
         }))
@@ -86,7 +92,12 @@ export const CryptoChart = (props: CryptoChartProps) => {
     }, 10000)
 
     return () => clearInterval(refreshDataInterval)
-  }, [chartScopeFormat, targetCurrency, props.selectedSwitchOption])
+  }, [
+    chartScopeFormat,
+    targetCurrency,
+    props.selectedSwitchOption,
+    props.cryptoCurrency
+  ])
 
   return (
     <div style={props.wrapperStyles}>

@@ -20,7 +20,8 @@ import { withResponse } from './utils'
 const { Op } = require('sequelize')
 
 const cryptocurrencyDataService = new CryptocurrencyDataService(
-  new CoinGeckoApi()
+  new CoinGeckoApi(),
+  coinMetricsData
 )
 
 /**
@@ -50,11 +51,14 @@ export const refreshStrongnodeTokenData =
       where: { scope: data.scope, token }
     })
 
+    const symbol = await cryptocurrencyDataService.getTokenSymbol(token)
+
     if (!checkScopedRecord)
       await coinChartData.create({
         data: chartData,
         token: token,
-        scope: data.scope
+        scope: data.scope,
+        symbol: symbol ? symbol : ''
       })
     else
       await coinChartData.update(
@@ -130,7 +134,7 @@ export const getTokenChartData = withResponse<GetTokenChartData.Response>(
       ])
 
     const tokenData = await coinChartData.findOne({
-      where: { token: data.token, scope: data.scope }
+      where: { symbol: data.token, scope: data.scope }
     })
 
     if (tokenData) return success({ data: tokenData.data })
