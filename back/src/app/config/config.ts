@@ -16,19 +16,13 @@ export const SMS_CONFIG = {
 export const AWS_REGION = process.env.AWS_REGION || 'eu-west-1'
 
 export const AWS_CONFIG = (): SESClientConfig => {
-  const options: SESClientConfig = {
-    region: AWS_REGION,
-    credentials: {
-      accessKeyId: process.env.AWS_ACCESS_KEY_ID || 'localhost',
-      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || 'localhost'
+  if (process.env.NODE_ENV === 'development') {
+    return {
+      endpoint: process.env.AWS_LOCALSTACK_URL
     }
   }
 
-  if (process.env.NODE_ENV === 'development') {
-    options.endpoint = process.env.AWS_LOCALSTACK_URL
-  }
-
-  return options
+  return {}
 }
 
 export const S3_CLIENT_CONFIG: S3ClientConfig = {
