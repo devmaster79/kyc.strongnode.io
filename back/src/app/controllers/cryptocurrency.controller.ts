@@ -20,7 +20,8 @@ import { withResponse } from './utils'
 const { Op } = require('sequelize')
 
 const cryptocurrencyDataService = new CryptocurrencyDataService(
-  new CoinGeckoApi()
+  new CoinGeckoApi(),
+  coinMetricsData
 )
 
 /**

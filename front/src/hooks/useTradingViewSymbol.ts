@@ -11,7 +11,8 @@ interface ISymbolExceptions {
 
 // todo research all of the exceptions
 const symbolsExceptions: ISymbolExceptions = {
-  SNE: 'SNEUSDC'
+  SNE: 'SNEUSDC',
+  ADA: 'ADAUSDT'
 }
 
 export const useTradingViewSymbol = (props: IUseTradingViewSymbol) => {
