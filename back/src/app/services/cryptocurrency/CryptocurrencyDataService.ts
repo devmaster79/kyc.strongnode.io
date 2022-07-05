@@ -1,5 +1,7 @@
-import type CoinGeckoApi from 'coingecko-api'
-import { CoinMetricsData } from '../../models'
+import {
+  CoinMetricsData,
+  StrongnodeCoinData as coinChartData
+} from '../../models'
 
 /**
  * Token ids for metrics table.
@@ -32,9 +34,75 @@ export const isScope = (val: string): val is keyof typeof scopeDays =>
  */
 export class CryptocurrencyDataService {
   constructor(
-    private __coingeckoClient: CoinGeckoApi,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    private __coingeckoClient: any,
     private __coinMetricsData: typeof CoinMetricsData
   ) {}
+
+  /**
+   * Method that gets and refreshes token data list.
+   */
+  async refreshTokenDataList() {
+    const data = await this.getTokenPrice(tokensMetricsListIDs)
+
+    // save or update each of this token data
+    if (data) {
+      for (const el of Object.keys(data)) {
+        const tokenUpdate = await this.__coinMetricsData.update(
+          {
+            usdValue: data[el].current_price,
+            marketCap: data[el].market_cap,
+            dayVolume: data[el].total_volume,
+            dayChange: data[el].price_change_percentage_24h
+          },
+          { where: { token: data[el].id } }
+        )
+
+        if (!tokenUpdate[0]) {
+          await this.__coinMetricsData.create({
+            token: data[el].id,
+            usdValue: data[el].current_price,
+            marketCap: data[el].market_cap,
+            dayVolume: data[el].total_volume,
+            dayChange: data[el].price_change_percentage_24h,
+            image: data[el].image,
+            symbol: data[el].symbol
+          })
+        }
+      }
+    }
+
+    return {
+      message: 'Successfully updated.'
+    }
+  }
+
+  async refreshTokenChartData(
+    token = 'strongnode',
+    scope: keyof typeof scopeDays = 'days'
+  ) {
+    const chartData = await this.getTokenChartData(scopeDays[scope])
+    const checkScopedRecord = await coinChartData.findOne({
+      where: { scope: scope, token }
+    })
+
+    const symbol = await this.getTokenSymbol(token)
+
+    if (!checkScopedRecord)
+      await coinChartData.create({
+        data: chartData,
+        token: token,
+        scope: scope,
+        symbol: symbol ? symbol : ''
+      })
+    else
+      await coinChartData.update(
+        { data: chartData, scope: scope },
+        { where: { scope: scope, token: token } }
+      )
+
+    return { message: 'succesfully refreshed' }
+  }
 
   /**
    * @throws something, check 'coingecko-api'
@@ -62,7 +130,6 @@ export class CryptocurrencyDataService {
     let result = null
 
     if (tokens.length > 1) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       result = await this.__coingeckoClient.coins.markets()
     } else {
       result = await this.__coingeckoClient.simple.price({
@@ -90,43 +157,6 @@ export class CryptocurrencyDataService {
     const result = await this.__coinMetricsData.findOne({
       where: { token: tokenId }
     })
-
-    return result ? result.symbol : false
-  }
-
-  /**
-   * Method that refreshes token list info and saves to DB.
-   */
-  async refreshTokenList() {
-    const data = await this.getTokenPrice(tokensMetricsListIDs)
-
-    // save or update each of this token data
-    if (data) {
-      for (const el of Object.keys(data)) {
-        const tokenUpdate = await this.__coinMetricsData.update(
-          {
-            usd_value: Number(data[el].usd).toFixed(30),
-            market_cap: Number(data[el].usd_market_cap).toFixed(30),
-            day_volume: Number(data[el].usd_24h_vol).toFixed(30),
-            day_change: Number(data[el].usd_24h_change).toFixed(30)
-          },
-          { where: { token: el } }
-        )
-
-        if (!tokenUpdate[0]) {
-          const tokenDetails = await this.getTokenDetails(el)
-
-          await this.__coinMetricsData.create({
-            token: el,
-            usd_value: Number(data[el].usd).toFixed(30),
-            market_cap: Number(data[el].usd_market_cap).toFixed(30),
-            day_volume: Number(data[el].usd_24h_vol).toFixed(30),
-            day_change: Number(data[el].usd_24h_change).toFixed(30),
-            image: tokenDetails.data.image
-          })
-        }
-      }
-    }
 
     return result ? result.symbol : false
   }
