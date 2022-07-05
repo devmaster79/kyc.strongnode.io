@@ -4,14 +4,6 @@ const auth = require('../middleware/auth')
 
 module.exports = (app) => {
   const router = require('express').Router()
-
-  // routes for refreshing token data
-  router.patch(
-    '/refresh-strongnode-token',
-    cryptocurrency.refreshStrongnodeTokenData
-  )
-  router.patch('/', cryptocurrency.refreshTokenDataList)
-  router.patch('/refresh-tokens', cryptocurrency.refreshTokenDataList)
   router.get('/chart', auth(MODE_FULL), cryptocurrency.getTokenChartData)
   router.get('/token-metrics', auth(MODE_FULL), cryptocurrency.getTokensMetrics)
 
