@@ -39,4 +39,4 @@ app.listen(PORT, () => {
   AppLogger.log(`Server is running on port ${PORT}.`)
 })
 
-require('automated.jobs')
+require('interval.jobs')
