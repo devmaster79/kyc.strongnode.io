@@ -47,7 +47,7 @@ export namespace GetTokenChartData {
   export const PATH = '/api/cryptocurrency/chart'
   export const schema = z.object({
     scope: z.string().regex(/days|weeks|months|years/g),
-    token: z.string().default('strongnode')
+    token: z.string().default('sne')
   })
   export interface CoinMarketData {
     market_caps: number[][]
