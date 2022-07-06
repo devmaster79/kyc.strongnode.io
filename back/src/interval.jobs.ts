@@ -40,7 +40,7 @@ const refreshChartDataAllTokens = async (scope: keyof typeof scopeDays) => {
         AppLogger.log(err)
       })
 
-    await delay(SECOND * 0.5)
+    await delay(SECOND * 1.2)
   }
   AppLogger.log(`CHART DATA REFRESH ✅️ Done refreshing! scope: ` + scope)
 }
