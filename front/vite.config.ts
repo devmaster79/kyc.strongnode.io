@@ -3,7 +3,8 @@ import 'dotenv/config'
 import react from '@vitejs/plugin-react'
 import tsconfigPaths from 'vite-tsconfig-paths'
 import svgrPlugin from 'vite-plugin-svgr'
-const REACT_APP_BASE_URL = process.env.REACT_APP_BASE_URL || '';
+const REACT_APP_BASE_URL = process.env.REACT_APP_BASE_URL || ''
+const DEFAULT_PORT = 3000
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -31,6 +32,9 @@ export default defineConfig({
     svgrPlugin()
   ],
   server: {
+    port: Number(process.env.VITE_APP_PORT)
+      ? Number(process.env.VITE_APP_PORT)
+      : DEFAULT_PORT,
     proxy: {
       '/api': {
         target: process.env.REACT_APP_BASE_URL,
