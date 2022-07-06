@@ -81,7 +81,11 @@ export class CryptocurrencyDataService {
     token = 'strongnode',
     scope: keyof typeof scopeDays = 'days'
   ) {
-    const chartData = await this.getTokenChartData(scopeDays[scope])
+    const chartData = await this.getTokenChartData(
+      scopeDays[scope],
+      'usd',
+      token
+    )
     const checkScopedRecord = await coinChartData.findOne({
       where: { scope: scope, token }
     })
