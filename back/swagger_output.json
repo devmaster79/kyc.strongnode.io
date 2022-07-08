@@ -109,27 +109,6 @@
         "responses": {}
       }
     },
-    "/refresh-strongnode-token": {
-      "patch": {
-        "description": "",
-        "parameters": [],
-        "responses": {}
-      }
-    },
-    "/": {
-      "patch": {
-        "description": "",
-        "parameters": [],
-        "responses": {}
-      }
-    },
-    "/refresh-tokens": {
-      "patch": {
-        "description": "",
-        "parameters": [],
-        "responses": {}
-      }
-    },
     "/chart": {
       "get": {
         "description": "",
