@@ -3,6 +3,7 @@ import * as InvestorDetailModel from './investordetails.model'
 import * as SupportRequestModel from './supportrequest.model'
 import * as StrongnodeCoinDataModel from './strongnodecoindata.model'
 import * as CoinMetricsDataModel from './coinmetrics.model'
+import * as dVPNAccessModel from './dvpnaccess.model'
 import * as UserWalletsModel from './userwallets.model'
 import * as Sequelize from 'sequelize'
 import { Umzug, SequelizeStorage } from 'umzug'
@@ -49,6 +50,7 @@ SupportRequestModel.create(sequelize)
 StrongnodeCoinDataModel.create(sequelize)
 CoinMetricsDataModel.create(sequelize)
 UserWalletsModel.create(sequelize)
+dVPNAccessModel.create(sequelize)
 
 export { Sequelize }
 export const User = UserModel.User
@@ -57,6 +59,7 @@ export const SupportRequest = SupportRequestModel.SupportRequest
 export const StrongnodeCoinData = StrongnodeCoinDataModel.StrongnodeCoinData
 export const CoinMetricsData = CoinMetricsDataModel.CoinMetricsModel
 export const UserWallets = UserWalletsModel.UserWallets
+export const dVPNAccess = dVPNAccessModel.dVPNaccessModel
 
 /** @deprecated */
 export const users = UserModel.User
