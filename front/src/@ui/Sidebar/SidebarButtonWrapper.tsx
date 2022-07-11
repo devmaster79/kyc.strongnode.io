@@ -38,10 +38,10 @@ let buttonItems = [
     active: true
   },
   {
-    type: 'vpn',
-    tooltipHint: 'VPN',
-    path: '/dashboard/vpn',
-    active: false
+    type: 'dvpn',
+    tooltipHint: 'dVPN',
+    path: '/dashboard/dvpn',
+    active: true
   }
 ]
 
