@@ -26,6 +26,7 @@ export type BaseChartProps<
   xAxisFormat?: XAxisFormat
   yKey: RechartCompatibleKey<Item>
   chartKey: ChartKey
+  valueSuffix?: string
 }
 
 export const BaseChart = <
@@ -69,7 +70,9 @@ export const BaseChart = <
 
   // todo add YAxis format to props and then work with it
   const formatTooltipValue = (value: string) => {
-    return Number(value).toFixed(6) + ' $'
+    return (
+      Number(value).toFixed(6) + (props.valueSuffix ? props.valueSuffix : ' $')
+    )
   }
 
   useEffect(() => {
