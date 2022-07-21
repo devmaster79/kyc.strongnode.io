@@ -6,9 +6,8 @@ import { Banner } from '../@ui/Banner/Banner'
 import authService from 'services/auth'
 import TableSection from 'components/TableSection/TableSection'
 import { CoinMetrics } from '../@ui/Table/CoinMetrics'
-import styled from '@emotion/styled'
-import Media from './../theme/mediaQueries'
 import { CryptoWidget } from '../@ui/Crypto/CryptoWidget'
+import * as DashboardStyle from '@ui/Dashboard/DashboardStyle'
 
 export default function Dashboard() {
   const { enqueueSnackbar } = useSnackbar()
@@ -58,8 +57,8 @@ export default function Dashboard() {
   }, [token, useremail, signOut])
 
   return (
-    <Wrapper>
-      <Container ref={dash}>
+    <DashboardStyle.Wrapper>
+      <DashboardStyle.Container ref={dash}>
         <Banner
           title="StrongNode dVPN coming soon."
           description="Stay tuned for more information."
@@ -67,62 +66,19 @@ export default function Dashboard() {
         />
         <h1 style={{ marginTop: '56px' }}>DeFi Dashboard</h1>
         <CryptoWidget />
-        <GridContainer>
-          <Grid>
+        <DashboardStyle.GridContainer>
+          <DashboardStyle.Grid>
             <CoinMetrics title="Coin Metrics" hideHeading />
-          </Grid>
-          <Grid>
+          </DashboardStyle.Grid>
+          <DashboardStyle.Grid>
             <TableSection
               comingSoon
               title="Farming Metrics"
               subtitle="NFT 18"
             />
-          </Grid>
-        </GridContainer>
-      </Container>
-    </Wrapper>
+          </DashboardStyle.Grid>
+        </DashboardStyle.GridContainer>
+      </DashboardStyle.Container>
+    </DashboardStyle.Wrapper>
   )
 }
-
-const Wrapper = styled.div({
-  width: '100%',
-  display: 'flex',
-  alignItems: 'center',
-  flexDirection: 'column'
-})
-
-const Container = styled.div({
-  maxWidth: '1536px',
-  width: '100%',
-  paddingBottom: '100px',
-  marginTop: '70px'
-})
-
-const GridContainer = styled.div({
-  display: 'flex',
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-  width: '100%',
-  paddingRight: '5px',
-
-  [Media.tablet]: {
-    paddingRight: '15px',
-    flexDirection: 'column',
-    margin: '0px'
-  },
-  [Media.phone]: {
-    paddingRight: '0px'
-  }
-})
-
-const Grid = styled.div({
-  display: 'flex',
-  flexDirection: 'row',
-  width: '100%',
-  margin: '10px',
-
-  [Media.tablet]: {
-    flexDirection: 'column',
-    margin: '0px'
-  }
-})
