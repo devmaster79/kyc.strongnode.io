@@ -31,6 +31,14 @@ const Button = styled.button<StyledButtonProps>(
   }),
 
   (props) =>
+    props.variant === 'normal' && {
+      fontSize: '14px',
+      padding: '21px',
+      minWidth: '246px',
+      margin: '8px'
+    },
+
+  (props) =>
     props.variant === 'medium' && {
       fontSize: '14px',
       padding: '21px',

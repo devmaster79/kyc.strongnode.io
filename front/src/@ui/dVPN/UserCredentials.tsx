@@ -23,12 +23,15 @@ export const UserCredentials = (props: IUserCredentials) => {
         <p>dVPN</p>
       </TitleWrapper>
 
-      <DashboardForm.Input inputProps={{ value: 'test', readOnly: true }} />
-      <DashboardForm.Input />
-
+      <InputGroup>
+        <DashboardForm.Input inputProps={{ value: 'test', readOnly: true }} />
+        <DashboardForm.Input />
+      </InputGroup>
       <ButtonWrapper>
-        <Button color={'invert'}>CANCEL SUBSCRIPTION</Button>
-        <Button style={{ marginLeft: '16px' }}>RESET CREDENTIALS</Button>
+        <Button variant="normal" color={'invert'}>
+          CANCEL SUBSCRIPTION
+        </Button>
+        <Button variant="normal">RESET CREDENTIALS</Button>
       </ButtonWrapper>
     </CredentialsWrapper>
   )
@@ -62,8 +65,15 @@ const CredentialsWrapper = styled.div({
 })
 
 const ButtonWrapper = styled.div({
-  width: 'max-content',
   display: 'flex',
-  marginLeft: 'auto',
+  alignItems: 'center',
+  justifyContent: 'center',
   marginTop: '50px'
+})
+
+const InputGroup = styled.div({
+  marginTop: '30px',
+  display: 'flex',
+  flexFlow: 'column',
+  gap: '16px'
 })
