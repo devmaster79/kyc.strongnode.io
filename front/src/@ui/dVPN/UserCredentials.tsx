@@ -61,7 +61,8 @@ const CredentialsWrapper = styled.div({
   background: '#141343',
   border: '1px solid rgba(255, 255, 255, 0.1)',
   borderRadius: '10px',
-  padding: '32px'
+  padding: '32px',
+  marginTop: '32px'
 })
 
 const ButtonWrapper = styled.div({
