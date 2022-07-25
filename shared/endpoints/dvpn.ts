@@ -9,6 +9,22 @@ import {
 } from './responses'
 import { z } from 'zod'
 
+export namespace HasAccess {
+  export const METHOD = 'get'
+  export const PATH = '/api/dvpn/access'
+  export type Request = {}
+  export type Access = {
+    dvpnAccess: boolean
+  }
+  export type Response =
+    | Success<Access>
+    | NotFoundError<{}>
+    | UnauthorizedError
+    | UnexpectedError
+  export const request: Request | null = null
+  export const response: Response | null = null
+}
+
 export namespace VerifyAccount {
   export const METHOD = 'post'
   export const PATH = '/api/dvpn/verify'
@@ -19,6 +35,7 @@ export namespace VerifyAccount {
   export type Request = { body: z.input<typeof schema> }
   export type AccountDetail = {
     dvpnAccess: boolean
+    message?: string
   }
   export type Response =
     | Success<AccountDetail>
@@ -30,8 +47,8 @@ export namespace VerifyAccount {
 }
 
 export namespace GenerateAccount {
-  export const METHOD = 'get'
-  export const PATH = '/api/dvpn/generate'
+  export const METHOD = 'put'
+  export const PATH = '/api/dvpn/access'
   export type Request = {}
   export type AccountDetail = {
     id: number
