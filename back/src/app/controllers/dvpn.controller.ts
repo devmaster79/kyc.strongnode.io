@@ -1,37 +1,75 @@
 import { withResponse } from './utils'
 import {
   GenerateAccount,
-  GetUsageData,
   VerifyAccount,
-  SaveUsageData
+  HasAccess,
+  SaveUsageData,
+  GetUsageData
 } from 'shared/endpoints/dvpn'
 import { DVPNService, ICreatedAccess } from './../services/dvpn/dVPNService'
 import { User as userRepository, dVPNAccess } from '../models'
 import { notFoundError, success } from '../../shared/endpoints/responses'
 import { dVPNUsage } from '../models'
 /**
- * Method that verifies user's access to dVPN.
+ * Method that returns user's access to dVPN.
  */
-export const verifyAccess = withResponse<VerifyAccount.Response>(
-  async (req) => {
-    const data = VerifyAccount.schema.parse(req.body)
-    const user = await userRepository.findOne({ where: { email: data.email } })
+export const hasAccess = withResponse<HasAccess.Response>(async (req) => {
+  const user = await userRepository.findOne({
+    where: { email: req.user.email }
+  })
 
-    if (user) {
-      const dVPN = new DVPNService(user.id, dVPNAccess)
-      const access = await dVPN.verifyAccessPassword(
-        data.password,
-        user.password
-      )
+  if (user) {
+    const dVPN = new DVPNService(user.id, dVPNAccess)
+    const access = await dVPN.hasAccess(false)
 
-      return success({
-        dvpnAccess: access
-      })
-    } else {
-      return notFoundError({ message: 'User not found. ' })
-    }
+    return success({
+      dvpnAccess: access as boolean
+    })
+  } else {
+    return notFoundError({ message: 'User not found. ' })
   }
-)
+})
+
+/**
+ * Method that verifies user's login access to dVPN.
+ */
+export const verifyLogin = withResponse<VerifyAccount.Response>(async (req) => {
+  const data = VerifyAccount.schema.parse(req.body)
+  const user = await userRepository.findOne({ where: { email: data.email } })
+
+  if (user) {
+    const dVPN = new DVPNService(user.id, dVPNAccess)
+    const verifyLogin = await dVPN.verifyAccessPassword(
+      data.password,
+      user.password
+    )
+
+    if (verifyLogin) {
+      const access = await dVPN.hasAccess()
+
+      // todo add the message that user has not prepaid the dVPN
+      let response: VerifyAccount.AccountDetail = {
+        dvpnAccess: access as boolean
+      }
+
+      if (!access)
+        response = {
+          ...response,
+          message: 'User has not bought the dVPN product yet.'
+        }
+
+      return success(response)
+    } else {
+      // todo return error not verified
+      return success({
+        dvpnAccess: false,
+        message: 'User credentials are not valid.'
+      })
+    }
+  } else {
+    return notFoundError({ message: 'User not found. ' })
+  }
+})
 
 /**
  * Method that generates user's access to dVPN.

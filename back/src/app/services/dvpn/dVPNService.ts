@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs')
 
 import { dVPNAccess as dVPNAccessModel } from '../../models'
+import { dVPNaccessModel } from '../../models/dvpnaccess.model'
 import { generate } from 'generate-password'
 
 /**
@@ -31,22 +32,39 @@ export class DVPNService {
    * Method that creates access to the dVPN.
    */
   async createAccess(activate = false) {
-    const createdAccess = await this.__dVPNAccessModel.create({
-      userId: this.userId,
-      password: '',
-      access: false
+    const checkAccess = await this.__dVPNAccessModel.findOne({
+      where: { userId: this.userId }
     })
 
-    if (createdAccess) {
-      if (activate) {
-        const generatedPassword = await this.generateAccessPassword()
-        return { ...createdAccess, generatedPassword: generatedPassword }
-      }
-
-      return createdAccess
+    let access
+    if (checkAccess) {
+      access = await this.__dVPNAccessModel
+        .update(
+          {
+            access: activate,
+            password: ''
+          },
+          { where: { userId: this.userId } }
+        )
+        .toJSON()
     } else {
-      return false
+      access = await this.__dVPNAccessModel
+        .create({
+          userId: this.userId,
+          password: '',
+          access: activate
+        })
+        .toJSON()
     }
+
+    if (!access) return false
+
+    if (activate) {
+      const generatedPassword = await this.generateAccessPassword()
+
+      return { ...access, generatedPassword }
+    }
+    return access
   }
 
   /**
@@ -65,7 +83,7 @@ export class DVPNService {
   async generateAccessPassword() {
     const password = generate({ length: 8, numbers: true })
     const access = await this.__dVPNAccessModel.update(
-      { password: this.__generateHashBcrypt(password) },
+      { password: await this.__generateHashBcrypt(password) },
       { where: { userId: this.userId } }
     )
 
@@ -103,12 +121,16 @@ export class DVPNService {
   /**
    * Method that verifies
    */
-  async hasAccess() {
+  async hasAccess(passwordCheck = true) {
     const access = await this.__dVPNAccessModel.findOne({
       where: { userId: this.userId }
     })
 
-    return access && this.passwordVerified ? access.access : false
+    if (passwordCheck) {
+      return access && this.passwordVerified ? access.access : false
+    } else {
+      return access ? access.access : false
+    }
   }
 
   /**
