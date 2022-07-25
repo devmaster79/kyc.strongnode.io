@@ -1,7 +1,6 @@
 const bcrypt = require('bcryptjs')
 
 import { dVPNAccess as dVPNAccessModel } from '../../models'
-import { dVPNaccessModel } from '../../models/dvpnaccess.model'
 import { generate } from 'generate-password'
 
 /**
