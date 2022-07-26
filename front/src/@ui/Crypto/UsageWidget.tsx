@@ -63,7 +63,7 @@ const UsageWidgetWrapper = styled.div({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
-  marginBottom: '70px'
+  marginBottom: '0px'
 })
 
 const multiSwitchStyle = {
