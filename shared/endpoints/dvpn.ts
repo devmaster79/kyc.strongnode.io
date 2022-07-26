@@ -35,6 +35,7 @@ export namespace VerifyAccount {
   export type Request = { body: z.input<typeof schema> }
   export type AccountDetail = {
     dvpnAccess: boolean
+    token?: string
     message?: string
   }
   export type Response =
@@ -94,7 +95,6 @@ export namespace SaveUsageData {
   export const PATH = '/api/dvpn/usage'
 
   export const schema = z.object({
-    email: z.string(),
     bytesIn: z.number(),
     bytesOut: z.number()
   })
@@ -115,6 +115,22 @@ export namespace SaveUsageData {
     | UnexpectedError
     | NotFoundError<{}>
 
+  export const request: Request | null = null
+  export const response: Response | null = null
+}
+
+export namespace CancelAccess {
+  export const METHOD = 'delete'
+  export const PATH = '/api/dvpn/access'
+  export type Request = {}
+  export type Canceled = {
+    canceled: boolean
+  }
+  export type Response =
+    | Success<Canceled>
+    | NotFoundError<{}>
+    | UnauthorizedError
+    | UnexpectedError
   export const request: Request | null = null
   export const response: Response | null = null
 }

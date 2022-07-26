@@ -25,6 +25,13 @@ const MODE_REGISTRATION = { id: 'REGISTRATION', expiresIn: '30m' }
  * @type {AuthMode}
  */
 const MODE_2FA = { id: '2FA', expiresIn: '30m' }
+
+/**
+ * this auth mode is for the dVPN product only.
+ * @type {{expiresIn: string, id: string}}
+ */
+const MODE_DVPN = { id: 'DVPN', expiresIn: '168h' }
+
 /**
  * both first and all 2fa methods completed (if needed)
  * @readonly
@@ -108,5 +115,6 @@ module.exports = {
   MODE_GUEST,
   MODE_REGISTRATION,
   MODE_2FA,
-  MODE_FULL
+  MODE_FULL,
+  MODE_DVPN
 }
