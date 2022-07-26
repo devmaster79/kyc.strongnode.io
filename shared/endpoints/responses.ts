@@ -86,17 +86,19 @@ export const zodValidationError = <
 >(
   issues: ImprovedZodIssue<TRequestBody>[]
 ): ZodValidationError<TRequestBody> => validationError(issues)
-export const unauthorizedError = apiResponse('unauthorized-error', 401, {
-  message: 'You do not have access to this feature'
-})
+export const unauthorizedError = () =>
+  apiResponse('unauthorized-error', 401, {
+    message: 'You do not have access to this feature'
+  })
 export const bannedError = (remainingTimeMs: number) =>
   apiResponse('banned-error', 403, {
     message: `You've been banned for ${remainingTimeMs} milliseconds from this feature.`,
     remainingTimeMs
   })
-export const unexpectedError = apiResponse('unexpected-error', 500, {
-  message: 'Something went wrong. Please try again later.'
-})
+export const unexpectedError = () =>
+  apiResponse('unexpected-error', 500, {
+    message: 'Something went wrong. Please try again later.'
+  })
 
 // Response types
 export type Success<T> = ApiResponse<'success', 200, T>

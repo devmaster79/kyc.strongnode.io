@@ -21,6 +21,7 @@
     "@walletconnect/web3-provider": "^1.7.8",
     "apexcharts": "^3.33.2",
     "axios": "^0.26.1",
+    "callback-to-async-iterator": "^1.1.1",
     "date-fns": "^2.28.0",
     "ethereum-address-es5": "^0.0.5",
     "formik": "^2.2.9",
@@ -46,6 +47,7 @@
   "devDependencies": {
     "@emotion/babel-plugin": "^11.7.2",
     "@svgr/webpack": "^6.2.1",
+    "@types/callback-to-async-iterator": "^1.1.4",
     "@types/d3-scale": "^4.0.2",
     "@types/d3-shape": "^3.1.0",
     "@types/eslint": "^8.4.1",

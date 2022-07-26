@@ -171,6 +171,7 @@ const palette = {
     },
     border: {
       light: NEW_GREY[60],
+      strong: WHITE[100],
       button: 'rgba(110, 109, 143, 0.1)'
     },
     action: { active: GREY[500], ...COMMON.action },
@@ -227,6 +228,7 @@ const palette = {
     },
     border: {
       light: WHITE[12],
+      strong: WHITE[100],
       button: WHITE[12]
     },
     action: { active: GREY[500], ...COMMON.action },

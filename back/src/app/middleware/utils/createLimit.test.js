@@ -1,8 +1,12 @@
-const { createLimit } = require('./createLimit')
-const { describe, it } = require('mocha')
+const { createLimit, resetTrials } = require('./createLimit')
+const { describe, it, before } = require('mocha')
 const assert = require('assert')
 
 describe('limit of maximal trials', () => {
+  before(() => {
+    resetTrials()
+  })
+
   const snooze = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
   const resWhileFree = {
     status(_code) {

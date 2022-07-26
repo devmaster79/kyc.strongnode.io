@@ -16,7 +16,7 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module'
   },
-  ignorePatterns: ['*.md', 'src/app/scripts/cryptoData'],
+  ignorePatterns: ['*.md', 'src/app/scripts/cryptoData', '*.png', '*.jpg'],
   plugins: ['@typescript-eslint', 'sonarjs', 'promise', 'prettier'],
   rules: {
     /* ----------------- Additional lints: ----------------- */

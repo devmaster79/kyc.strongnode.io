@@ -11,9 +11,16 @@ describe('EmailService', () => {
   it('should be able to call aws right', async () => {
     let called = false
     const fakeSES = {
-      sendEmail(params: SendEmailRequest) {
-        assert.equal(params?.Destination?.ToAddresses?.[0], EMAIL)
-        assert.ok(params?.Message?.Body?.Html?.Data?.indexOf(LINK) !== -1)
+      async sendEmail(params: SendEmailRequest) {
+        assert.equal(
+          params?.Destination?.ToAddresses?.[0],
+          EMAIL,
+          'email does not match'
+        )
+        assert.ok(
+          params?.Message?.Body?.Html?.Data?.indexOf(LINK) !== -1,
+          'email body does not contain the link'
+        )
         called = true
       }
     }
@@ -21,6 +28,6 @@ describe('EmailService', () => {
     await emailService.sendTemplate(EMAIL, new RegistrationTemplate(), {
       link: LINK
     })
-    assert.ok(called)
+    assert.ok(called, 'sendEmail was not called')
   })
 })
