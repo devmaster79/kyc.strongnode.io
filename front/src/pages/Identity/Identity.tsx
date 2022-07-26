@@ -1,23 +1,32 @@
 import styled from '@emotion/styled'
 import Button from '@ui/Button/Button'
-import Icon from '@ui/Icon/Icon'
 import Modal from '@ui/Modal/Modal'
 import { useAnimated } from '@ui/utils/useAnimated'
 import { useState } from 'react'
 import IdentityUpload from './IdentityUpload/IdentityUpload'
 import useSettings from 'hooks/useSettings'
+import {
+  UploadIdentityPhoto,
+  UploadUserWithIdentityPhoto,
+  VerifyIdentity
+} from 'shared/endpoints/kyc'
+import kycService from 'services/kycService'
+import { SnackbarKey, useSnackbar } from 'notistack'
+import InputField from '@ui/Input/InputField'
 
 export default function Identity() {
-  const [showModal] = useState(true)
-
-  const [showPassportModal, setShowPassportModal] = useState(false)
-  const [showNationalIDModal, setShowNationalIDModal] = useState(false)
-  const [showDrivingLicenseModal, setShowDrivingLicenseModal] = useState(false)
-
+  const [showModal, setShowModal] = useState(true)
   const showModalAnim = useAnimated(showModal, 500)
-  const showPassportModalAnim = useAnimated(showPassportModal, 500)
-  const showNationalIDModalAnim = useAnimated(showNationalIDModal, 500)
-  const showDrivingLicenseModalAnim = useAnimated(showDrivingLicenseModal, 500)
+  const [uploadIdentityPhotoResult, setUploadIdentityPhotoResult] =
+    useState<UploadIdentityPhoto.Response | null>(null)
+  const [
+    uploadUserWithIdentityPhotoResult,
+    setuploadUserWithIdentityPhotoResult
+  ] = useState<UploadUserWithIdentityPhoto.Response | null>(null)
+  const [birthday, setBirthday] = useState(
+    `${new Date().getFullYear() - 50}-01-01`
+  )
+  const snackbar = useSnackbar()
 
   const { themeMode } = useSettings()
   const isLight = themeMode === 'light'
@@ -26,51 +35,41 @@ export default function Identity() {
     <>
       <Modal
         anim={showModalAnim}
-        icon="identity"
-        onClose={() => {
-          /* TODO */
-        }}
-        footer={<></>}>
-        <IdentityWrapper>
-          <h1>
-            Strongnode
-            <span>Web Identity</span>
-          </h1>
-          Register options
-          <Button
-            variant="xl"
-            onClick={() => setShowPassportModal(true)}
-            justify="space-between">
-            Passport <Icon name="passport" width={24} height={24} />
-          </Button>
-          <Button
-            variant="xl"
-            onClick={() => {
-              setShowNationalIDModal(true)
-            }}
-            justify="space-between">
-            National ID <Icon name="nationalID" width={24} height={24} />
-          </Button>
-          <Button
-            variant="xl"
-            onClick={() => {
-              setShowDrivingLicenseModal(true)
-            }}
-            justify="space-between">
-            Driving licence{' '}
-            <Icon name="drivingLicense" width={24} height={24} />
-          </Button>
-          <p>See the list of supported documents</p>
-        </IdentityWrapper>
-      </Modal>
-      <Modal
-        anim={showPassportModalAnim}
-        title="Passport"
+        title="Identity verification"
         icon="identityPassport"
-        onClose={() => setShowPassportModal(false)}
+        onClose={() => setShowModal(false)}
         footer={
           <>
-            <Button type="button" variant="large">
+            <Button
+              type="button"
+              variant="large"
+              onClick={async () => {
+                const date = new Date(birthday)
+                const iterator = kycService.verifyIdentity({
+                  body: {
+                    birthday: {
+                      year: date.getFullYear(),
+                      month: date.getMonth() + 1,
+                      date: date.getDate()
+                    }
+                  }
+                })
+                let lastSnack: SnackbarKey | undefined = undefined
+                const closeLast = () => {
+                  snackbar.closeSnackbar(lastSnack)
+                }
+                for await (const res of iterator) {
+                  closeLast()
+                  lastSnack = snackbar.enqueueSnackbar(res.message, {
+                    variant: getStatusFromVerifyIdentityResult(res),
+                    autoHideDuration: 20000,
+                    onClick: closeLast,
+                    style: {
+                      cursor: 'pointer'
+                    }
+                  })
+                }
+              }}>
               Continue
             </Button>
           </>
@@ -78,117 +77,124 @@ export default function Identity() {
         scrollable>
         <IdentityUpload
           icon={isLight ? 'passportFrontLight' : 'passportFront'}
-          description="Take picture of your national ID.
-          Avoid glare and make sure all 4 corners are visible. Take a picture of both sides."
-          onSelectFile={() => {
-            /* TODO */
+          description="Take picture of your national ID / Passport / Driving license.
+          Avoid glare and make sure all 4 corners are visible."
+          onSelectFile={async (file) => {
+            const iterator = kycService.uploadIdentityPhoto({
+              body: {
+                file: await blobToBase64(file)
+              }
+            })
+
+            for await (const res of iterator) {
+              setUploadIdentityPhotoResult(res)
+            }
           }}
+          result={
+            uploadIdentityPhotoResult
+              ? {
+                  message: uploadIdentityPhotoResult.message,
+                  status: getStatusFromUploadIdentityPhotoResult(
+                    uploadIdentityPhotoResult
+                  )
+                }
+              : null
+          }
         />
         <Separator />
         <IdentityUpload
           icon={isLight ? 'passportHoldLight' : 'passportHold'}
-          description="Take a picture of you holding your passport near your face so we can verify your identity."
-          onSelectFile={() => {
-            /* TODO */
-          }}
-        />
-        <Separator />
-      </Modal>
+          description="Take a picture of you holding your national ID / Passport / Driving license
+            near your face so we can verify your identity."
+          onSelectFile={async (file) => {
+            const iterator = kycService.uploadUserWithIdentityPhoto({
+              body: {
+                file: await blobToBase64(file)
+              }
+            })
 
-      <Modal
-        anim={showNationalIDModalAnim}
-        title="National ID"
-        icon="identityNationalID"
-        onClose={() => setShowNationalIDModal(false)}
-        footer={
-          <>
-            <Button type="button" variant="large">
-              Continue
-            </Button>
-          </>
-        }
-        scrollable>
-        <IdentityUpload
-          icon={isLight ? 'nationalIdFrontLight' : 'nationalIdFront'}
-          description="Take picture of your national ID. Avoid glare and make sure all 4 corners are visible. Take a picture of both sides."
-          onSelectFile={() => {
-            /* TODO */
+            for await (const res of iterator) {
+              setuploadUserWithIdentityPhotoResult(res)
+            }
           }}
+          result={
+            uploadUserWithIdentityPhotoResult
+              ? {
+                  message: uploadUserWithIdentityPhotoResult.message,
+                  status: getStatusFromUploadIdentityPhotoResult(
+                    uploadUserWithIdentityPhotoResult
+                  )
+                }
+              : null
+          }
         />
         <Separator />
-        <IdentityUpload
-          icon={isLight ? 'nationalIdBackLight' : 'nationalIdBack'}
-          description="Back side of your national ID"
-          onSelectFile={() => {
-            /* TODO */
-          }}
-        />
-        <Separator />
-      </Modal>
-
-      <Modal
-        anim={showDrivingLicenseModalAnim}
-        title="Driving licence"
-        icon="identityDrivingLicense"
-        onClose={() => setShowDrivingLicenseModal(false)}
-        footer={
-          <>
-            <Button type="button" variant="large">
-              Continue
-            </Button>
-          </>
-        }
-        scrollable>
-        <IdentityUpload
-          icon={isLight ? 'drivingLicenseFrontLight' : 'drivingLicenseFront'}
-          description="Take picture of your Driving license. Avoid glare and make sure all 4 corners are visible. Take a picture of both sides."
-          onSelectFile={() => {
-            /* TODO */
-          }}
-        />
-        <Separator />
-        <IdentityUpload
-          icon={isLight ? 'nationalIdBackLight' : 'nationalIdBack'}
-          description="Back side of your Driving licence"
-          onSelectFile={() => {
-            /* TODO */
-          }}
-        />
-        <Separator />
+        <BirthdayInputWrapper>
+          <InputField
+            inputProps={{
+              placeholder: 'Birthday',
+              type: 'text',
+              id: 'birthday',
+              value: birthday,
+              pattern: 'd{4}-d{2}-d{2}',
+              onChange: (event) => setBirthday(event.target.value),
+              min: `${new Date().getFullYear() - 100}-01-01`,
+              max: `${new Date().getFullYear() - 18}-01-01`
+            }}
+          />
+        </BirthdayInputWrapper>
       </Modal>
     </>
   )
 }
-
-const IdentityWrapper = styled.div((props) => ({
-  fontSize: '18px',
-  display: 'flex',
-  flexDirection: 'column',
-
-  h1: {
-    fontSize: '32px',
-    paddingBottom: '32px',
-
-    span: {
-      fontFamily: 'Satoshi-Regular',
-      fontWeight: '300',
-      display: 'block',
-      paddingTop: '15px'
-    }
-  },
-  p: {
-    textAlign: 'left',
-    padding: '15px',
-
-    a: {
-      color: props.theme.palette.text.secondary,
-      textDecoration: 'underline'
-    }
-  }
-}))
 
 const Separator = styled.hr((props) => ({
   width: '354px',
   border: `1px solid ${props.theme.palette.border.light}`,
   margin: '32px 0'
 }))
+
+function blobToBase64(blob: Blob): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onloadend = () => {
+      resolve(reader.result as unknown as string)
+    }
+    reader.onerror = (error) => reject(error)
+    reader.readAsDataURL(blob)
+  })
+}
+
+function getStatusFromUploadIdentityPhotoResult(
+  result: UploadIdentityPhoto.Response
+) {
+  switch (result.result) {
+    case 'unexpected-error':
+    case 'validation-error':
+    case 'qualityVerificationFailed':
+      return 'error'
+    case 'verifyingQuality':
+    case 'saving':
+      return 'loading'
+    case 'success':
+      return 'success'
+  }
+}
+function getStatusFromVerifyIdentityResult(result: VerifyIdentity.Response) {
+  switch (result.result) {
+    case 'facesDidNotMatch':
+    case 'unableToFindRequiredTextOnPhoto':
+      return 'warning'
+    case 'missingRequiredPhotos':
+      return 'error'
+    case 'success':
+      return 'success'
+    default:
+      return 'info'
+  }
+}
+
+const BirthdayInputWrapper = styled.div({
+  display: 'flex',
+  gap: '1em'
+})

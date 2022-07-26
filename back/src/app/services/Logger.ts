@@ -14,7 +14,7 @@ export class Logger {
     console.info(this.prefix, ...messages)
   }
   warn(...messages: unknown[]) {
-    console.warn(this.prefix, ...messages)
+    console.warn(this.prefix + '\x1b[33m', ...messages, '\x1b[0m')
   }
   error(...messages: unknown[]) {
     console.error(this.prefix, ...messages)

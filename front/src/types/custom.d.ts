@@ -34,6 +34,7 @@ declare module '@mui/material/styles' {
   export interface PaletteOptions {
     border: {
       light: string
+      strong: string
       button: string
     }
     icon: {

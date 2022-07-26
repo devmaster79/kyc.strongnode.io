@@ -1,3 +1,4 @@
+import { PinpointClientConfig } from '@aws-sdk/client-pinpoint'
 import { SESClientConfig } from '@aws-sdk/client-ses'
 import { S3ClientConfig } from '@aws-sdk/client-s3'
 
@@ -15,18 +16,17 @@ export const SMS_CONFIG = {
 }
 export const AWS_REGION = process.env.AWS_REGION || 'eu-west-1'
 
-export const AWS_CONFIG = (): SESClientConfig => {
-  if (process.env.NODE_ENV === 'development') {
-    return {
-      endpoint: process.env.AWS_LOCALSTACK_URL
-    }
-  }
-
-  return {}
+export const AWS_BASE_CONFIG: SESClientConfig = {
+  ...(process.env.NODE_ENV === 'development'
+    ? { endpoint: process.env.AWS_LOCALSTACK_URL }
+    : {})
 }
 
-export const S3_CLIENT_CONFIG: S3ClientConfig = {
-  ...(AWS_CONFIG() as S3ClientConfig),
+export const AWS_SES_CONFIG = (): SESClientConfig => AWS_BASE_CONFIG
+export const AWS_PINPOINT_CONFIG = (): PinpointClientConfig => AWS_BASE_CONFIG
+export const AWS_REKOGNITION_CONFIG = (): PinpointClientConfig => ({})
+export const AWS_S3_CONFIG: S3ClientConfig = {
+  ...AWS_BASE_CONFIG,
   forcePathStyle: true
 }
 

@@ -6,7 +6,7 @@ import {
 } from '../models'
 import { SES } from '@aws-sdk/client-ses'
 import { EmailService } from 'app/services/communication/EmailService'
-import { AWS_CONFIG } from 'app/config/config'
+import { AWS_SES_CONFIG } from 'app/config/config'
 import {
   apiResponse,
   notFoundError,
@@ -30,7 +30,7 @@ import { SupportRequestService } from 'app/services/user/SupportRequestService'
 import { WalletService } from 'app/services/user/WalletService'
 import { GravatarService } from 'app/services/GravatarService'
 
-const emailService = new EmailService(new SES(AWS_CONFIG()))
+const emailService = new EmailService(new SES(AWS_SES_CONFIG()))
 const gravatarService = new GravatarService()
 const profileService = new ProfileService(userRepository, gravatarService)
 const walletService = new WalletService(userRepository, userWalletsRepository)
