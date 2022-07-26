@@ -4,12 +4,17 @@ import {
   VerifyAccount,
   HasAccess,
   SaveUsageData,
-  GetUsageData
+  GetUsageData,
+  CancelAccess
 } from 'shared/endpoints/dvpn'
 import { DVPNService, ICreatedAccess } from './../services/dvpn/dVPNService'
 import { User as userRepository, dVPNAccess } from '../models'
 import { notFoundError, success } from '../../shared/endpoints/responses'
+import { TokenService, MODE_DVPN } from '../services/auth/TokenService'
 import { dVPNUsage } from '../models'
+
+const tokenService = new TokenService()
+
 /**
  * Method that returns user's access to dVPN.
  */
@@ -32,6 +37,7 @@ export const hasAccess = withResponse<HasAccess.Response>(async (req) => {
 
 /**
  * Method that verifies user's login access to dVPN.
+ * Returns token for dVPN service usage.
  */
 export const verifyLogin = withResponse<VerifyAccount.Response>(async (req) => {
   const data = VerifyAccount.schema.parse(req.body)
@@ -39,10 +45,7 @@ export const verifyLogin = withResponse<VerifyAccount.Response>(async (req) => {
 
   if (user) {
     const dVPN = new DVPNService(user.id, dVPNAccess)
-    const verifyLogin = await dVPN.verifyAccessPassword(
-      data.password,
-      user.password
-    )
+    const verifyLogin = await dVPN.verifyAccessPassword(data.password)
 
     if (verifyLogin) {
       const access = await dVPN.hasAccess()
@@ -51,6 +54,13 @@ export const verifyLogin = withResponse<VerifyAccount.Response>(async (req) => {
       let response: VerifyAccount.AccountDetail = {
         dvpnAccess: access as boolean
       }
+
+      if (access)
+        response.token = tokenService.generateToken(
+          user.email,
+          user.username,
+          MODE_DVPN
+        )
 
       if (!access)
         response = {
@@ -98,13 +108,14 @@ export const generateAccess = withResponse<GenerateAccount.Response>(
 
 /**
  *  Method that save usage of user
+ *  todo change the body email to the email from jwt
  */
 export const savedVPNUsage = withResponse<SaveUsageData.Response>(
   async (req) => {
     const data = SaveUsageData.schema.parse(req.body)
 
     const user = await userRepository.findOne({
-      where: { email: data.email }
+      where: { email: req.user.email }
     })
 
     if (user) {
@@ -135,6 +146,30 @@ export const getdVPNUsage = withResponse<GetUsageData.Response>(async (req) => {
     })
 
     return success({ data: usageData })
+  } else {
+    return notFoundError({ message: 'User not found. ' })
+  }
+})
+
+/**
+ * Method for canceling subscription.
+ */
+export const cancelAccess = withResponse<CancelAccess.Response>(async (req) => {
+  const user = await userRepository.findOne({
+    where: { email: req.user.email }
+  })
+
+  if (user) {
+    const dVPN = new DVPNService(user.id, dVPNAccess)
+    const canceled = await dVPN.disableAccess()
+
+    if (canceled) {
+      return success({
+        canceled: true
+      })
+    } else {
+      return notFoundError({ message: 'User access not found. ' })
+    }
   } else {
     return notFoundError({ message: 'User not found. ' })
   }
