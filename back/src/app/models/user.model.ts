@@ -1,36 +1,56 @@
-import { Model, DataTypes, Sequelize } from 'sequelize'
+import {
+  Model,
+  DataTypes,
+  Sequelize,
+  InferAttributes,
+  InferCreationAttributes,
+  CreationOptional
+} from 'sequelize'
 
-export class User extends Model {
-  public id!: number
-  public firstName!: string
-  public lastName!: string
-  public email!: string
-  public username!: string
-  public profileImgType!: string
-  public profileImgUrl!: string
-  public profileImgData!: string
-  public profileImgKey!: string
-  public emailVerified!: boolean
-  public token!: string
-  public passwordToken!: string
-  public password!: string
-  public smscode!: string
-  public authenticatorQrSecret!: string
-  public phoneNumber!: string
-  public enablePassword!: boolean
-  public enableAuthenticator!: boolean
-  public enableSms!: boolean
-  public telegramId!: string
-  public twitterId!: string
-  public walletAddress!: string
+export enum VerificationStatus {
+  VerifiedByAi = 'VerifiedByAi',
+  VerifiedByAdmin = 'VerifiedByAdmin'
+}
 
-  public readonly createdAt!: Date
-  public readonly updatedAt!: Date
+export class User extends Model<
+  InferAttributes<User>,
+  InferCreationAttributes<User>
+> {
+  declare id: CreationOptional<number>
+  declare firstName: string
+  declare lastName: string
+  declare email: string
+  declare username: string
+  declare profileImgType: string
+  declare profileImgUrl: string
+  declare profileImgData: string
+  declare profileImgKey: string
+  declare emailVerified: boolean
+  declare token: string
+  declare passwordToken: string
+  declare password: string
+  declare smscode: string
+  declare authenticatorQrSecret: string
+  declare phoneNumber: string
+  declare enablePassword: boolean
+  declare enableAuthenticator: boolean
+  declare enableSms: boolean
+  declare telegramId: string
+  declare twitterId: string
+  declare walletAddress: string
+  declare birthday: Date | string // sequalize....
+  declare identityVerified: VerificationStatus
 }
 
 export const create = (sequelize: Sequelize) =>
   User.init(
     {
+      id: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true,
+        allowNull: false
+      },
       firstName: {
         type: DataTypes.STRING
       },
@@ -92,6 +112,12 @@ export const create = (sequelize: Sequelize) =>
         type: DataTypes.STRING
       },
       walletAddress: {
+        type: DataTypes.STRING
+      },
+      birthday: {
+        type: DataTypes.DATEONLY
+      },
+      identityVerified: {
         type: DataTypes.STRING
       }
     },

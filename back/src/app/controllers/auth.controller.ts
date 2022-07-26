@@ -11,7 +11,7 @@ import {
 import { GravatarService } from '../services/GravatarService'
 import { EmailService } from '../services/communication/EmailService'
 import { SmsService } from '../services/communication/SmsService'
-import { AWS_CONFIG } from 'app/config/config'
+import { AWS_PINPOINT_CONFIG, AWS_SES_CONFIG } from 'app/config/config'
 import {
   zodValidationError,
   success,
@@ -43,8 +43,8 @@ import {
 import { Pinpoint } from '@aws-sdk/client-pinpoint'
 import { SES } from '@aws-sdk/client-ses'
 
-const smsService = new SmsService(new Pinpoint(AWS_CONFIG()))
-const emailService = new EmailService(new SES(AWS_CONFIG()))
+const smsService = new SmsService(new Pinpoint(AWS_PINPOINT_CONFIG()))
+const emailService = new EmailService(new SES(AWS_SES_CONFIG()))
 const userRepository = require('../models').users
 const tokenService = new TokenService()
 const emailAuthService = new EmailAuthService(

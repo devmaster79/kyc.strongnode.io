@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { SnackbarKey, useSnackbar } from 'notistack'
+import asyncify from 'callback-to-async-iterator'
 
 type HTTPVerb = 'get' | 'post' | 'put' | 'delete' | 'patch'
 
@@ -102,6 +103,55 @@ export function fetchAPI<
           }
         })
     })
+  )
+}
+
+/** Get the response data even if the response status is not 2xx */
+export function fetchSseAPI<
+  Body,
+  Params,
+  RequestData extends IRequestData<Body, Params>,
+  ResponseData
+>(verb: HTTPVerb, path: string, data: RequestData) {
+  let last_response_len = 0
+  const xhttp = new XMLHttpRequest()
+  const params = new URLSearchParams(data?.params || {}).toString()
+  const uri = `${path}?${params}`
+  xhttp.open(verb.toUpperCase(), uri, true)
+
+  // set headers
+  xhttp.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')
+  for (const headerName in axios.defaults.headers.common || []) {
+    xhttp.setRequestHeader(
+      headerName,
+      axios.defaults.headers.common[headerName] as string
+    )
+  }
+
+  // send data
+  if (typeof data?.body !== undefined) xhttp.send(JSON.stringify(data?.body))
+
+  // handle response
+  return asyncify<ResponseData>(
+    async (callback) => {
+      xhttp.onprogress = () => {
+        xhttp.response
+          .substr(last_response_len)
+          .split('\n\n')
+          .filter((data: string) => data.length > 0)
+          .forEach((data: string) => {
+            callback(JSON.parse(data))
+          })
+        last_response_len = xhttp.response.length
+      }
+    },
+    {
+      onClose: () => {
+        xhttp.onprogress = () => {
+          // DO NOTHING
+        }
+      }
+    }
   )
 }
 
