@@ -2,12 +2,22 @@ import { UserCredentials } from '@ui/dVPN/UserCredentials'
 import UsageWidget from '@ui/Crypto/UsageWidget'
 import * as DashboardStyle from '@ui/Dashboard/DashboardStyle'
 import TableSection from 'components/TableSection/TableSection'
+import Button from './../../../@ui/Button/Button'
 
 export default function DVPN() {
   return (
     <DashboardStyle.Wrapper>
       <DashboardStyle.Container>
-        <h1 style={{ marginTop: '56px' }}>dVPN Usage</h1>
+        <DashboardStyle.TittleWrapper>
+          <h1 style={{ paddingBottom: '0' }}>dVPN Usage</h1>
+          <Button
+            style={{
+              marginLeft: 'auto',
+              marginRight: '14px'
+            }}>
+            DOWNLOAD DVPN
+          </Button>
+        </DashboardStyle.TittleWrapper>
         <UsageWidget />
         <DashboardStyle.GridContainer>
           <DashboardStyle.Grid>

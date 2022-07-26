@@ -8,6 +8,11 @@ export const Wrapper = styled.div({
   flexDirection: 'column'
 })
 
+export const TittleWrapper = styled.div({
+  display: 'flex',
+  marginTop: '56px'
+})
+
 export const Container = styled.div({
   maxWidth: '1536px',
   width: '100%',
