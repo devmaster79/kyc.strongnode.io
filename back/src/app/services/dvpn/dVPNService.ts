@@ -69,11 +69,19 @@ export class DVPNService {
   /**
    * Method that verifies password.
    */
-  async verifyAccessPassword(password: string, hash: string) {
-    return await bcrypt.compare(password, hash).then((res: boolean) => {
-      this.passwordVerified = res
-      return res
+  async verifyAccessPassword(password: string) {
+    const dVPNRecord = await this.__dVPNAccessModel.findOne({
+      where: { userId: this.userId }
     })
+
+    if (dVPNRecord) {
+      const result = bcrypt.compareSync(password, dVPNRecord.password)
+      this.passwordVerified = result
+
+      return result
+    } else {
+      return false
+    }
   }
 
   /**
