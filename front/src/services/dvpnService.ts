@@ -16,3 +16,10 @@ export async function generateAccount() {
 export async function hasAccess() {
   return rawCalls.hasAccess({})
 }
+
+/**
+ * Method that cancels the users access.
+ */
+export async function cancelAccess() {
+  return rawCalls.cancelAccess({})
+}
