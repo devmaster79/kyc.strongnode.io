@@ -3,7 +3,11 @@ import { CSSProperties } from 'react'
 import styled from '@emotion/styled'
 import * as DashboardForm from '@ui/Dashboard/Form'
 import Button from './../Button/Button'
-import { hasAccess, generateAccount } from '../../services/dvpnService'
+import {
+  hasAccess,
+  generateAccount,
+  cancelAccess
+} from '../../services/dvpnService'
 
 interface IUserCredentials {
   style?: CSSProperties
@@ -28,7 +32,16 @@ export const UserCredentials = (props: IUserCredentials) => {
     loadUserAccess()
   }, [])
 
-  // method for temp calling
+  // method for canceling subscription
+  const cancelSubscribsion = async () => {
+    const canceled = await cancelAccess()
+
+    if (canceled.result === 'success') {
+      setUserAccess(false)
+    }
+  }
+
+  // method for temp calling credential generation
   const generateDvpnCredentials = async () => {
     const generatedAccount = await generateAccount()
 
@@ -71,8 +84,11 @@ export const UserCredentials = (props: IUserCredentials) => {
       </div>
 
       <ButtonWrapper>
-        <Button color={'invert'} disabled={!userAccess}>
-          CANCEL SUBSCRIPTION
+        <Button
+          onClick={cancelSubscribsion}
+          color={'invert'}
+          disabled={!userAccess}>
+          CANCEL DVPN ACCESS
         </Button>
         <Button
           onClick={generateDvpnCredentials}
@@ -108,7 +124,8 @@ const CredentialsWrapper = styled.div({
   background: '#141343',
   border: '1px solid rgba(255, 255, 255, 0.1)',
   borderRadius: '10px',
-  padding: '32px'
+  padding: '32px',
+  marginTop: '32px'
 })
 
 const ButtonWrapper = styled.div({
