@@ -10,11 +10,11 @@ interface Finder {
 }
 
 interface TableSectionProps<Item extends Record<string, unknown>> {
-  comingSoon?: string
+  comingSoon?: boolean
   title: string
   subtitle: string | undefined
-  dataSet: DataSet<Item>
-  columns: Column[]
+  dataSet?: DataSet<Item>
+  columns?: Column[]
   hideHeading?: boolean
   overwrittenFields?: Record<string, unknown>
   fetchData?: (p: number, p2: number) => void
@@ -31,6 +31,7 @@ function TableSection<Item extends Record<string, unknown>>(
   )
 
   const onChangeValue = (event: ChangeEvent<HTMLInputElement>) => {
+    if (props.comingSoon || !props.dataSet) return
     const search = event.target.value.toLowerCase()
     // Check backend search function
     if (props.finder?.onChange) {
@@ -47,7 +48,7 @@ function TableSection<Item extends Record<string, unknown>>(
 
   return (
     <TableSectionWrapper {...props}>
-      {props.comingSoon ? (
+      {props.comingSoon || !props.dataSet || !props.columns ? (
         <ComingSoonWrapper>
           <Icon name="info" height={24} width={24} />
           <h2>{props.title}</h2>

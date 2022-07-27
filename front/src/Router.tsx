@@ -2,6 +2,7 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import DashboardLayout from './layouts/dashboard'
 import Dashboard from './pages/Dashboard'
 import ContactSupport from './pages/contactSupport'
+import DVPN from './pages/Dashboard/DVPN/DVPN'
 import { Register } from './pages/auth/Register'
 import { VerifyEmail } from './pages/auth/VerifyEmail'
 import { SignInWithPassword } from './pages/auth/SignInWithPassword'
@@ -22,6 +23,7 @@ export const ROUTES = {
     LAYOUT: '/dashboard',
     NFT: '/dashboard/nft',
     KYC: '/dashboard/kyc',
+    DVPN: '/dashboard/dvpn',
     IDENTITY: 'dashboard/identity',
     APP: '/dashboard/app',
     PROFILE: '/dashboard/profile',
@@ -58,6 +60,7 @@ export default function Router () {
             <Route path={ROUTES.DASHBOARD.SYNC} element={<Dashboard />} />
             <Route path={ROUTES.DASHBOARD.SHIELD} element={<Dashboard />} />
             <Route path={ROUTES.DASHBOARD.NFT} element={<NFTDashboard />} />
+            <Route path={ROUTES.DASHBOARD.DVPN} element={<DVPN />} />
             <Route path={ROUTES.DASHBOARD.KYC} element={<Kyc />} />
             <Route path={ROUTES.DASHBOARD.IDENTITY} element={<Identity />} />
             <Route path={ROUTES.PRIVACY_POLICY} element={<PrivacyPolicy />} />

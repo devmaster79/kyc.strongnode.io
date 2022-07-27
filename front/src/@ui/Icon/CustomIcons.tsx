@@ -6,7 +6,7 @@ import { ReactComponent as Search } from './Icons/Search.svg'
 import { ReactComponent as Defi } from './Icons/Defi.svg'
 import { ReactComponent as Nft } from './Icons/Nft.svg'
 import { ReactComponent as Kyc } from './Icons/Kyc.svg'
-import { ReactComponent as Vpn } from './Icons/Vpn.svg'
+import { ReactComponent as Dvpn } from './Icons/Vpn.svg'
 import { ReactComponent as Close } from './Icons/Close.svg'
 import { ReactComponent as Lock } from './Icons/Lock.svg'
 import { ReactComponent as Sms } from './Icons/Sms.svg'
@@ -46,7 +46,7 @@ export const Icons = {
   defi: Defi,
   nft: Nft,
   kyc: Kyc,
-  vpn: Vpn,
+  dvpn: Dvpn,
   close: Close,
   lock: Lock,
   sms: Sms,

@@ -32,6 +32,7 @@ app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile))
 require('./app/routes/user.routes')(app)
 require('./app/routes/auth.routes')(app)
 require('./app/routes/cryptocurrency.routes')(app)
+require('./app/routes/dvpn.routes')(app)
 require('./app/routes/kyc.routes')(app)
 
 // set port, listen for requests
