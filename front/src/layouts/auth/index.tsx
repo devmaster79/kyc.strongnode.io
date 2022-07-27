@@ -6,7 +6,7 @@ import ThemedLogo from '../../components/ThemedLogo'
 export default function AuthLayout() {
   return (
     <Modal
-      anim={{ delay: 0, state: 'open', destroyKey: '0' }}
+      anim={{ delay: 0, state: 'open', destroyKey: '0', storedValue: true }}
       title=""
       closeIconHidden>
       <StyledThemedLogo />

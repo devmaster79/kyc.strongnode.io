@@ -13,6 +13,7 @@ import { getTokenAddress } from '../../../services/walletService'
 import { CustomTheme } from 'theme'
 import { ConnectWalletModal } from '../../../@ui/Modal/ConnectWalletModal'
 import AccountDialog from './AccountDialog'
+import { ROUTES } from 'Router'
 
 export default function AccountPopover() {
   const navigate = useNavigate()
@@ -41,7 +42,7 @@ export default function AccountPopover() {
 
   const navigateToKyc = () => {
     setShowModal(false)
-    navigate('/dashboard/kyc')
+    navigate(ROUTES.DASHBOARD.PROFILE.GENERAL)
   }
 
   const theme: CustomTheme = useTheme()

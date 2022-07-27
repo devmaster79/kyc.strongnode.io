@@ -42,6 +42,7 @@ interface CustomPaletteOptions extends PaletteOptions {
   background: Partial<CustomTypeBackground>
   text: Partial<TypeText>
   primary: PaletteColorOptions
+  success: PaletteColorOptions
   error: PaletteColorOptions
   info: PaletteColorOptions
 }

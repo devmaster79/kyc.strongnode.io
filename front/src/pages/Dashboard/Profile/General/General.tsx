@@ -7,17 +7,14 @@ import { useEffect, useCallback } from 'react'
 import { AuthenticatorSwitch } from './AuthenticatorSwitch'
 import { SMSSwitch } from './SMSSwitch'
 import { WalletCarousel } from './WalletCarousel'
-import * as ProgressCircleSteps from '@ui/Dashboard/ProgressCircleSteps'
-import { Banner } from '../../../@ui/Banner/Banner'
 import { useSnackbar } from 'notistack'
 import { getFieldIssues } from 'utils/FormUtils'
-import Media from './../../../theme/mediaQueries'
+import Media from 'theme/mediaQueries'
 import authService from 'services/auth'
 import { Response } from 'services/utils'
+import InputField from '@ui/Input/InputField'
 
 interface FormFields {
-  firstName: string
-  lastName: string
   username: string
   email: string
   enablePassword: boolean
@@ -49,9 +46,8 @@ export default function KYC() {
 
   const { register, handleSubmit, setError, formState, reset, control } =
     useForm<FormFields>({
+      mode: 'all',
       defaultValues: {
-        firstName: '',
-        lastName: '',
         username: '',
         email: '',
         enablePassword: false,
@@ -68,8 +64,6 @@ export default function KYC() {
           throw new Error('Could not get the profile')
         }
         reset({
-          firstName: response.data.firstName,
-          lastName: response.data.lastName,
           username: response.data.username,
           email: response.data.email,
           enablePassword: response.data.enablePassword,
@@ -89,8 +83,6 @@ export default function KYC() {
     userService
       .updateProfile({
         body: {
-          firstName: data.firstName,
-          lastName: data.lastName,
           username: data.username,
           enablePassword: data.enablePassword || false,
           enableSms: data.enableSms || false,
@@ -109,8 +101,6 @@ export default function KYC() {
           case 'success':
             localStorage.setItem('username', response.body.username as string)
             reset({
-              firstName: response.body?.firstName,
-              lastName: response.body?.lastName,
               username: response.body?.username,
               email: response.body?.email,
               enablePassword: response.body?.enablePassword,
@@ -125,68 +115,17 @@ export default function KYC() {
   }
 
   return (
-    <Container>
-      <Banner
-        title="StrongNode dVPN coming soon."
-        description="Stay tuned for more information."
-        soon
-      />
-
-      <Title>StrongNode ID and KYC</Title>
+    <>
       <FormContainer>
-        <ProgressCircleSteps.Container>
-          <ProgressCircleSteps.Step
-            label="user registration"
-            progressAmount={60}
-            progressLabel="A"
-            progressBorder={false}
-            disabled={false}
-          />
-          <ProgressCircleSteps.Separator />
-          <ProgressCircleSteps.Step
-            label="KYC"
-            progressAmount={0}
-            progressLabel="B"
-            progressBorder={true}
-            disabled={false}
-          />
-          <ProgressCircleSteps.Separator />
-          <ProgressCircleSteps.Step
-            label="Socials"
-            progressAmount={0}
-            progressLabel="D"
-            progressBorder={true}
-            disabled={true}
-          />
-          <ProgressCircleSteps.Separator />
-          <ProgressCircleSteps.Step
-            label="Optional"
-            progressAmount={35}
-            progressLabel="E"
-            progressBorder={false}
-            disabled={true}
-          />
-        </ProgressCircleSteps.Container>
         <DashboardForm.Form
           onSubmit={handleSubmit(onSubmit)}
           autoComplete="off">
           <DashboardForm.InputGroup>
-            <DashboardForm.Input
-              error={!!formState.errors.firstName}
-              inputProps={{
-                placeholder: 'First name',
-                ...register('firstName')
-              }}
-            />
-            <DashboardForm.Input
-              error={!!formState.errors.lastName}
-              inputProps={{ placeholder: 'Last name', ...register('lastName') }}
-            />
-            <DashboardForm.Input
+            <InputField
               error={!!formState.errors.username}
               inputProps={{ placeholder: 'Username', ...register('username') }}
             />
-            <DashboardForm.Input
+            <InputField
               error={!!formState.errors.email}
               inputProps={{
                 placeholder: 'Email',
@@ -265,7 +204,7 @@ export default function KYC() {
         </DashboardForm.Form>
       </FormContainer>
       <WalletCarousel walletProps={walletsObject} />
-    </Container>
+    </>
   )
 }
 
@@ -287,28 +226,6 @@ function withDisableOnTurningOff(
     }
   }
 }
-
-const Container = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  alignItems: 'center',
-  paddingTop: '95px',
-  paddingBottom: '70px',
-  gap: '32px',
-  width: '80%',
-  margin: 'auto',
-  textAlign: 'center',
-  [Media.phone]: {
-    width: '100%'
-  }
-})
-
-const Title = styled.h1({
-  [Media.phone]: {
-    fontSize: '20px'
-  }
-})
 
 const FormContainer = styled.div({
   display: 'flex',

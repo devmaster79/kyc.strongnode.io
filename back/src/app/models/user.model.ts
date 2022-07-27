@@ -4,12 +4,23 @@ import {
   Sequelize,
   InferAttributes,
   InferCreationAttributes,
-  CreationOptional
+  CreationOptional,
+  Association
 } from 'sequelize'
+import { KycEntry } from './kycEntry.model'
 
-export enum VerificationStatus {
-  VerifiedByAi = 'VerifiedByAi',
-  VerifiedByAdmin = 'VerifiedByAdmin'
+export type VerificationStatus =
+  | {
+      status: 'Submitted' | 'VerifiedByAi' | 'VerifiedByAdmin'
+    }
+  | {
+      status: 'Rejected'
+      reason: string
+    }
+
+export enum UserLevel {
+  Admin = 'Admin',
+  User = 'User'
 }
 
 export class User extends Model<
@@ -38,8 +49,13 @@ export class User extends Model<
   declare telegramId: string
   declare twitterId: string
   declare walletAddress: string
-  declare birthday: Date | string // sequalize....
-  declare identityVerified: VerificationStatus
+  declare birthday: Date | string | null // sequalize....
+  declare identityVerified: VerificationStatus | null
+  declare level: UserLevel
+
+  declare static associations: {
+    kycEntries: Association<User, KycEntry>
+  }
 }
 
 export const create = (sequelize: Sequelize) =>
@@ -118,7 +134,12 @@ export const create = (sequelize: Sequelize) =>
         type: DataTypes.DATEONLY
       },
       identityVerified: {
-        type: DataTypes.STRING
+        type: DataTypes.JSON
+      },
+      level: {
+        type: DataTypes.STRING,
+        defaultValue: UserLevel.User,
+        allowNull: false
       }
     },
     {

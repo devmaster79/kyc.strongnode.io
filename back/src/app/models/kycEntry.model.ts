@@ -5,17 +5,29 @@ import {
   InferAttributes,
   InferCreationAttributes,
   CreationOptional,
-  ForeignKey
+  ForeignKey,
+  NonAttribute
 } from 'sequelize'
+import { VerificationSubject } from 'shared/endpoints/kycAdmin'
 import { User } from './user.model'
 
-/** What should the admin verify */
-export enum VerificationSubject {
-  Identity = 'Identity',
-  Address = 'Address',
-  BillingAddress = 'BillingAddress',
-  TaxIdentificationNumber = 'TaxIdentificationNumber'
-}
+/** AWS S3 key. The whole photo */
+export const IDENTITY_PHOTO_KEY = (userId: number, documentType: string) =>
+  `${userId}_${documentType}`
+/** AWS S3 key. Only the face from the photo */
+export const IDENTITY_PHOTO_FACE_KEY = (userId: number, documentType: string) =>
+  `${userId}_${documentType}_face`
+/** AWS S3 key. The whole photo */
+export const USER_WITH_IDENTITY_PHOTO_KEY = (
+  userId: number,
+  documentType: string
+) => `${userId}_user_with_${documentType}`
+/** AWS S3 key. Only the face from the photo */
+export const USER_WITH_IDENTITY_PHOTO_FACE_KEY = (
+  userId: number,
+  documentType: string,
+  nth: number
+) => `${userId}_user_with_${documentType}_face_${nth}`
 
 /**
  * Unsubmitted => user.*Verified is null, and this row is NOT present
@@ -35,6 +47,9 @@ export class KycEntry extends Model<
 
   declare createdAt: CreationOptional<Date>
   declare updatedAt: CreationOptional<Date>
+
+  // pre-declare possible inclusions
+  declare user?: NonAttribute<User>
 }
 
 export const create = (sequelize: Sequelize) =>

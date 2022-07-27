@@ -62,34 +62,48 @@ interface FloatingLabelWrapperProps {
   onFocusStyle?: CSSObject
 }
 
+export const FLOATING_LABEL_IS_UP_SELECTOR = `
+  :focus-within > .floating-label,
+  input:not(:placeholder-shown) + .floating-label,
+  input:-webkit-autofill + .floating-label
+`
 export const FloatingLabelWrapper = styled('div', {
   shouldForwardProp: (prop) => prop !== 'onFocusStyle'
 })<FloatingLabelWrapperProps>((props) => ({
   position: 'relative',
   width: '100%',
 
-  ':focus-within > .floating-label, input:not(:placeholder-shown) + .floating-label, input:-webkit-autofill + .floating-label':
-    {
-      paddingTop: 0,
-      paddingBottom: 0,
-      transform: 'translateY(-18px)',
-      transitionDuration: '300ms',
-      fontSize: '12px',
-      backgroundColor: props.theme.palette.background.label,
-      left: '3px'
-      // `${props.onFocusStyle}`
-    }
+  [FLOATING_LABEL_IS_UP_SELECTOR]: {
+    paddingTop: 0,
+    paddingBottom: 0,
+    transform: 'translateY(-18px)',
+    transitionDuration: '300ms',
+    fontSize: '12px',
+    backgroundColor: props.theme.palette.background.label,
+    left: '3px'
+    // `${props.onFocusStyle}`
+  }
 }))
 
+export const INPUT_WRAPPER_ERROR_BORDER = '--input-wrapper-error-border'
+export const INPUT_WRAPPER_BORDER = '--input-wrapper-border'
+export const INPUT_WRAPPER_ERROR_BACKGROUND = '--input-wrapper-error-background'
+export const INPUT_WRAPPER_BACKGROUND = '--input-wrapper-background'
 export const StyledInputWrapper = styled.div<{
   disabled: boolean
   error: boolean
 }>((props) => ({
+  [INPUT_WRAPPER_ERROR_BORDER]: `1px solid ${props.theme.palette.error.light}`,
+  [INPUT_WRAPPER_BORDER]: `1px solid ${props.theme.palette.border.light}`,
+  [INPUT_WRAPPER_BACKGROUND]: props.theme.palette.background.light,
+  [INPUT_WRAPPER_ERROR_BACKGROUND]: props.theme.palette.background.light,
   flex: 1,
-  background: props.theme.palette.background.light,
   border: props.error
-    ? `1px solid ${props.theme.palette.error.light}`
-    : `1px solid ${props.theme.palette.border.light}`,
+    ? `var(${INPUT_WRAPPER_ERROR_BORDER})`
+    : `var(${INPUT_WRAPPER_BORDER})`,
+  background: props.error
+    ? `var(${INPUT_WRAPPER_ERROR_BACKGROUND})`
+    : `var(${INPUT_WRAPPER_BACKGROUND})`,
   boxSizing: 'border-box',
   borderRadius: '8px',
   color: props.theme.palette.text.secondary,

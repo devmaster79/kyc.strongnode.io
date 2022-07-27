@@ -37,23 +37,25 @@ export class DVPNService {
 
     let access
     if (checkAccess) {
-      access = await this.__dVPNAccessModel
-        .update(
-          {
-            access: activate,
-            password: ''
-          },
-          { where: { userId: this.userId } }
-        )
-        .toJSON()
+      await this.__dVPNAccessModel.update(
+        {
+          access: activate,
+          password: ''
+        },
+        { where: { userId: this.userId } }
+      )
+
+      access = await this.__dVPNAccessModel.findOne({
+        where: { userId: this.userId }
+      })
     } else {
-      access = await this.__dVPNAccessModel
-        .create({
+      access = (
+        await this.__dVPNAccessModel.create({
           userId: this.userId,
           password: '',
           access: activate
         })
-        .toJSON()
+      ).toJSON()
     }
 
     if (!access) return false

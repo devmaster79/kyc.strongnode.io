@@ -6,7 +6,7 @@ import {
   User as userRepository
 } from 'app/models'
 import {} from 'app/models/user.model'
-import { Base64File } from 'app/services/FileUtils'
+import { Base64File, FileService } from 'app/services/FileService'
 import { FaceVerificationService } from 'app/services/KYC/FaceVerificationService'
 import { KycService } from 'app/services/KYC/KycService'
 import { TextVerificationService } from 'app/services/KYC/TextVerficationService'
@@ -21,7 +21,7 @@ const rekognition = new Rekognition(AWS_REKOGNITION_CONFIG())
 const kycService = new KycService(
   new FaceVerificationService(rekognition),
   new TextVerificationService(rekognition),
-  new S3(AWS_S3_CONFIG),
+  new FileService(new S3(AWS_S3_CONFIG)),
   userRepository,
   kycEntryRepository
 )
@@ -74,7 +74,11 @@ export const verifyIdentity = withSseResponse<VerifyIdentity.Response>(
     const verificationResults = kycService.verifyIdentity(
       req.user.email,
       'passport',
-      new Date(data.birthday.year, data.birthday.month - 1, data.birthday.date)
+      {
+        birthday: new Date(data.birthday),
+        firstName: data.firstName,
+        lastName: data.lastName
+      }
     )
 
     for await (const verificationResult of verificationResults) {

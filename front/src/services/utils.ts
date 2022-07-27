@@ -1,12 +1,15 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import axios from 'axios'
 import { SnackbarKey, useSnackbar } from 'notistack'
 import asyncify from 'callback-to-async-iterator'
 
 type HTTPVerb = 'get' | 'post' | 'put' | 'delete' | 'patch'
 
-type IRequestData<Body, Params> = {
+type IRequestData<Body, Params, Query> = {
   body?: Body
   params?: Params
+  query?: Query
 } | void
 
 type IMessageWithResult = {
@@ -80,13 +83,14 @@ export type Response<T> = T extends IMessageWithResult
 export function fetchAPI<
   Body,
   Params,
-  RequestData extends IRequestData<Body, Params>,
+  Query,
+  RequestData extends IRequestData<Body, Params, Query>,
   ResponseData
 >(verb: HTTPVerb, path: string, data: RequestData): ApiResponse<ResponseData> {
   const promise = axios({
     method: verb,
     url: path,
-    params: data?.params,
+    params: data?.query,
     data: data?.body
   })
   return new ApiResponse(
@@ -110,13 +114,14 @@ export function fetchAPI<
 export function fetchSseAPI<
   Body,
   Params,
-  RequestData extends IRequestData<Body, Params>,
+  Query,
+  RequestData extends IRequestData<Body, Params, Query>,
   ResponseData
 >(verb: HTTPVerb, path: string, data: RequestData) {
   let last_response_len = 0
   const xhttp = new XMLHttpRequest()
-  const params = new URLSearchParams(data?.params || {}).toString()
-  const uri = `${path}?${params}`
+  const query = new URLSearchParams(data?.query || {}).toString()
+  const uri = `${path}?${query}`
   xhttp.open(verb.toUpperCase(), uri, true)
 
   // set headers
@@ -156,13 +161,14 @@ export function fetchSseAPI<
 }
 
 /** The structure of the endpoint definition namespaces */
-interface IEndpoint<
+type IEndpoint<
   Body,
   Params,
-  Request extends IRequestData<Body, Params>,
+  Query,
+  Request extends IRequestData<Body, Params, Query>,
   Response
-> {
-  PATH: string
+> = {
+  PATH: string | ((params: Params) => string)
   METHOD: HTTPVerb
   request: Request | null
   response: Response | null
@@ -175,18 +181,37 @@ function uncapitalize<T extends string>(val: T): Uncapitalize<typeof val> {
   >
 }
 
+/** FilterObjectByValueType<{ a: 12, b: "hi" }, string> ~= { b: "hi" } */
+type FilterObjectByValueType<T extends object, V> = {
+  [K in keyof T]-?: T[K] extends V ? T[K] : never
+}
+
+/**
+ * Gets the endpoint like objects from given module exports (which is imported as "* as something").
+ * An object is endpoint like if it extends IEndpoint.
+ */
+const filterModuleExports = <T extends object>(exports: T) => {
+  return Object.fromEntries(
+    Object.entries(exports).filter(([key, entry]) => !!(entry as any).PATH)
+  ) as unknown as FilterObjectByValueType<
+    T,
+    IEndpoint<any, any, any, IRequestData<any, any, any>, any>
+  >
+}
+
 /** Reads the endpoint definitions and generates an object of API calling methods */
-export function generateApiCalls<
-  Body,
-  Params,
-  Request extends IRequestData<Body, Params>,
-  T extends Record<string, IEndpoint<unknown, unknown, Request, unknown>>
->(endpoints: T) {
+export function generateApiCalls<T extends Record<string, any>>(exports: T) {
+  const endpoints = filterModuleExports(exports)
+
   // object of API calls
   const output: {
-    [Key in keyof T as Uncapitalize<string & Key>]?: (
-      data: Exclude<T[Key]['request'], null>
-    ) => Response<Exclude<T[Key]['response'], null>>
+    [Key in keyof typeof endpoints as Uncapitalize<
+      string & Key
+    >]?: typeof endpoints[Key] extends never
+      ? never
+      : (
+          data: Exclude<typeof endpoints[Key]['request'], null>
+        ) => Response<Exclude<typeof endpoints[Key]['response'], null>>
   } = {}
 
   for (const endpointName in endpoints) {
@@ -195,8 +220,16 @@ export function generateApiCalls<
     // ApiResponse always have the thenEnqueueSnackbar, even if it should not be visible.
     // Of course this will never be compatible with the "Response" type but that's a helper type that hides the thenEnqueueSnackbar when it is not usable.
     // so we can safely erase the current type
-    output[lowerEndpointName] = ((data: never) => {
-      return fetchAPI(endpoints[endpointName].METHOD, endpoint.PATH, data)
+    output[lowerEndpointName] = ((data: any) => {
+      if (typeof endpoint.PATH == 'function') {
+        return fetchAPI(
+          endpoints[endpointName].METHOD,
+          endpoint.PATH(data.params),
+          data
+        )
+      } else {
+        return fetchAPI(endpoints[endpointName].METHOD, endpoint.PATH, data)
+      }
     }) as never
   }
 

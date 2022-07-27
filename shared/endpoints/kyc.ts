@@ -48,11 +48,10 @@ export namespace VerifyIdentity {
   export const METHOD = 'post'
   export const PATH = '/api/kyc/verify-identity'
   export const schema = z.object({
-    birthday: z.object({
-      year: z.number(),
-      month: z.number(),
-      date: z.number()
-    })
+    /** YYYY-MM-DD */
+    birthday: z.string(),
+    firstName: z.string(),
+    lastName: z.string()
   })
   export type Request = { body: z.infer<typeof schema> }
   export type Response = {

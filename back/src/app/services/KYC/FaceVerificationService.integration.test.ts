@@ -7,14 +7,6 @@ import { readFileSync } from 'fs'
 import path from 'path'
 import { RekognitionCollectionService } from './RekognitionCollectionService'
 
-let runTest = true
-beforeEach(function () {
-  const wrongEnvironment = process.env.AWS_ACCESS_KEY_ID === 'localhost'
-  if (wrongEnvironment) {
-    runTest = false
-  }
-})
-
 const EXAMPLE_USER_ID = 1
 const EXAMPLE_COLLECTION_ID = 'face_verification_test'
 const EXAMPLE_REKO_SERVICE = new Rekognition(AWS_REKOGNITION_CONFIG)
@@ -23,7 +15,9 @@ const EXAMPLE_REKO_COLLECTION_SERVICE = new RekognitionCollectionService(
 )
 
 describe('FaceVerificationService integration test', () => {
-  if (runTest) {
+  const workingEnvironment =
+    process.env.AWS_ACCESS_KEY_ID && process.env.AWS_ACCESS_KEY_ID.length > 15
+  if (workingEnvironment) {
     beforeEach(async () => {
       await EXAMPLE_REKO_COLLECTION_SERVICE.getOrCreate(EXAMPLE_COLLECTION_ID)
     })

@@ -29,12 +29,12 @@ export interface IGetChartData {
 }
 
 const getChartDataAsync = (scope: scopes = 'days', token = 'sne') => {
-  return rawCalls.getTokenChartData({ params: { scope: scope, token: token } })
+  return rawCalls.getTokenChartData({ query: { scope: scope, token: token } })
 }
 
 const getTokenMetricsFunc = (search = '', page = 1, perPage = 10) => {
   return rawCalls.getTokensMetrics({
-    params: {
+    query: {
       search: search,
       page: page.toString(),
       perPage: perPage.toString()

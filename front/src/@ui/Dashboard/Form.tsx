@@ -2,60 +2,31 @@ import styled from '@emotion/styled'
 import InputField, {
   FloatingLabelWrapper,
   StyledInputField,
-  FloatingLabel
+  FloatingLabel,
+  INPUT_WRAPPER_BORDER,
+  INPUT_WRAPPER_BACKGROUND,
+  INPUT_WRAPPER_ERROR_BACKGROUND,
+  FLOATING_LABEL_IS_UP_SELECTOR,
+  StyledInputWrapper
 } from '@ui/Input/InputField'
 import GenericButton from '@ui/Button/Button'
 import Media from './../../theme/mediaQueries'
 
-export const Input = styled(InputField)`
-  background: ${(props) => props.theme.palette.background.input}!important;
-
-  ${(props) =>
-    props.error
-      ? `border: 1px solid ${props.theme.palette.error.light};`
-      : 'border: 1px solid rgba(255, 255, 255, 0.1);'}
-  ${(props) =>
-    props.error
-      ? `background: ${props.theme.palette.error.light};`
-      : 'background: rgba(255, 255, 255, 0.08);'}
-
-  ${FloatingLabelWrapper} {
-    font-size: 14px;
-    :focus-within > .floating-label,
-    input:not(:placeholder-shown) + .floating-label,
-    input:-webkit-autofill + .floating-label {
-      background: ${(props) => props.theme.palette.background.floatingLabel};
+export const ModalInput = styled(InputField)((props) => ({
+  background: `${props.theme.palette.background.inputModal}!important`,
+  [`${FloatingLabelWrapper}`]: {
+    [FLOATING_LABEL_IS_UP_SELECTOR]: {
+      background: props.theme.palette.background.floatingModalInput
     }
   }
-  ${StyledInputField} {
-    height: 56px;
-  }
-  ${FloatingLabel} {
-    background: none;
-    padding-top: 9px;
-    top: 7px;
-  }
-`
-
-export const ModalInput = styled(Input)`
-  background: ${(props) => props.theme.palette.background.inputModal}!important;
-
-
-  ${FloatingLabelWrapper} {
-    :focus-within > .floating-label,
-    input:not(:placeholder-shown) + .floating-label,
-    input:-webkit-autofill + .floating-label {
-      background: ${(props) =>
-        props.theme.palette.background.floatingModalInput};
-  }
-`
+}))
 
 export const Button = styled(GenericButton)({
   margin: '0 20%',
   height: '56px'
 })
 
-export const Form = styled.form({
+export const Form = styled.form((props) => ({
   width: '100%',
   display: 'flex',
   flexFlow: 'column',
@@ -64,8 +35,27 @@ export const Form = styled.form({
 
   [Media.phone]: {
     width: '100%'
+  },
+  [`${StyledInputWrapper}`]: {
+    [INPUT_WRAPPER_BORDER]: 'border: 1px solid rgba(255, 255, 255, 0.1)',
+    [INPUT_WRAPPER_BACKGROUND]: 'rgba(255, 255, 255, 0.08)',
+    [INPUT_WRAPPER_ERROR_BACKGROUND]: props.theme.palette.error.light
+  },
+  [`${FloatingLabelWrapper}`]: {
+    fontSize: '14px',
+    [FLOATING_LABEL_IS_UP_SELECTOR]: {
+      background: props.theme.palette.background.floatingLabel
+    }
+  },
+  [`${StyledInputField}`]: {
+    height: '56px'
+  },
+  [`${FloatingLabel}`]: {
+    background: 'none',
+    paddingTop: '9px',
+    top: '7px'
   }
-})
+}))
 
 export const InputGroup = styled.div({
   display: 'flex',

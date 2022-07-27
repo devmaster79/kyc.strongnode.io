@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import userService from 'services/userService'
 import { Message } from '@ui/Dashboard/Form'
 import styled from '@emotion/styled'
+import { ROUTES } from 'Router'
 
 /**
  * Get user data like email and username by the stored token
@@ -19,7 +20,7 @@ export function SignInWithToken() {
           localStorage.setItem('email', response.data.email)
           localStorage.setItem('username', response.data.username)
           localStorage.setItem('loggedin', 'true')
-          navigate('/dashboard/kyc')
+          navigate(ROUTES.DASHBOARD.PROFILE.GENERAL)
         }
       } catch (error) {
         setShowError(true)

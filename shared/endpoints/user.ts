@@ -66,6 +66,14 @@ export namespace GetInvestorDetails {
 }
 
 export namespace GetProfile {
+  export type VerificationStatus =
+    | {
+        status: 'Submitted' | 'VerifiedByAi' | 'VerifiedByAdmin'
+      }
+    | {
+        status: 'Rejected'
+        reason: string
+      }
   export const METHOD = 'get'
   export const PATH = '/api/users/profile'
   export type Request = void
@@ -73,11 +81,14 @@ export namespace GetProfile {
     email: string
     username: string
     firstName: string
+    /** YYYY-MM-DD */
+    birthday: string | null
     lastName: string
     enableAuthenticator: boolean
     enableSms: boolean
     enablePassword: boolean
     profileImgUrl: string
+    identityVerified: VerificationStatus | null
   }
   export type Response =
     | Success<{ data: Profile }>
@@ -93,8 +104,6 @@ export namespace UpdateProfile {
   export const schema = z.object({
     email: z.string().email().optional(),
     username: userNameRule.optional(),
-    firstName: z.string().optional(),
-    lastName: z.string().optional(),
     enableAuthenticator: z.boolean().optional(),
     enableSms: z.boolean().optional(),
     enablePassword: z.boolean().optional(),

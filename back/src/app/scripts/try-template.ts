@@ -7,6 +7,8 @@ import { RegistrationTemplate } from '../services/communication/templates/Regist
 import { SignInTemplate } from '../services/communication/templates/SignInTemplate'
 import { SupportRequestTemplate } from '../services/communication/templates/SupportRequestTemplate'
 import { AppLogger } from 'app/services/Logger'
+import { VerificationRequestTemplate } from 'app/services/communication/templates/VerificationRequestTemplate'
+import { VerificationSubject } from 'shared/endpoints/kycAdmin'
 const PORT = 7000
 
 const liveReloadServer = livereload.createServer()
@@ -63,6 +65,21 @@ app.get('/template/SupportRequestTemplate.ts', async (req, res) => {
       email: 'test@test.hu',
       message: 'Hi! Please help me. Thanks, Test',
       username: 'test'
+    })
+  )
+})
+app.get('/template/VerificationRequestTemplate.ts', async (req, res) => {
+  res.send(
+    new VerificationRequestTemplate().renderBody({
+      subject: VerificationSubject.Identity,
+      username: 'exampleuser',
+
+      // case: approved
+      approved: true
+
+      // case: rejected
+      // approved: false,
+      // reason: 'You look like another person, please renew your document.'
     })
   )
 })

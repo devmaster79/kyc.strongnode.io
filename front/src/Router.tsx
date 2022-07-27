@@ -1,36 +1,23 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
-import DashboardLayout from './layouts/dashboard'
-import Dashboard from './pages/Dashboard'
-import ContactSupport from './pages/contactSupport'
-import DVPN from './pages/Dashboard/DVPN/DVPN'
-import { Register } from './pages/auth/Register'
-import { VerifyEmail } from './pages/auth/VerifyEmail'
-import { SignInWithPassword } from './pages/auth/SignInWithPassword'
-import { SignInWithAuthenticator } from './pages/auth/SingInWithAuthenticator'
-import { SignInWithSMS } from './pages/auth/SignInWithSMS'
-import { SignInWithToken } from './pages/auth/SignInWithToken'
-import PrivateSaleInterestForm from './pages/privatesaleinterestform'
 import * as SHARED_ROUTES from 'shared/routes'
-import NFTDashboard from 'pages/Dashboard/NFTDashboard/NFTDashboard'
-import Kyc from 'pages/Dashboard/KYC/KYC'
-import AuthLayout from 'layouts/auth'
-import Identity from 'pages/Identity/Identity'
-import PrivacyPolicy from './pages/privacyPolicy'
-import TermsOfUse from './pages/termsOfUse'
+import React, { ReactElement, Suspense } from 'react'
 
 export const ROUTES = {
   DASHBOARD: {
     LAYOUT: '/dashboard',
     NFT: '/dashboard/nft',
-    KYC: '/dashboard/kyc',
+    PROFILE: {
+      LAYOUT: '/dashboard/profile',
+      GENERAL: '/dashboard/profile/general',
+      IDENTITY_VERIFICATION: '/dashboard/profile/identity'
+    },
     DVPN: '/dashboard/dvpn',
-    IDENTITY: 'dashboard/identity',
     APP: '/dashboard/app',
-    PROFILE: '/dashboard/profile',
     CONTACT_SUPORT: 'contact-support',
     GROWTH: '/dashboard/growth',
     SYNC: '/dashboard/sync',
-    SHIELD: '/dashboard/shield'
+    SHIELD: '/dashboard/shield',
+    VERIFICATION_REQUEST_ADMIN: '/dashboard/verification-request-admin'
   },
   AUTH: {
     VERIFY_EMAIL: SHARED_ROUTES.VERIFY_EMAIL,
@@ -46,6 +33,67 @@ export const ROUTES = {
   PRIVACY_POLICY: '/privacy-policy'
 }
 
+const DashboardLayout = React.lazy(() => import('./layouts/dashboard'))
+const Dashboard = React.lazy(() => import('./pages/Dashboard'))
+const Profile = React.lazy(() => import('./pages/Dashboard/Profile/Profile'))
+const ProfileGeneral = React.lazy(
+  () => import('pages/Dashboard/Profile/General/General')
+)
+const ProfileIdentityVerification = React.lazy(
+  () => import('pages/Dashboard/Profile/IdentityVerification/Identity')
+)
+const DVPN = React.lazy(() => import('./pages/Dashboard/DVPN/DVPN'))
+const NFTDashboard = React.lazy(
+  () => import('./pages/Dashboard/NFTDashboard/NFTDashboard')
+)
+const ContactSupport = React.lazy(() => import('./pages/contactSupport'))
+const PrivateSaleInterestForm = React.lazy(
+  () => import('./pages/privatesaleinterestform')
+)
+const AuthLayout = React.lazy(() => import('layouts/auth'))
+const PrivacyPolicy = React.lazy(() => import('./pages/privacyPolicy'))
+const TermsOfUse = React.lazy(() => import('./pages/termsOfUse'))
+const Register = React.lazy(async () => {
+  const imported = await import('./pages/auth/Register')
+  return { default: imported.Register }
+})
+const VerifyEmail = React.lazy(async () => {
+  const imported = await import('./pages/auth/VerifyEmail')
+  return { default: imported.VerifyEmail }
+})
+const SignInWithPassword = React.lazy(async () => {
+  const imported = await import('./pages/auth/SignInWithPassword')
+  return { default: imported.SignInWithPassword }
+})
+const SignInWithAuthenticator = React.lazy(async () => {
+  const imported = await import('./pages/auth/SingInWithAuthenticator')
+  return { default: imported.SignInWithAuthenticator }
+})
+const SignInWithSMS = React.lazy(async () => {
+  const imported = await import('./pages/auth/SignInWithSMS')
+  return { default: imported.SignInWithSMS }
+})
+const SignInWithToken = React.lazy(async () => {
+  const imported = await import('./pages/auth/SignInWithToken')
+  return { default: imported.SignInWithToken }
+})
+const VerificationRequestAdmin = React.lazy(async () => {
+  const imported = await import(
+    'pages/Dashboard/VerificationRequestAdmin/VerificationRequestAdmin'
+  )
+  return { default: imported.VerificationRequestAdmin }
+})
+
+/**
+ * without this the lazy components would fallback the root suspense and the whole router would unmount/remount
+ * For e.g, for dashboard we want to show a "dashboard" loader, which makes sense, because we want to keep the layout with its navbar and sidebar etc...
+ * so we cannot show a global fallback that would unmount everything.
+ * So use this for nested routes.
+ */
+const withLoader = (element: ReactElement) => (
+  <Suspense fallback={<>...</>}>{element}</Suspense>
+)
+
 /* prettier-ignore */
 export default function Router () {
   const loggedin = localStorage.getItem('loggedin')
@@ -53,18 +101,23 @@ export default function Router () {
     return (
       <>
         <Routes>
-          <Route element={<DashboardLayout />}>
-            <Route path={ROUTES.DASHBOARD.APP} element={<Dashboard />} />
-            <Route path={ROUTES.DASHBOARD.CONTACT_SUPORT} element={<ContactSupport />} />
-            <Route path={ROUTES.DASHBOARD.GROWTH} element={<Dashboard />} />
-            <Route path={ROUTES.DASHBOARD.SYNC} element={<Dashboard />} />
-            <Route path={ROUTES.DASHBOARD.SHIELD} element={<Dashboard />} />
-            <Route path={ROUTES.DASHBOARD.NFT} element={<NFTDashboard />} />
-            <Route path={ROUTES.DASHBOARD.DVPN} element={<DVPN />} />
-            <Route path={ROUTES.DASHBOARD.KYC} element={<Kyc />} />
-            <Route path={ROUTES.DASHBOARD.IDENTITY} element={<Identity />} />
-            <Route path={ROUTES.PRIVACY_POLICY} element={<PrivacyPolicy />} />
-            <Route path={ROUTES.TERMS_OF_USE} element={<TermsOfUse />} />
+          <Route element={<Suspense fallback={<></>}><DashboardLayout /></Suspense>}>
+            {/* Acessible from sidebar */}
+            <Route path={ROUTES.DASHBOARD.APP} element={withLoader(<Dashboard />)} />
+            <Route path={ROUTES.DASHBOARD.NFT} element={withLoader(<NFTDashboard />)} />
+            <Route path={ROUTES.DASHBOARD.PROFILE.LAYOUT} element={withLoader(<Profile />)}>
+              <Route path={ROUTES.DASHBOARD.PROFILE.GENERAL} element={<ProfileGeneral />} />
+              <Route path={ROUTES.DASHBOARD.PROFILE.IDENTITY_VERIFICATION} element={<ProfileIdentityVerification />} />
+            </Route>
+            <Route path={ROUTES.DASHBOARD.DVPN} element={withLoader(<DVPN />)} />
+            {/* Others */}
+            <Route path={ROUTES.DASHBOARD.CONTACT_SUPORT} element={withLoader(<ContactSupport />)} />
+            <Route path={ROUTES.DASHBOARD.GROWTH} element={withLoader(<Dashboard />)} />
+            <Route path={ROUTES.DASHBOARD.SYNC} element={withLoader(<Dashboard />)} />
+            <Route path={ROUTES.DASHBOARD.SHIELD} element={withLoader(<Dashboard />)} />
+            <Route path={ROUTES.DASHBOARD.VERIFICATION_REQUEST_ADMIN} element={withLoader(<VerificationRequestAdmin />)} />
+            <Route path={ROUTES.PRIVACY_POLICY} element={withLoader(<PrivacyPolicy />)} />
+            <Route path={ROUTES.TERMS_OF_USE} element={withLoader(<TermsOfUse />)} />
           </Route>
           <Route
             path='*'

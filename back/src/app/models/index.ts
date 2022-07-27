@@ -81,6 +81,18 @@ dVPNAccessModel.create(sequelize)
 dVPNUsageModel.create(sequelize)
 KycEntryModel.create(sequelize)
 
+UserModel.User.hasMany(KycEntryModel.KycEntry, {
+  sourceKey: 'id',
+  foreignKey: 'userId',
+  as: 'kycEntries'
+})
+
+KycEntryModel.KycEntry.belongsTo(UserModel.User, {
+  foreignKey: 'userId',
+  targetKey: 'id',
+  as: 'user'
+})
+
 export { Sequelize }
 export const User = UserModel.User
 export const InvestorDetail = InvestorDetailModel.InvestorDetail

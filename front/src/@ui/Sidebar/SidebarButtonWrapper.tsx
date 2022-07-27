@@ -1,114 +1,72 @@
-import React from 'react'
 import styled from '@emotion/styled/macro'
 import SidebarButton, { SidebarButtonProps } from './SidebarButton'
 import Media from 'theme/mediaQueries'
+import { ROUTES } from '../../Router'
 
 interface SidebarButtonWrapperProps {
   isBottomBar?: boolean
 }
 
-type SidebarButtonWrapperState = {
-  activeButton: string
-  verticaLineTopOffset: string
-}
-
-interface IButtonItem {
-  type: string
-  tooltipHint: string
-  path: string
-}
-
-let buttonItems = [
+const buttonItems = [
   {
-    type: 'defi',
+    type: 'defi' as const,
     tooltipHint: 'Defi',
-    path: '/dashboard/app',
+    path: ROUTES.DASHBOARD.APP,
     active: true
   },
   {
-    type: 'nft',
+    type: 'nft' as const,
     tooltipHint: 'NFT',
-    path: '/dashboard/nft',
+    path: ROUTES.DASHBOARD.NFT,
     active: false
   },
   {
-    type: 'kyc',
-    tooltipHint: 'KYC',
-    path: '/dashboard/kyc',
+    type: 'kyc' as const,
+    tooltipHint: 'Profile',
+    path: ROUTES.DASHBOARD.PROFILE.GENERAL,
     active: true
   },
   {
     type: 'dvpn',
     tooltipHint: 'dVPN',
-    path: '/dashboard/dvpn',
+    path: ROUTES.DASHBOARD.DVPN,
     active: true
   }
 ]
 
-class SidebarButtonWrapper extends React.Component<
-  SidebarButtonWrapperProps,
-  SidebarButtonWrapperState
-> {
-  constructor(
-    props: SidebarButtonWrapperProps | Readonly<SidebarButtonWrapperProps>
-  ) {
-    super(props)
+export default function SidebarButtonWrapper(props: SidebarButtonWrapperProps) {
+  const foundActiveIndex = buttonItems.findIndex((item) =>
+    window.location.href.includes(item.path)
+  )
+  const defaultActiveIndex = 2
+  const activeIndex =
+    foundActiveIndex !== -1 ? foundActiveIndex : defaultActiveIndex
 
-    // remove vpn from bottom bar
-    if (props.isBottomBar) {
-      buttonItems = buttonItems.filter((item) => item.type !== 'vpn')
-    }
-
-    // this handles default animation state on refresh
-    let defaultActiveButton = 'kyc'
-    let defaultOffset = 2 * 79 + 'px'
-    buttonItems.forEach((item: IButtonItem, index: number) => {
-      if (window.location.href.includes(item.path)) {
-        // todo temporary disabled until Matthew transforms this into Functional component to useEffect for url updates
-        defaultActiveButton = item.type
-        defaultOffset = index * 79 + 'px'
-      }
-    })
-
-    // default state definition
-    this.state = {
-      activeButton: defaultActiveButton,
-      verticaLineTopOffset: defaultOffset
-    }
+  const activeButton = {
+    type: buttonItems[activeIndex].type,
+    verticaLineTopOffset: activeIndex * 79
   }
 
-  handleOnClick(path: string, activeType: string, index: number) {
-    this.setState({
-      activeButton: activeType,
-      verticaLineTopOffset: index * 79 + 'px'
-    })
-  }
-
-  render() {
-    return (
-      <ButtonWrapper>
-        <VerticalActiveLine style={{ top: this.state.verticaLineTopOffset }} />
-        {buttonItems.map((item, index) => (
+  return (
+    <ButtonWrapper>
+      <VerticalActiveLine
+        style={{ top: activeButton.verticaLineTopOffset + 'px' }}
+      />
+      {buttonItems
+        .filter((item) => !(item.type === 'vpn' && props.isBottomBar))
+        .map((item, index) => (
           <SidebarButton
-            key={item.tooltipHint}
-            onPress={
-              item.active
-                ? () => this.handleOnClick(item.path, item.type, index)
-                : undefined
-            }
+            key={item.type}
             icon={item.type as SidebarButtonProps['icon']}
             tooltipHint={item.tooltipHint}
-            active={item.type === this.state.activeButton}
+            active={item.type === activeButton.type}
             disabled={!item.active}
             url={item.path}
           />
         ))}
-      </ButtonWrapper>
-    )
-  }
+    </ButtonWrapper>
+  )
 }
-
-export default SidebarButtonWrapper
 
 export const ButtonWrapper = styled.div({
   width: '100%',

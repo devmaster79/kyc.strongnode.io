@@ -9,8 +9,8 @@ function fDate(date: string) {
 interface MainTableProps<Item> {
   dataSet: DataSet<Item>
   columns: Column[]
-  fetchData?: (p: number, p2: number) => void | null
-  overwrittenFields: Record<string, unknown>
+  fetchData?: (from: number, length: number) => void
+  overwrittenFields?: Record<string, unknown>
   hideHeading?: boolean
 }
 
@@ -22,7 +22,6 @@ export interface DataSet<Item> {
 export interface Column {
   id: string
   label: string
-  align: string
 }
 
 type OverwrittenFields = {
@@ -69,7 +68,7 @@ export default function MainTable<Item extends Record<string, unknown>>({
                 <tr key={row['id'] as string}>
                   {columns.map((column: Column) => (
                     <td key={column.id}>
-                      {overwrittenFields[column.id] ? (
+                      {overwrittenFields && overwrittenFields[column.id] ? (
                         (overwrittenFields as OverwrittenFields)[column.id](
                           row[column.id] as string
                         )

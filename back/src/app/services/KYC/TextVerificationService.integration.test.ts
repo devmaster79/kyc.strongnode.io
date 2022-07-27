@@ -6,16 +6,10 @@ import { AWS_REKOGNITION_CONFIG } from 'app/config/config'
 import { readFileSync } from 'fs'
 import path from 'path'
 
-let runTest = true
-beforeEach(function () {
-  const wrongEnvironment = process.env.AWS_ACCESS_KEY_ID === 'localhost'
-  if (wrongEnvironment) {
-    runTest = false
-  }
-})
-
 describe('TextVerificationService integration test', () => {
-  if (runTest) {
+  const workingEnvironment =
+    process.env.AWS_ACCESS_KEY_ID && process.env.AWS_ACCESS_KEY_ID.length > 15
+  if (workingEnvironment) {
     let service: TextVerificationService
     before(() => {
       service = new TextVerificationService(

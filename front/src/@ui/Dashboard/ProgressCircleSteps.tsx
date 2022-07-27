@@ -10,6 +10,7 @@ interface ProgressCircleProps {
   progressLabel: string
   progressBorder: boolean
   disabled: boolean
+  onClick?: () => void
 }
 
 export const Container = styled.div({
@@ -33,9 +34,14 @@ export const Container = styled.div({
   }
 })
 
-export function Step(props: ProgressCircleProps) {
-  const { label, progressAmount, progressLabel, progressBorder, disabled } =
-    props
+export function Step({
+  label,
+  progressAmount,
+  progressLabel,
+  progressBorder,
+  disabled,
+  onClick
+}: ProgressCircleProps) {
   const percentage = progressAmount
 
   const theme: CustomTheme = useTheme()
@@ -100,7 +106,7 @@ export function Step(props: ProgressCircleProps) {
     marginTop: '8px'
   }))
   return (
-    <Container disabled={disabled}>
+    <Container disabled={disabled} onClick={onClick}>
       <ProgressContainer border={progressBorder}>
         <CircularProgressbar
           value={percentage}

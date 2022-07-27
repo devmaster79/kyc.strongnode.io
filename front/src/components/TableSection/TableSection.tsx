@@ -17,7 +17,7 @@ interface TableSectionProps<Item extends Record<string, unknown>> {
   columns?: Column[]
   hideHeading?: boolean
   overwrittenFields?: Record<string, unknown>
-  fetchData?: (p: number, p2: number) => void
+  fetchData?: (from: number, length: number) => void
   searchEnabled?: boolean
   searchColumn?: string
   finder?: Finder
@@ -60,10 +60,12 @@ function TableSection<Item extends Record<string, unknown>>(
             <h2>
               {props.title} <span>{props.subtitle}</span>
             </h2>
-            <InputField
-              icon="search"
-              inputProps={{ placeholder: 'Search', onChange: onChangeValue }}
-            />
+            {props.searchEnabled && (
+              <InputField
+                icon="search"
+                inputProps={{ placeholder: 'Search', onChange: onChangeValue }}
+              />
+            )}
           </HeaderWrapper>
           <MainTable
             dataSet={filteredDataSet ? filteredDataSet : props.dataSet}

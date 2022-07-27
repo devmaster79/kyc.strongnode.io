@@ -30,15 +30,19 @@ export class ProfileService {
       const profileImgUrl =
         user.profileImgUrl ||
         ((await this.__gravatarService.getProfileImageURL(email)) as string)
+      if (user.birthday instanceof Date)
+        throw new Error('sequalize did not return string for data')
       return {
         email,
         username: user.username,
         firstName: user.firstName,
+        birthday: user.birthday,
         lastName: user.lastName,
         enableAuthenticator: user.enableAuthenticator,
         enableSms: user.enableSms,
         enablePassword: user.enablePassword,
-        profileImgUrl
+        profileImgUrl,
+        identityVerified: user.identityVerified
       }
     } else {
       throw new Error('Could not find the user')
@@ -52,8 +56,6 @@ export class ProfileService {
   ) {
     const data = {
       email: newValues.email,
-      firstName: newValues.firstName,
-      lastName: newValues.lastName,
       username: newValues.username,
       enableAuthenticator: newValues.enableAuthenticator,
       enableSms: newValues.enableSms,

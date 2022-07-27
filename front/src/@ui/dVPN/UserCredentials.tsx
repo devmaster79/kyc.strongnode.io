@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react'
 import { CSSProperties } from 'react'
 import styled from '@emotion/styled'
-import * as DashboardForm from '@ui/Dashboard/Form'
 import Button from './../Button/Button'
 import {
   hasAccess,
   generateAccount,
   cancelAccess
 } from '../../services/dvpnService'
+import InputField from '@ui/Input/InputField'
 
 interface IUserCredentials {
   style?: CSSProperties
@@ -61,7 +61,7 @@ export const UserCredentials = (props: IUserCredentials) => {
       </TitleWrapper>
 
       <div style={{ marginTop: '32px' }}>
-        <DashboardForm.Input
+        <InputField
           inputProps={{
             value: localStorage.getItem('email')
               ? (localStorage.getItem('email') as string)
@@ -71,7 +71,7 @@ export const UserCredentials = (props: IUserCredentials) => {
         />
       </div>
       <div style={{ marginTop: '16px' }}>
-        <DashboardForm.Input
+        <InputField
           inputProps={{
             type: newlyGeneratedCredentials === '' ? 'password' : 'text',
             value:

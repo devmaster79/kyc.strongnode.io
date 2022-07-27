@@ -1,21 +1,24 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
-export interface IAnim {
-  state:
-    | 'closed'
-    | 'closing'
-    | 'open'
-    | 'opening'
-    | 'beforeClosing'
-    | 'beforeOpening'
-  /** In ms */
-  delay: number
-  /**
-   * Use this key if you want the 'closed' state destroy your component.
-   * It is useful for resetting form in a modal.
-   */
-  destroyKey: string
-}
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type IAnim<TOpened = any, TClosed = any> =
+  | {
+      state: 'closed'
+      storedValue: TClosed
+      /** In ms */
+      delay: number
+      /**
+       * Use this key if you want the 'closed' state destroy your component.
+       * It is useful for resetting form in a modal.
+       */
+      destroyKey: string
+    }
+  | {
+      state: 'closing' | 'open' | 'opening' | 'beforeClosing' | 'beforeOpening'
+      storedValue: TOpened
+      delay: number
+      destroyKey: string
+    }
 
 let destroyKey = 1
 
@@ -26,14 +29,26 @@ let destroyKey = 1
  * @param ms delay in milliseconds
  * @returns the animation state
  */
-export function useAnimated(targetOpenState: boolean, ms: number): IAnim {
-  const [animState, setAnimState] = useState<IAnim['state']>('closed')
+export function useAnimated<TOpened = true, TClosed = false>(
+  value: TOpened | TClosed,
+  ms: number,
+  isOpen?: (storedValue: TOpened | TClosed) => boolean
+): IAnim<TOpened, TClosed> {
+  const [animState, setAnimState] =
+    useState<IAnim<TOpened, TClosed>['state']>('closed')
+  const [storedValue, setStoredValue] = useState<TOpened | TClosed>(value)
+
+  const isTargetOpen = useCallback(
+    (value: TOpened | TClosed) => (isOpen ? isOpen(value) : !!value),
+    [isOpen]
+  )
 
   useEffect(() => {
-    const closeWanted = !targetOpenState && animState === 'open'
-    const openWanted = targetOpenState && animState === 'closed'
+    const closeWanted = !isTargetOpen(value) && animState === 'open'
+    const openWanted = isTargetOpen(value) && animState === 'closed'
 
     if (openWanted) {
+      setStoredValue(value)
       setTimeout(() => {
         setAnimState('beforeOpening')
       }, 0)
@@ -48,14 +63,22 @@ export function useAnimated(targetOpenState: boolean, ms: number): IAnim {
       setTimeout(() => {
         destroyKey += 1
         setAnimState('closed')
+        setStoredValue(value)
       }, ms)
       setAnimState('closing')
+    } else if (
+      isTargetOpen(value) &&
+      isTargetOpen(storedValue) &&
+      storedValue !== value
+    ) {
+      setStoredValue(value)
     }
-  }, [targetOpenState, ms, animState])
+  }, [ms, animState, isTargetOpen, value, storedValue])
 
   return {
+    storedValue,
     state: animState,
     delay: ms,
     destroyKey: destroyKey.toString()
-  }
+  } as unknown as IAnim<TOpened, TClosed>
 }

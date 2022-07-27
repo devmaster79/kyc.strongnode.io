@@ -6,7 +6,7 @@ import React, { useRef, useState } from 'react'
 import { CustomTheme } from 'theme'
 
 export type UploadProps = {
-  description: string
+  description: React.ReactNode
   icon: IconProps['name']
   onSelectFile: (file: File) => Promise<void>
   result: {
@@ -34,7 +34,7 @@ export default function IdentityUpload(props: UploadProps) {
 
   return (
     <UploadWrapper>
-      <p>{props.description}</p>
+      {props.description}
       {image && props.result ? (
         <ImgContainer status={props.result.status}>
           <img src={image} />
@@ -124,7 +124,7 @@ const UploadWrapper = styled.div((props) => ({
 
   p: {
     maxWidth: '450px',
-    paddingBottom: '40px'
+    paddingBottom: '1em'
   },
 
   button: {

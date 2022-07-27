@@ -1,38 +1,24 @@
 /* eslint-disable sonarjs/prefer-single-boolean-return */
 import { FaceVerificationService } from './FaceVerificationService'
 import sharp from 'sharp'
-import { S3 } from '@aws-sdk/client-s3'
-import { AWS_BUCKET_NAME } from 'app/config/config'
-import { Base64File } from '../FileUtils'
-import { OldAwsSdkError } from './errors'
 import { TextVerificationService } from './TextVerficationService'
-import { User, VerificationStatus } from 'app/models/user.model'
-import { KycEntry, VerificationSubject } from 'app/models/kycEntry.model'
-import { Readable } from 'stream'
-
-/** AWS S3 key. The whole photo */
-export const IDENTITY_PHOTO_KEY = (userId: number, documentType: string) =>
-  `${userId}_${documentType}`
-/** AWS S3 key. Only the face from the photo */
-export const IDENTITY_PHOTO_FACE_KEY = (userId: number, documentType: string) =>
-  `${userId}_${documentType}_face`
-/** AWS S3 key. The whole photo */
-export const USER_WITH_IDENTITY_PHOTO_KEY = (
-  userId: number,
-  documentType: string
-) => `${userId}_user_with_${documentType}`
-/** AWS S3 key. Only the face from the photo */
-export const USER_WITH_IDENTITY_PHOTO_FACE_KEY = (
-  userId: number,
-  documentType: string,
-  nth: number
-) => `${userId}_user_with_${documentType}_face_${nth}`
+import { User } from 'app/models/user.model'
+import {
+  IDENTITY_PHOTO_FACE_KEY,
+  IDENTITY_PHOTO_KEY,
+  KycEntry,
+  USER_WITH_IDENTITY_PHOTO_FACE_KEY,
+  USER_WITH_IDENTITY_PHOTO_KEY
+} from 'app/models/kycEntry.model'
+import { VerificationSubject } from 'shared/endpoints/kycAdmin'
+import { Base64File, FileService } from '../FileService'
+import { CreationAttributes } from 'sequelize/types'
 
 export class KycService {
   constructor(
     private __faceVerificationService: FaceVerificationService,
     private __textVerificationService: TextVerificationService,
-    private __s3: S3,
+    private __fileService: FileService,
     private __userRepository: typeof User,
     private __kycEntriesRespository: typeof KycEntry
   ) {}
@@ -44,11 +30,10 @@ export class KycService {
   ) {
     yield { status: 'saving' as const }
     const user = await this.__getUser(email)
-    await this.__s3.putObject({
-      Bucket: AWS_BUCKET_NAME,
-      Key: IDENTITY_PHOTO_KEY(user.id, documentType),
-      Body: image.toDataURI()
-    })
+    await this.__fileService.put(
+      IDENTITY_PHOTO_KEY(user.id, documentType),
+      image
+    )
 
     yield { status: 'verifyingQuality' as const }
     const imageBuffer = image.getBinaryBuffer()
@@ -64,11 +49,12 @@ export class KycService {
         imageBuffer,
         biggestFace.boundingBox
       )
-      await this.__s3.putObject({
-        Bucket: AWS_BUCKET_NAME,
-        Key: IDENTITY_PHOTO_FACE_KEY(user.id, documentType),
-        Body: croppedFace.toDataURI()
-      })
+      // NOTE: UPLOADING a cropped face should be only done after a successful prevalidation
+      // as [verifyIdentity] depends on this behaviour
+      await this.__fileService.put(
+        IDENTITY_PHOTO_FACE_KEY(user.id, documentType),
+        croppedFace
+      )
       yield { status: 'success' as const }
     } else {
       yield {
@@ -85,11 +71,10 @@ export class KycService {
   ) {
     yield { status: 'saving' as const }
     const user = await this.__getUser(email)
-    await this.__s3.putObject({
-      Bucket: AWS_BUCKET_NAME,
-      Key: USER_WITH_IDENTITY_PHOTO_KEY(user.id, documentType),
-      Body: image.toDataURI()
-    })
+    await this.__fileService.put(
+      USER_WITH_IDENTITY_PHOTO_KEY(user.id, documentType),
+      image
+    )
 
     yield { status: 'verifyingQuality' as const }
     const imageBuffer = image.getBinaryBuffer()
@@ -105,17 +90,14 @@ export class KycService {
           return this.__getCroppedImageToFace(imageBuffer, face.boundingBox)
         })
       )
+      // NOTE: UPLOADING a cropped face should be only done after a successful prevalidation
+      // as [verifyIdentity] depends on this behaviour
       await Promise.all(
         croppedFaces.map((croppedFace, key) => {
-          this.__s3.putObject({
-            Bucket: AWS_BUCKET_NAME,
-            Key: USER_WITH_IDENTITY_PHOTO_FACE_KEY(
-              user.id,
-              documentType,
-              key + 1
-            ),
-            Body: croppedFace.toDataURI()
-          })
+          this.__fileService.put(
+            USER_WITH_IDENTITY_PHOTO_FACE_KEY(user.id, documentType, key + 1),
+            croppedFace
+          )
         })
       )
 
@@ -128,77 +110,69 @@ export class KycService {
     }
   }
 
-  /** Later when the speed matters, compareFaces can work with s3 too */
-  async *verifyIdentity(email: string, documentType: string, birthday: Date) {
+  /**
+   * Note: If [uploadUserWithIdentityPhoto] or [uploadIdentityPhoto] has failed it means
+   * they did not upload the cropped face to S3. So this will fail also.
+   *
+   * Later when the speed matters, compareFaces can work with s3 too
+   */
+  async *verifyIdentity(
+    email: string,
+    documentType: string,
+    dataToVerify: IdentityData
+  ) {
     const user = await this.__getUser(email)
+
     yield { status: 'fetchingPhotos' as const }
     let identityPhoto,
       identityFacePhoto,
       userWithIdentityPhoto1,
       userWithIdentityPhoto2
     try {
-      identityPhoto = await this.__s3.getObject({
-        Bucket: AWS_BUCKET_NAME,
-        Key: IDENTITY_PHOTO_KEY(user.id, documentType)
-      })
-      identityFacePhoto = await this.__s3.getObject({
-        Bucket: AWS_BUCKET_NAME,
-        Key: IDENTITY_PHOTO_FACE_KEY(user.id, documentType)
-      })
-      userWithIdentityPhoto1 = await this.__s3.getObject({
-        Bucket: AWS_BUCKET_NAME,
-        Key: USER_WITH_IDENTITY_PHOTO_FACE_KEY(user.id, documentType, 1)
-      })
-      userWithIdentityPhoto2 = await this.__s3.getObject({
-        Bucket: AWS_BUCKET_NAME,
-        Key: USER_WITH_IDENTITY_PHOTO_FACE_KEY(user.id, documentType, 2)
-      })
+      identityPhoto = (
+        await this.__fileService.get(IDENTITY_PHOTO_KEY(user.id, documentType))
+      ).getBinaryBuffer()
+      identityFacePhoto = (
+        await this.__fileService.get(
+          IDENTITY_PHOTO_FACE_KEY(user.id, documentType)
+        )
+      ).getBinaryBuffer()
+      userWithIdentityPhoto1 = (
+        await this.__fileService.get(
+          USER_WITH_IDENTITY_PHOTO_FACE_KEY(user.id, documentType, 1)
+        )
+      ).getBinaryBuffer()
+      userWithIdentityPhoto2 = (
+        await this.__fileService.get(
+          USER_WITH_IDENTITY_PHOTO_FACE_KEY(user.id, documentType, 2)
+        )
+      ).getBinaryBuffer()
     } catch (e) {
       yield { status: 'missingRequiredPhotos' as const }
       return
     }
+
     yield { status: 'saving' as const }
-    await this.__userRepository.update(
-      {
-        birthday: birthday.toISOString().split('T')[0]
-      },
-      {
-        where: {
-          id: user.id
-        }
-      }
-    )
+    await this.__saveIdentityData(user.id, dataToVerify)
+    await this.__setVerificationStatus(user.id, { status: 'Submitted' })
+    await this.__updateOrCreateKycEntry({
+      documentType,
+      verificationSubject: VerificationSubject.Identity,
+      userId: user.id
+    })
 
     yield { status: 'matchingFaces' as const }
-
-    if (
-      !identityPhoto.Body ||
-      !identityFacePhoto.Body ||
-      !userWithIdentityPhoto1.Body ||
-      !userWithIdentityPhoto2.Body
-    )
-      throw new OldAwsSdkError()
-    const identityFacePhotoBin = Base64File.fromDataURI(
-      await this.__streamToString(identityFacePhoto.Body as Readable)
-    ).getBinaryBuffer()
-    const userWithIdentityPhoto1Bin = Base64File.fromDataURI(
-      await this.__streamToString(userWithIdentityPhoto1.Body as Readable)
-    ).getBinaryBuffer()
-    const userWithIdentityPhoto2Bin = Base64File.fromDataURI(
-      await this.__streamToString(userWithIdentityPhoto2.Body as Readable)
-    ).getBinaryBuffer()
-
     const comparison1 = await this.__faceVerificationService.compareFaces(
-      identityFacePhotoBin,
-      userWithIdentityPhoto1Bin
+      identityFacePhoto,
+      userWithIdentityPhoto1
     )
     const comparison2 = await this.__faceVerificationService.compareFaces(
-      identityFacePhotoBin,
-      userWithIdentityPhoto2Bin
+      identityFacePhoto,
+      userWithIdentityPhoto2
     )
     const comparison3 = await this.__faceVerificationService.compareFaces(
-      userWithIdentityPhoto1Bin,
-      userWithIdentityPhoto2Bin
+      userWithIdentityPhoto1,
+      userWithIdentityPhoto2
     )
 
     if (
@@ -211,42 +185,23 @@ export class KycService {
     }
 
     yield { status: 'matchingText' as const }
-    const identityPhotoBin = Base64File.fromDataURI(
-      await this.__streamToString(identityPhoto.Body as Readable)
-    ).getBinaryBuffer()
 
-    const wordsAreFound = await this.__areWordsExisting(
-      identityPhotoBin,
-      user,
-      birthday
+    const areWordsExisting = await this.__areWordsExisting(
+      identityPhoto,
+      dataToVerify
     )
-    if (!wordsAreFound) {
+    if (!areWordsExisting) {
       yield { status: 'unableToFindRequiredTextOnPhoto' as const }
       return
     }
 
-    await this.__kycEntriesRespository.create({
-      documentType,
-      verificationSubject: VerificationSubject.Identity,
-      userId: user.id
-    })
-    await this.__userRepository.update(
-      {
-        identityVerified: VerificationStatus.VerifiedByAi
-      },
-      {
-        where: {
-          id: user.id
-        }
-      }
-    )
+    await this.__setVerificationStatus(user.id, { status: 'VerifiedByAi' })
     yield { status: 'success' as const }
   }
 
   private async __areWordsExisting(
     identityPhotoBin: Buffer,
-    user: User,
-    birthday: Date
+    dataToVerify: IdentityData
   ) {
     // Read document
     const detection = await this.__textVerificationService.getTexts(
@@ -254,12 +209,12 @@ export class KycService {
     )
 
     // Pre-format data
-    const firstNameParts = user.firstName.split(' ')
-    const lastNameParts = user.lastName.split(' ')
-    const year = birthday.getFullYear().toString()
-    const month = (birthday.getMonth() + 1).toString()
+    const firstNameParts = dataToVerify.firstName.split(' ')
+    const lastNameParts = dataToVerify.lastName.split(' ')
+    const year = dataToVerify.birthday.getFullYear().toString()
+    const month = (dataToVerify.birthday.getMonth() + 1).toString()
     const monthPadded = month.padStart(2, '0')
-    const date = birthday.getDate().toString()
+    const date = dataToVerify.birthday.getDate().toString()
     const datePadded = date.padStart(2, '0')
 
     // Logic
@@ -276,7 +231,23 @@ export class KycService {
     )
   }
 
-  async __getUser(email: string) {
+  private async __updateOrCreateKycEntry(data: CreationAttributes<KycEntry>) {
+    const query = {
+      where: {
+        userId: data.userId,
+        documentType: data.documentType,
+        verificationSubject: data.verificationSubject
+      }
+    }
+    const found = await this.__kycEntriesRespository.findOne(query)
+    if (!found) {
+      await this.__kycEntriesRespository.create(data)
+    } else {
+      await this.__kycEntriesRespository.update(data, query)
+    }
+  }
+
+  private async __getUser(email: string) {
     const user = await this.__userRepository.findOne({
       where: {
         email
@@ -289,7 +260,7 @@ export class KycService {
   /**
    * @param mime e.g.: image/jpeg
    */
-  async __getCroppedImageToFace(
+  private async __getCroppedImageToFace(
     imageBlob: Buffer,
     boundingBox: { x: number; y: number; width: number; height: number }
   ) {
@@ -307,14 +278,40 @@ export class KycService {
     return new Base64File('image/png', croppedImage.toString('base64'))
   }
 
-  __streamToString(stream: Readable): Promise<string> {
-    return new Promise((resolve, reject) => {
-      const chunks: Uint8Array[] = []
-      stream.on('data', (chunk) => {
-        chunks.push(chunk)
-      })
-      stream.on('error', reject)
-      stream.on('end', () => resolve(Buffer.concat(chunks).toString('ascii')))
-    })
+  private async __setVerificationStatus(
+    userId: number,
+    verified: User['identityVerified']
+  ) {
+    await this.__userRepository.update(
+      {
+        identityVerified: verified
+      },
+      {
+        where: {
+          id: userId
+        }
+      }
+    )
   }
+
+  private async __saveIdentityData(userId: number, data: IdentityData) {
+    await this.__userRepository.update(
+      {
+        birthday: data.birthday.toISOString().split('T')[0],
+        firstName: data.firstName,
+        lastName: data.lastName
+      },
+      {
+        where: {
+          id: userId
+        }
+      }
+    )
+  }
+}
+
+interface IdentityData {
+  birthday: Date
+  firstName: string
+  lastName: string
 }

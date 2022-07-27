@@ -55,7 +55,7 @@ export class CryptocurrencyDataService {
             dayVolume: data[el].total_volume,
             dayChange: data[el].price_change_percentage_24h
           },
-          { where: { token: data[el].id } }
+          { where: { token: data[el].id }, logging: false }
         )
 
         if (!tokenUpdate[0]) {

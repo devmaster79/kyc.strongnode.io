@@ -2,6 +2,7 @@ import styled from '@emotion/styled'
 
 export const TableWrapper = styled.div({
   overflow: 'auto',
+  flex: 1,
   height: '400px',
   scrollbarWidth: 'none',
   msOverflowStyle: 'none',
@@ -11,8 +12,6 @@ export const TableWrapper = styled.div({
 })
 
 export const Table = styled.table((props) => ({
-  color: props.theme.palette.text.primary,
-  backgroundColor: props.theme.palette.background.primary,
   width: '100%',
   borderCollapse: 'collapse',
 

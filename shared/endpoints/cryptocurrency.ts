@@ -55,13 +55,13 @@ export namespace GetTokenChartData {
     total_volumes: number[][]
   }
   export type Request = {
-    params: z.input<typeof schema> & {
+    query: z.input<typeof schema> & {
       scope: 'days' | 'weeks' | 'months' | 'years'
     }
   }
   export type Response =
     | Success<{ data: CoinMarketData }>
-    | ZodValidationError<Request['params']>
+    | ZodValidationError<Request['query']>
     | UnauthorizedError
     | UnexpectedError
 
@@ -73,7 +73,7 @@ export namespace GetTokensMetrics {
   export const METHOD = 'get'
   export const PATH = '/api/cryptocurrency/token-metrics'
   export type Request = {
-    params: z.input<typeof schema>
+    query: z.input<typeof schema>
   }
   export const schema = z.object({
     search: z.string().default(''),
