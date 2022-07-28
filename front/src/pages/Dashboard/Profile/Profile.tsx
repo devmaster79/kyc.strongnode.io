@@ -48,7 +48,7 @@ export default function Profile() {
         />
         <ProgressCircleSteps.Separator />
         <ProgressCircleSteps.Step
-          label="Indentity verification"
+          label="Identity verification"
           progressAmount={getVerificationProgress(profile?.identityVerified)}
           progressLabel="B"
           progressBorder={false}
