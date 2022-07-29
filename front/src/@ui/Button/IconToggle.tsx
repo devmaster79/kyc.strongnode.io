@@ -9,6 +9,8 @@ export type SwitchButtonProps = ComponentProps<typeof StyledInput> & {
   help?: ReactNode
   leftIcon?: IconProps['name']
   rightIcon?: IconProps['name']
+  leftTooltip?: string
+  rightTooltip?: string
 } & ({ name: string } | { id: string })
 
 export default function SwitchButton(props: SwitchButtonProps) {
@@ -25,7 +27,7 @@ export default function SwitchButton(props: SwitchButtonProps) {
         <StyledButton className="switch" htmlFor={props.id || props.name}>
           {props.rightIcon && props.leftIcon && (
             <>
-              <LeftIconWrapper>
+              <LeftIconWrapper title={props.leftTooltip}>
                 <Icon
                   name={props.leftIcon}
                   color="rgba(255, 255, 255, 0.5)"
@@ -33,7 +35,7 @@ export default function SwitchButton(props: SwitchButtonProps) {
                   width={12}
                 />
               </LeftIconWrapper>
-              <RightIconWrapper>
+              <RightIconWrapper title={props.rightTooltip}>
                 <Icon
                   name={props.rightIcon}
                   color="rgba(255, 255, 255, 0.5)"
@@ -41,7 +43,9 @@ export default function SwitchButton(props: SwitchButtonProps) {
                   width={12}
                 />
               </RightIconWrapper>
-              <IconWrapper className="iconWrapper">
+              <IconWrapper
+                className="iconWrapper"
+                title={props.checked ? props.rightTooltip : props.leftTooltip}>
                 <Icon
                   name={props.checked ? props.rightIcon : props.leftIcon}
                   color="black"

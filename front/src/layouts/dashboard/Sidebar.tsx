@@ -52,6 +52,8 @@ const Sidebar = () => {
           id="theme"
           rightIcon="moon"
           leftIcon="sun"
+          leftTooltip="Light mode"
+          rightTooltip="Dark mode"
           onChange={(event) => handleChange(event.target.checked)}
         />
       </ThemeSwitchWrapper>
