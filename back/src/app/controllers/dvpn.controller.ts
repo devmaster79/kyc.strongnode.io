@@ -59,6 +59,7 @@ export const verifyLogin = withResponse<VerifyAccount.Response>(async (req) => {
         response.token = tokenService.generateToken(
           user.email,
           user.username,
+          user.level,
           MODE_DVPN
         )
 

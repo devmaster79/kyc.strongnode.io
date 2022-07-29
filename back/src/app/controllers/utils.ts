@@ -6,21 +6,25 @@ import {
 import * as express from 'express'
 import { ZodError } from 'zod'
 import { AppLogger } from 'app/services/Logger'
+import { UserLevel } from 'app/models/user.model'
 
 /** This type enstrict the express' weak Request type, so use this instead of the originial */
 type Request = express.Request & { body: unknown }
 /** This type is for the routes with auth middleware */
 export type UserRequest = Request & {
-  user: { email: string; username: string }
+  user: { email: string; username: string; level: UserLevel }
 }
 
 /** Decorate the given controller with res.send */
-export const withResponse = <R extends AbstractApiresponse>(
-  controller: (req: UserRequest, res?: express.Response) => Promise<R>
+export const withResponse = <
+  TResponse extends AbstractApiresponse,
+  TRequest extends UserRequest = UserRequest
+>(
+  controller: (req: TRequest, res?: express.Response) => Promise<TResponse>
 ) => {
   /** The new controller that will call res.send on the given controller's return value  */
   async function controllerWithSendingResponses(
-    req: UserRequest,
+    req: TRequest,
     res: express.Response
   ) {
     const response = await controller(req, res)
@@ -35,15 +39,18 @@ export const withResponse = <R extends AbstractApiresponse>(
  * so it lets you use **Server Sent Events** by just having a simple js itrator.
  * every yield will be sent to the client.
  */
-export const withSseResponse = <T>(
+export const withSseResponse = <
+  TReturn,
+  TRequest extends UserRequest = UserRequest
+>(
   controller: (
-    req: UserRequest,
+    req: TRequest,
     res?: express.Response
-  ) => AsyncGenerator<T, void | undefined, undefined>
+  ) => AsyncGenerator<TReturn, void | undefined, undefined>
 ) => {
   /** The new controller that will iterate through the responses */
   async function controllerWithSseResponse(
-    req: UserRequest,
+    req: TRequest,
     res: express.Response
   ) {
     res.setHeader('Cache-Control', 'no-cache')
@@ -69,12 +76,12 @@ export const withSseResponse = <T>(
 }
 
 /** wraps the controller into a try catch */
-function withErrorHandling<T>(
-  controller: (req: UserRequest, res: express.Response) => Promise<T>
+function withErrorHandling<TReturn, TRequest = UserRequest>(
+  controller: (req: TRequest, res: express.Response) => Promise<TReturn>
 ) {
   /** The new controller that will handle the errors */
   async function controllerWithErrorHandling(
-    req: UserRequest,
+    req: TRequest,
     res: express.Response
   ) {
     try {

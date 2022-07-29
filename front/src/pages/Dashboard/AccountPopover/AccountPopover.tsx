@@ -14,13 +14,12 @@ import { CustomTheme } from 'theme'
 import { ConnectWalletModal } from '../../../@ui/Modal/ConnectWalletModal'
 import AccountDialog from './AccountDialog'
 import { ROUTES } from 'Router'
+import { GetProfile } from 'shared/endpoints/user'
 
 export default function AccountPopover() {
   const navigate = useNavigate()
   const { account } = useEthers()
-  const [userName, setUserName] = useState<string>('')
-  const [email, setEmail] = useState('')
-  const [avatar, setAvatar] = useState('')
+  const [profile, setProfile] = useState<GetProfile.Profile>()
   const [showModal, setShowModal] = useState(false)
   const [openAvatarModal, setAvatarModal] = useState(false)
   const [showConnectWalletModal, setShowConnectWalletModal] = useState(false)
@@ -30,7 +29,6 @@ export default function AccountPopover() {
   )
 
   useEffect(() => {
-    setEmail(localStorage.getItem('email') || '')
     getProfile()
   }, [])
 
@@ -40,9 +38,9 @@ export default function AccountPopover() {
     navigate('/verify-email')
   }
 
-  const navigateToKyc = () => {
+  const navigateTo = (route: string) => {
     setShowModal(false)
-    navigate(ROUTES.DASHBOARD.PROFILE.GENERAL)
+    navigate(route)
   }
 
   const theme: CustomTheme = useTheme()
@@ -53,8 +51,7 @@ export default function AccountPopover() {
         .getProfile()
         .then((response) => {
           if (response.result === 'success') {
-            setUserName(response.data.firstName + ' ' + response.data.lastName)
-            setAvatar(response.data.profileImgUrl)
+            setProfile(response.data)
           }
         })
         .done()
@@ -64,8 +61,8 @@ export default function AccountPopover() {
   }
 
   const getAvatar = () => {
-    return avatar ? (
-      <img src={avatar} />
+    return profile?.profileImgUrl ? (
+      <img src={profile.profileImgUrl} />
     ) : (
       <Icon
         name="avatar"
@@ -108,8 +105,8 @@ export default function AccountPopover() {
           <AvatarIconWrapper style={{ margin: 'auto' }} onClick={onAvatarEdit}>
             {getAvatar()}
           </AvatarIconWrapper>
-          {userName}
-          <span>{email}</span>
+          {profile?.username}
+          <span>{profile?.email}</span>
           <ConnectButton
             onClick={() => {
               setShowConnectWalletModal(true)
@@ -122,16 +119,29 @@ export default function AccountPopover() {
             </li>
           </ol>
           <ul>
-            <li onClick={navigateToKyc} aria-hidden>
+            <li onClick={() => navigateTo(ROUTES.DASHBOARD.PROFILE.GENERAL)}>
               My Account
             </li>
           </ul>
+          {profile?.level === 'Admin' && (
+            <>
+              <span>Admin</span>
+              <ul>
+                <li
+                  onClick={() =>
+                    navigateTo(ROUTES.DASHBOARD.VERIFICATION_REQUEST_ADMIN)
+                  }>
+                  Submitted verification requests
+                </li>
+              </ul>
+            </>
+          )}
           <TextButton onClick={signOut}>Sign out</TextButton>
         </AccountPopoverWrapper>
       )}
-      {openAvatarModal ? (
+      {profile?.email && openAvatarModal ? (
         <AccountDialog
-          email={email}
+          email={profile?.email}
           getProfile={getProfile}
           setClose={(status: boolean) => setAvatarModal(status)}
         />

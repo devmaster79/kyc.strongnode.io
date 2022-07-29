@@ -18,6 +18,12 @@ import { useOutletContext } from 'react-router-dom'
 import { ProfileOutletContext } from '../Profile'
 import { Alert } from '@ui/Alert'
 
+const MAX_FILE_SIZE = 5242880
+const FILE_IS_TOO_LARGE_ERROR = {
+  result: 'validation-error' as const,
+  message: 'Your file is too large. Max 5MB is allowed.'
+}
+
 interface IFormFields {
   firstName: string
   lastName: string
@@ -125,6 +131,10 @@ export default function Identity() {
             </p>
           }
           onSelectFile={async (file) => {
+            if (file.size > MAX_FILE_SIZE) {
+              return setUploadIdentityPhotoResult(FILE_IS_TOO_LARGE_ERROR)
+            }
+
             const iterator = kycService.uploadIdentityPhoto({
               body: {
                 file: await blobToBase64(file)
@@ -155,6 +165,12 @@ export default function Identity() {
             </p>
           }
           onSelectFile={async (file) => {
+            if (file.size > MAX_FILE_SIZE) {
+              return setuploadUserWithIdentityPhotoResult(
+                FILE_IS_TOO_LARGE_ERROR
+              )
+            }
+
             const iterator = kycService.uploadUserWithIdentityPhoto({
               body: {
                 file: await blobToBase64(file)

@@ -31,7 +31,12 @@ class PasswordAuthService {
     const verified = await this.__verifyPasswordHash(user.password, password)
     if (verified) {
       const mode = this.__tokenService.determineNextMode(user, MODE_2FA)
-      return this.__tokenService.generateToken(user.email, user.username, mode)
+      return this.__tokenService.generateToken(
+        user.email,
+        user.username,
+        user.level,
+        mode
+      )
     }
     return null
   }

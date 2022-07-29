@@ -23,7 +23,7 @@ import {
   authPasswordLimit
 } from '../middleware/limits'
 import { Request } from 'express'
-import { withResponse } from './utils'
+import { UserRequest, withResponse } from './utils'
 import {
   SendVerificationEmail,
   Register,
@@ -42,6 +42,7 @@ import {
 } from 'shared/endpoints/auth'
 import { Pinpoint } from '@aws-sdk/client-pinpoint'
 import { SES } from '@aws-sdk/client-ses'
+import { RequestWithLimit } from 'app/middleware/utils/createLimit'
 
 const smsService = new SmsService(new Pinpoint(AWS_PINPOINT_CONFIG()))
 const emailService = new EmailService(new SES(AWS_SES_CONFIG()))
@@ -131,26 +132,27 @@ export const disablePasswordAuth = withResponse<DisablePasswordAuth.Response>(
   }
 )
 
-export const authByPassword = withResponse<AuthByPassword.Response>(
-  async (req) => {
-    const data = AuthByPassword.schema.parse(req.body)
-    const token = await passwordAuthService.authByPassword(
-      req.user.email,
-      data.password
-    )
-    if (!token) {
-      return zodValidationError([
-        {
-          code: 'custom',
-          path: ['password'],
-          message: 'Wrong password.'
-        }
-      ])
-    }
-    authPasswordLimit.resolve(req)
-    return success({ token, message: 'Good credentials, redirecting...' })
+export const authByPassword = withResponse<
+  AuthByPassword.Response,
+  RequestWithLimit<UserRequest>
+>(async (req) => {
+  const data = AuthByPassword.schema.parse(req.body)
+  const token = await passwordAuthService.authByPassword(
+    req.user.email,
+    data.password
+  )
+  if (!token) {
+    return zodValidationError([
+      {
+        code: 'custom',
+        path: ['password'],
+        message: 'Wrong password.'
+      }
+    ])
   }
-)
+  authPasswordLimit.resolve(req)
+  return success({ token, message: 'Good credentials, redirecting...' })
+})
 
 export const sendSMSToUser = withResponse<SendSMSToUser.Response>(
   async (req) => {
@@ -159,24 +161,25 @@ export const sendSMSToUser = withResponse<SendSMSToUser.Response>(
   }
 )
 
-export const authBySMSCode = withResponse<AuthBySMSCode.Response>(
-  async (req) => {
-    const data = AuthBySMSCode.schema.parse(req.body)
-    const token = await smsAuthService.authBySMS(req.user.email, data.smscode)
-    if (!token) {
-      return zodValidationError([
-        {
-          code: 'custom',
-          path: ['smscode'],
-          message: 'Wrong smscode'
-        }
-      ])
-    }
-    sendSMSLimit.resolve(req)
-    authOTPLimit.resolve(req)
-    return success({ token, message: 'Good SMS code, redirecting...' })
+export const authBySMSCode = withResponse<
+  AuthBySMSCode.Response,
+  RequestWithLimit<UserRequest>
+>(async (req) => {
+  const data = AuthBySMSCode.schema.parse(req.body)
+  const token = await smsAuthService.authBySMS(req.user.email, data.smscode)
+  if (!token) {
+    return zodValidationError([
+      {
+        code: 'custom',
+        path: ['smscode'],
+        message: 'Wrong smscode'
+      }
+    ])
   }
-)
+  sendSMSLimit.resolve(req)
+  authOTPLimit.resolve(req)
+  return success({ token, message: 'Good SMS code, redirecting...' })
+})
 
 export const sendSMSAndSaveNumber = withResponse<SendSMSAndSaveNumber.Response>(
   async (req) => {
@@ -186,28 +189,29 @@ export const sendSMSAndSaveNumber = withResponse<SendSMSAndSaveNumber.Response>(
   }
 )
 
-export const enableSMSAuth = withResponse<EnableSMSAuth.Response>(
-  async (req) => {
-    const data = EnableSMSAuth.schema.parse(req.body)
-    const result = await smsAuthService.activateSMSAuth(
-      req.user.email,
-      data.smscode
-    )
-    if (!result) {
-      return zodValidationError([
-        {
-          code: 'custom',
-          path: ['smscode'],
-          message: 'Wrong smscode'
-        }
-      ])
-    }
-    sendSMSLimit.resolve(req)
-    return success({
-      message: 'You enabled SMS authentication sucessfully.'
-    })
+export const enableSMSAuth = withResponse<
+  EnableSMSAuth.Response,
+  RequestWithLimit<UserRequest>
+>(async (req) => {
+  const data = EnableSMSAuth.schema.parse(req.body)
+  const result = await smsAuthService.activateSMSAuth(
+    req.user.email,
+    data.smscode
+  )
+  if (!result) {
+    return zodValidationError([
+      {
+        code: 'custom',
+        path: ['smscode'],
+        message: 'Wrong smscode'
+      }
+    ])
   }
-)
+  sendSMSLimit.resolve(req)
+  return success({
+    message: 'You enabled SMS authentication sucessfully.'
+  })
+})
 
 export const disableSMSAuth = withResponse<DisableSMSAuth.Response>(
   async (req) => {
@@ -216,25 +220,26 @@ export const disableSMSAuth = withResponse<DisableSMSAuth.Response>(
   }
 )
 
-export const authByAuthenticator = withResponse<AuthByAuthenticator.Response>(
-  async (req) => {
-    const data = AuthByAuthenticator.schema.parse(req.body)
-    const token = await authenticatorAuthService.authByAuthenticator(
-      req.user.email,
-      data.token
-    )
-    if (!token)
-      return zodValidationError([
-        {
-          code: 'custom',
-          path: ['token'],
-          message: 'Wrong OTP'
-        }
-      ])
-    authOTPLimit.resolve(req)
-    return success({ token, message: 'Good OTP, redirecting...' })
-  }
-)
+export const authByAuthenticator = withResponse<
+  AuthByAuthenticator.Response,
+  RequestWithLimit<UserRequest>
+>(async (req) => {
+  const data = AuthByAuthenticator.schema.parse(req.body)
+  const token = await authenticatorAuthService.authByAuthenticator(
+    req.user.email,
+    data.token
+  )
+  if (!token)
+    return zodValidationError([
+      {
+        code: 'custom',
+        path: ['token'],
+        message: 'Wrong OTP'
+      }
+    ])
+  authOTPLimit.resolve(req)
+  return success({ token, message: 'Good OTP, redirecting...' })
+})
 
 export const generateAuthenticatorQRCode =
   withResponse<GenerateAuthenticatorQRCode.Response>(async (req) => {

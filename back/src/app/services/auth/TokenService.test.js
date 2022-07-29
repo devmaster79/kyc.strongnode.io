@@ -1,6 +1,7 @@
 const { describe, it } = require('mocha')
 const assert = require('assert')
 const TokenService = require('./TokenService')
+const { UserLevel } = require('app/models/user.model')
 
 describe('TokenService', () => {
   const tokenService = new TokenService.TokenService()
@@ -13,6 +14,7 @@ describe('TokenService', () => {
       let token = tokenService.generateToken(
         'test@test.com',
         'testUserName',
+        UserLevel.User,
         originalMode
       )
       let decoded = tokenService.decode(token, [originalMode])
@@ -34,6 +36,7 @@ describe('TokenService', () => {
     token = tokenService.generateToken(
       'test@test.com',
       'testUserName',
+      UserLevel.User,
       TokenService.MODE_FULL
     )
     decoded = tokenService.decode(token, [

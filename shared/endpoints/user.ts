@@ -89,6 +89,7 @@ export namespace GetProfile {
     enablePassword: boolean
     profileImgUrl: string
     identityVerified: VerificationStatus | null
+    level: 'Admin' | 'User'
   }
   export type Response =
     | Success<{ data: Profile }>

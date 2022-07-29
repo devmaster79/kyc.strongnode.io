@@ -8,27 +8,32 @@ import {
   ListVerificationRequests,
   RejectVerificationRequest
 } from 'shared/endpoints/kycAdmin'
+import adminOnly from 'app/middleware/admin'
 
 module.exports = (app: Express) => {
   const router = require('express').Router()
   router.get(
     ListVerificationRequests.PATH,
     auth(MODE_FULL),
+    adminOnly,
     kycAdmin.listVerificationRequests
   )
   router.get(
     GetVerificationRequest.PATH(GetVerificationRequest.PARAMS),
     auth(MODE_FULL),
+    adminOnly,
     kycAdmin.getVerificationRequests
   )
   router.post(
     ApproveVerificationRequest.PATH(ApproveVerificationRequest.PARAMS),
     auth(MODE_FULL),
+    adminOnly,
     kycAdmin.approve
   )
   router.post(
     RejectVerificationRequest.PATH(RejectVerificationRequest.PARAMS),
     auth(MODE_FULL),
+    adminOnly,
     kycAdmin.reject
   )
   app.use(router)

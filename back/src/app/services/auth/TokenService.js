@@ -70,13 +70,14 @@ class TokenService {
   /**
    * Generate token that the auth middleware could understand
    * @param {string} email
-   * @param {string|null} userName null when the jwt is created for registration
+   * @param {string|null} username null when the jwt is created for registration
+   * @param {string|null} userLevel null when the jwt is created for registration
    * @param {AuthMode} mode
    * @param {string} expiresIn e.g: 30m
    * @returns {string}
    */
-  generateToken(email, userName, mode) {
-    const jwt_data = { email, username: userName }
+  generateToken(email, username, userLevel, mode) {
+    const jwt_data = { email, username, level: userLevel }
     const secret = this.__getTokenSecret(mode)
     return jwt.sign(jwt_data, secret, { expiresIn: mode.expiresIn })
   }

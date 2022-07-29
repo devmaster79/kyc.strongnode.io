@@ -1,17 +1,18 @@
-const {
+import type { Express } from 'express'
+import {
   MODE_REGISTRATION,
   MODE_FULL,
   MODE_2FA
-} = require('../services/auth/TokenService.js')
-const authController = require('../controllers/auth.controller')
-const auth = require('../middleware/auth')
-const {
+} from '../services/auth/TokenService.js'
+import * as authController from '../controllers/auth.controller'
+import auth from '../middleware/auth'
+import {
   sendSMSLimit,
   authOTPLimit,
   authPasswordLimit
-} = require('../middleware/limits.js')
+} from '../middleware/limits'
 
-module.exports = (app) => {
+module.exports = (app: Express) => {
   const router = require('express').Router()
 
   // Send a new email with the registration or login link

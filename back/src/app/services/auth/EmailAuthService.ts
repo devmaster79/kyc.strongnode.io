@@ -34,6 +34,7 @@ export class EmailAuthService {
       const token = this.__tokenService.generateToken(
         email,
         user.username,
+        user.level,
         mode
       )
       link = this.__getURL(mode, token, user)
@@ -43,7 +44,7 @@ export class EmailAuthService {
       })
     } else {
       const mode = MODE_REGISTRATION
-      const token = this.__tokenService.generateToken(email, null, mode)
+      const token = this.__tokenService.generateToken(email, null, null, mode)
       link = this.__getURL(mode, token, undefined)
       await this.__emailService.sendTemplate(
         email,

@@ -10,7 +10,7 @@ const doc = {
 
 const outputFile = './swagger_output.json'
 const endpointsFiles = [
-  './src/app/routes/auth.routes.js',
+  './src/app/routes/auth.routes.ts',
   './src/app/routes/cryptocurrency.routes.js',
   './src/app/routes/user.routes.ts'
 ]

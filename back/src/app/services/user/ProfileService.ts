@@ -42,7 +42,8 @@ export class ProfileService {
         enableSms: user.enableSms,
         enablePassword: user.enablePassword,
         profileImgUrl,
-        identityVerified: user.identityVerified
+        identityVerified: user.identityVerified,
+        level: user.level
       }
     } else {
       throw new Error('Could not find the user')

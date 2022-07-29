@@ -59,6 +59,7 @@ class RegistrationService {
     return this.__tokenService.generateToken(
       user.email,
       user.username,
+      user.level,
       nextMode
     )
   }

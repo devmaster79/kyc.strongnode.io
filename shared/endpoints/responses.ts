@@ -92,7 +92,11 @@ export const unauthorizedError = () =>
   })
 export const bannedError = (remainingTimeMs: number) =>
   apiResponse('banned-error', 403, {
-    message: `You've been banned for ${remainingTimeMs} milliseconds from this feature.`,
+    message: `You have too many trials. We suspended your access from this feature for ${(
+      remainingTimeMs /
+      1000 /
+      60
+    ).toFixed(2)} minutes.`,
     remainingTimeMs
   })
 export const unexpectedError = () =>
