@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
-import { useEffect, useCallback, useRef, useState } from 'react'
+import { useEffect, useCallback, useRef } from 'react'
 import userService from '../services/userService'
 import { Banner } from '../@ui/Banner/Banner'
 import authService from 'services/auth'
