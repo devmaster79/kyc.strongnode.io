@@ -3,10 +3,15 @@ import UsageWidget from '@ui/Crypto/UsageWidget'
 import * as DashboardStyle from '@ui/Dashboard/DashboardStyle'
 import TableSection from 'components/TableSection/TableSection'
 import Button from './../../../@ui/Button/Button'
+import { Navigate } from 'react-router-dom'
 
 export default function DVPN() {
+  // <Navigate to={'/dashboard/app'} />
+  // todo: remove the Navigate when we want to allow users to access this page
+  // temporarily disabled, because we don't have stripe credentials
   return (
     <DashboardStyle.Wrapper>
+      <Navigate to={'/dashboard/app'} />
       <DashboardStyle.Container>
         <DashboardStyle.TittleWrapper>
           <h1 style={{ paddingBottom: '0' }}>dVPN Usage</h1>
