@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
-import { useEffect, useCallback, useRef, useState } from 'react'
+import { useEffect, useCallback, useRef } from 'react'
 import userService from '../services/userService'
 import { Banner } from '../@ui/Banner/Banner'
 import authService from 'services/auth'
@@ -8,12 +8,13 @@ import TableSection from 'components/TableSection/TableSection'
 import { CoinMetrics } from '../@ui/Table/CoinMetrics'
 import { CryptoWidget } from '../@ui/Crypto/CryptoWidget'
 import * as DashboardStyle from '@ui/Dashboard/DashboardStyle'
+import { useEthers } from '@usedapp/core'
+import { LastTransactions } from '../@ui/Crypto/LastTransactions'
 
 export default function Dashboard() {
   const { enqueueSnackbar } = useSnackbar()
+  const { account } = useEthers()
   const navigate = useNavigate()
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [investorDetails, setInvestorDetails] = useState(null)
 
   const handleDashboard = useCallback(async () => {
     if (localStorage.getItem('visit') !== 'true') {
@@ -40,12 +41,6 @@ export default function Dashboard() {
   useEffect(() => {
     async function fetch() {
       const userResult = await userService.getProfile()
-      userService
-        .getInvestorDetails()
-        .then((res) => {
-          setInvestorDetails(res.data)
-        })
-        .done()
 
       if (!userResult.data) {
         console.error('Cannot get the user object! Please, try to relogin.')
@@ -68,8 +63,13 @@ export default function Dashboard() {
         <CryptoWidget />
         <DashboardStyle.GridContainer>
           <DashboardStyle.Grid>
-            <CoinMetrics title="Coin Metrics" hideHeading />
+            <CoinMetrics title="Coin metrics" hideHeading />
           </DashboardStyle.Grid>
+          <DashboardStyle.Grid>
+            <LastTransactions address={account ? account : ''} />
+          </DashboardStyle.Grid>
+        </DashboardStyle.GridContainer>
+        <DashboardStyle.GridContainer>
           <DashboardStyle.Grid>
             <TableSection
               comingSoon

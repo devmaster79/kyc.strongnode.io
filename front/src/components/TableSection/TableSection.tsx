@@ -11,6 +11,7 @@ interface Finder {
 
 interface TableSectionProps<Item extends Record<string, unknown>> {
   comingSoon?: boolean
+  comingSoonTitle?: string
   title: string
   subtitle: string | undefined
   dataSet?: DataSet<Item>
@@ -52,7 +53,9 @@ function TableSection<Item extends Record<string, unknown>>(
         <ComingSoonWrapper>
           <Icon name="info" height={24} width={24} />
           <h2>{props.title}</h2>
-          <span>Coming soon</span>
+          <span>
+            {props.comingSoonTitle ? props.comingSoonTitle : 'Coming soon'}
+          </span>
         </ComingSoonWrapper>
       ) : (
         <>
@@ -84,7 +87,7 @@ export default TableSection
 
 const TableSectionWrapper = styled.div((props) => ({
   width: '100%',
-  marginBottom: '200px',
+  marginBottom: '0px',
   marginTop: '32px',
   background: props.theme.palette.background.primary,
   border: `1px solid ${props.theme.palette.border.light}`,
