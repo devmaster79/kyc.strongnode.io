@@ -135,6 +135,10 @@ export class CryptocurrencyDataService {
 
     if (tokens.length > 1) {
       result = await this.__coingeckoClient.coins.markets()
+      const sne = await this.__coingeckoClient.coins.markets({
+        ids: 'strongnode'
+      })
+      result.data.unshift(sne.data[0])
     } else {
       result = await this.__coingeckoClient.simple.price({
         ids: tokens,
