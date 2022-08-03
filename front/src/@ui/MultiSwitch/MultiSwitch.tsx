@@ -1,6 +1,11 @@
 import styled from '@emotion/styled'
 import { useEffect, useState } from 'react'
 import Media from 'theme/mediaQueries'
+import { useMediaQuery } from 'react-responsive'
+
+interface CSSObject {
+  [key: string]: number | string
+}
 
 export type MultiSwitchProps<
   TOption extends { [k: string]: string | number },
@@ -14,11 +19,12 @@ export type MultiSwitchProps<
   searchBy?: TLabelKey
   value: TOption
   onChange: (selectedValue: TOption) => void
-  style?: object
+  style?: CSSObject
 }
 
 const ANIMATION_DURATION_MS = 250
 const BUTTON_WIDTH_PX = 132
+const BUTTON_WIDTH_PX_MOBILE = 92
 const BUTTON_MARGIN_PX = 3
 
 function MultiSwitch<
@@ -44,6 +50,7 @@ function MultiSwitch<
       (option) => option[trackBy] === props.value[trackBy]
     )
   })
+  const isMobile = useMediaQuery({ query: '(max-width: 600px)' })
 
   /**
    * Calls onChange after the animation is done
@@ -69,7 +76,7 @@ function MultiSwitch<
   })
 
   const activeXOffset =
-    activeItem * BUTTON_WIDTH_PX +
+    activeItem * (isMobile ? BUTTON_WIDTH_PX_MOBILE : BUTTON_WIDTH_PX) +
     activeItem * BUTTON_MARGIN_PX * 2 +
     BUTTON_MARGIN_PX
 
@@ -124,6 +131,17 @@ const SelectWrapper = styled.div((props) => ({
   '.active': {
     color: props.theme.palette.button.text,
     zIndex: 10
+  },
+
+  [Media.phone]: {
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    ul: {
+      li: {
+        fontSize: '12px',
+        minWidth: `${BUTTON_WIDTH_PX_MOBILE}px`
+      }
+    }
   }
 }))
 
@@ -141,6 +159,6 @@ const AnimatedBackground = styled.div({
   zIndex: 8,
   pointerEvents: 'none',
   [Media.phone]: {
-    width: '112px'
+    width: `${BUTTON_WIDTH_PX_MOBILE}px`
   }
 })
