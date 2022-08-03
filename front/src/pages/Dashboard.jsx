@@ -55,6 +55,7 @@ export default function Dashboard() {
     <DashboardStyle.Wrapper>
       <DashboardStyle.Container ref={dash}>
         <Banner
+          style={{ marginTop: '84px', marginLeft: 'auto', marginRight: 'auto' }}
           title="StrongNode dVPN coming soon."
           description="Stay tuned for more information."
           soon
