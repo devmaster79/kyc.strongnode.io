@@ -34,5 +34,5 @@ export const AWS_BUCKET_NAME = process.env.AWS_BUCKET_NAME || 'local-bucket'
 
 /** The collection name for the No-SQL db that stores the faces */
 export const AWS_REKOGNITION_COLLECTION_IDS = {
-  kycFaces: 'kyc-faces'
+  kycFaces: process.env.AWS_FACES_COLLECTION_ID || 'kycfaces_local'
 }
