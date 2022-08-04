@@ -2,7 +2,6 @@ import styled from '@emotion/styled'
 import Button from '@ui/Button/Button'
 import * as DashboardForm from '@ui/Dashboard/Form'
 import { useState, useEffect } from 'react'
-import IdentityUpload from './IdentityUpload/IdentityUpload'
 import useSettings from 'hooks/useSettings'
 import {
   UploadIdentityPhoto,
@@ -15,13 +14,21 @@ import InputField from '@ui/Input/InputField'
 import { Controller, useForm } from 'react-hook-form'
 import { DateInput } from '@ui/Input/DateInput'
 import { useOutletContext } from 'react-router-dom'
-import { ProfileOutletContext } from '../Profile'
+import { ProfileOutletContext } from './Profile'
 import { Alert } from '@ui/Alert'
+import ImageUpload from '@ui/ImageUpload/ImageUpload'
 
 const MAX_FILE_SIZE = 5242880
 const FILE_IS_TOO_LARGE_ERROR = {
   result: 'validation-error' as const,
   message: 'Your file is too large. Max 5MB is allowed.'
+}
+const ALLOWED_FILE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'gif', 'avif', 'webp']
+const UNSUPPORTED_FILE_FORMAT_ERROR = {
+  result: 'validation-error' as const,
+  message: `We only support ${ALLOWED_FILE_EXTENSIONS.map(
+    (format) => '.' + format
+  ).join(', ')} file formats.`
 }
 
 interface IFormFields {
@@ -41,12 +48,10 @@ export default function Identity() {
         birthday: ''
       }
     })
-  const [uploadIdentityPhotoResult, setUploadIdentityPhotoResult] =
-    useState<UploadIdentityPhoto.Response | null>(null)
-  const [
-    uploadUserWithIdentityPhotoResult,
-    setuploadUserWithIdentityPhotoResult
-  ] = useState<UploadUserWithIdentityPhoto.Response | null>(null)
+  const [uploadIdPhotoResponse, setUploadIdPhotoResponse] =
+    useState<UploadIdentityPhoto.Response>()
+  const [uploadUserWithIdPhotoResponse, setUploadUserWithIdPhotoResponse] =
+    useState<UploadUserWithIdentityPhoto.Response>()
   const snackbar = useSnackbar()
   useEffect(() => {
     reset({
@@ -122,7 +127,7 @@ export default function Identity() {
         </Alert>
       )}
       <UploadPhotoContainer>
-        <IdentityUpload
+        <ImageUpload
           icon={isLight ? 'passportFrontLight' : 'passportFront'}
           description={
             <p>
@@ -130,11 +135,16 @@ export default function Identity() {
               sure all 4 corners are visible.
             </p>
           }
+          fileSizeLimit={{
+            bytes: MAX_FILE_SIZE,
+            onViolation: () => setUploadIdPhotoResponse(FILE_IS_TOO_LARGE_ERROR)
+          }}
+          fileExtensionLimit={{
+            allowed: ALLOWED_FILE_EXTENSIONS,
+            onViolation: () =>
+              setUploadIdPhotoResponse(UNSUPPORTED_FILE_FORMAT_ERROR)
+          }}
           onSelectFile={async (file) => {
-            if (file.size > MAX_FILE_SIZE) {
-              return setUploadIdentityPhotoResult(FILE_IS_TOO_LARGE_ERROR)
-            }
-
             const iterator = kycService.uploadIdentityPhoto({
               body: {
                 file: await blobToBase64(file)
@@ -142,21 +152,12 @@ export default function Identity() {
             })
 
             for await (const res of iterator) {
-              setUploadIdentityPhotoResult(res)
+              setUploadIdPhotoResponse(res)
             }
           }}
-          result={
-            uploadIdentityPhotoResult
-              ? {
-                  message: uploadIdentityPhotoResult.message,
-                  status: getStatusFromUploadIdentityPhotoResult(
-                    uploadIdentityPhotoResult
-                  )
-                }
-              : null
-          }
+          status={getUploadStatus(uploadIdPhotoResponse)}
         />
-        <IdentityUpload
+        <ImageUpload
           icon={isLight ? 'passportHoldLight' : 'passportHold'}
           description={
             <p>
@@ -164,13 +165,17 @@ export default function Identity() {
               face so we can verify your identity.
             </p>
           }
+          fileSizeLimit={{
+            bytes: MAX_FILE_SIZE,
+            onViolation: () =>
+              setUploadUserWithIdPhotoResponse(FILE_IS_TOO_LARGE_ERROR)
+          }}
+          fileExtensionLimit={{
+            allowed: ALLOWED_FILE_EXTENSIONS,
+            onViolation: () =>
+              setUploadUserWithIdPhotoResponse(UNSUPPORTED_FILE_FORMAT_ERROR)
+          }}
           onSelectFile={async (file) => {
-            if (file.size > MAX_FILE_SIZE) {
-              return setuploadUserWithIdentityPhotoResult(
-                FILE_IS_TOO_LARGE_ERROR
-              )
-            }
-
             const iterator = kycService.uploadUserWithIdentityPhoto({
               body: {
                 file: await blobToBase64(file)
@@ -178,19 +183,10 @@ export default function Identity() {
             })
 
             for await (const res of iterator) {
-              setuploadUserWithIdentityPhotoResult(res)
+              setUploadUserWithIdPhotoResponse(res)
             }
           }}
-          result={
-            uploadUserWithIdentityPhotoResult
-              ? {
-                  message: uploadUserWithIdentityPhotoResult.message,
-                  status: getStatusFromUploadIdentityPhotoResult(
-                    uploadUserWithIdentityPhotoResult
-                  )
-                }
-              : null
-          }
+          status={getUploadStatus(uploadUserWithIdPhotoResponse)}
         />
       </UploadPhotoContainer>
       <Separator />
@@ -228,10 +224,7 @@ export default function Identity() {
           />
           <Button
             type="submit"
-            variant="large"
-            disabled={
-              !uploadIdentityPhotoResult || !uploadUserWithIdentityPhotoResult
-            }>
+            disabled={!uploadIdPhotoResponse || !uploadUserWithIdPhotoResponse}>
             Verify
           </Button>
         </DashboardForm.InputGroup>
@@ -251,19 +244,18 @@ function blobToBase64(blob: Blob): Promise<string> {
   })
 }
 
-function getStatusFromUploadIdentityPhotoResult(
-  result: UploadIdentityPhoto.Response
-) {
-  switch (result.result) {
+function getUploadStatus(response?: UploadIdentityPhoto.Response) {
+  if (!response) return null
+  switch (response.result) {
     case 'unexpected-error':
     case 'validation-error':
     case 'qualityVerificationFailed':
-      return 'error'
+      return { message: response.message, type: 'error' as const }
     case 'verifyingQuality':
     case 'saving':
-      return 'loading'
+      return { message: response.message, type: 'loading' as const }
     case 'success':
-      return 'success'
+      return { message: response.message, type: 'success' as const }
   }
 }
 function getStatusFromVerifyIdentityResult(result: VerifyIdentity.Response) {

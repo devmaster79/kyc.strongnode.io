@@ -11,7 +11,7 @@ import {
   USER_WITH_IDENTITY_PHOTO_KEY
 } from 'app/models/kycEntry.model'
 import { VerificationSubject } from 'shared/endpoints/kycAdmin'
-import { Base64File, FileService } from '../FileService'
+import { Base64File, FileService, ImageService } from '../FileService'
 import { CreationAttributes } from 'sequelize/types'
 
 export class KycService {
@@ -20,7 +20,8 @@ export class KycService {
     private __textVerificationService: TextVerificationService,
     private __fileService: FileService,
     private __userRepository: typeof User,
-    private __kycEntriesRespository: typeof KycEntry
+    private __kycEntriesRespository: typeof KycEntry,
+    private __imageService: ImageService
   ) {}
 
   async *uploadIdentityPhoto(
@@ -29,6 +30,7 @@ export class KycService {
     image: Base64File
   ) {
     yield { status: 'saving' as const }
+    image = await this.__imageService.convertToJpeg(image)
     const user = await this.__getUser(email)
     await this.__fileService.put(
       IDENTITY_PHOTO_KEY(user.id, documentType),
@@ -70,6 +72,7 @@ export class KycService {
     image: Base64File
   ) {
     yield { status: 'saving' as const }
+    image = await this.__imageService.convertToJpeg(image)
     const user = await this.__getUser(email)
     await this.__fileService.put(
       USER_WITH_IDENTITY_PHOTO_KEY(user.id, documentType),

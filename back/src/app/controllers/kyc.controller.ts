@@ -6,7 +6,7 @@ import {
   User as userRepository
 } from 'app/models'
 import {} from 'app/models/user.model'
-import { Base64File, FileService } from 'app/services/FileService'
+import { Base64File, FileService, ImageService } from 'app/services/FileService'
 import { FaceVerificationService } from 'app/services/KYC/FaceVerificationService'
 import { KycService } from 'app/services/KYC/KycService'
 import { TextVerificationService } from 'app/services/KYC/TextVerficationService'
@@ -23,7 +23,8 @@ const kycService = new KycService(
   new TextVerificationService(rekognition),
   new FileService(new S3(AWS_S3_CONFIG)),
   userRepository,
-  kycEntryRepository
+  kycEntryRepository,
+  new ImageService()
 )
 
 export const uploadIdentityPhoto =

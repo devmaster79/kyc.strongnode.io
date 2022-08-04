@@ -40,7 +40,7 @@ const ProfileGeneral = React.lazy(
   () => import('pages/Dashboard/Profile/General/General')
 )
 const ProfileIdentityVerification = React.lazy(
-  () => import('pages/Dashboard/Profile/IdentityVerification/Identity')
+  () => import('pages/Dashboard/Profile/IdentityVerification')
 )
 const DVPN = React.lazy(() => import('./pages/Dashboard/DVPN/DVPN'))
 const NFTDashboard = React.lazy(
