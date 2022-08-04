@@ -7,12 +7,13 @@ export type BannerProps = {
   title: string
   description: string
   soon?: boolean
+  style?: object
 }
 
 export const Banner = (props: BannerProps) => {
   // todo
   return (
-    <BannerWrapper>
+    <BannerWrapper style={props.style}>
       <TextWrapper>
         <Title>{props.title}</Title>
         <Description>{props.description}</Description>

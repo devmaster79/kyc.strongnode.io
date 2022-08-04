@@ -4,6 +4,7 @@ import { CryptoChart } from '../Chart/CryptoChart'
 import { TradingViewContainer } from '../TradingView/TradingViewContainer'
 import MultiSwitch from '@ui/MultiSwitch/MultiSwitch'
 import { EventBus } from '../../utils/EventBus'
+import { useMediaQuery } from 'react-responsive'
 
 export type SwitchOption = {
   label: string
@@ -22,6 +23,8 @@ export const CryptoWidget = () => {
   const [selectedSwitchOption, setSelectedSwitchOption] =
     useState<SwitchOption>(switchOptions[0])
   const [cryptoCurrency, setCryptoCurrency] = useState('SNE')
+
+  const isMobile = useMediaQuery({ query: '(max-width: 600px)' })
 
   const handleOnSymbolChange = EventBus.getInstance().register(
     'symbol-change',
@@ -43,7 +46,7 @@ export const CryptoWidget = () => {
           options={switchOptions}
           value={selectedSwitchOption}
           onChange={setSelectedSwitchOption}
-          style={multiSwitchStyle}
+          style={isMobile ? multiSwitchStyleMobile : multiSwitchStyle}
         />
       )}
 
@@ -71,6 +74,12 @@ const multiSwitchStyle = {
   left: '50%',
   top: '0',
   transform: 'translateX(-50%)'
+}
+
+const multiSwitchStyleMobile = {
+  position: 'relative',
+  left: '0',
+  top: '0'
 }
 
 const CryptoWidgetWrapper = styled.div({
