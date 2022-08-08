@@ -30,7 +30,7 @@ const buttonItems = [
     type: 'dvpn',
     tooltipHint: 'dVPN',
     path: ROUTES.DASHBOARD.DVPN,
-    active: false
+    active: true
   }
 ]
 
