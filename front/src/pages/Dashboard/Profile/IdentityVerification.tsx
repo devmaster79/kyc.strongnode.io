@@ -5,8 +5,7 @@ import { useState, useEffect } from 'react'
 import useSettings from 'hooks/useSettings'
 import {
   UploadIdentityPhoto,
-  UploadUserWithIdentityPhoto,
-  VerifyIdentity
+  UploadUserWithIdentityPhoto
 } from 'shared/endpoints/kyc'
 import kycService from 'services/kycService'
 import { SnackbarKey, useSnackbar } from 'notistack'
@@ -65,16 +64,13 @@ export default function Identity() {
   const isLight = themeMode === 'light'
 
   async function onSubmit(data: IFormFields) {
-    const iterator = kycService.verifyIdentity({
-      body: data
-    })
+    const iterator = kycService.verifyIdentity({ body: data })
     let lastSnack: SnackbarKey | undefined = undefined
-    const closeLast = () => {
-      snackbar.closeSnackbar(lastSnack)
-    }
+    const closeLast = () => snackbar.closeSnackbar(lastSnack)
     for await (const res of iterator) {
+      const variant =
+        res.result === 'success' ? res.verificationResult : 'error'
       closeLast()
-      const variant = getStatusFromVerifyIdentityResult(res)
       lastSnack = snackbar.enqueueSnackbar(res.message, {
         variant,
         autoHideDuration: 20000,
@@ -256,19 +252,6 @@ function getUploadStatus(response?: UploadIdentityPhoto.Response) {
       return { message: response.message, type: 'loading' as const }
     case 'success':
       return { message: response.message, type: 'success' as const }
-  }
-}
-function getStatusFromVerifyIdentityResult(result: VerifyIdentity.Response) {
-  switch (result.result) {
-    case 'facesDidNotMatch':
-    case 'unableToFindRequiredTextOnPhoto':
-      return 'warning'
-    case 'missingRequiredPhotos':
-      return 'error'
-    case 'success':
-      return 'success'
-    default:
-      return 'info'
   }
 }
 

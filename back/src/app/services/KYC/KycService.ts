@@ -13,6 +13,7 @@ import {
 import { VerificationSubject } from 'shared/endpoints/kycAdmin'
 import { Base64File, FileService, ImageService } from '../FileService'
 import { CreationAttributes } from 'sequelize/types'
+import { AWS_REKOGNITION_COLLECTION_IDS } from 'app/config/config'
 
 export class KycService {
   constructor(
@@ -131,10 +132,37 @@ export class KycService {
       identityFacePhoto,
       userWithIdentityPhoto1,
       userWithIdentityPhoto2
+
+    // Checking prerequisites:
+    // the required photos for a successful submit (AI can still fail):
+    // - the document
+    // - the user holding the document
     try {
       identityPhoto = (
         await this.__fileService.get(IDENTITY_PHOTO_KEY(user.id, documentType))
       ).getBinaryBuffer()
+
+      // this is just for making sure that the image is uploaded:
+      await this.__fileService.get(
+        USER_WITH_IDENTITY_PHOTO_KEY(user.id, documentType)
+      )
+    } catch (e) {
+      yield { status: 'missingRequiredPhotos' as const }
+      return
+    }
+
+    yield { status: 'saving' as const }
+    await this.__saveIdentityData(user.id, dataToVerify)
+    await this.__setVerificationStatus(user.id, { status: 'Submitted' })
+    await this.__updateOrCreateKycEntry({
+      documentType,
+      verificationSubject: VerificationSubject.Identity,
+      userId: user.id
+    })
+
+    // 0. verification: check the photo's verification status
+    yield { status: 'verifying' as const }
+    try {
       identityFacePhoto = (
         await this.__fileService.get(
           IDENTITY_PHOTO_FACE_KEY(user.id, documentType)
@@ -151,20 +179,32 @@ export class KycService {
         )
       ).getBinaryBuffer()
     } catch (e) {
-      yield { status: 'missingRequiredPhotos' as const }
+      // either [uploadUserWithIdentityPhoto] or [uploadIdentityPhoto]
+      // couldn't verify the faces
+      // so they didn't upload the cropped faces to S3
+      // so we are in this catch branch
+      yield { status: 'badPhotos' as const }
       return
     }
 
-    yield { status: 'saving' as const }
-    await this.__saveIdentityData(user.id, dataToVerify)
-    await this.__setVerificationStatus(user.id, { status: 'Submitted' })
-    await this.__updateOrCreateKycEntry({
-      documentType,
-      verificationSubject: VerificationSubject.Identity,
-      userId: user.id
-    })
+    // 1. verification: duplication check
+    const duplicateFound = await this.__checkDuplicateWithDifferentId(
+      user.id,
+      identityFacePhoto
+    )
+    if (duplicateFound) {
+      yield { status: 'duplicateFound' as const }
+      return
+    }
 
-    yield { status: 'matchingFaces' as const }
+    // store face for duplication tests
+    await this.__faceVerificationService.indexFace(
+      AWS_REKOGNITION_COLLECTION_IDS.kycFaces,
+      user.id,
+      identityFacePhoto
+    )
+
+    // 2. verification: comparison id and selfie
     const comparison1 = await this.__faceVerificationService.compareFaces(
       identityFacePhoto,
       userWithIdentityPhoto1
@@ -177,7 +217,6 @@ export class KycService {
       userWithIdentityPhoto1,
       userWithIdentityPhoto2
     )
-
     if (
       comparison1.result === 'facesDidNotMatch' ||
       comparison2.result === 'facesDidNotMatch' ||
@@ -187,8 +226,7 @@ export class KycService {
       return
     }
 
-    yield { status: 'matchingText' as const }
-
+    // 3. verification: text
     const areWordsExisting = await this.__areWordsExisting(
       identityPhoto,
       dataToVerify
@@ -309,6 +347,18 @@ export class KycService {
           id: userId
         }
       }
+    )
+  }
+
+  private async __checkDuplicateWithDifferentId(userId: number, face: Buffer) {
+    const similarFaces = await this.__faceVerificationService.findSimilarFaces(
+      AWS_REKOGNITION_COLLECTION_IDS.kycFaces,
+      face
+    )
+    return (
+      similarFaces.filter(
+        (face) => face.similarity > 0.8 && face.externalId !== userId.toString()
+      ).length !== 0
     )
   }
 }

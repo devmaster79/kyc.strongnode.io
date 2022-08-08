@@ -76,20 +76,20 @@ describe('FaceVerificationService integration test', () => {
         EXAMPLE_USER_ID,
         readFileSync(path.join(__dirname, './assets/pseudo-face.png'), null)
       )
-      const checkDuplicate = await service.checkDuplicate(
+      const result = await service.findSimilarFaces(
         EXAMPLE_COLLECTION_ID,
         readFileSync(path.join(__dirname, './assets/pseudo-face.png'), null)
       )
-      assert.equal(checkDuplicate.result, 'duplicateFound')
+      assert.ok(result.length > 0, 'there should be similars')
     }).timeout(0)
 
     it('should NOT detect duplicated faces when there is NOT any', async () => {
       const service = new FaceVerificationService(EXAMPLE_REKO_SERVICE)
-      const checkDuplicate = await service.checkDuplicate(
+      const result = await service.findSimilarFaces(
         EXAMPLE_COLLECTION_ID,
         readFileSync(path.join(__dirname, './assets/pseudo-face.png'), null)
       )
-      assert.equal(checkDuplicate.result, 'success')
+      assert.equal(result.length, 0, 'there should NOT be similars')
     }).timeout(0)
   }
 })

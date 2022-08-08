@@ -54,20 +54,16 @@ export namespace VerifyIdentity {
     lastName: z.string()
   })
   export type Request = { body: z.infer<typeof schema> }
-  export type Response = {
-    result:
-      | 'facesDidNotMatch'
-      | 'matchingFaces'
-      | 'matchingText'
-      | 'fetchingPhotos'
-      | 'missingRequiredPhotos'
-      | 'saving'
-      | 'unableToFindRequiredTextOnPhoto'
-      | 'success'
-      | 'unexpected-error' // TODO: change to camelCase
-      | 'validation-error' // TODO: change to camelCase
-    message: string
-  }
+  export type Response =
+    | {
+        result: 'success'
+        verificationResult: 'warning' | 'error' | 'info' | 'success'
+        message: string
+      }
+    | {
+        result: 'unexpected-error' | 'validation-error'
+        message: string
+      }
   export const request: Request | null = null
   export const response: Response | null = null
 }

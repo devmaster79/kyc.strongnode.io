@@ -83,8 +83,11 @@ export const verifyIdentity = withSseResponse<VerifyIdentity.Response>(
     )
 
     for await (const verificationResult of verificationResults) {
-      const result = __getVerifyIdentityResponses(verificationResult)
-      yield result
+      const response = __getVerifyIdentityResponses(verificationResult)
+      yield {
+        result: 'success',
+        ...response
+      }
     }
   }
 )
@@ -95,30 +98,66 @@ function __getVerifyIdentityResponses(
   verificationResult: Yielded<ReturnType<typeof kycService.verifyIdentity>>
 ) {
   const failMessage = (reason: string) => `
-  Verification failed. ${reason}
-  If you want to try again, you can, but an administrator will review it anyways.
-`
-  const messages = {
-    facesDidNotMatch: failMessage('Faces did not match'),
-    matchingFaces: 'Matching the faces between the provided photos',
-    matchingText: 'Verfying text on the ID card',
-    fetchingPhotos: 'Loading photos',
-    missingRequiredPhotos: 'Please upload the required photos first.',
-    saving: 'Saving',
-    unableToFindRequiredTextOnPhoto: failMessage(
-      'Unable to find the required text on photo'
-    ),
-    success: `
+    Verification failed. ${reason}
+    If you want to try again, you can, but an administrator will review it anyways.
+  `
+  const results = {
+    facesDidNotMatch: {
+      verificationResult: 'warning',
+      message: failMessage('Faces did not match')
+    },
+    badPhotos: {
+      verificationResult: 'warning',
+      message: failMessage('The uploaded photos had problems.')
+    },
+    duplicateFound: {
+      verificationResult: 'warning',
+      message: failMessage('Duplicate registration found.')
+    },
+    unableToFindRequiredTextOnPhoto: {
+      verificationResult: 'warning',
+      message: failMessage('Unable to find the required text on photo')
+    },
+    matchingFaces: {
+      verificationResult: 'info',
+      message: 'Matching the faces between the provided photos'
+    },
+    matchingText: {
+      verificationResult: 'info',
+      message: 'Verfying text on the ID card'
+    },
+    verifying: {
+      verificationResult: 'info',
+      message: 'Verfying'
+    },
+    fetchingPhotos: {
+      verificationResult: 'info',
+      message: 'Loading photos'
+    },
+    missingRequiredPhotos: {
+      verificationResult: 'error',
+      message: 'Please upload the required photos first.'
+    },
+    saving: {
+      verificationResult: 'info',
+      message: 'Saving'
+    },
+    success: {
+      verificationResult: 'success',
+      message: `
       We could verify your identity, so you can access more features,
       but you will be still limited until we verify it manually.
       We will review it as soon as possible.
     `
-  } as Record<typeof verificationResult.status, string>
-
-  return {
-    result: verificationResult.status,
-    message: messages[verificationResult.status]
-  }
+    }
+  } as Record<
+    typeof verificationResult.status,
+    {
+      verificationResult: 'warning' | 'error' | 'info' | 'success'
+      message: string
+    }
+  >
+  return results[verificationResult.status]
 }
 
 function __getUploadCardResponses(

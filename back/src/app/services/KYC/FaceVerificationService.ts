@@ -181,7 +181,7 @@ export class FaceVerificationService {
     }
   }
 
-  async checkDuplicate(collectionId: string, faceImageBlob: Buffer) {
+  async findSimilarFaces(collectionId: string, faceImageBlob: Buffer) {
     const searchFacesResponse = await this.__rekognition.searchFacesByImage({
       CollectionId: collectionId,
       FaceMatchThreshold: 95,
@@ -194,11 +194,17 @@ export class FaceVerificationService {
       throw new OldAwsSdkError()
     }
 
-    if (searchFacesResponse.FaceMatches.length < 1) {
-      return { result: 'success' as const }
-    }
-
-    return { result: 'duplicateFound' as const }
+    return searchFacesResponse.FaceMatches.map((faceMatch) => {
+      const face = faceMatch.Face
+      const similarity = faceMatch.Similarity
+      if (!face || !face.ExternalImageId || !face.FaceId || !similarity)
+        throw new OldAwsSdkError()
+      return {
+        externalId: face.ExternalImageId,
+        faceId: face.FaceId,
+        similarity
+      }
+    })
   }
 
   async compareFaces(faceImageBlob: Buffer, idImageBlob: Buffer) {
