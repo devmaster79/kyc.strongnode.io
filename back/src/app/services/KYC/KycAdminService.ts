@@ -47,6 +47,7 @@ export class KycAdminService {
     return {
       id: request.id,
       subject: {
+        aiResult: request.aiResult,
         name: VerificationSubject.Identity,
         firstName: request.user.firstName,
         lastName: request.user.lastName,

@@ -10,7 +10,10 @@ import {
   USER_WITH_IDENTITY_PHOTO_FACE_KEY,
   USER_WITH_IDENTITY_PHOTO_KEY
 } from 'app/models/kycEntry.model'
-import { VerificationSubject } from 'shared/endpoints/kycAdmin'
+import {
+  VerificationAiResult,
+  VerificationSubject
+} from 'shared/endpoints/kycAdmin'
 import { Base64File, FileService, ImageService } from '../FileService'
 import { CreationAttributes } from 'sequelize/types'
 import { AWS_REKOGNITION_COLLECTION_IDS } from 'app/config/config'
@@ -184,16 +187,37 @@ export class KycService {
       // so they didn't upload the cropped faces to S3
       // so we are in this catch branch
       yield { status: 'badPhotos' as const }
+      await this.__updateAIResult(
+        user.id,
+        documentType,
+        VerificationSubject.Identity,
+        {
+          type: 'generic',
+          verified: false,
+          message: 'Wrong face quality'
+        }
+      )
       return
     }
 
     // 1. verification: duplication check
-    const duplicateFound = await this.__checkDuplicateWithDifferentId(
+    const duplicates = await this.__checkDuplicateWithDifferentId(
       user.id,
       identityFacePhoto
     )
-    if (duplicateFound) {
+    if (duplicates.length > 0) {
       yield { status: 'duplicateFound' as const }
+      await this.__updateAIResult(
+        user.id,
+        documentType,
+        VerificationSubject.Identity,
+        {
+          type: 'duplicatesFound',
+          verified: false,
+          message: 'Found similar faces from different users',
+          userIds: duplicates
+        }
+      )
       return
     }
 
@@ -223,6 +247,16 @@ export class KycService {
       comparison3.result === 'facesDidNotMatch'
     ) {
       yield { status: 'facesDidNotMatch' as const }
+      await this.__updateAIResult(
+        user.id,
+        documentType,
+        VerificationSubject.Identity,
+        {
+          type: 'generic',
+          verified: false,
+          message: 'Faces did not match'
+        }
+      )
       return
     }
 
@@ -233,10 +267,30 @@ export class KycService {
     )
     if (!areWordsExisting) {
       yield { status: 'unableToFindRequiredTextOnPhoto' as const }
+      await this.__updateAIResult(
+        user.id,
+        documentType,
+        VerificationSubject.Identity,
+        {
+          type: 'generic',
+          verified: false,
+          message: 'Unable to find required texts on photo'
+        }
+      )
       return
     }
 
     await this.__setVerificationStatus(user.id, { status: 'VerifiedByAi' })
+    await this.__updateAIResult(
+      user.id,
+      documentType,
+      VerificationSubject.Identity,
+      {
+        type: 'generic',
+        verified: true,
+        message: 'Successful verification'
+      }
+    )
     yield { status: 'success' as const }
   }
 
@@ -286,6 +340,24 @@ export class KycService {
     } else {
       await this.__kycEntriesRespository.update(data, query)
     }
+  }
+
+  private async __updateAIResult(
+    userId: number,
+    documentType: string,
+    verificationSubject: VerificationSubject,
+    aiResult: VerificationAiResult
+  ) {
+    await this.__kycEntriesRespository.update(
+      { aiResult },
+      {
+        where: {
+          userId,
+          documentType,
+          verificationSubject
+        }
+      }
+    )
   }
 
   private async __getUser(email: string) {
@@ -355,11 +427,11 @@ export class KycService {
       AWS_REKOGNITION_COLLECTION_IDS.kycFaces,
       face
     )
-    return (
-      similarFaces.filter(
+    return similarFaces
+      .filter(
         (face) => face.similarity > 0.8 && face.externalId !== userId.toString()
-      ).length !== 0
-    )
+      )
+      .map((face) => parseInt(face.externalId))
   }
 }
 

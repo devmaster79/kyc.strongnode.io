@@ -12,11 +12,27 @@ export enum VerificationSubject {
   TaxIdentificationNumber = 'TaxIdentificationNumber'
 }
 
+/** What should the admin verify */
+export type VerificationAiResult =
+  | null
+  | {
+      type: 'generic'
+      verified: boolean
+      message: string
+    }
+  | {
+      type: 'duplicatesFound'
+      verified: false
+      message: string
+      userIds: number[]
+    }
+
 /**
  * For id, passport, driving license
  */
 export interface IdentityVerification {
   name: VerificationSubject.Identity
+  aiResult: VerificationAiResult
   firstName: string
   lastName: string
   /** timestamp */

@@ -8,7 +8,10 @@ import {
   ForeignKey,
   NonAttribute
 } from 'sequelize'
-import { VerificationSubject } from 'shared/endpoints/kycAdmin'
+import {
+  VerificationAiResult,
+  VerificationSubject
+} from 'shared/endpoints/kycAdmin'
 import { User } from './user.model'
 
 /** AWS S3 key. The whole photo */
@@ -29,12 +32,6 @@ export const USER_WITH_IDENTITY_PHOTO_FACE_KEY = (
   nth: number
 ) => `${userId}_user_with_${documentType}_face_${nth}`
 
-/**
- * Unsubmitted => user.*Verified is null, and this row is NOT present
- * Submitted => user.*Verified may either verifiedByAI or null, and this row is present
- * Verified => user.*Verified is changed, and this row is deleted
- * Failed => user.*Verified is changed, and this row is deleted
- */
 export class KycEntry extends Model<
   InferAttributes<KycEntry>,
   InferCreationAttributes<KycEntry>
@@ -47,6 +44,8 @@ export class KycEntry extends Model<
 
   declare createdAt: CreationOptional<Date>
   declare updatedAt: CreationOptional<Date>
+
+  declare aiResult: VerificationAiResult | null
 
   // pre-declare possible inclusions
   declare user?: NonAttribute<User>
@@ -65,6 +64,11 @@ export const create = (sequelize: Sequelize) =>
       },
       verificationSubject: {
         type: DataTypes.STRING
+      },
+      aiResult: {
+        defaultValue: null,
+        allowNull: true,
+        type: DataTypes.JSON
       },
       createdAt: DataTypes.DATE,
       updatedAt: DataTypes.DATE

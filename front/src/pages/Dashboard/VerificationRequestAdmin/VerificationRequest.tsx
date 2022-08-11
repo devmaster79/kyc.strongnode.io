@@ -7,6 +7,7 @@ import { useSnackbar } from 'notistack'
 import { useEffect, useState } from 'react'
 import kycAdminService from 'services/kycAdminService'
 import { GetVerificationRequest } from 'shared/endpoints/kycAdmin'
+import { ZoomableImage } from '@ui/ZoomableImg'
 
 interface VerificationRequestProps {
   requestId: number
@@ -73,8 +74,25 @@ export default function VerificationRequest({
           <RequestContainer>
             <h2>Details</h2>
             <RequestRow>
-              <RequestParameter>Id</RequestParameter>
+              <RequestParameter>Request id</RequestParameter>
               <RequestData>{request.id}</RequestData>
+            </RequestRow>
+            <RequestRow
+              variant={
+                request.subject.aiResult
+                  ? (request.subject.aiResult.verified && 'success') || 'error'
+                  : undefined
+              }>
+              <RequestParameter>AI result</RequestParameter>
+              <RequestData>
+                {request.subject.aiResult?.message || 'still working'}
+                {request.subject.aiResult?.type === 'duplicatesFound' && (
+                  <p>
+                    Users with similar faces (user ids):&nbsp;
+                    <code>{request.subject.aiResult?.userIds.join(',')}</code>
+                  </p>
+                )}
+              </RequestData>
             </RequestRow>
             <RequestRow>
               <RequestParameter>Username</RequestParameter>
@@ -100,13 +118,13 @@ export default function VerificationRequest({
             <RequestRow>
               <RequestParameter>The document</RequestParameter>
               <RequestData>
-                <img src={request.subject.images.idImage} />
+                <ZoomableImage src={request.subject.images.idImage} />
               </RequestData>
             </RequestRow>
             <RequestRow>
               <RequestParameter>The user with the document</RequestParameter>
               <RequestData>
-                <img src={request.subject.images.userWithIdImage} />
+                <ZoomableImage src={request.subject.images.userWithIdImage} />
               </RequestData>
             </RequestRow>
           </RequestContainer>
@@ -153,9 +171,19 @@ const RequestContainer = styled.div((props) => ({
     margin: '1em'
   }
 }))
-const RequestRow = styled.div({
-  display: 'flex',
-  gap: '0.5em'
+const RequestRow = styled.div<{ variant?: 'error' | 'success' }>((props) => {
+  let background, color
+  if (props.variant) {
+    background = props.theme.palette[props.variant].light
+    color = props.theme.palette[props.variant].main
+  }
+  return {
+    display: 'flex',
+    gap: '0.5em',
+    borderRadius: 8,
+    background,
+    color
+  }
 })
 const RequestParameter = styled.div((props) => ({
   flex: 1,
@@ -167,6 +195,8 @@ const RequestData = styled.div({
   textAlign: 'left',
   flex: 5,
   borderRadius: 8,
+  display: 'flex',
+  alignItems: 'center',
   img: {
     borderRadius: 8
   }
@@ -183,7 +213,6 @@ const RejectionGroup = styled.div((props) => ({
     borderBottomLeftRadius: 0
   }
 }))
-
 const Actions = styled.div({
   width: '100%',
   padding: '1em',
