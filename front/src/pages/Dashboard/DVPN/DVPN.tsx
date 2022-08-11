@@ -3,15 +3,40 @@ import UsageWidget from '@ui/Crypto/UsageWidget'
 import * as DashboardStyle from '@ui/Dashboard/DashboardStyle'
 import TableSection from 'components/TableSection/TableSection'
 import Button from './../../../@ui/Button/Button'
+import { DVPNAccessModal } from '../../../@ui/Modal/DVPNAccessModal'
+import { useState, useEffect } from 'react'
+import { hasAccess } from '../../../services/dvpnService'
 import { Navigate } from 'react-router-dom'
 
 export default function DVPN() {
-  // <Navigate to={'/dashboard/app'} />
-  // todo: remove the Navigate when we want to allow users to access this page
-  // temporarily disabled, because we don't have stripe credentials
+  const [userAccess, setUserAccess] = useState(false)
+  const [redirectToDashboard, setRedirectToDashboard] = useState(false)
+  const [getAcccessModalOpened, setGetAccessModalOpened] = useState(false)
+
+  useEffect(() => {
+    const loadUserAccess = async () => {
+      const access = await hasAccess()
+
+      if (access.result === 'success') {
+        setUserAccess(access.dvpnAccess)
+        setGetAccessModalOpened(!access.dvpnAccess)
+      }
+    }
+
+    // todo, load the user access
+    loadUserAccess()
+  }, [])
+
   return (
     <DashboardStyle.Wrapper>
-      <Navigate to={'/dashboard/app'} />
+      <DVPNAccessModal
+        opened={getAcccessModalOpened}
+        onClose={() => {
+          // if false navigate to somewhere else
+          if (!userAccess) setRedirectToDashboard(true)
+          else setGetAccessModalOpened(false)
+        }}
+      />
       <DashboardStyle.Container>
         <DashboardStyle.TittleWrapper>
           <h1 style={{ paddingBottom: '0' }}>dVPN Usage</h1>
@@ -37,6 +62,7 @@ export default function DVPN() {
           </DashboardStyle.Grid>
         </DashboardStyle.GridContainer>
       </DashboardStyle.Container>
+      {redirectToDashboard && <Navigate to={'/dashboard/app'} />}
     </DashboardStyle.Wrapper>
   )
 }
