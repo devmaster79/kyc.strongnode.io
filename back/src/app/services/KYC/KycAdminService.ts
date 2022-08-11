@@ -1,11 +1,13 @@
 import {
+  IDENTITY_PHOTO_FACE_KEY,
   IDENTITY_PHOTO_KEY,
   KycEntry,
+  USER_WITH_IDENTITY_PHOTO_FACE_KEY,
   USER_WITH_IDENTITY_PHOTO_KEY
 } from 'app/models/kycEntry.model'
 import { User } from 'app/models/user.model'
 import {
-  GetVerificationRequest,
+  VerificationRequest,
   VerificationSubject
 } from 'shared/endpoints/kycAdmin'
 import { EmailService } from '../communication/EmailService'
@@ -36,7 +38,7 @@ export class KycAdminService {
 
   async getVerificationRequests(
     requestId: number
-  ): Promise<null | GetVerificationRequest.VerificationRequest> {
+  ): Promise<null | VerificationRequest> {
     const request = await this.__getRequest(requestId)
 
     if (!request) return null
@@ -82,7 +84,7 @@ export class KycAdminService {
     await this.__setVerificationStatus(request.userId, {
       status: 'VerifiedByAdmin'
     })
-    await this.__deleteRequest(requestId)
+    await this.__deleteRequest(request)
   }
 
   async reject(requestId: number, reason: string) {
@@ -99,7 +101,7 @@ export class KycAdminService {
       status: 'Rejected',
       reason
     })
-    await this.__deleteRequest(requestId)
+    await this.__deleteRequest(request)
   }
 
   private async __sendStatusEmail(params: {
@@ -141,9 +143,24 @@ export class KycAdminService {
     })
   }
 
-  private async __deleteRequest(requestId: number) {
+  private async __deleteRequest(request: KycEntry) {
+    await this.__fileService.delete(
+      IDENTITY_PHOTO_KEY(request.userId, request.documentType)
+    )
+    await this.__fileService.delete(
+      IDENTITY_PHOTO_FACE_KEY(request.userId, request.documentType)
+    )
+    await this.__fileService.delete(
+      USER_WITH_IDENTITY_PHOTO_KEY(request.userId, request.documentType)
+    )
+    await this.__fileService.delete(
+      USER_WITH_IDENTITY_PHOTO_FACE_KEY(request.userId, request.documentType, 1)
+    )
+    await this.__fileService.delete(
+      USER_WITH_IDENTITY_PHOTO_FACE_KEY(request.userId, request.documentType, 2)
+    )
     await this.__kycEntryRepository.destroy({
-      where: { id: requestId }
+      where: { id: request.id }
     })
   }
 

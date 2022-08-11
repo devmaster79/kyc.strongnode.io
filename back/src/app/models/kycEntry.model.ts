@@ -29,7 +29,7 @@ export const USER_WITH_IDENTITY_PHOTO_KEY = (
 export const USER_WITH_IDENTITY_PHOTO_FACE_KEY = (
   userId: number,
   documentType: string,
-  nth: number
+  nth: 1 | 2
 ) => `${userId}_user_with_${documentType}_face_${nth}`
 
 export class KycEntry extends Model<

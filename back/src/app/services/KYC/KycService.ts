@@ -88,7 +88,7 @@ export class KycService {
     const verifyQualityResult =
       await this.__faceVerificationService.verifyFaceQuality(imageBuffer, {
         minFaces: 2,
-        maxFaces: 3
+        maxFaces: 3 // for validation only, the returned array length will be always 2 on success
       })
 
     if (verifyQualityResult.result === 'success') {
@@ -99,14 +99,16 @@ export class KycService {
       )
       // NOTE: UPLOADING a cropped face should be only done after a successful prevalidation
       // as [verifyIdentity] depends on this behaviour
-      await Promise.all(
-        croppedFaces.map((croppedFace, key) => {
-          this.__fileService.put(
-            USER_WITH_IDENTITY_PHOTO_FACE_KEY(user.id, documentType, key + 1),
-            croppedFace
-          )
-        })
-      )
+      await Promise.all([
+        this.__fileService.put(
+          USER_WITH_IDENTITY_PHOTO_FACE_KEY(user.id, documentType, 1),
+          croppedFaces[0]
+        ),
+        this.__fileService.put(
+          USER_WITH_IDENTITY_PHOTO_FACE_KEY(user.id, documentType, 2),
+          croppedFaces[1]
+        )
+      ])
 
       yield { status: 'success' as const }
     } else {

@@ -103,6 +103,9 @@ export const unexpectedError = () =>
   apiResponse('unexpected-error', 500, {
     message: 'Something went wrong. Please try again later.'
   })
+export const checksumMismatchError = <TOthers extends { message: string }>(
+  props: TOthers
+) => apiResponse('checksum-mismatch-error', 412, props)
 
 // Response types
 export type Success<T> = ApiResponse<'success', 200, T>
@@ -125,6 +128,11 @@ export type ValidationError<T = EmptyObject> = ApiResponse<
   'validation-error',
   422,
   { issues: T; message: string }
+>
+export type ChecksumMismatchError<T> = ApiResponse<
+  'checksum-mismatch-error',
+  412,
+  T & { message: string }
 >
 export type BannedError = ApiResponse<
   'banned-error',

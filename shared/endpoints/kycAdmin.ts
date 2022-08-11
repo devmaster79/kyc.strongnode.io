@@ -1,7 +1,13 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 /* eslint-disable @typescript-eslint/ban-types */
 
-import { NotFoundError, Success, UnexpectedError } from './responses'
+import {
+  ChecksumMismatchError,
+  NotFoundError,
+  Success,
+  UnauthorizedError,
+  UnexpectedError
+} from './responses'
 import z from 'zod'
 
 /** What should the admin verify */
@@ -59,54 +65,81 @@ export namespace ListVerificationRequests {
   export type Response =
     | Success<{ requests: ShortVerificationRequest[] }>
     | UnexpectedError
+    | UnauthorizedError
 
   export const request: Request | null = null
   export const response: Response | null = null
 }
 
-export namespace GetVerificationRequest {
-  export interface VerificationRequest {
-    id: number
-    username: string
-    subject: IdentityVerification // TODO: extend with AddressVerification | BillingAdressVerification ...
-    createdAt: number
-  }
+export interface VerificationRequest {
+  id: number
+  username: string
+  subject: IdentityVerification // TODO: extend with AddressVerification | BillingAdressVerification ...
+  createdAt: number
+}
 
+export namespace GetVerificationRequest {
   export const METHOD = 'get'
   export const PARAMS = { requestId: ':requestId' }
   export const PATH = (params: typeof PARAMS) =>
     `/api/kycadmin/verificationRequests/${params.requestId}`
   export type Request = { params: typeof PARAMS }
   export type Response =
-    | Success<{ request: VerificationRequest }>
+    | Success<{ request: VerificationRequest; checksum: string }>
     | NotFoundError<{}>
     | UnexpectedError
+    | UnauthorizedError
 
   export const request: Request | null = null
   export const response: Response | null = null
 }
 
 export namespace ApproveVerificationRequest {
+  export const schema = z.object({
+    checksum: z.string()
+  })
   export const METHOD = 'post'
   export const PARAMS = { requestId: ':requestId' }
   export const PATH = (params: typeof PARAMS) =>
     `/api/kycadmin/verificationRequests/${params.requestId}/approve`
-  export type Request = { params: typeof PARAMS }
-  export type Response = Success<{ message: string }> | UnexpectedError
+  export type Request = {
+    params: typeof PARAMS
+    body: z.infer<typeof schema>
+  }
+  export type Response =
+    | Success<{ message: string }>
+    | ChecksumMismatchError<{
+        message: string
+        request: VerificationRequest
+        checksum: string
+      }>
+    | NotFoundError<{}>
+    | UnexpectedError
+    | UnauthorizedError
   export const request: Request | null = null
   export const response: Response | null = null
 }
 
 export namespace RejectVerificationRequest {
   export const schema = z.object({
-    reason: z.string()
+    reason: z.string(),
+    checksum: z.string()
   })
   export const METHOD = 'post'
   export const PARAMS = { requestId: ':requestId' }
   export const PATH = (params: typeof PARAMS) =>
     `/api/kycadmin/verificationRequests/${params.requestId}/reject`
   export type Request = { params: typeof PARAMS; body: z.infer<typeof schema> }
-  export type Response = Success<{ message: string }> | UnexpectedError
+  export type Response =
+    | Success<{ message: string }>
+    | ChecksumMismatchError<{
+        message: string
+        request: VerificationRequest
+        checksum: string
+      }>
+    | NotFoundError<{}>
+    | UnexpectedError
+    | UnauthorizedError
   export const request: Request | null = null
   export const response: Response | null = null
 }

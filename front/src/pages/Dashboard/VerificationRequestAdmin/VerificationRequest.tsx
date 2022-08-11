@@ -6,14 +6,20 @@ import { IAnim } from '@ui/utils/useAnimated'
 import { useSnackbar } from 'notistack'
 import { useEffect, useState } from 'react'
 import kycAdminService from 'services/kycAdminService'
-import { GetVerificationRequest } from 'shared/endpoints/kycAdmin'
+import {
+  ApproveVerificationRequest,
+  VerificationRequest as VerificationRequestModel
+} from 'shared/endpoints/kycAdmin'
 import { ZoomableImage } from '@ui/ZoomableImg'
-
 interface VerificationRequestProps {
   requestId: number
   anim: IAnim<number, null>
   onClose: () => void
   onUpdate: () => void
+}
+
+type VerificationRequestWithChecksum = VerificationRequestModel & {
+  checksum: string
 }
 
 export default function VerificationRequest({
@@ -26,8 +32,9 @@ export default function VerificationRequest({
     'The document was hard to read'
   )
   const [request, setRequest] =
-    useState<GetVerificationRequest.VerificationRequest | null>(null)
+    useState<VerificationRequestWithChecksum | null>(null)
   const { enqueueSnackbar } = useSnackbar()
+
   useEffect(() => {
     kycAdminService
       .getVerificationRequest({
@@ -37,7 +44,7 @@ export default function VerificationRequest({
       })
       .then((response) => {
         if (response.result === 'success') {
-          setRequest(response.request)
+          setRequest({ ...response.request, checksum: response.checksum })
         } else {
           enqueueSnackbar(response.message, {
             variant: 'error'
@@ -47,23 +54,36 @@ export default function VerificationRequest({
       .done()
   }, [requestId, enqueueSnackbar])
 
+  function handleActionResponse(response: ApproveVerificationRequest.Response) {
+    if (response.result === 'checksum-mismatch-error') {
+      setRequest({ ...response.request, checksum: response.checksum })
+    } else if (response.result === 'success') {
+      onUpdate()
+    }
+    return response
+  }
   function approve() {
+    if (!request) return
     kycAdminService
       .approveVerificationRequest({
-        params: { requestId: requestId.toString() }
+        params: { requestId: requestId.toString() },
+        body: {
+          checksum: request.checksum
+        }
       })
+      .then(handleActionResponse)
       .thenEnqueueSnackbar(enqueueSnackbar)
-      .then(onUpdate)
       .done()
   }
   function reject() {
+    if (!request) return
     kycAdminService
       .rejectVerificationRequest({
         params: { requestId: requestId.toString() },
-        body: { reason: rejectionReason }
+        body: { reason: rejectionReason, checksum: request.checksum }
       })
+      .then(handleActionResponse)
       .thenEnqueueSnackbar(enqueueSnackbar)
-      .then(onUpdate)
       .done()
   }
 

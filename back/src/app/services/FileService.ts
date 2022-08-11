@@ -20,6 +20,13 @@ export class FileService {
     )
   }
 
+  async delete(key: string): Promise<void> {
+    await this.__s3.deleteObject({
+      Bucket: AWS_BUCKET_NAME,
+      Key: key
+    })
+  }
+
   async put(key: string, file: Base64File) {
     await this.__s3.putObject({
       Bucket: AWS_BUCKET_NAME,
