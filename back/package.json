@@ -4,6 +4,7 @@
   "description": "Node.js Rest Apis with Express, Sequelize & MySQL",
   "scripts": {
     "start": "node src/swagger.js && NODE_PATH=./src NODE_ENV=development nodemon -e ts,json -x \"node -r ts-node/register --preserve-symlinks src/server.ts\"",
+    "start-with-refresh": "node src/swagger.js && NODE_PATH=./src NODE_ENV=development nodemon -e ts,json -x \"node -r ts-node/register --preserve-symlinks src/interval.jobs.server.ts\"",
     "build": "swc src --copy-files -d build",
     "test": "NODE_PATH=./src mocha",
     "test:watch": "NODE_PATH=./src mocha --watch",
