@@ -34,5 +34,9 @@ module.exports = (app: Express) => {
   router.get('/wallets', auth(MODE_FULL), users.getUserWallets)
   router.post('/wallets', auth(MODE_FULL), users.addOrUpdateWallet)
 
+  //dashboard
+  router.get('/dashboard', auth(MODE_FULL), users.getDashboardOrder)
+  router.post('/dashboard', auth(MODE_FULL), users.addOrUpdateOrder)
+
   app.use('/api/users', router)
 }

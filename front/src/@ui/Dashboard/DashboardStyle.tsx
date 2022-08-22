@@ -47,3 +47,7 @@ export const Grid = styled.div({
     margin: '0px'
   }
 })
+
+export const Block = styled.div({
+  width: '100%'
+})

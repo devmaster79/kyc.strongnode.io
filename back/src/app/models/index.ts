@@ -7,6 +7,7 @@ import * as dVPNAccessModel from './dvpnaccess.model'
 import * as dVPNUsageModel from './dvpnusage.model'
 import * as UserWalletsModel from './userwallets.model'
 import * as KycEntryModel from './kycEntry.model'
+import * as DashboardOrderModel from './dashboardorder.model'
 import * as Sequelize from 'sequelize'
 import { Umzug, SequelizeStorage } from 'umzug'
 import { Logger } from 'app/services/Logger'
@@ -80,6 +81,7 @@ UserWalletsModel.create(sequelize)
 dVPNAccessModel.create(sequelize)
 dVPNUsageModel.create(sequelize)
 KycEntryModel.create(sequelize)
+DashboardOrderModel.create(sequelize)
 
 UserModel.User.hasMany(KycEntryModel.KycEntry, {
   sourceKey: 'id',
@@ -103,6 +105,7 @@ export const UserWallets = UserWalletsModel.UserWallets
 export const dVPNAccess = dVPNAccessModel.dVPNaccessModel
 export const dVPNUsage = dVPNUsageModel.dVPNUsageModel
 export const KycEntry = KycEntryModel.KycEntry
+export const DashboardOrder = DashboardOrderModel.DashboardOrder
 
 /** @deprecated */
 export const users = UserModel.User

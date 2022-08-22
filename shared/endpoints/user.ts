@@ -185,3 +185,39 @@ export namespace GetUserWallets {
   export const request: Request | null = null
   export const response: Response | null = null
 }
+
+export namespace GetDashboardOrder {
+  export const METHOD = 'get'
+  export const PATH = '/api/users/dashboard'
+  export type DashboardOrder = {
+    id: number
+    dashboardItem: string
+    position: number
+    createdAt: Date
+    updatedAt: Date
+  }
+
+  export type Request = void
+  export type Response =
+    | Success<{ order: DashboardOrder[] }>
+    | UnauthorizedError
+    | UnexpectedError
+  export const request: Request | null = null
+  export const response: Response | null = null
+}
+
+export namespace AddOrUpdateDashboardOrder {
+  export const METHOD = 'post'
+  export const PATH = '/api/users/dashboard'
+  export const schema = z.object({
+    order: z.array(z.string())
+  })
+  export type Request = { body: z.input<typeof schema> }
+  export type Response =
+    | Success<{ message: string }>
+    | ZodValidationError<Request['body']>
+    | UnauthorizedError
+    | UnexpectedError
+  export const request: Request | null = null
+  export const response: Response | null = null
+}

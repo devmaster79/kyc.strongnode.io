@@ -2,7 +2,8 @@ import {
   User as userRepository,
   SupportRequest as supportRequestRepository,
   InvestorDetail as investorDetailRepository,
-  UserWallets as userWalletsRepository
+  UserWallets as userWalletsRepository,
+  DashboardOrder as dashboardOrderRepository
 } from '../models'
 import { SES } from '@aws-sdk/client-ses'
 import { EmailService } from 'app/services/communication/EmailService'
@@ -19,21 +20,29 @@ import {
   AddOrUpdateWallet,
   CreateInvestor,
   CreateSupportRequest,
+  GetDashboardOrder,
   GetInvestorDetails,
   GetProfile,
   GetUserWallets,
   UpdateAvatar,
-  UpdateProfile
+  UpdateProfile,
+  AddOrUpdateDashboardOrder
 } from 'shared/endpoints/user'
 import { ProfileService } from 'app/services/user/ProfileService'
 import { SupportRequestService } from 'app/services/user/SupportRequestService'
 import { WalletService } from 'app/services/user/WalletService'
 import { GravatarService } from 'app/services/GravatarService'
+import { DashboardService } from 'app/services/user/DashboardService'
 
 const emailService = new EmailService(new SES(AWS_SES_CONFIG()))
 const gravatarService = new GravatarService()
 const profileService = new ProfileService(userRepository, gravatarService)
 const walletService = new WalletService(userRepository, userWalletsRepository)
+const dashboardOrderService = new DashboardService(
+  userRepository,
+  dashboardOrderRepository
+)
+
 const investorDetailService = new InvestorDetailService(
   investorDetailRepository,
   userRepository
@@ -66,6 +75,21 @@ export const getUserWallets = withResponse<GetUserWallets.Response>(
     return success(result)
   }
 )
+
+/** Method that gets dashboard item order for user */
+export const getDashboardOrder = withResponse<GetDashboardOrder.Response>(
+  async (req) => {
+    const result = await dashboardOrderService.getDashboardOrder(req.user.email)
+    return success(result)
+  }
+)
+
+/** Method that is used for adding or updating dashboard items */
+export const addOrUpdateOrder = withResponse(async (req) => {
+  const data = AddOrUpdateDashboardOrder.schema.parse(req.body)
+  await dashboardOrderService.addOrUpdateOrders(req.user.email, data.order)
+  return success({ message: 'Dashboard order successfully added.' })
+})
 
 /** Create InvestorDetails for the current user */
 export const createInvestor = withResponse<CreateInvestor.Response>(
