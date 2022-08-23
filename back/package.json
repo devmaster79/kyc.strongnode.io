@@ -3,15 +3,15 @@
   "version": "1.0.0",
   "description": "Node.js Rest Apis with Express, Sequelize & MySQL",
   "scripts": {
-    "start": "node src/swagger.js && NODE_PATH=./src NODE_ENV=development nodemon -e ts,json -x \"node -r ts-node/register --preserve-symlinks src/server.ts\"",
-    "start-with-refresh": "node src/swagger.js && NODE_PATH=./src NODE_ENV=development nodemon -e ts,json -x \"node -r ts-node/register --preserve-symlinks src/interval.jobs.server.ts\"",
+    "start": "node src/swagger.js && NODE_PATH=./src NODE_ENV=development nodemon --signal SIGTERM -e ts,json -x \"node -r ts-node/register --preserve-symlinks src/server.ts\"",
+    "start-with-refresh": "node src/swagger.js && NODE_PATH=./src NODE_ENV=development nodemon --signal SIGTERM -e ts,json -x \"node -r ts-node/register --preserve-symlinks src/interval.jobs.server.ts\"",
     "build": "swc src --copy-files -d build",
     "test": "NODE_PATH=./src mocha",
     "test:watch": "NODE_PATH=./src mocha --watch",
     "test:watch:single": "NODE_PATH=./src mocha --watch --grep",
     "migrate:up": "NODE_PATH=./src node -r ts-node/register ./src/app/scripts/run-migrations.ts up",
     "migrate:down": "NODE_PATH=./src node -r ts-node/register ./src/app/scripts/run-migrations.ts down",
-    "templates": "NODE_PATH=./src NODE_ENV=development nodemon --ignore public -x \"node -r ts-node/register --preserve-symlinks ./src/app/scripts/try-template.ts\"",
+    "templates": "NODE_PATH=./src NODE_ENV=development nodemon --signal SIGTERM --ignore public -x \"node -r ts-node/register --preserve-symlinks ./src/app/scripts/try-template.ts\"",
     "lint": "eslint \"src/**\"",
     "swagger-autogen": "node src/swagger.js"
   },
@@ -64,6 +64,7 @@
     "ts-node": "^10.7.0",
     "umzug": "^3.0.0",
     "validator": "13.7.0",
+    "ws": "^8.8.1",
     "zod": "^3.14.4"
   },
   "devDependencies": {

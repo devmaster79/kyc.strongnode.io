@@ -1,35 +1,141 @@
 import { UserRequest } from 'app/controllers/utils'
+import { AppLogger, Logger } from 'app/services/Logger'
 import { NextFunction, Request, Response } from 'express'
 import { bannedError } from 'shared/endpoints/responses'
+import { WebSocket } from 'ws'
+import process from 'node:process'
+import { LIMITER_SERVICE_URL } from 'app/config/config'
 
-let trials: { [key: string]: { nextFreeTime: number | null; count: number } } =
-  {}
+class LimiterService {
+  storedConnection: WebSocket | null = null
+  reconnectTimout: NodeJS.Timeout | undefined = undefined
+  closing = false
 
-/**
- * method that resets the trials database
- */
-export const resetTrials = () => {
-  trials = {}
+  constructor(private __logger: Logger = new Logger('LimiterService')) {}
+
+  connect(): Promise<WebSocket> {
+    // if the connection is alive
+    if (this.storedConnection)
+      return new Promise((resolve) => {
+        if (this.storedConnection) {
+          resolve(this.storedConnection)
+        }
+      })
+
+    // if the connection is NOT alive
+    const ws = new WebSocket(LIMITER_SERVICE_URL)
+    ws.on('error', (e) => {
+      this.__logger.error(e)
+      this.reconnect()
+    })
+    ws.on('close', (e, reason) => {
+      if (this.closing) return
+      this.__logger.error('Closed', e, reason.toString('ascii'))
+      this.reconnect()
+    })
+
+    return new Promise((resolve) => {
+      ws.on('open', () => {
+        this.storedConnection = ws
+        resolve(ws)
+        this.__logger.log('Connected')
+      })
+    })
+  }
+
+  async disconnect() {
+    this.__logger.log('Server is shutting down')
+    this.closing = true
+    if (this.storedConnection) this.storedConnection.terminate()
+  }
+
+  reconnect = () => {
+    this.storedConnection = null
+    if (this.reconnectTimout) {
+      clearTimeout(this.reconnectTimout)
+    }
+    this.reconnectTimout = setTimeout(() => {
+      this.__logger.log('Reconnecting')
+      this.connect()
+    }, 1000)
+  }
+
+  private async __send_command(command: string): Promise<[string, string]> {
+    const ws = await this.connect()
+    ws.send(command)
+    return new Promise((resolve, reject) => {
+      ws.on('message', function message(data) {
+        try {
+          const msg = data.toString('ascii')
+          const result = msg.split(' ')[0]
+          const rest = msg.replace(result, '').trim()
+          resolve([result, rest])
+        } catch (e) {
+          reject(new Error('Malformed response'))
+        }
+      })
+    })
+  }
+
+  async send_access(
+    limit_id: string,
+    user_id: string
+  ): Promise<AccessResponse> {
+    const [result, rest] = await this.__send_command(
+      `ACCESS ${limit_id} ${this.__encode(user_id)}`
+    )
+    if (result === 'ERROR') throw new Error(rest)
+    if (result === 'ALLOWED') return { result }
+    if (result === 'DENIED') return { result, nextFreeTimeMs: parseInt(rest) }
+    throw new Error('Malformed response')
+  }
+
+  async send_resolve(
+    limit_id: string,
+    user_id: string
+  ): Promise<ResolveResponse> {
+    const [result, rest] = await this.__send_command(
+      `RESOLVE ${limit_id} ${this.__encode(user_id)}`
+    )
+    if (result === 'ERROR') throw new Error(rest)
+    if (result === 'DONE') return { result }
+    throw new Error('Malformed response')
+  }
+
+  __encode(val: string) {
+    return Buffer.from(val).toString('hex')
+  }
 }
 
-/**
- * method that cleans up old entries
- */
-export const cleanUp = () => {
-  const now = Date.now()
-  Object.keys(trials)
-    .filter((key) => {
-      const nextFreeTime = trials[key].nextFreeTime
-      return nextFreeTime && nextFreeTime < now
+const limiterService = new LimiterService()
+limiterService.connect().catch(AppLogger.error)
+
+function quit() {
+  limiterService
+    .disconnect()
+    .then(() => {
+      process.exit(0)
     })
-    .forEach((key) => {
-      delete trials[key]
+    .catch(() => {
+      process.exit(1)
     })
 }
 
-setInterval(cleanUp, 60 * 60 * 1000)
+process.on('SIGINT', quit)
+process.on('SIGTERM', quit)
 
-export interface Limit<TRequest> {
+type AccessResponse =
+  | { result: 'ALLOWED' }
+  | { result: 'DENIED'; nextFreeTimeMs: number }
+type ResolveResponse = { result: 'DONE' }
+
+export type Resolver = {
+  registerSuccess: () => Promise<void>
+}
+export type RequestWithLimit<TRequest> = TRequest & {
+  limits: { [name: string]: Resolver }
+}
+export type Limit<TRequest> = {
   /** a middleware that sends error on too many trials */
   limiter: (req: TRequest, res: Response, next: NextFunction) => unknown
   /** a middleware that makes the controller able to remove the limit on success */
@@ -38,99 +144,46 @@ export interface Limit<TRequest> {
   resolve: (req: RequestWithLimit<TRequest>) => void
 }
 
-export interface LimitConfig {
-  maxFreeTrials: number
-  banMinutesBase: number
-  multiplier: number
-  resetCountAfterBanExpires: boolean
-}
-
-export type Resolver = {
-  registerSuccess: () => void
-}
-
-export type RequestWithLimit<TRequest> = TRequest & {
-  limits: { [name: string]: Resolver }
-}
-
+/** Creates multiple middlewares for limiting */
 export const createLimit = <TRequest>(
   name: string,
-  getIdentifier: (req: TRequest) => string,
-  config: LimitConfig = {
-    maxFreeTrials: 5,
-    banMinutesBase: 5,
-    multiplier: 3,
-    resetCountAfterBanExpires: false
-  }
+  getIdentifier: (req: TRequest) => string
 ): Limit<TRequest> => {
   return {
-    limiter: createLimiter(getIdentifier, name, config),
+    limiter: createLimiter(getIdentifier, name),
     resolver: createResolver(getIdentifier, name),
-    resolve(req: RequestWithLimit<TRequest>) {
-      req.limits[name].registerSuccess()
+    async resolve(req: RequestWithLimit<TRequest>) {
+      await req.limits[name].registerSuccess()
     }
   }
 }
 
 /**
- * Create a limiter middleware
- * @param getIdentifier a function that returns the identifier of a user
+ * Creates a middleware that will limit the access based on the limit-service
  */
 const createLimiter =
-  <TRequest>(
-    getIdentifier: (req: TRequest) => string,
-    name: string,
-    config: LimitConfig
-  ) =>
-  (req: TRequest, res: Response, next: NextFunction) => {
-    const identifier = calculateUID(name, getIdentifier(req))
-    const now = Date.now()
-    let lastTrial = trials[identifier]
-    if (!lastTrial) {
-      trials[identifier] = {
-        count: 1,
-        nextFreeTime: null
-      }
-      lastTrial = trials[identifier]
-    }
-
-    // STEP 1: set the next free-to-try time
-    if (lastTrial.count > config.maxFreeTrials) {
-      if (!lastTrial.nextFreeTime) {
-        // CASE: user should be banned
-        lastTrial.nextFreeTime = calculateNextFreeTime(config, lastTrial.count)
-      } else if (
-        lastTrial.nextFreeTime <= now &&
-        config.resetCountAfterBanExpires
-      ) {
-        // CASE: ban expired so the user get another [maxFreeTrials] free trials starting with this one
-        lastTrial.count = 1
-        lastTrial.nextFreeTime = null
-      } else if (
-        lastTrial.nextFreeTime <= now &&
-        !config.resetCountAfterBanExpires
-      ) {
-        // CASE: ban expired so we allow one free trial and renew the ban
-        lastTrial.count += 1
-        lastTrial.nextFreeTime = calculateNextFreeTime(config, lastTrial.count)
+  <TRequest>(getIdentifier: (req: TRequest) => string, name: string) =>
+  async (req: TRequest, res: Response, next: NextFunction) => {
+    try {
+      const response = await limiterService.send_access(
+        name,
+        getIdentifier(req)
+      )
+      if (response.result === 'ALLOWED') {
         return next()
+      } else if (response.result === 'DENIED') {
+        const bannedResponse = bannedError(response.nextFreeTimeMs - Date.now())
+        if (res.headersSent) {
+          return res.end(`${JSON.stringify(bannedResponse)}\n\n`)
+        } else {
+          return res.status(401).send(bannedResponse)
+        }
       } else {
-        // CASE: already banned and not expired
+        new Error('Malformed response')
       }
+    } catch (e) {
+      AppLogger.error('limiter got an error: ', e)
     }
-
-    // STEP 2: check next free time
-    if (lastTrial.nextFreeTime && lastTrial.nextFreeTime > now) {
-      const response = bannedError(lastTrial.nextFreeTime - now)
-      if (res.headersSent) {
-        return res.end(`${JSON.stringify(response)}\n\n`)
-      } else {
-        return res.status(401).send(response)
-      }
-    }
-
-    lastTrial.count += 1
-    return next()
   }
 
 /**
@@ -139,13 +192,12 @@ const createLimiter =
  */
 const createResolver =
   <TRequest>(getIdentifier: (req: TRequest) => string, name: string) =>
-  (req: TRequest, res: Response, next: NextFunction) => {
-    const identifier = calculateUID(name, getIdentifier(req))
+  async (req: TRequest, _res: Response, next: NextFunction) => {
     const reqWithLimit = req as RequestWithLimit<TRequest>
     reqWithLimit.limits = {
       [name]: {
-        registerSuccess() {
-          delete trials[identifier]
+        async registerSuccess() {
+          await limiterService.send_resolve(name, getIdentifier(req))
         }
       },
       ...reqWithLimit.limits
@@ -162,19 +214,3 @@ export const identifyByAuth = (req: UserRequest) => {
 export const identifyByEmailAndIP = (req: Request) => {
   return `${req.body.email}__${req.ip}`
 }
-
-/**
- * Calculate the next timestamp for ban
- * @returns timestamp
- */
-function calculateNextFreeTime(config: LimitConfig, trials: number) {
-  const excess_trials = trials - config.maxFreeTrials
-  const base = config.banMinutesBase
-  const m = config.multiplier
-  const e = excess_trials - 1
-  const banMs = base * Math.pow(m, e) * 60 * 1000
-  return Date.now() + banMs
-}
-
-const calculateUID = (name: string, identifier: string) =>
-  name + '__' + identifier

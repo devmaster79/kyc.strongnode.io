@@ -72,6 +72,14 @@ jobs:
       - name: Add backend .env file
         shell: bash
         run: echo ${{ secrets.ENV_STAGE_FILE }} | base64 -d > back/.env
+      - name: Add limiter .env file
+        shell: bash
+        run: echo ${{ secrets.ENV_STAGE_LIMITER_FILE }} | base64 -d > limiter/.env
+      - name: limiter service
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: 1.61.0
+        run: cargo build --release
       - name: Deploy to Server
         uses: easingthemes/ssh-deploy@main
         env:
@@ -135,6 +143,14 @@ jobs:
       - name: Add backend .env file
         shell: bash
         run: echo ${{ secrets.ENV_PROD_FILE }} | base64 -d > back/.env
+      - name: Add limiter .env file
+        shell: bash
+        run: echo ${{ secrets.ENV_PROD_LIMITER_FILE }} | base64 -d > limiter/.env
+      - name: limiter service
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: 1.61.0
+        run: cargo build --release
       - name: Deploy to Server
         uses: easingthemes/ssh-deploy@main
         env:

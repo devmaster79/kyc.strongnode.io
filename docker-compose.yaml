@@ -48,3 +48,18 @@ services:
       --region eu-west-1
       --profile localstack
       --endpoint-url=http://localstack:4566'
+  limiter-service:
+    container_name: limiter
+    image: rust:1.61.0
+    working_dir: '/app'
+    volumes:
+      - ./limiter-service:/app
+      - limiter-target-cache:/app/target
+      - limiter-cargo-cache:/usr/local/cargo/registry
+    entrypoint: /app/entrypoint.sh
+    ports:
+      - 3012:3012
+
+volumes:
+  limiter-target-cache:
+  limiter-cargo-cache:

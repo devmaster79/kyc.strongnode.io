@@ -36,3 +36,9 @@ export const AWS_BUCKET_NAME = process.env.AWS_BUCKET_NAME || 'local-bucket'
 export const AWS_REKOGNITION_COLLECTION_IDS = {
   kycFaces: process.env.AWS_FACES_COLLECTION_ID || 'kycfaces_local'
 }
+
+export const LIMITER_SERVICE_URL =
+  process.env.LIMITER_SERVICE_URL ||
+  (function () {
+    throw new Error(`LIMITER_SERVICE_URL env var is missing and required!`)
+  })()
